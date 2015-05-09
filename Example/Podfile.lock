@@ -1,0 +1,19 @@
+PODS:
+  - UberSDK (0.0.1):
+    - UberSDK/Core (= 0.0.1)
+    - UberSDK/OAuth2 (= 0.0.1)
+  - UberSDK/Core (0.0.1)
+  - UberSDK/OAuth2 (0.0.1):
+    - UberSDK/Core
+
+DEPENDENCIES:
+  - UberSDK (from `..`)
+
+EXTERNAL SOURCES:
+  UberSDK:
+    :path: ..
+
+SPEC CHECKSUMS:
+  UberSDK: daf8a0230c66c1e5879e30ce94860f724aacbfe3
+
+COCOAPODS: 0.37.1

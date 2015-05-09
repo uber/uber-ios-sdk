@@ -7,9 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B28CE0D51AFECF7F005DE60C /* UBEmbeddedOAuth2WebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B28CE0CE1AFECF7F005DE60C /* UBEmbeddedOAuth2WebViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B28CE0D61AFECF7F005DE60C /* UBEmbeddedOAuth2WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B28CE0CF1AFECF7F005DE60C /* UBEmbeddedOAuth2WebViewController.m */; };
+		B28CE0D71AFECF7F005DE60C /* UBOAuth2Client.h in Headers */ = {isa = PBXBuildFile; fileRef = B28CE0D01AFECF7F005DE60C /* UBOAuth2Client.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B28CE0D81AFECF7F005DE60C /* UBOAuth2Client.m in Sources */ = {isa = PBXBuildFile; fileRef = B28CE0D11AFECF7F005DE60C /* UBOAuth2Client.m */; };
+		B28CE0D91AFECF7F005DE60C /* UBOAuth2GrantFlowProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = B28CE0D21AFECF7F005DE60C /* UBOAuth2GrantFlowProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B28CE0DA1AFECF7F005DE60C /* UBOAuth2UserAuthFlowProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = B28CE0D31AFECF7F005DE60C /* UBOAuth2UserAuthFlowProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B2910B111AF81332003421B6 /* UberSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = B2910B101AF81332003421B6 /* UberSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B2910B171AF81332003421B6 /* UberSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2910B0B1AF81332003421B6 /* UberSDK.framework */; };
 		B2910B1E1AF81332003421B6 /* UberSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2910B1D1AF81332003421B6 /* UberSDKTests.m */; };
+		E246A9B66BE483CEC7134B33 /* libPods-UberSDKTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9552D4CBA32316FF3244CA70 /* libPods-UberSDKTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,12 +30,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5EE06BC93B95A065601059B6 /* Pods-UberSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberSDKTests.release.xcconfig"; path = "../Example/Pods/Target Support Files/Pods-UberSDKTests/Pods-UberSDKTests.release.xcconfig"; sourceTree = "<group>"; };
+		9552D4CBA32316FF3244CA70 /* libPods-UberSDKTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UberSDKTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B28CE0CE1AFECF7F005DE60C /* UBEmbeddedOAuth2WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBEmbeddedOAuth2WebViewController.h; sourceTree = "<group>"; };
+		B28CE0CF1AFECF7F005DE60C /* UBEmbeddedOAuth2WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBEmbeddedOAuth2WebViewController.m; sourceTree = "<group>"; };
+		B28CE0D01AFECF7F005DE60C /* UBOAuth2Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBOAuth2Client.h; sourceTree = "<group>"; };
+		B28CE0D11AFECF7F005DE60C /* UBOAuth2Client.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBOAuth2Client.m; sourceTree = "<group>"; };
+		B28CE0D21AFECF7F005DE60C /* UBOAuth2GrantFlowProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBOAuth2GrantFlowProtocol.h; sourceTree = "<group>"; };
+		B28CE0D31AFECF7F005DE60C /* UBOAuth2UserAuthFlowProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBOAuth2UserAuthFlowProtocol.h; sourceTree = "<group>"; };
 		B2910B0B1AF81332003421B6 /* UberSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UberSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2910B0F1AF81332003421B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2910B101AF81332003421B6 /* UberSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UberSDK.h; sourceTree = "<group>"; };
 		B2910B161AF81332003421B6 /* UberSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UberSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2910B1C1AF81332003421B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2910B1D1AF81332003421B6 /* UberSDKTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UberSDKTests.m; sourceTree = "<group>"; };
+		DCF445AE355052D5812C217A /* Pods-UberSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberSDKTests.debug.xcconfig"; path = "../Example/Pods/Target Support Files/Pods-UberSDKTests/Pods-UberSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,18 +60,90 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2910B171AF81332003421B6 /* UberSDK.framework in Frameworks */,
+				E246A9B66BE483CEC7134B33 /* libPods-UberSDKTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		222F991E5F688C2118A6402B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DCF445AE355052D5812C217A /* Pods-UberSDKTests.debug.xcconfig */,
+				5EE06BC93B95A065601059B6 /* Pods-UberSDKTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B170A236AD3E17A3467DC14E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9552D4CBA32316FF3244CA70 /* libPods-UberSDKTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B28CE0CB1AFECF7F005DE60C /* OAuth2 */ = {
+			isa = PBXGroup;
+			children = (
+				B28CE0CC1AFECF7F005DE60C /* Classes */,
+				B28CE0D41AFECF7F005DE60C /* Resources */,
+			);
+			path = OAuth2;
+			sourceTree = "<group>";
+		};
+		B28CE0CC1AFECF7F005DE60C /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				B28CE0CD1AFECF7F005DE60C /* iOS */,
+				B28CE0D01AFECF7F005DE60C /* UBOAuth2Client.h */,
+				B28CE0D11AFECF7F005DE60C /* UBOAuth2Client.m */,
+				B28CE0D21AFECF7F005DE60C /* UBOAuth2GrantFlowProtocol.h */,
+				B28CE0D31AFECF7F005DE60C /* UBOAuth2UserAuthFlowProtocol.h */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		B28CE0CD1AFECF7F005DE60C /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				B28CE0CE1AFECF7F005DE60C /* UBEmbeddedOAuth2WebViewController.h */,
+				B28CE0CF1AFECF7F005DE60C /* UBEmbeddedOAuth2WebViewController.m */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		B28CE0D41AFECF7F005DE60C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B28CE0DB1AFECF8C005DE60C /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				B28CE0DC1AFECF8C005DE60C /* Classes */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		B28CE0DC1AFECF8C005DE60C /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		B2910B011AF81332003421B6 = {
 			isa = PBXGroup;
 			children = (
 				B2910B0D1AF81332003421B6 /* UberSDK */,
 				B2910B1A1AF81332003421B6 /* UberSDKTests */,
 				B2910B0C1AF81332003421B6 /* Products */,
+				222F991E5F688C2118A6402B /* Pods */,
+				B170A236AD3E17A3467DC14E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,6 +159,8 @@
 		B2910B0D1AF81332003421B6 /* UberSDK */ = {
 			isa = PBXGroup;
 			children = (
+				B28CE0DB1AFECF8C005DE60C /* Core */,
+				B28CE0CB1AFECF7F005DE60C /* OAuth2 */,
 				B2910B101AF81332003421B6 /* UberSDK.h */,
 				B2910B0E1AF81332003421B6 /* Supporting Files */,
 			);
@@ -110,6 +200,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2910B111AF81332003421B6 /* UberSDK.h in Headers */,
+				B28CE0D51AFECF7F005DE60C /* UBEmbeddedOAuth2WebViewController.h in Headers */,
+				B28CE0DA1AFECF7F005DE60C /* UBOAuth2UserAuthFlowProtocol.h in Headers */,
+				B28CE0D91AFECF7F005DE60C /* UBOAuth2GrantFlowProtocol.h in Headers */,
+				B28CE0D71AFECF7F005DE60C /* UBOAuth2Client.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,9 +232,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2910B241AF81332003421B6 /* Build configuration list for PBXNativeTarget "UberSDKTests" */;
 			buildPhases = (
+				12CCDF6FCDA13EF9F871DED4 /* Check Pods Manifest.lock */,
 				B2910B121AF81332003421B6 /* Sources */,
 				B2910B131AF81332003421B6 /* Frameworks */,
 				B2910B141AF81332003421B6 /* Resources */,
+				FF2CA2AFF6F3ABEA34849CA1 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -158,8 +254,9 @@
 		B2910B021AF81332003421B6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = UB;
 				LastUpgradeCheck = 0630;
-				ORGANIZATIONNAME = Uber;
+				ORGANIZATIONNAME = "Uber Technolgies, Inc";
 				TargetAttributes = {
 					B2910B0A1AF81332003421B6 = {
 						CreatedOnToolsVersion = 6.3;
@@ -204,11 +301,46 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		12CCDF6FCDA13EF9F871DED4 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		FF2CA2AFF6F3ABEA34849CA1 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Example/Pods/Target Support Files/Pods-UberSDKTests/Pods-UberSDKTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B2910B061AF81332003421B6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B28CE0D81AFECF7F005DE60C /* UBOAuth2Client.m in Sources */,
+				B28CE0D61AFECF7F005DE60C /* UBEmbeddedOAuth2WebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,7 +400,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -309,7 +441,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -357,6 +489,7 @@
 		};
 		B2910B251AF81332003421B6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DCF445AE355052D5812C217A /* Pods-UberSDKTests.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -374,6 +507,7 @@
 		};
 		B2910B261AF81332003421B6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5EE06BC93B95A065601059B6 /* Pods-UberSDKTests.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -404,6 +538,7 @@
 				B2910B231AF81332003421B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B2910B241AF81332003421B6 /* Build configuration list for PBXNativeTarget "UberSDKTests" */ = {
 			isa = XCConfigurationList;
@@ -412,6 +547,7 @@
 				B2910B261AF81332003421B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

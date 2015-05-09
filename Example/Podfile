@@ -1,0 +1,24 @@
+source 'https://github.com/CocoaPods/Specs'
+
+platform :ios, '7.0'
+
+workspace '../UberSDK'
+xcodeproj '../UberSDK/UberSDK.xcodeproj'
+
+target 'UberSDK' do
+  xcodeproj '../UberSDK/UberSDK.xcodeproj'
+  podspec :path => '../UberSDK.podspec'
+end
+
+target 'UberSDKTests' do
+  xcodeproj '../UberSDK/UberSDK.xcodeproj'
+  pod 'UberSDK', :path => '..'
+end
+
+xcodeproj 'Example/UberSDK-Example.xcodeproj'
+
+target 'UberSDK-Example' do
+  xcodeproj 'Example/UberSDK-Example.xcodeproj'
+  podspec :path => '../UberSDK.podspec'
+  # pod 'UberSDK', :path => '.'
+end
