@@ -5,7 +5,7 @@
       location = "group:UberSDK/UberSDK.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:UberSDK-Example/UberSDK-Example.xcodeproj">
+      location = "group:Example/UberSDK-Example.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Example/Pods/Pods.xcodeproj">

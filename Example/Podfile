@@ -15,10 +15,10 @@ target 'UberSDKTests' do
   pod 'UberSDK', :path => '..'
 end
 
-xcodeproj 'Example/UberSDK-Example.xcodeproj'
+xcodeproj 'UberSDK-Example.xcodeproj'
 
 target 'UberSDK-Example' do
-  xcodeproj 'Example/UberSDK-Example.xcodeproj'
+  xcodeproj 'UberSDK-Example.xcodeproj'
   podspec :path => '../UberSDK.podspec'
   # pod 'UberSDK', :path => '.'
 end

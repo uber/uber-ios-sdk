@@ -1,7 +1,9 @@
 PODS:
   - UberSDK (0.0.1):
+    - UberSDK/API (= 0.0.1)
     - UberSDK/Core (= 0.0.1)
     - UberSDK/OAuth2 (= 0.0.1)
+  - UberSDK/API (0.0.1)
   - UberSDK/Core (0.0.1)
   - UberSDK/OAuth2 (0.0.1):
     - UberSDK/Core
@@ -14,6 +16,6 @@ EXTERNAL SOURCES:
     :path: ..
 
 SPEC CHECKSUMS:
-  UberSDK: daf8a0230c66c1e5879e30ce94860f724aacbfe3
+  UberSDK: cb2a8dbfdecd9d8bc0e275e47276885b3ed881ae
 
 COCOAPODS: 0.37.1

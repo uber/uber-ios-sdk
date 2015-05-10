@@ -14,7 +14,7 @@
 		B28CE0F71AFED215005DE60C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B28CE0F61AFED215005DE60C /* Images.xcassets */; };
 		B28CE0FA1AFED215005DE60C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B28CE0F81AFED215005DE60C /* LaunchScreen.xib */; };
 		B28CE1061AFED215005DE60C /* UberSDK_ExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B28CE1051AFED215005DE60C /* UberSDK_ExampleTests.m */; };
-		B28CE1101AFED22D005DE60C /* UberSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28CE10F1AFED22D005DE60C /* UberSDK.framework */; };
+		B28CE1131AFEDF95005DE60C /* UberSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28CE1121AFEDF95005DE60C /* UberSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,7 +41,7 @@
 		B28CE0FF1AFED215005DE60C /* UberSDK-ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UberSDK-ExampleTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B28CE1041AFED215005DE60C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B28CE1051AFED215005DE60C /* UberSDK_ExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UberSDK_ExampleTests.m; sourceTree = "<group>"; };
-		B28CE10F1AFED22D005DE60C /* UberSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UberSDK.framework; path = "../UberSDK/build/Debug-iphoneos/UberSDK.framework"; sourceTree = "<group>"; };
+		B28CE1121AFEDF95005DE60C /* UberSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UberSDK.framework; path = "../UberSDK/build/Debug-iphoneos/UberSDK.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B28CE1101AFED22D005DE60C /* UberSDK.framework in Frameworks */,
+				B28CE1131AFEDF95005DE60C /* UberSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,7 +126,7 @@
 		B28CE1111AFED267005DE60C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B28CE10F1AFED22D005DE60C /* UberSDK.framework */,
+				B28CE1121AFEDF95005DE60C /* UberSDK.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -361,10 +361,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"/Users/cbrauchli/Development/Uber/mobile/ios/UberSDK/UberSDK/build/Debug-iphoneos",
-				);
 				INFOPLIST_FILE = "UberSDK-Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -375,10 +371,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"/Users/cbrauchli/Development/Uber/mobile/ios/UberSDK/UberSDK/build/Debug-iphoneos",
-				);
 				INFOPLIST_FILE = "UberSDK-Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -438,6 +430,7 @@
 				B28CE10B1AFED215005DE60C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B28CE10C1AFED215005DE60C /* Build configuration list for PBXNativeTarget "UberSDK-ExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -446,6 +439,7 @@
 				B28CE10E1AFED215005DE60C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -14,3 +14,6 @@ FOUNDATION_EXPORT double UberSDKVersionNumber;
 FOUNDATION_EXPORT const unsigned char UberSDKVersionString[];
 
 #import "UBOAuth2Client.h"
+#import "UBEmbeddedOAuth2WebViewController.h"
+#import "UBOAuth2GrantFlowProtocol.h"
+#import "UBOAuth2UserAuthFlowProtocol.h"
