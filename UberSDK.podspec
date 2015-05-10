@@ -17,9 +17,14 @@ Pod::Spec.new do |s|
     # sp.private_header_files = "#{s.name}/#{s.name}/#{sp.base_name}/Classes/*+Internal.h"
   end
 
+  s.subspec "API" do |sp|
+    sp.source_files = "#{s.name}/#{s.name}/#{sp.base_name}/Classes/*.{h,m}"
+    # sp.private_header_files = "#{s.name}/#{s.name}/#{sp.base_name}/Classes/*+Internal.h"
+  end
+
   s.subspec "OAuth2" do |sp|
     sp.dependency 'UberSDK/Core'
-    
+
     sp.source_files = "#{s.name}/#{s.name}/#{sp.base_name}/Classes/*.{h,m}"
     sp.ios.source_files = "#{s.name}/#{s.name}/#{sp.base_name}/Classes/iOS/*.{h,m}"
     # sp.private_header_files = "#{s.name}/#{s.name}/#{sp.base_name}/Classes/*+Internal.h"
