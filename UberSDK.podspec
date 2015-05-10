@@ -15,6 +15,9 @@ Pod::Spec.new do |s|
   s.subspec "Core" do |sp|
     sp.source_files = "#{s.name}/#{s.name}/#{sp.base_name}/Classes/*.{h,m}"
     # sp.private_header_files = "#{s.name}/#{s.name}/#{sp.base_name}/Classes/*+Internal.h"
+    # sp.resource_bundle = {
+    #   'UberSDK' => ["#{s.name}/#{s.name}/#{sp.base_name}/Resources/*.{h,m}"]
+    # }
   end
 
   s.subspec "API" do |sp|
