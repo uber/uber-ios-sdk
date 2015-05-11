@@ -1,0 +1,6 @@
+{
+  "project_id": "mobile/ios/sdk",
+  "conduit_uri": "https://code.uberinternal.com/",
+  "git.default-relative-commit": "origin/master",
+  "history.immutable": false
+}
