@@ -1,0 +1,24 @@
+{
+  "times": [
+    {
+      "product_id": "5f41547d-805d-4207-a297-51c571cf2a8c",
+      "display_name": "UberBLACK",
+      "estimate": 410
+    },
+    {
+      "product_id": "694558c9-b34b-4836-855d-821d68a4b944",
+      "display_name": "UberSUV",
+      "estimate": 535
+    },
+    {
+      "product_id": "65af3521-a04f-4f80-8ce2-6d88fb6648bc",
+      "display_name": "uberTAXI",
+      "estimate": 294
+    },
+    {
+      "product_id": "17b011d3-65be-421d-adf6-a5480a366453",
+      "display_name": "uberX",
+      "estimate": 288
+    }
+  ]
+}

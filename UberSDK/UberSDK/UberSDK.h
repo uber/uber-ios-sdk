@@ -7,13 +7,28 @@
 
 #import <UIKit/UIKit.h>
 
-//! Project version number for UberSDK.
-FOUNDATION_EXPORT double UberSDKVersionNumber;
+#import "UBOAuthWebViewController.h"
+#import "UBOAuthToken.h"
 
-//! Project version string for UberSDK.
-FOUNDATION_EXPORT const unsigned char UberSDKVersionString[];
+#import "UberAPIClient.h"
 
-#import "UBOAuth2Client.h"
-#import "UBEmbeddedOAuth2WebViewController.h"
-#import "UBOAuth2GrantFlowProtocol.h"
-#import "UBOAuth2UserAuthFlowProtocol.h"
+#import "UBSurgeConfirmation.h"
+#import "UBProduct.h"
+#import "UBProductPriceDetail.h"
+#import "UBPriceDetailServiceFee.h"
+#import "UBRideEstimateTrip.h"
+#import "UBRideReceipt.h"
+#import "UBRide.h"
+#import "UBPriceEstimate.h"
+#import "UBTimeEstimate.h"
+#import "UBPromotion.h"
+#import "UBUserActivity.h"
+#import "UBUserActivityCity.h"
+#import "UBUserProfile.h"
+#import "UBRideEstimate.h"
+#import "UBSurgeConfirmation.h"
+#import "UBSurgeConfirmViewController.h"
+
+@interface UberSDK : NSObject
+
+@end

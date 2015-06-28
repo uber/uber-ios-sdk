@@ -13,6 +13,7 @@ end
 target 'UberSDKTests' do
   xcodeproj '../UberSDK/UberSDK.xcodeproj'
   pod 'UberSDK', :path => '..'
+  pod 'OHHTTPStubs', '~> 4.0'
 end
 
 xcodeproj 'UberSDK-Example.xcodeproj'
@@ -20,5 +21,7 @@ xcodeproj 'UberSDK-Example.xcodeproj'
 target 'UberSDK-Example' do
   xcodeproj 'UberSDK-Example.xcodeproj'
   podspec :path => '../UberSDK.podspec'
-  # pod 'UberSDK', :path => '.'
+  pod 'UberSDK', :path => '..'
+  pod 'BlocksKit', '~> 2.2'
+  pod 'MRProgress', '~> 0.7'
 end

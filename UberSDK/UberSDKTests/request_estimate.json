@@ -1,0 +1,18 @@
+{
+   "price":{
+      "surge_confirmation_href": "https:\/\/api.uber.com\/v1\/surge-confirmations\/7d604f5e",
+      "high_estimate": 6,
+      "surge_confirmation_id": "7d604f5e",
+      "minimum": 5,
+      "low_estimate": 5,
+      "surge_multiplier": 1.2,
+      "display": "$5-6",
+      "currency_code": "USD"
+   },
+   "trip":{
+      "distance_unit": "mile",
+      "duration_estimate": 9,
+      "distance_estimate": 2.1
+   },
+   "pickup_estimate":2
+}
