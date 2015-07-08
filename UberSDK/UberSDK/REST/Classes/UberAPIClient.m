@@ -24,8 +24,6 @@
 
 NSString *const UberSDKVersion = @"1.0.0";
 
-NSString *const UBClientErrorDomain = @"UBClientErrorDomain";
-
 NSString *const UBAPIHostProduction = @"https://api.uber.com";
 NSString *const UBAPIHostSandbox = @"https://sandbox-api.uber.com";
 

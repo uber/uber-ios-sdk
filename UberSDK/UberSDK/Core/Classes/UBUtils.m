@@ -12,6 +12,8 @@
 #import <UIKit/UIKit.h>
 #import <Mantle/Mantle.h>
 
+NSString *const UBClientErrorDomain = @"UBClientErrorDomain";
+
 @implementation UBUtils
 
 + (NSError *)errorWithCode:(UBErrorCode)errorCode description:(NSString *)description

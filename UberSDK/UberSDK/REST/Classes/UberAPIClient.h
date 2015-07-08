@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
+#import "UBUtils.h"
+
 @class UBOAuthToken;
 @class UBPromotion;
 @class UBUserProfile;
@@ -15,22 +17,6 @@
 @class UBSurgeConfirmation;
 @class UBRideEstimate;
 @class UBRideReceipt;
-
-/**
- Uber iOS SDK error domain
- */
-FOUNDATION_EXPORT NSString *const UBClientErrorDomain;
-
-/**
- Uber iOS SDK error codes
- */
-typedef NS_ENUM(NSInteger, UBErrorCode)
-{
-    UBErrorCodeInvalidParam,            // invalid request params
-    UBErrorCodeUnableToParseResponse,   // unable to parse server response
-    UBErrorNetwork,                     // error receiving a response from Uber's servers
-    UBErrorUnableToAuthenticate,        // unable to authenticate
-};
 
 typedef void (^OAuthauthorizationBlock)(BOOL success, NSError *error);
 

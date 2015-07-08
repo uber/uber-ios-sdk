@@ -28,7 +28,3 @@
 #import "UBRideEstimate.h"
 #import "UBSurgeConfirmation.h"
 #import "UBSurgeConfirmViewController.h"
-
-@interface UberSDK : NSObject
-
-@end

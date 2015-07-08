@@ -46,10 +46,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B28CE0FE1AFED215005DE60C"
-               BuildableName = "UberSDK-ExampleTests.xctest"
-               BlueprintName = "UberSDK-ExampleTests"
-               ReferencedContainer = "container:UberSDK-Example.xcodeproj">
+               BlueprintIdentifier = "B2910B151AF81332003421B6"
+               BuildableName = "UberSDKTests.xctest"
+               BlueprintName = "UberSDKTests"
+               ReferencedContainer = "container:../UberSDK/UberSDK.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

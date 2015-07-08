@@ -7,148 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		75E8341E1636F7CB2A6FF223 /* libPods-UberSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0970872C33E0C4D8BC00871 /* libPods-UberSDK.a */; };
-		9D004F621B0164C500FD026A /* UberAPIClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D004F601B0164C500FD026A /* UberAPIClient.h */; };
-		9D004F631B0164C500FD026A /* UberAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D004F611B0164C500FD026A /* UberAPIClient.m */; };
-		9D004F6F1B01DBC800FD026A /* UBProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D004F6D1B01DBC800FD026A /* UBProduct.m */; };
-		9D3016831B2CD51500A3CC61 /* UBOAuthWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D3016811B2CD51500A3CC61 /* UBOAuthWebViewController.h */; };
-		9D3016841B2CD51500A3CC61 /* UBOAuthWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3016821B2CD51500A3CC61 /* UBOAuthWebViewController.m */; };
-		9D3016891B2CFAEF00A3CC61 /* UBOAuthToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D3016871B2CFAEF00A3CC61 /* UBOAuthToken.h */; };
-		9D30168A1B2CFAEF00A3CC61 /* UBOAuthToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3016881B2CFAEF00A3CC61 /* UBOAuthToken.m */; };
-		9D30168D1B2D068300A3CC61 /* UBUserActivityCity.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D30168B1B2D068300A3CC61 /* UBUserActivityCity.h */; };
-		9D30168E1B2D068300A3CC61 /* UBUserActivityCity.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D30168C1B2D068300A3CC61 /* UBUserActivityCity.m */; };
-		9D3016911B2D07CF00A3CC61 /* UBUserActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D30168F1B2D07CF00A3CC61 /* UBUserActivity.h */; };
-		9D3016921B2D07CF00A3CC61 /* UBUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3016901B2D07CF00A3CC61 /* UBUserActivity.m */; };
+		17A749FA8AA6C774EF2B2FC6 /* libPods-UberSDKTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6587191E263A779383AB7C7C /* libPods-UberSDKTests.a */; };
 		9D3016941B2D114C00A3CC61 /* history.json in Resources */ = {isa = PBXBuildFile; fileRef = 9D3016931B2D114C00A3CC61 /* history.json */; };
-		9D3016951B2D12F400A3CC61 /* UBProductPriceDetail.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DBCD6EE1B01365900F7C757 /* UBProductPriceDetail.h */; };
-		9D3016961B2D12F400A3CC61 /* UBProduct.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D004F6C1B01DBC800FD026A /* UBProduct.h */; };
-		9D3016971B2D12F400A3CC61 /* UBPriceDetailServiceFee.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D65D5AC1B04541500561E2A /* UBPriceDetailServiceFee.h */; };
-		9D3016981B2D12F400A3CC61 /* UBPriceEstimate.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DC447B01B177C10005E60F8 /* UBPriceEstimate.h */; };
-		9D3016991B2D12F400A3CC61 /* UBTimeEstimate.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DC447B61B178BAC005E60F8 /* UBTimeEstimate.h */; };
-		9D30169A1B2D12F400A3CC61 /* UBPromotion.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DC447BC1B178FCE005E60F8 /* UBPromotion.h */; };
-		9D30169D1B2D1EE200A3CC61 /* UBUserProfile.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D30169B1B2D1EE200A3CC61 /* UBUserProfile.h */; };
-		9D30169E1B2D1EE200A3CC61 /* UBUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D30169C1B2D1EE200A3CC61 /* UBUserProfile.m */; };
 		9D3016A01B2D207400A3CC61 /* profile.json in Resources */ = {isa = PBXBuildFile; fileRef = 9D30169F1B2D207400A3CC61 /* profile.json */; };
-		9D37C4EF1B30012C00429CD2 /* UBRide.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D37C4ED1B30012C00429CD2 /* UBRide.h */; };
-		9D37C4F01B30012C00429CD2 /* UBRide.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D37C4EE1B30012C00429CD2 /* UBRide.m */; };
-		9D37C4F31B3001B000429CD2 /* UBRideDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D37C4F11B3001B000429CD2 /* UBRideDriver.h */; };
-		9D37C4F41B3001B000429CD2 /* UBRideDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D37C4F21B3001B000429CD2 /* UBRideDriver.m */; };
-		9D37C4F71B30039700429CD2 /* UBRideLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D37C4F51B30039700429CD2 /* UBRideLocation.h */; };
-		9D37C4F81B30039700429CD2 /* UBRideLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D37C4F61B30039700429CD2 /* UBRideLocation.m */; };
-		9D37C4FB1B30040600429CD2 /* UBRideVehicle.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D37C4F91B30040600429CD2 /* UBRideVehicle.h */; };
-		9D37C4FC1B30040600429CD2 /* UBRideVehicle.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D37C4FA1B30040600429CD2 /* UBRideVehicle.m */; };
 		9D37C4FE1B3005AF00429CD2 /* request.json in Resources */ = {isa = PBXBuildFile; fileRef = 9D37C4FD1B3005AF00429CD2 /* request.json */; };
-		9D37C5061B30CA7400429CD2 /* UBSurgeConfirmation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D37C5041B30CA7400429CD2 /* UBSurgeConfirmation.h */; };
-		9D37C5071B30CA7400429CD2 /* UBSurgeConfirmation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D37C5051B30CA7400429CD2 /* UBSurgeConfirmation.m */; };
-		9D37C50E1B30E98800429CD2 /* UBRideEstimateTrip.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D37C50C1B30E98800429CD2 /* UBRideEstimateTrip.h */; };
-		9D37C50F1B30E98800429CD2 /* UBRideEstimateTrip.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D37C50D1B30E98800429CD2 /* UBRideEstimateTrip.m */; };
-		9D37C5121B30EA0400429CD2 /* UBRideEstimatePrice.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D37C5101B30EA0400429CD2 /* UBRideEstimatePrice.h */; };
-		9D37C5131B30EA0400429CD2 /* UBRideEstimatePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D37C5111B30EA0400429CD2 /* UBRideEstimatePrice.m */; };
-		9D37C5161B30EB0B00429CD2 /* UBRideEstimate.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D37C5141B30EB0B00429CD2 /* UBRideEstimate.h */; };
-		9D37C5171B30EB0B00429CD2 /* UBRideEstimate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D37C5151B30EB0B00429CD2 /* UBRideEstimate.m */; };
 		9D37C5191B30ED6A00429CD2 /* request_estimate.json in Resources */ = {isa = PBXBuildFile; fileRef = 9D37C5181B30ED6A00429CD2 /* request_estimate.json */; };
-		9D37C51C1B30F96500429CD2 /* UBRideReceiptCharge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D37C51A1B30F96500429CD2 /* UBRideReceiptCharge.h */; };
-		9D37C51D1B30F96500429CD2 /* UBRideReceiptCharge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D37C51B1B30F96500429CD2 /* UBRideReceiptCharge.m */; };
-		9D37C5201B30FAFC00429CD2 /* UBRideReceipt.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D37C51E1B30FAFC00429CD2 /* UBRideReceipt.h */; };
-		9D37C5211B30FAFC00429CD2 /* UBRideReceipt.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D37C51F1B30FAFC00429CD2 /* UBRideReceipt.m */; };
 		9D37C5231B31009300429CD2 /* receipt.json in Resources */ = {isa = PBXBuildFile; fileRef = 9D37C5221B31009300429CD2 /* receipt.json */; };
-		9D37C5451B31E87400429CD2 /* UBSurgeConfirmViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D37C5431B31E87400429CD2 /* UBSurgeConfirmViewController.h */; };
-		9D37C5461B31E87400429CD2 /* UBSurgeConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D37C5441B31E87400429CD2 /* UBSurgeConfirmViewController.m */; };
-		9D65D5AA1B044A9C00561E2A /* UBUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D65D5A81B044A9C00561E2A /* UBUtils.h */; };
-		9D65D5AB1B044A9C00561E2A /* UBUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D65D5A91B044A9C00561E2A /* UBUtils.m */; };
-		9D65D5AF1B04541500561E2A /* UBPriceDetailServiceFee.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D65D5AD1B04541500561E2A /* UBPriceDetailServiceFee.m */; };
-		9DBCD6F11B01365900F7C757 /* UBProductPriceDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DBCD6EF1B01365900F7C757 /* UBProductPriceDetail.m */; };
 		9DC447AF1B16ED65005E60F8 /* products.json in Resources */ = {isa = PBXBuildFile; fileRef = 9DC447AE1B16ED65005E60F8 /* products.json */; };
-		9DC447B31B177C10005E60F8 /* UBPriceEstimate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC447B11B177C10005E60F8 /* UBPriceEstimate.m */; };
 		9DC447B51B177FC9005E60F8 /* prices.json in Resources */ = {isa = PBXBuildFile; fileRef = 9DC447B41B177FC9005E60F8 /* prices.json */; };
-		9DC447B91B178BAC005E60F8 /* UBTimeEstimate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC447B71B178BAC005E60F8 /* UBTimeEstimate.m */; };
 		9DC447BB1B178C35005E60F8 /* times.json in Resources */ = {isa = PBXBuildFile; fileRef = 9DC447BA1B178C35005E60F8 /* times.json */; };
-		9DC447BF1B178FCE005E60F8 /* UBPromotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC447BD1B178FCE005E60F8 /* UBPromotion.m */; };
 		9DC447C11B179312005E60F8 /* promotions.json in Resources */ = {isa = PBXBuildFile; fileRef = 9DC447C01B179312005E60F8 /* promotions.json */; };
 		9DCA41021B3F7A9B006DC191 /* UBUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DCA41011B3F7A9B006DC191 /* UBUtilsTests.m */; };
 		9DCA41081B3FBC26006DC191 /* UBOAuthTokenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DCA41071B3FBC26006DC191 /* UBOAuthTokenTests.m */; };
 		9DCA410A1B3FC440006DC191 /* access_token.json in Resources */ = {isa = PBXBuildFile; fileRef = 9DCA41091B3FC440006DC191 /* access_token.json */; };
 		9DCA410D1B3FC488006DC191 /* UBTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DCA410C1B3FC488006DC191 /* UBTestUtils.m */; };
 		9DCA41101B3FC55E006DC191 /* OHHTTPStubs+UberSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DCA410F1B3FC55E006DC191 /* OHHTTPStubs+UberSDKTests.m */; };
-		9DF0F6A21B02DB2C0073DD8D /* NSString+UberSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DF0F6A01B02DB2C0073DD8D /* NSString+UberSDK.h */; };
-		9DF0F6A31B02DB2C0073DD8D /* NSString+UberSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF0F6A11B02DB2C0073DD8D /* NSString+UberSDK.m */; };
 		9DF0F6A51B02DC220073DD8D /* NSString+UberSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF0F6A41B02DC220073DD8D /* NSString+UberSDKTests.m */; };
-		B2910B111AF81332003421B6 /* UberSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = B2910B101AF81332003421B6 /* UberSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B2910B171AF81332003421B6 /* UberSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2910B0B1AF81332003421B6 /* UberSDK.framework */; };
 		B2910B1E1AF81332003421B6 /* UberAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2910B1D1AF81332003421B6 /* UberAPIClientTests.m */; };
-		E246A9B66BE483CEC7134B33 /* libPods-UberSDKTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9552D4CBA32316FF3244CA70 /* libPods-UberSDKTests.a */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		B2910B181AF81332003421B6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B2910B021AF81332003421B6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B2910B0A1AF81332003421B6;
-			remoteInfo = UberSDK;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		2689C1A2E58A3D718A599211 /* Pods-UberSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberSDK.debug.xcconfig"; path = "../Example/Pods/Target Support Files/Pods-UberSDK/Pods-UberSDK.debug.xcconfig"; sourceTree = "<group>"; };
-		5EE06BC93B95A065601059B6 /* Pods-UberSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberSDKTests.release.xcconfig"; path = "../Example/Pods/Target Support Files/Pods-UberSDKTests/Pods-UberSDKTests.release.xcconfig"; sourceTree = "<group>"; };
-		9552D4CBA32316FF3244CA70 /* libPods-UberSDKTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UberSDKTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D004F601B0164C500FD026A /* UberAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UberAPIClient.h; path = Core/Classes/UberAPIClient.h; sourceTree = "<group>"; };
-		9D004F611B0164C500FD026A /* UberAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UberAPIClient.m; path = Core/Classes/UberAPIClient.m; sourceTree = "<group>"; };
-		9D004F6C1B01DBC800FD026A /* UBProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBProduct.h; sourceTree = "<group>"; };
-		9D004F6D1B01DBC800FD026A /* UBProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBProduct.m; sourceTree = "<group>"; };
-		9D3016811B2CD51500A3CC61 /* UBOAuthWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBOAuthWebViewController.h; sourceTree = "<group>"; };
-		9D3016821B2CD51500A3CC61 /* UBOAuthWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBOAuthWebViewController.m; sourceTree = "<group>"; };
-		9D3016871B2CFAEF00A3CC61 /* UBOAuthToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBOAuthToken.h; sourceTree = "<group>"; };
-		9D3016881B2CFAEF00A3CC61 /* UBOAuthToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBOAuthToken.m; sourceTree = "<group>"; };
-		9D30168B1B2D068300A3CC61 /* UBUserActivityCity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBUserActivityCity.h; sourceTree = "<group>"; };
-		9D30168C1B2D068300A3CC61 /* UBUserActivityCity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBUserActivityCity.m; sourceTree = "<group>"; };
-		9D30168F1B2D07CF00A3CC61 /* UBUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBUserActivity.h; sourceTree = "<group>"; };
-		9D3016901B2D07CF00A3CC61 /* UBUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBUserActivity.m; sourceTree = "<group>"; };
+		6090402D2AEBEF69EF08BC5E /* Pods-UberSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberSDKTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-UberSDKTests/Pods-UberSDKTests.release.xcconfig"; sourceTree = "<group>"; };
+		6587191E263A779383AB7C7C /* libPods-UberSDKTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UberSDKTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D3016931B2D114C00A3CC61 /* history.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = history.json; sourceTree = "<group>"; };
-		9D30169B1B2D1EE200A3CC61 /* UBUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBUserProfile.h; sourceTree = "<group>"; };
-		9D30169C1B2D1EE200A3CC61 /* UBUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBUserProfile.m; sourceTree = "<group>"; };
 		9D30169F1B2D207400A3CC61 /* profile.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = profile.json; sourceTree = "<group>"; };
-		9D37C4ED1B30012C00429CD2 /* UBRide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBRide.h; sourceTree = "<group>"; };
-		9D37C4EE1B30012C00429CD2 /* UBRide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBRide.m; sourceTree = "<group>"; };
-		9D37C4F11B3001B000429CD2 /* UBRideDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBRideDriver.h; sourceTree = "<group>"; };
-		9D37C4F21B3001B000429CD2 /* UBRideDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBRideDriver.m; sourceTree = "<group>"; };
-		9D37C4F51B30039700429CD2 /* UBRideLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBRideLocation.h; sourceTree = "<group>"; };
-		9D37C4F61B30039700429CD2 /* UBRideLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBRideLocation.m; sourceTree = "<group>"; };
-		9D37C4F91B30040600429CD2 /* UBRideVehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBRideVehicle.h; sourceTree = "<group>"; };
-		9D37C4FA1B30040600429CD2 /* UBRideVehicle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBRideVehicle.m; sourceTree = "<group>"; };
 		9D37C4FD1B3005AF00429CD2 /* request.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = request.json; sourceTree = "<group>"; };
-		9D37C5041B30CA7400429CD2 /* UBSurgeConfirmation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSurgeConfirmation.h; sourceTree = "<group>"; };
-		9D37C5051B30CA7400429CD2 /* UBSurgeConfirmation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSurgeConfirmation.m; sourceTree = "<group>"; };
-		9D37C50C1B30E98800429CD2 /* UBRideEstimateTrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBRideEstimateTrip.h; sourceTree = "<group>"; };
-		9D37C50D1B30E98800429CD2 /* UBRideEstimateTrip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBRideEstimateTrip.m; sourceTree = "<group>"; };
-		9D37C5101B30EA0400429CD2 /* UBRideEstimatePrice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBRideEstimatePrice.h; sourceTree = "<group>"; };
-		9D37C5111B30EA0400429CD2 /* UBRideEstimatePrice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBRideEstimatePrice.m; sourceTree = "<group>"; };
-		9D37C5141B30EB0B00429CD2 /* UBRideEstimate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBRideEstimate.h; sourceTree = "<group>"; };
-		9D37C5151B30EB0B00429CD2 /* UBRideEstimate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBRideEstimate.m; sourceTree = "<group>"; };
 		9D37C5181B30ED6A00429CD2 /* request_estimate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = request_estimate.json; sourceTree = "<group>"; };
-		9D37C51A1B30F96500429CD2 /* UBRideReceiptCharge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBRideReceiptCharge.h; sourceTree = "<group>"; };
-		9D37C51B1B30F96500429CD2 /* UBRideReceiptCharge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBRideReceiptCharge.m; sourceTree = "<group>"; };
-		9D37C51E1B30FAFC00429CD2 /* UBRideReceipt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBRideReceipt.h; sourceTree = "<group>"; };
-		9D37C51F1B30FAFC00429CD2 /* UBRideReceipt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBRideReceipt.m; sourceTree = "<group>"; };
 		9D37C5221B31009300429CD2 /* receipt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = receipt.json; sourceTree = "<group>"; };
-		9D37C5431B31E87400429CD2 /* UBSurgeConfirmViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSurgeConfirmViewController.h; sourceTree = "<group>"; };
-		9D37C5441B31E87400429CD2 /* UBSurgeConfirmViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSurgeConfirmViewController.m; sourceTree = "<group>"; };
-		9D65D5A81B044A9C00561E2A /* UBUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBUtils.h; sourceTree = "<group>"; };
-		9D65D5A91B044A9C00561E2A /* UBUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBUtils.m; sourceTree = "<group>"; };
-		9D65D5AC1B04541500561E2A /* UBPriceDetailServiceFee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBPriceDetailServiceFee.h; sourceTree = "<group>"; };
-		9D65D5AD1B04541500561E2A /* UBPriceDetailServiceFee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBPriceDetailServiceFee.m; sourceTree = "<group>"; };
-		9DBCD6EE1B01365900F7C757 /* UBProductPriceDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBProductPriceDetail.h; sourceTree = "<group>"; };
-		9DBCD6EF1B01365900F7C757 /* UBProductPriceDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBProductPriceDetail.m; sourceTree = "<group>"; };
 		9DC447AE1B16ED65005E60F8 /* products.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = products.json; sourceTree = "<group>"; };
-		9DC447B01B177C10005E60F8 /* UBPriceEstimate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBPriceEstimate.h; sourceTree = "<group>"; };
-		9DC447B11B177C10005E60F8 /* UBPriceEstimate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBPriceEstimate.m; sourceTree = "<group>"; };
 		9DC447B41B177FC9005E60F8 /* prices.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = prices.json; sourceTree = "<group>"; };
-		9DC447B61B178BAC005E60F8 /* UBTimeEstimate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBTimeEstimate.h; sourceTree = "<group>"; };
-		9DC447B71B178BAC005E60F8 /* UBTimeEstimate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBTimeEstimate.m; sourceTree = "<group>"; };
 		9DC447BA1B178C35005E60F8 /* times.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = times.json; sourceTree = "<group>"; };
-		9DC447BC1B178FCE005E60F8 /* UBPromotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBPromotion.h; sourceTree = "<group>"; };
-		9DC447BD1B178FCE005E60F8 /* UBPromotion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBPromotion.m; sourceTree = "<group>"; };
 		9DC447C01B179312005E60F8 /* promotions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = promotions.json; sourceTree = "<group>"; };
 		9DCA41011B3F7A9B006DC191 /* UBUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBUtilsTests.m; sourceTree = "<group>"; };
 		9DCA41071B3FBC26006DC191 /* UBOAuthTokenTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBOAuthTokenTests.m; sourceTree = "<group>"; };
@@ -157,145 +45,84 @@
 		9DCA410C1B3FC488006DC191 /* UBTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBTestUtils.m; sourceTree = "<group>"; };
 		9DCA410E1B3FC55E006DC191 /* OHHTTPStubs+UberSDKTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OHHTTPStubs+UberSDKTests.h"; sourceTree = "<group>"; };
 		9DCA410F1B3FC55E006DC191 /* OHHTTPStubs+UberSDKTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OHHTTPStubs+UberSDKTests.m"; sourceTree = "<group>"; };
-		9DF0F6A01B02DB2C0073DD8D /* NSString+UberSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UberSDK.h"; sourceTree = "<group>"; };
-		9DF0F6A11B02DB2C0073DD8D /* NSString+UberSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UberSDK.m"; sourceTree = "<group>"; };
 		9DF0F6A41B02DC220073DD8D /* NSString+UberSDKTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UberSDKTests.m"; sourceTree = "<group>"; };
-		B2910B0B1AF81332003421B6 /* UberSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UberSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B24F30671B4CB9DB005FF866 /* UBPriceDetailServiceFee.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBPriceDetailServiceFee.h; sourceTree = "<group>"; };
+		B24F30681B4CB9DB005FF866 /* UBPriceDetailServiceFee.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBPriceDetailServiceFee.m; sourceTree = "<group>"; };
+		B24F30691B4CB9DB005FF866 /* UBProduct.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBProduct.h; sourceTree = "<group>"; };
+		B24F306A1B4CB9DB005FF866 /* UBProduct.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBProduct.m; sourceTree = "<group>"; };
+		B24F306B1B4CB9DB005FF866 /* UBProductPriceDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBProductPriceDetail.h; sourceTree = "<group>"; };
+		B24F306C1B4CB9DB005FF866 /* UBProductPriceDetail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBProductPriceDetail.m; sourceTree = "<group>"; };
+		B24F306E1B4CB9DB005FF866 /* UBRide.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBRide.h; sourceTree = "<group>"; };
+		B24F306F1B4CB9DB005FF866 /* UBRide.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBRide.m; sourceTree = "<group>"; };
+		B24F30701B4CB9DB005FF866 /* UBRideDriver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBRideDriver.h; sourceTree = "<group>"; };
+		B24F30711B4CB9DB005FF866 /* UBRideDriver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBRideDriver.m; sourceTree = "<group>"; };
+		B24F30721B4CB9DB005FF866 /* UBRideLocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBRideLocation.h; sourceTree = "<group>"; };
+		B24F30731B4CB9DB005FF866 /* UBRideLocation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBRideLocation.m; sourceTree = "<group>"; };
+		B24F30741B4CB9DB005FF866 /* UBRideVehicle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBRideVehicle.h; sourceTree = "<group>"; };
+		B24F30751B4CB9DB005FF866 /* UBRideVehicle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBRideVehicle.m; sourceTree = "<group>"; };
+		B24F30771B4CB9DB005FF866 /* UBRideEstimate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBRideEstimate.h; sourceTree = "<group>"; };
+		B24F30781B4CB9DB005FF866 /* UBRideEstimate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBRideEstimate.m; sourceTree = "<group>"; };
+		B24F30791B4CB9DB005FF866 /* UBRideEstimatePrice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBRideEstimatePrice.h; sourceTree = "<group>"; };
+		B24F307A1B4CB9DB005FF866 /* UBRideEstimatePrice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBRideEstimatePrice.m; sourceTree = "<group>"; };
+		B24F307B1B4CB9DB005FF866 /* UBRideEstimateTrip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBRideEstimateTrip.h; sourceTree = "<group>"; };
+		B24F307C1B4CB9DB005FF866 /* UBRideEstimateTrip.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBRideEstimateTrip.m; sourceTree = "<group>"; };
+		B24F307E1B4CB9DB005FF866 /* UBRideReceipt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBRideReceipt.h; sourceTree = "<group>"; };
+		B24F307F1B4CB9DB005FF866 /* UBRideReceipt.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBRideReceipt.m; sourceTree = "<group>"; };
+		B24F30801B4CB9DB005FF866 /* UBRideReceiptCharge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBRideReceiptCharge.h; sourceTree = "<group>"; };
+		B24F30811B4CB9DB005FF866 /* UBRideReceiptCharge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBRideReceiptCharge.m; sourceTree = "<group>"; };
+		B24F30821B4CB9DB005FF866 /* UBPriceEstimate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBPriceEstimate.h; sourceTree = "<group>"; };
+		B24F30831B4CB9DB005FF866 /* UBPriceEstimate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBPriceEstimate.m; sourceTree = "<group>"; };
+		B24F30841B4CB9DB005FF866 /* UBPromotion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBPromotion.h; sourceTree = "<group>"; };
+		B24F30851B4CB9DC005FF866 /* UBPromotion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBPromotion.m; sourceTree = "<group>"; };
+		B24F30861B4CB9DC005FF866 /* UBSurgeConfirmation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBSurgeConfirmation.h; sourceTree = "<group>"; };
+		B24F30871B4CB9DC005FF866 /* UBSurgeConfirmation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBSurgeConfirmation.m; sourceTree = "<group>"; };
+		B24F30881B4CB9DC005FF866 /* UBTimeEstimate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBTimeEstimate.h; sourceTree = "<group>"; };
+		B24F30891B4CB9DC005FF866 /* UBTimeEstimate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBTimeEstimate.m; sourceTree = "<group>"; };
+		B24F308A1B4CB9DC005FF866 /* UBUserProfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBUserProfile.h; sourceTree = "<group>"; };
+		B24F308B1B4CB9DC005FF866 /* UBUserProfile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBUserProfile.m; sourceTree = "<group>"; };
+		B24F308D1B4CB9DC005FF866 /* UBUserActivity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBUserActivity.h; sourceTree = "<group>"; };
+		B24F308E1B4CB9DC005FF866 /* UBUserActivity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBUserActivity.m; sourceTree = "<group>"; };
+		B24F308F1B4CB9DC005FF866 /* UBUserActivityCity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBUserActivityCity.h; sourceTree = "<group>"; };
+		B24F30901B4CB9DC005FF866 /* UBUserActivityCity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBUserActivityCity.m; sourceTree = "<group>"; };
+		B24F30911B4CB9DC005FF866 /* UberAPIClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UberAPIClient.h; path = REST/Classes/UberAPIClient.h; sourceTree = "<group>"; };
+		B24F30921B4CB9DC005FF866 /* UberAPIClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UberAPIClient.m; path = REST/Classes/UberAPIClient.m; sourceTree = "<group>"; };
+		B24F30961B4CB9F5005FF866 /* NSString+UberSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSString+UberSDK.h"; path = "Classes/NSString+UberSDK.h"; sourceTree = "<group>"; };
+		B24F30971B4CB9F5005FF866 /* NSString+UberSDK.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSString+UberSDK.m"; path = "Classes/NSString+UberSDK.m"; sourceTree = "<group>"; };
+		B24F30981B4CB9F5005FF866 /* UBOAuthToken.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UBOAuthToken.h; path = Classes/UBOAuthToken.h; sourceTree = "<group>"; };
+		B24F30991B4CB9F5005FF866 /* UBOAuthToken.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UBOAuthToken.m; path = Classes/UBOAuthToken.m; sourceTree = "<group>"; };
+		B24F309A1B4CB9F5005FF866 /* UBUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UBUtils.h; path = Classes/UBUtils.h; sourceTree = "<group>"; };
+		B24F309B1B4CB9F5005FF866 /* UBUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UBUtils.m; path = Classes/UBUtils.m; sourceTree = "<group>"; };
+		B24F309D1B4CBA07005FF866 /* UBOAuthWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBOAuthWebViewController.h; sourceTree = "<group>"; };
+		B24F309E1B4CBA07005FF866 /* UBOAuthWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBOAuthWebViewController.m; sourceTree = "<group>"; };
+		B24F30A01B4CBD91005FF866 /* UBSurgeConfirmViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBSurgeConfirmViewController.h; sourceTree = "<group>"; };
+		B24F30A11B4CBD91005FF866 /* UBSurgeConfirmViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBSurgeConfirmViewController.m; sourceTree = "<group>"; };
 		B2910B0F1AF81332003421B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2910B101AF81332003421B6 /* UberSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UberSDK.h; sourceTree = "<group>"; };
 		B2910B161AF81332003421B6 /* UberSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UberSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2910B1C1AF81332003421B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2910B1D1AF81332003421B6 /* UberAPIClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UberAPIClientTests.m; sourceTree = "<group>"; };
-		B931170644BC8BBD4CECA760 /* Pods-UberSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberSDK.release.xcconfig"; path = "../Example/Pods/Target Support Files/Pods-UberSDK/Pods-UberSDK.release.xcconfig"; sourceTree = "<group>"; };
-		DCF445AE355052D5812C217A /* Pods-UberSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberSDKTests.debug.xcconfig"; path = "../Example/Pods/Target Support Files/Pods-UberSDKTests/Pods-UberSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
-		E0970872C33E0C4D8BC00871 /* libPods-UberSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UberSDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1EC4A2E9501DF6DF9A3ECA6 /* Pods-UberSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberSDKTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-UberSDKTests/Pods-UberSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		B2910B071AF81332003421B6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				75E8341E1636F7CB2A6FF223 /* libPods-UberSDK.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		B2910B131AF81332003421B6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2910B171AF81332003421B6 /* UberSDK.framework in Frameworks */,
-				E246A9B66BE483CEC7134B33 /* libPods-UberSDKTests.a in Frameworks */,
+				17A749FA8AA6C774EF2B2FC6 /* libPods-UberSDKTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		222F991E5F688C2118A6402B /* Pods */ = {
+		208B35FA5248F4C21F9C16F2 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DCF445AE355052D5812C217A /* Pods-UberSDKTests.debug.xcconfig */,
-				5EE06BC93B95A065601059B6 /* Pods-UberSDKTests.release.xcconfig */,
-				2689C1A2E58A3D718A599211 /* Pods-UberSDK.debug.xcconfig */,
-				B931170644BC8BBD4CECA760 /* Pods-UberSDK.release.xcconfig */,
+				E1EC4A2E9501DF6DF9A3ECA6 /* Pods-UberSDKTests.debug.xcconfig */,
+				6090402D2AEBEF69EF08BC5E /* Pods-UberSDKTests.release.xcconfig */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		9D2390F81B3C6CA000F61CFA /* Product */ = {
-			isa = PBXGroup;
-			children = (
-				9D65D5AC1B04541500561E2A /* UBPriceDetailServiceFee.h */,
-				9D65D5AD1B04541500561E2A /* UBPriceDetailServiceFee.m */,
-				9DBCD6EE1B01365900F7C757 /* UBProductPriceDetail.h */,
-				9DBCD6EF1B01365900F7C757 /* UBProductPriceDetail.m */,
-				9D004F6C1B01DBC800FD026A /* UBProduct.h */,
-				9D004F6D1B01DBC800FD026A /* UBProduct.m */,
-			);
-			name = Product;
-			sourceTree = "<group>";
-		};
-		9D2390F91B3C6D5900F61CFA /* User Activity */ = {
-			isa = PBXGroup;
-			children = (
-				9D30168B1B2D068300A3CC61 /* UBUserActivityCity.h */,
-				9D30168C1B2D068300A3CC61 /* UBUserActivityCity.m */,
-				9D30168F1B2D07CF00A3CC61 /* UBUserActivity.h */,
-				9D3016901B2D07CF00A3CC61 /* UBUserActivity.m */,
-			);
-			name = "User Activity";
-			sourceTree = "<group>";
-		};
-		9D2390FA1B3C701400F61CFA /* Ride */ = {
-			isa = PBXGroup;
-			children = (
-				9D37C4ED1B30012C00429CD2 /* UBRide.h */,
-				9D37C4EE1B30012C00429CD2 /* UBRide.m */,
-				9D37C4F11B3001B000429CD2 /* UBRideDriver.h */,
-				9D37C4F21B3001B000429CD2 /* UBRideDriver.m */,
-				9D37C4F51B30039700429CD2 /* UBRideLocation.h */,
-				9D37C4F61B30039700429CD2 /* UBRideLocation.m */,
-				9D37C4F91B30040600429CD2 /* UBRideVehicle.h */,
-				9D37C4FA1B30040600429CD2 /* UBRideVehicle.m */,
-			);
-			name = Ride;
-			sourceTree = "<group>";
-		};
-		9D2390FB1B3C707100F61CFA /* Ride Estimate */ = {
-			isa = PBXGroup;
-			children = (
-				9D37C50C1B30E98800429CD2 /* UBRideEstimateTrip.h */,
-				9D37C50D1B30E98800429CD2 /* UBRideEstimateTrip.m */,
-				9D37C5101B30EA0400429CD2 /* UBRideEstimatePrice.h */,
-				9D37C5111B30EA0400429CD2 /* UBRideEstimatePrice.m */,
-				9D37C5141B30EB0B00429CD2 /* UBRideEstimate.h */,
-				9D37C5151B30EB0B00429CD2 /* UBRideEstimate.m */,
-			);
-			name = "Ride Estimate";
-			sourceTree = "<group>";
-		};
-		9D2390FC1B3C709100F61CFA /* Ride Receipt */ = {
-			isa = PBXGroup;
-			children = (
-				9D37C51A1B30F96500429CD2 /* UBRideReceiptCharge.h */,
-				9D37C51B1B30F96500429CD2 /* UBRideReceiptCharge.m */,
-				9D37C51E1B30FAFC00429CD2 /* UBRideReceipt.h */,
-				9D37C51F1B30FAFC00429CD2 /* UBRideReceipt.m */,
-			);
-			name = "Ride Receipt";
-			sourceTree = "<group>";
-		};
-		9D37C5421B31E87400429CD2 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				9D37C5431B31E87400429CD2 /* UBSurgeConfirmViewController.h */,
-				9D37C5441B31E87400429CD2 /* UBSurgeConfirmViewController.m */,
-			);
-			path = iOS;
-			sourceTree = "<group>";
-		};
-		9DBCD6ED1B01364500F7C757 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				9D2390FC1B3C709100F61CFA /* Ride Receipt */,
-				9D2390FB1B3C707100F61CFA /* Ride Estimate */,
-				9D2390FA1B3C701400F61CFA /* Ride */,
-				9D2390F91B3C6D5900F61CFA /* User Activity */,
-				9D2390F81B3C6CA000F61CFA /* Product */,
-				9D37C5041B30CA7400429CD2 /* UBSurgeConfirmation.h */,
-				9D37C5051B30CA7400429CD2 /* UBSurgeConfirmation.m */,
-				9DC447B01B177C10005E60F8 /* UBPriceEstimate.h */,
-				9DC447B11B177C10005E60F8 /* UBPriceEstimate.m */,
-				9DC447B61B178BAC005E60F8 /* UBTimeEstimate.h */,
-				9DC447B71B178BAC005E60F8 /* UBTimeEstimate.m */,
-				9DC447BC1B178FCE005E60F8 /* UBPromotion.h */,
-				9DC447BD1B178FCE005E60F8 /* UBPromotion.m */,
-				9D30169B1B2D1EE200A3CC61 /* UBUserProfile.h */,
-				9D30169C1B2D1EE200A3CC61 /* UBUserProfile.m */,
-			);
-			name = Models;
-			path = Core/Classes;
 			sourceTree = "<group>";
 		};
 		9DC447AD1B16ED45005E60F8 /* MockResponses */ = {
@@ -318,83 +145,147 @@
 		9DF0F6A61B02DF250073DD8D /* REST */ = {
 			isa = PBXGroup;
 			children = (
-				9DF0F6A71B02DF2A0073DD8D /* Classes */,
+				B24F309F1B4CBD91005FF866 /* iOS */,
+				B24F30651B4CB9DB005FF866 /* Models */,
+				B24F30911B4CB9DC005FF866 /* UberAPIClient.h */,
+				B24F30921B4CB9DC005FF866 /* UberAPIClient.m */,
 			);
 			name = REST;
-			sourceTree = "<group>";
-		};
-		9DF0F6A71B02DF2A0073DD8D /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				9D004F601B0164C500FD026A /* UberAPIClient.h */,
-				9D004F611B0164C500FD026A /* UberAPIClient.m */,
-				9DBCD6ED1B01364500F7C757 /* Models */,
-			);
-			name = Classes;
 			sourceTree = "<group>";
 		};
 		B170A236AD3E17A3467DC14E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9552D4CBA32316FF3244CA70 /* libPods-UberSDKTests.a */,
-				E0970872C33E0C4D8BC00871 /* libPods-UberSDK.a */,
+				6587191E263A779383AB7C7C /* libPods-UberSDKTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B24F30651B4CB9DB005FF866 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B24F30661B4CB9DB005FF866 /* Product */,
+				B24F306D1B4CB9DB005FF866 /* Ride */,
+				B24F30761B4CB9DB005FF866 /* Ride Estimate */,
+				B24F307D1B4CB9DB005FF866 /* Ride Receipt */,
+				B24F30821B4CB9DB005FF866 /* UBPriceEstimate.h */,
+				B24F30831B4CB9DB005FF866 /* UBPriceEstimate.m */,
+				B24F30841B4CB9DB005FF866 /* UBPromotion.h */,
+				B24F30851B4CB9DC005FF866 /* UBPromotion.m */,
+				B24F30861B4CB9DC005FF866 /* UBSurgeConfirmation.h */,
+				B24F30871B4CB9DC005FF866 /* UBSurgeConfirmation.m */,
+				B24F30881B4CB9DC005FF866 /* UBTimeEstimate.h */,
+				B24F30891B4CB9DC005FF866 /* UBTimeEstimate.m */,
+				B24F308A1B4CB9DC005FF866 /* UBUserProfile.h */,
+				B24F308B1B4CB9DC005FF866 /* UBUserProfile.m */,
+				B24F308C1B4CB9DC005FF866 /* User Activity */,
+			);
+			name = Models;
+			path = REST/Classes/Models;
+			sourceTree = "<group>";
+		};
+		B24F30661B4CB9DB005FF866 /* Product */ = {
+			isa = PBXGroup;
+			children = (
+				B24F30671B4CB9DB005FF866 /* UBPriceDetailServiceFee.h */,
+				B24F30681B4CB9DB005FF866 /* UBPriceDetailServiceFee.m */,
+				B24F30691B4CB9DB005FF866 /* UBProduct.h */,
+				B24F306A1B4CB9DB005FF866 /* UBProduct.m */,
+				B24F306B1B4CB9DB005FF866 /* UBProductPriceDetail.h */,
+				B24F306C1B4CB9DB005FF866 /* UBProductPriceDetail.m */,
+			);
+			path = Product;
+			sourceTree = "<group>";
+		};
+		B24F306D1B4CB9DB005FF866 /* Ride */ = {
+			isa = PBXGroup;
+			children = (
+				B24F306E1B4CB9DB005FF866 /* UBRide.h */,
+				B24F306F1B4CB9DB005FF866 /* UBRide.m */,
+				B24F30701B4CB9DB005FF866 /* UBRideDriver.h */,
+				B24F30711B4CB9DB005FF866 /* UBRideDriver.m */,
+				B24F30721B4CB9DB005FF866 /* UBRideLocation.h */,
+				B24F30731B4CB9DB005FF866 /* UBRideLocation.m */,
+				B24F30741B4CB9DB005FF866 /* UBRideVehicle.h */,
+				B24F30751B4CB9DB005FF866 /* UBRideVehicle.m */,
+			);
+			path = Ride;
+			sourceTree = "<group>";
+		};
+		B24F30761B4CB9DB005FF866 /* Ride Estimate */ = {
+			isa = PBXGroup;
+			children = (
+				B24F30771B4CB9DB005FF866 /* UBRideEstimate.h */,
+				B24F30781B4CB9DB005FF866 /* UBRideEstimate.m */,
+				B24F30791B4CB9DB005FF866 /* UBRideEstimatePrice.h */,
+				B24F307A1B4CB9DB005FF866 /* UBRideEstimatePrice.m */,
+				B24F307B1B4CB9DB005FF866 /* UBRideEstimateTrip.h */,
+				B24F307C1B4CB9DB005FF866 /* UBRideEstimateTrip.m */,
+			);
+			path = "Ride Estimate";
+			sourceTree = "<group>";
+		};
+		B24F307D1B4CB9DB005FF866 /* Ride Receipt */ = {
+			isa = PBXGroup;
+			children = (
+				B24F307E1B4CB9DB005FF866 /* UBRideReceipt.h */,
+				B24F307F1B4CB9DB005FF866 /* UBRideReceipt.m */,
+				B24F30801B4CB9DB005FF866 /* UBRideReceiptCharge.h */,
+				B24F30811B4CB9DB005FF866 /* UBRideReceiptCharge.m */,
+			);
+			path = "Ride Receipt";
+			sourceTree = "<group>";
+		};
+		B24F308C1B4CB9DC005FF866 /* User Activity */ = {
+			isa = PBXGroup;
+			children = (
+				B24F308D1B4CB9DC005FF866 /* UBUserActivity.h */,
+				B24F308E1B4CB9DC005FF866 /* UBUserActivity.m */,
+				B24F308F1B4CB9DC005FF866 /* UBUserActivityCity.h */,
+				B24F30901B4CB9DC005FF866 /* UBUserActivityCity.m */,
+			);
+			path = "User Activity";
+			sourceTree = "<group>";
+		};
+		B24F309C1B4CBA07005FF866 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				B24F309D1B4CBA07005FF866 /* UBOAuthWebViewController.h */,
+				B24F309E1B4CBA07005FF866 /* UBOAuthWebViewController.m */,
+			);
+			name = iOS;
+			path = Classes/iOS;
+			sourceTree = "<group>";
+		};
+		B24F309F1B4CBD91005FF866 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				B24F30A01B4CBD91005FF866 /* UBSurgeConfirmViewController.h */,
+				B24F30A11B4CBD91005FF866 /* UBSurgeConfirmViewController.m */,
+			);
+			name = iOS;
+			path = REST/Classes/iOS;
 			sourceTree = "<group>";
 		};
 		B28CE0CB1AFECF7F005DE60C /* OAuth2 */ = {
 			isa = PBXGroup;
 			children = (
-				B28CE0CC1AFECF7F005DE60C /* Classes */,
-				B28CE0D41AFECF7F005DE60C /* Resources */,
+				B24F309C1B4CBA07005FF866 /* iOS */,
 			);
 			path = OAuth2;
-			sourceTree = "<group>";
-		};
-		B28CE0CC1AFECF7F005DE60C /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				B28CE0CD1AFECF7F005DE60C /* iOS */,
-				9D3016871B2CFAEF00A3CC61 /* UBOAuthToken.h */,
-				9D3016881B2CFAEF00A3CC61 /* UBOAuthToken.m */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		B28CE0CD1AFECF7F005DE60C /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				9D3016811B2CD51500A3CC61 /* UBOAuthWebViewController.h */,
-				9D3016821B2CD51500A3CC61 /* UBOAuthWebViewController.m */,
-			);
-			path = iOS;
-			sourceTree = "<group>";
-		};
-		B28CE0D41AFECF7F005DE60C /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		B28CE0DB1AFECF8C005DE60C /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				B28CE0DC1AFECF8C005DE60C /* Classes */,
+				B24F30961B4CB9F5005FF866 /* NSString+UberSDK.h */,
+				B24F30971B4CB9F5005FF866 /* NSString+UberSDK.m */,
+				B24F30981B4CB9F5005FF866 /* UBOAuthToken.h */,
+				B24F30991B4CB9F5005FF866 /* UBOAuthToken.m */,
+				B24F309A1B4CB9F5005FF866 /* UBUtils.h */,
+				B24F309B1B4CB9F5005FF866 /* UBUtils.m */,
 			);
 			path = Core;
-			sourceTree = "<group>";
-		};
-		B28CE0DC1AFECF8C005DE60C /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				9D37C5421B31E87400429CD2 /* iOS */,
-				9DF0F6A01B02DB2C0073DD8D /* NSString+UberSDK.h */,
-				9DF0F6A11B02DB2C0073DD8D /* NSString+UberSDK.m */,
-				9D65D5A81B044A9C00561E2A /* UBUtils.h */,
-				9D65D5A91B044A9C00561E2A /* UBUtils.m */,
-			);
-			path = Classes;
 			sourceTree = "<group>";
 		};
 		B2910B011AF81332003421B6 = {
@@ -403,15 +294,14 @@
 				B2910B0D1AF81332003421B6 /* UberSDK */,
 				B2910B1A1AF81332003421B6 /* UberSDKTests */,
 				B2910B0C1AF81332003421B6 /* Products */,
-				222F991E5F688C2118A6402B /* Pods */,
 				B170A236AD3E17A3467DC14E /* Frameworks */,
+				208B35FA5248F4C21F9C16F2 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
 		B2910B0C1AF81332003421B6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B2910B0B1AF81332003421B6 /* UberSDK.framework */,
 				B2910B161AF81332003421B6 /* UberSDKTests.xctest */,
 			);
 			name = Products;
@@ -464,63 +354,7 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		B2910B081AF81332003421B6 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9D37C4FB1B30040600429CD2 /* UBRideVehicle.h in Headers */,
-				B2910B111AF81332003421B6 /* UberSDK.h in Headers */,
-				9D3016891B2CFAEF00A3CC61 /* UBOAuthToken.h in Headers */,
-				9D3016831B2CD51500A3CC61 /* UBOAuthWebViewController.h in Headers */,
-				9D37C4F71B30039700429CD2 /* UBRideLocation.h in Headers */,
-				9D004F621B0164C500FD026A /* UberAPIClient.h in Headers */,
-				9D37C5201B30FAFC00429CD2 /* UBRideReceipt.h in Headers */,
-				9DF0F6A21B02DB2C0073DD8D /* NSString+UberSDK.h in Headers */,
-				9D3016951B2D12F400A3CC61 /* UBProductPriceDetail.h in Headers */,
-				9D3016961B2D12F400A3CC61 /* UBProduct.h in Headers */,
-				9D3016971B2D12F400A3CC61 /* UBPriceDetailServiceFee.h in Headers */,
-				9D3016981B2D12F400A3CC61 /* UBPriceEstimate.h in Headers */,
-				9D3016991B2D12F400A3CC61 /* UBTimeEstimate.h in Headers */,
-				9D30169A1B2D12F400A3CC61 /* UBPromotion.h in Headers */,
-				9D37C5161B30EB0B00429CD2 /* UBRideEstimate.h in Headers */,
-				9D37C5121B30EA0400429CD2 /* UBRideEstimatePrice.h in Headers */,
-				9D30168D1B2D068300A3CC61 /* UBUserActivityCity.h in Headers */,
-				9D3016911B2D07CF00A3CC61 /* UBUserActivity.h in Headers */,
-				9D37C51C1B30F96500429CD2 /* UBRideReceiptCharge.h in Headers */,
-				9D37C5451B31E87400429CD2 /* UBSurgeConfirmViewController.h in Headers */,
-				9D30169D1B2D1EE200A3CC61 /* UBUserProfile.h in Headers */,
-				9D37C50E1B30E98800429CD2 /* UBRideEstimateTrip.h in Headers */,
-				9D65D5AA1B044A9C00561E2A /* UBUtils.h in Headers */,
-				9D37C4EF1B30012C00429CD2 /* UBRide.h in Headers */,
-				9D37C4F31B3001B000429CD2 /* UBRideDriver.h in Headers */,
-				9D37C5061B30CA7400429CD2 /* UBSurgeConfirmation.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		B2910B0A1AF81332003421B6 /* UberSDK */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B2910B211AF81332003421B6 /* Build configuration list for PBXNativeTarget "UberSDK" */;
-			buildPhases = (
-				69FE4FE190C8F4A374A4F4D7 /* Check Pods Manifest.lock */,
-				B2910B061AF81332003421B6 /* Sources */,
-				B2910B071AF81332003421B6 /* Frameworks */,
-				B2910B081AF81332003421B6 /* Headers */,
-				B2910B091AF81332003421B6 /* Resources */,
-				A2C15AFC7F9493416978FA6E /* Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = UberSDK;
-			productName = UberSDK;
-			productReference = B2910B0B1AF81332003421B6 /* UberSDK.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		B2910B151AF81332003421B6 /* UberSDKTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2910B241AF81332003421B6 /* Build configuration list for PBXNativeTarget "UberSDKTests" */;
@@ -534,7 +368,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				B2910B191AF81332003421B6 /* PBXTargetDependency */,
 			);
 			name = UberSDKTests;
 			productName = UberSDKTests;
@@ -551,9 +384,6 @@
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Uber Technolgies, Inc";
 				TargetAttributes = {
-					B2910B0A1AF81332003421B6 = {
-						CreatedOnToolsVersion = 6.3;
-					};
 					B2910B151AF81332003421B6 = {
 						CreatedOnToolsVersion = 6.3;
 					};
@@ -571,20 +401,12 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B2910B0A1AF81332003421B6 /* UberSDK */,
 				B2910B151AF81332003421B6 /* UberSDKTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		B2910B091AF81332003421B6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		B2910B141AF81332003421B6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -620,36 +442,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		69FE4FE190C8F4A374A4F4D7 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		A2C15AFC7F9493416978FA6E /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Example/Pods/Target Support Files/Pods-UberSDK/Pods-UberSDK-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		FF2CA2AFF6F3ABEA34849CA1 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -662,44 +454,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Example/Pods/Target Support Files/Pods-UberSDKTests/Pods-UberSDKTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-UberSDKTests/Pods-UberSDKTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B2910B061AF81332003421B6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9D30168E1B2D068300A3CC61 /* UBUserActivityCity.m in Sources */,
-				9D3016841B2CD51500A3CC61 /* UBOAuthWebViewController.m in Sources */,
-				9D3016921B2D07CF00A3CC61 /* UBUserActivity.m in Sources */,
-				9DC447B31B177C10005E60F8 /* UBPriceEstimate.m in Sources */,
-				9DF0F6A31B02DB2C0073DD8D /* NSString+UberSDK.m in Sources */,
-				9D37C5461B31E87400429CD2 /* UBSurgeConfirmViewController.m in Sources */,
-				9DC447BF1B178FCE005E60F8 /* UBPromotion.m in Sources */,
-				9D37C4F01B30012C00429CD2 /* UBRide.m in Sources */,
-				9D37C4F81B30039700429CD2 /* UBRideLocation.m in Sources */,
-				9D37C50F1B30E98800429CD2 /* UBRideEstimateTrip.m in Sources */,
-				9D37C5071B30CA7400429CD2 /* UBSurgeConfirmation.m in Sources */,
-				9DBCD6F11B01365900F7C757 /* UBProductPriceDetail.m in Sources */,
-				9D37C5211B30FAFC00429CD2 /* UBRideReceipt.m in Sources */,
-				9D65D5AB1B044A9C00561E2A /* UBUtils.m in Sources */,
-				9D30169E1B2D1EE200A3CC61 /* UBUserProfile.m in Sources */,
-				9D37C51D1B30F96500429CD2 /* UBRideReceiptCharge.m in Sources */,
-				9D30168A1B2CFAEF00A3CC61 /* UBOAuthToken.m in Sources */,
-				9D004F6F1B01DBC800FD026A /* UBProduct.m in Sources */,
-				9D37C4FC1B30040600429CD2 /* UBRideVehicle.m in Sources */,
-				9D65D5AF1B04541500561E2A /* UBPriceDetailServiceFee.m in Sources */,
-				9D37C5131B30EA0400429CD2 /* UBRideEstimatePrice.m in Sources */,
-				9D37C4F41B3001B000429CD2 /* UBRideDriver.m in Sources */,
-				9DC447B91B178BAC005E60F8 /* UBTimeEstimate.m in Sources */,
-				9D004F631B0164C500FD026A /* UberAPIClient.m in Sources */,
-				9D37C5171B30EB0B00429CD2 /* UBRideEstimate.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		B2910B121AF81332003421B6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -714,14 +474,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B2910B191AF81332003421B6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B2910B0A1AF81332003421B6 /* UberSDK */;
-			targetProxy = B2910B181AF81332003421B6 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B2910B1F1AF81332003421B6 /* Debug */ = {
@@ -822,54 +574,10 @@
 			};
 			name = Release;
 		};
-		B2910B221AF81332003421B6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2689C1A2E58A3D718A599211 /* Pods-UberSDK.debug.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = UberSDK/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		B2910B231AF81332003421B6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B931170644BC8BBD4CECA760 /* Pods-UberSDK.release.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = UberSDK/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 		B2910B251AF81332003421B6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DCF445AE355052D5812C217A /* Pods-UberSDKTests.debug.xcconfig */;
+			baseConfigurationReference = E1EC4A2E9501DF6DF9A3ECA6 /* Pods-UberSDKTests.debug.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -882,12 +590,8 @@
 		};
 		B2910B261AF81332003421B6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5EE06BC93B95A065601059B6 /* Pods-UberSDKTests.release.xcconfig */;
+			baseConfigurationReference = 6090402D2AEBEF69EF08BC5E /* Pods-UberSDKTests.release.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				INFOPLIST_FILE = UberSDKTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -902,15 +606,6 @@
 			buildConfigurations = (
 				B2910B1F1AF81332003421B6 /* Debug */,
 				B2910B201AF81332003421B6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B2910B211AF81332003421B6 /* Build configuration list for PBXNativeTarget "UberSDK" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B2910B221AF81332003421B6 /* Debug */,
-				B2910B231AF81332003421B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -7,28 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52A3432E5D6339A50A06D303 /* libPods-UberSDK-Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77F0B0A64B07F98BFFE34E1E /* libPods-UberSDK-Example.a */; };
 		9D37C4E81B2FE43A00429CD2 /* UBRideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D37C4E61B2FE43A00429CD2 /* UBRideViewController.m */; };
 		9D37C4E91B2FE43A00429CD2 /* UBRideViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D37C4E71B2FE43A00429CD2 /* UBRideViewController.xib */; };
 		9D37C4EB1B2FE9E900429CD2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D37C4EA1B2FE9E900429CD2 /* MapKit.framework */; };
 		9DC447C41B17BA4B005E60F8 /* UBResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC447C31B17BA4B005E60F8 /* UBResultsViewController.m */; };
 		9DC447C71B17BA7D005E60F8 /* UBEndpointsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC447C61B17BA7D005E60F8 /* UBEndpointsViewController.m */; };
-		A60091A652C24B1D3B0D2DFF /* libPods-UberSDK-Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C5231BF6B2BC3112D87FF03 /* libPods-UberSDK-Example.a */; };
 		B28CE0EC1AFED215005DE60C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B28CE0EB1AFED215005DE60C /* main.m */; };
 		B28CE0EF1AFED215005DE60C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B28CE0EE1AFED215005DE60C /* AppDelegate.m */; };
 		B28CE0F71AFED215005DE60C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B28CE0F61AFED215005DE60C /* Images.xcassets */; };
 		B28CE0FA1AFED215005DE60C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B28CE0F81AFED215005DE60C /* LaunchScreen.xib */; };
-		B28CE1131AFEDF95005DE60C /* UberSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28CE1121AFEDF95005DE60C /* UberSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6ADE1CA1057770DE40FD81F8 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		6C5231BF6B2BC3112D87FF03 /* libPods-UberSDK-Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UberSDK-Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6F9A46A6CBC743F8B17BAA41 /* Pods-UberSDK-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberSDK-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-UberSDK-Example/Pods-UberSDK-Example.release.xcconfig"; sourceTree = "<group>"; };
+		704AC7E4829882A611E3D28E /* Pods-UberSDK-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberSDK-Example.release.xcconfig"; path = "../Pods/Target Support Files/Pods-UberSDK-Example/Pods-UberSDK-Example.release.xcconfig"; sourceTree = "<group>"; };
+		77F0B0A64B07F98BFFE34E1E /* libPods-UberSDK-Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UberSDK-Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D37C4E51B2FE43A00429CD2 /* UBRideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBRideViewController.h; sourceTree = "<group>"; };
 		9D37C4E61B2FE43A00429CD2 /* UBRideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBRideViewController.m; sourceTree = "<group>"; };
 		9D37C4E71B2FE43A00429CD2 /* UBRideViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UBRideViewController.xib; sourceTree = "<group>"; };
 		9D37C4EA1B2FE9E900429CD2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		9D37C52D1B31650600429CD2 /* libPods-UberSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-UberSDK.a"; path = "Pods/../build/Debug-iphoneos/libPods-UberSDK.a"; sourceTree = "<group>"; };
 		9DC447C21B17BA4B005E60F8 /* UBResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBResultsViewController.h; sourceTree = "<group>"; };
 		9DC447C31B17BA4B005E60F8 /* UBResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBResultsViewController.m; sourceTree = "<group>"; };
 		9DC447C51B17BA7D005E60F8 /* UBEndpointsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBEndpointsViewController.h; sourceTree = "<group>"; };
@@ -40,8 +37,7 @@
 		B28CE0EE1AFED215005DE60C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		B28CE0F61AFED215005DE60C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B28CE0F91AFED215005DE60C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		B28CE1121AFEDF95005DE60C /* UberSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UberSDK.framework; path = "../UberSDK/build/Debug-iphoneos/UberSDK.framework"; sourceTree = "<group>"; };
-		D5FF8C4495848EDCCE71EE82 /* Pods-UberSDK-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberSDK-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UberSDK-Example/Pods-UberSDK-Example.debug.xcconfig"; sourceTree = "<group>"; };
+		F9C6095A5E7545166BA2C106 /* Pods-UberSDK-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberSDK-Example.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-UberSDK-Example/Pods-UberSDK-Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,19 +46,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D37C4EB1B2FE9E900429CD2 /* MapKit.framework in Frameworks */,
-				B28CE1131AFEDF95005DE60C /* UberSDK.framework in Frameworks */,
-				A60091A652C24B1D3B0D2DFF /* libPods-UberSDK-Example.a in Frameworks */,
+				52A3432E5D6339A50A06D303 /* libPods-UberSDK-Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		15ACB2DE2F6DF01D2522B8E2 /* Pods */ = {
+		1469A13692A8BF21D60C10CB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D5FF8C4495848EDCCE71EE82 /* Pods-UberSDK-Example.debug.xcconfig */,
-				6F9A46A6CBC743F8B17BAA41 /* Pods-UberSDK-Example.release.xcconfig */,
+				F9C6095A5E7545166BA2C106 /* Pods-UberSDK-Example.debug.xcconfig */,
+				704AC7E4829882A611E3D28E /* Pods-UberSDK-Example.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -83,7 +78,7 @@
 				B28CE0E81AFED215005DE60C /* UberSDK-Example */,
 				B28CE0E71AFED215005DE60C /* Products */,
 				B28CE1111AFED267005DE60C /* Frameworks */,
-				15ACB2DE2F6DF01D2522B8E2 /* Pods */,
+				1469A13692A8BF21D60C10CB /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -124,11 +119,8 @@
 		B28CE1111AFED267005DE60C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9D37C52D1B31650600429CD2 /* libPods-UberSDK.a */,
 				9D37C4EA1B2FE9E900429CD2 /* MapKit.framework */,
-				B28CE1121AFEDF95005DE60C /* UberSDK.framework */,
-				6C5231BF6B2BC3112D87FF03 /* libPods-UberSDK-Example.a */,
-				6ADE1CA1057770DE40FD81F8 /* libPods.a */,
+				77F0B0A64B07F98BFFE34E1E /* libPods-UberSDK-Example.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -228,7 +220,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UberSDK-Example/Pods-UberSDK-Example-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-UberSDK-Example/Pods-UberSDK-Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -344,32 +336,24 @@
 		};
 		B28CE10A1AFED215005DE60C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5FF8C4495848EDCCE71EE82 /* Pods-UberSDK-Example.debug.xcconfig */;
+			baseConfigurationReference = F9C6095A5E7545166BA2C106 /* Pods-UberSDK-Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				INFOPLIST_FILE = "UberSDK-Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
 		B28CE10B1AFED215005DE60C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F9A46A6CBC743F8B17BAA41 /* Pods-UberSDK-Example.release.xcconfig */;
+			baseConfigurationReference = 704AC7E4829882A611E3D28E /* Pods-UberSDK-Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				INFOPLIST_FILE = "UberSDK-Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

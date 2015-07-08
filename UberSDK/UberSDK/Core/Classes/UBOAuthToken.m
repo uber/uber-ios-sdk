@@ -22,25 +22,18 @@ NSString *const UBLoginHost = @"https://login.uber.com";
 
 @implementation UBOAuthToken
 
-#pragma mark - Initialization
-
-static NSString *const kAccessToken = @"kAccessToken";
-static NSString *const kRefreshToken = @"kRefreshToken";
-static NSString *const kExpirationDate = @"kExpirationDate";
-static NSString *const kClientId = @"kClientId";
-static NSString *const kClientSecret = @"kClientSecret";
-static NSString *const kRedirectURL = @"kRedirectURL";
+#pragma mark - Initialization 
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super init];
     if (self) {
-        _accessToken = [aDecoder decodeObjectForKey:kAccessToken];
-        _refreshToken = [aDecoder decodeObjectForKey:kRefreshToken];
-        _expirationDate = [aDecoder decodeObjectForKey:kExpirationDate];
-        _clientId = [aDecoder decodeObjectForKey:kClientId];
-        _clientSecret = [aDecoder decodeObjectForKey:kClientSecret];
-        _redirectURL = [aDecoder decodeObjectForKey:kRedirectURL];
+        _accessToken = [aDecoder decodeObjectForKey:@keypath(self, accessToken)];
+        _refreshToken = [aDecoder decodeObjectForKey:@keypath(self, refreshToken)];
+        _expirationDate = [aDecoder decodeObjectForKey:@keypath(self, expirationDate)];
+        _clientId = [aDecoder decodeObjectForKey:@keypath(self, clientId)];
+        _clientSecret = [aDecoder decodeObjectForKey:@keypath(self, clientSecret)];
+        _redirectURL = [aDecoder decodeObjectForKey:@keypath(self, redirectURL)];
     }
     
     return self;
@@ -48,12 +41,12 @@ static NSString *const kRedirectURL = @"kRedirectURL";
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:self.accessToken forKey:kAccessToken];
-    [aCoder encodeObject:self.refreshToken forKey:kRefreshToken];
-    [aCoder encodeObject:self.expirationDate forKey:kExpirationDate];
-    [aCoder encodeObject:self.clientId forKey:kClientId];
-    [aCoder encodeObject:self.clientSecret forKey:kClientSecret];
-    [aCoder encodeObject:self.redirectURL forKey:kRedirectURL];
+    [aCoder encodeObject:self.accessToken forKey:@keypath(self, accessToken)];
+    [aCoder encodeObject:self.refreshToken forKey:@keypath(self, refreshToken)];
+    [aCoder encodeObject:self.expirationDate forKey:@keypath(self, expirationDate)];
+    [aCoder encodeObject:self.clientId forKey:@keypath(self, clientId)];
+    [aCoder encodeObject:self.clientSecret forKey:@keypath(self, clientSecret)];
+    [aCoder encodeObject:self.redirectURL forKey:@keypath(self, redirectURL)];
 }
 
 - (id)initWithJSON:(NSDictionary *)json
