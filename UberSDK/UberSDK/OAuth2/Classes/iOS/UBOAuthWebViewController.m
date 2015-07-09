@@ -8,6 +8,7 @@
 #import "UBOAuthWebViewController.h"
 
 #import "UBUtils.h"
+#import "NSString+UberSDK.h"
 
 NSString *const UBScopeRequest = @"request";
 NSString *const UBScopeRequestReceipt = @"request_receipt";
@@ -78,7 +79,6 @@ NSString *const UBScopeProfile = @"profile";
     self.webView.delegate = nil;
     [self.sessionTask cancel];
     
-    
     if ([self.delegate respondsToSelector:@selector(uberOAuthWebViewControllerDidCancel:)]) {
         [self.delegate uberOAuthWebViewControllerDidCancel:self];
     }
@@ -89,14 +89,15 @@ NSString *const UBScopeProfile = @"profile";
     NSURL *url = request.URL;
     
     if ([request.URL.scheme isEqual:self.redirectURL.scheme]) {
+        __block NSString *code = nil;
+        
         NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-        NSString *code = nil;
-        for (NSURLQueryItem *item in components.queryItems) {
-            if ([item.name isEqual:@"code"]) {
-                code = item.value;
-                break;
+        [[components.query ub_urlQueryParameters] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if ([key isEqual:@"code"]) {
+                code = [obj description];
+                *stop = YES;
             }
-        }
+        }];
         
         if (!code.length) {
             if ([self.delegate respondsToSelector:@selector(uberOAuthWebViewController:didFailWithError:)]) {
@@ -117,29 +118,28 @@ NSString *const UBScopeProfile = @"profile";
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         self.sessionTask = [session dataTaskWithRequest:authRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (error) {
-                if ([self.delegate respondsToSelector:@selector(uberOAuthWebViewController:didFailWithError:)]) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (error) {
+                    if ([self.delegate respondsToSelector:@selector(uberOAuthWebViewController:didFailWithError:)]) {
                         [self.delegate uberOAuthWebViewController:self didFailWithError:error];
-                    });
-                }
-            } else {
-                NSError *jsonError;
-                NSDictionary *json = [UBUtils validatedJSONFromData:data response:response responseError:error error:&jsonError];
-                if (jsonError && [self.delegate respondsToSelector:@selector(uberOAuthWebViewController:didFailWithError:)]) {
-                    [self.delegate uberOAuthWebViewController:self didFailWithError:jsonError];
+                    }
                 } else {
-                    UBOAuthToken *token = [[UBOAuthToken alloc] initWithJSON:json];
-                    token.clientId = self.clientId;
-                    token.clientSecret = self.clientSecret;
-                    token.redirectURL = self.redirectURL;
-                    
-                    if ([self.delegate respondsToSelector:@selector(uberOAuthWebViewController:didSucceedWithToken:)]) {
-                        [self.delegate uberOAuthWebViewController:self didSucceedWithToken:token];
+                    NSError *jsonError;
+                    NSDictionary *json = [UBUtils validatedJSONFromData:data response:response responseError:error error:&jsonError];
+                    if (jsonError && [self.delegate respondsToSelector:@selector(uberOAuthWebViewController:didFailWithError:)]) {
+                        [self.delegate uberOAuthWebViewController:self didFailWithError:jsonError];
+                    } else {
+                        UBOAuthToken *token = [[UBOAuthToken alloc] initWithJSON:json];
+                        token.clientId = self.clientId;
+                        token.clientSecret = self.clientSecret;
+                        token.redirectURL = self.redirectURL;
+                        
+                        if ([self.delegate respondsToSelector:@selector(uberOAuthWebViewController:didSucceedWithToken:)]) {
+                            [self.delegate uberOAuthWebViewController:self didSucceedWithToken:token];
+                        }
                     }
                 }
-            }
-            
+            });
         }];
         [self.sessionTask resume];
         

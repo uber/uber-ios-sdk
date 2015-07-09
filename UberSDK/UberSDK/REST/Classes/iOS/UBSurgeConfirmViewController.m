@@ -7,6 +7,8 @@
 
 #import "UBSurgeConfirmViewController.h"
 
+#import "NSString+UberSDK.h"
+
 @interface UBSurgeConfirmViewController () <UIWebViewDelegate>
 
 @property (nonatomic) UIWebView *webView;
@@ -69,14 +71,15 @@
     
     NSURL *strippedUrl = [[NSURL alloc] initWithScheme:url.scheme host:url.host path:url.path];
     if ([strippedUrl isEqual:self.redirectURL]) {
+        __block NSString *confirmationid = nil;
+        
         NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-        NSString *confirmationid = nil;
-        for (NSURLQueryItem *item in components.queryItems) {
-            if ([item.name isEqual:@"surge_confirmation_id"]) {
-                confirmationid = item.value;
-                break;
+        [[components.query ub_urlQueryParameters] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if ([key isEqual:@"surge_confirmation_id"]) {
+                confirmationid = [obj description];
+                *stop = YES;
             }
-        }
+        }];
         
         if (confirmationid) {
             if ([self.delegate respondsToSelector:@selector(uberSurgeConfirmViewController:didSucceedWithConfirmationId:)]) {
