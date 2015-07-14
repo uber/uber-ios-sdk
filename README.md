@@ -11,7 +11,7 @@ Integrate Uber into your iOS app.
 UberAPIClient *uber = [[UberAPIClient alloc] initWithServerToken:@"your_server_token"];
 
 // some location
-CLLocationCoordinate location = CLLocationCoordinate2DMake(40.7471787,-73.997494);
+CLLocationCoordinate2D location = CLLocationCoordinate2DMake(40.7471787,-73.997494);
 
 // get a list of Uber products at the specified location
 [client productsWithCoordinate:location completion:^(NSArray *products, NSError *error) {
@@ -141,17 +141,17 @@ Handle the OAuth error and user cancellation of the login step as needed.
 ## Generic Endpoints
 These endpoints can be called on a client initialized with either the server token or the OAuth access token.
 ```
-UberAPIClient *client = [[UberAPIClient alloc] initWithServerToken:@"your_server_token];
+UberAPIClient *client = [[UberAPIClient alloc] initWithServerToken:@"your_server_token"];
 
 // or...
 
-UberAPIClient *client = [[UberAPIClient alloc] initWithAccessToken:@"your_access_token];
+UberAPIClient *client = [[UberAPIClient alloc] initWithAccessToken:@"your_access_token"];
 ```
 
 ### List all active Uber products in the specified region.
 
 ```
-CLLocationCoordinate pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
+CLLocationCoordinate2D pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
 
 [client productsWithCoordinate:pickup completion:^(NSArray *products, NSError *error) {
 	// responds with an array of UBProduct objects
@@ -161,8 +161,8 @@ CLLocationCoordinate pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
 ### Get a price estimate between the specified start and end locations
 
 ```
-CLLocationCoordinate pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
-CLLocationCoordinate dropoff = CLLocationCoordinate2DMake(40.74844,-73.985664);
+CLLocationCoordinate2D pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
+CLLocationCoordinate2D dropoff = CLLocationCoordinate2DMake(40.74844,-73.985664);
 
 [client priceEstimatesWithStartCoordinate:pickup 
                             endCoordinate:dropoff
@@ -176,7 +176,7 @@ CLLocationCoordinate dropoff = CLLocationCoordinate2DMake(40.74844,-73.985664);
 ### Get a pickup time estimate for the specified location.
 
 ```
-CLLocationCoordinate pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
+CLLocationCoordinate2D pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
 
 [client timeEstimatesWithStartCoordinate:pickup
                               completion:^(NSArray *times, NSError *error) {
@@ -189,8 +189,8 @@ CLLocationCoordinate pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
 ### Get an active promotion for the specified route
 
 ```
-CLLocationCoordinate pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
-CLLocationCoordinate dropoff = CLLocationCoordinate2DMake(40.74844,-73.985664);
+CLLocationCoordinate2D pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
+CLLocationCoordinate2D dropoff = CLLocationCoordinate2DMake(40.74844,-73.985664);
 
 [client promotionWithStartCoordinate:pickup
 					   endCoordinate:dropoff
@@ -205,7 +205,7 @@ CLLocationCoordinate dropoff = CLLocationCoordinate2DMake(40.74844,-73.985664);
 
 These endpoints must be called on a client initialized with an OAuth access token.
 ```
-UberAPIClient *client = [[UberAPIClient alloc] initWithAccessToken:@"your_access_token];
+UberAPIClient *client = [[UberAPIClient alloc] initWithAccessToken:@"your_access_token"];
 ```
 
 ### Get the user's ride activity
@@ -241,7 +241,7 @@ NSInteger resultLimit = 20;
 
 These endpoints must be called on a client initialized with an OAuth access token.
 ```
-UberAPIClient *client = [[UberAPIClient alloc] initWithAccessToken:@"your_access_token];
+UberAPIClient *client = [[UberAPIClient alloc] initWithAccessToken:@"your_access_token"];
 ```
 
 These endpoints are designed to interact with a live Uber vehicle. **Make sure that you are in sandbox mode for development.**
@@ -254,8 +254,8 @@ These endpoints are designed to interact with a live Uber vehicle. **Make sure t
 
 ```
 NSString *productId = @"some_product_id";
-CLLocationCoordinate pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
-CLLocationCoordinate dropoff = CLLocationCoordinate2DMake(40.74844,-73.985664);
+CLLocationCoordinate2D pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
+CLLocationCoordinate2D dropoff = CLLocationCoordinate2DMake(40.74844,-73.985664);
 
 [self.client requestRideWithProductId:self.product.productId
 					  startCoordinate:self.startPin.coordinate
@@ -328,8 +328,8 @@ Once you have a request, you can use its ID to query additional details. These d
 
 ```
 NSString *productId = @"some_product_id";
-CLLocationCoordinate pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
-CLLocationCoordinate dropoff = CLLocationCoordinate2DMake(40.74844,-73.985664);
+CLLocationCoordinate2D pickup = CLLocationCoordinate2DMake(40.7471787,-73.997494);
+CLLocationCoordinate2D dropoff = CLLocationCoordinate2DMake(40.74844,-73.985664);
 
 [self.client requestEstimateWithProductId:self.product.productId
 						  startCoordinate:self.startPin.coordinate
