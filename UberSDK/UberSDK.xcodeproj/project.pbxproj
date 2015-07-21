@@ -20,7 +20,6 @@
 		9DCA41021B3F7A9B006DC191 /* UBUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DCA41011B3F7A9B006DC191 /* UBUtilsTests.m */; };
 		9DCA41081B3FBC26006DC191 /* UBOAuthTokenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DCA41071B3FBC26006DC191 /* UBOAuthTokenTests.m */; };
 		9DCA410A1B3FC440006DC191 /* access_token.json in Resources */ = {isa = PBXBuildFile; fileRef = 9DCA41091B3FC440006DC191 /* access_token.json */; };
-		9DCA410D1B3FC488006DC191 /* UBTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DCA410C1B3FC488006DC191 /* UBTestUtils.m */; };
 		9DCA41101B3FC55E006DC191 /* OHHTTPStubs+UberSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DCA410F1B3FC55E006DC191 /* OHHTTPStubs+UberSDKTests.m */; };
 		9DF0F6A51B02DC220073DD8D /* NSString+UberSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF0F6A41B02DC220073DD8D /* NSString+UberSDKTests.m */; };
 		B2910B1E1AF81332003421B6 /* UberAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2910B1D1AF81332003421B6 /* UberAPIClientTests.m */; };
@@ -41,8 +40,6 @@
 		9DCA41011B3F7A9B006DC191 /* UBUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBUtilsTests.m; sourceTree = "<group>"; };
 		9DCA41071B3FBC26006DC191 /* UBOAuthTokenTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBOAuthTokenTests.m; sourceTree = "<group>"; };
 		9DCA41091B3FC440006DC191 /* access_token.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = access_token.json; sourceTree = "<group>"; };
-		9DCA410B1B3FC488006DC191 /* UBTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBTestUtils.h; sourceTree = "<group>"; };
-		9DCA410C1B3FC488006DC191 /* UBTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBTestUtils.m; sourceTree = "<group>"; };
 		9DCA410E1B3FC55E006DC191 /* OHHTTPStubs+UberSDKTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OHHTTPStubs+UberSDKTests.h"; sourceTree = "<group>"; };
 		9DCA410F1B3FC55E006DC191 /* OHHTTPStubs+UberSDKTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OHHTTPStubs+UberSDKTests.m"; sourceTree = "<group>"; };
 		9DF0F6A41B02DC220073DD8D /* NSString+UberSDKTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UberSDKTests.m"; sourceTree = "<group>"; };
@@ -336,8 +333,6 @@
 				9DF0F6A41B02DC220073DD8D /* NSString+UberSDKTests.m */,
 				9DCA41011B3F7A9B006DC191 /* UBUtilsTests.m */,
 				9DCA41071B3FBC26006DC191 /* UBOAuthTokenTests.m */,
-				9DCA410B1B3FC488006DC191 /* UBTestUtils.h */,
-				9DCA410C1B3FC488006DC191 /* UBTestUtils.m */,
 				9DCA410E1B3FC55E006DC191 /* OHHTTPStubs+UberSDKTests.h */,
 				9DCA410F1B3FC55E006DC191 /* OHHTTPStubs+UberSDKTests.m */,
 			);
@@ -468,7 +463,6 @@
 				9DCA41021B3F7A9B006DC191 /* UBUtilsTests.m in Sources */,
 				9DCA41081B3FBC26006DC191 /* UBOAuthTokenTests.m in Sources */,
 				9DCA41101B3FC55E006DC191 /* OHHTTPStubs+UberSDKTests.m in Sources */,
-				9DCA410D1B3FC488006DC191 /* UBTestUtils.m in Sources */,
 				B2910B1E1AF81332003421B6 /* UberAPIClientTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

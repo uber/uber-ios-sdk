@@ -37,8 +37,7 @@
 }
 
 - (void)loadView {
-    //TODO: autolayout
-    self.webView = [[UIWebView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
+    self.webView = [[UIWebView alloc] init];
     self.view = self.webView;
 }
 

@@ -89,7 +89,6 @@ static BOOL _isSandbox = YES;
 + (NSString *)uberUserAgent
 {
     return [NSString stringWithFormat:@"Uber iOS SDK/%@ %@/%@ (%@; iOS %@; Scale/%0.2f)",
-            // TODO: figure out a better place to store the version string
             UberSDKVersion,
             [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleExecutableKey]
             ?: [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleIdentifierKey],
