@@ -39,7 +39,7 @@ class UberDeeplinkTests: XCTestCase {
     */
     func testPickupLocationSetIsTrueWithPickupParameters() {
         let deeplink = UberDeeplink(clientID: "clientID1234")
-        deeplink.addPickupLocation("37.770", longitude: "-122.466")
+        deeplink.setPickupLocation("37.770", longitude: "-122.466")
         XCTAssertTrue(deeplink.PickupLocationSet())
     }
     
@@ -56,7 +56,7 @@ class UberDeeplinkTests: XCTestCase {
     */
     func testBuildDeeplinkWithPickupLatLng() {
         let deeplink = UberDeeplink(clientID: "clientID1234")
-        deeplink.addPickupLocation("37.770", longitude: "-122.466")
+        deeplink.setPickupLocation("37.770", longitude: "-122.466")
         XCTAssertEqual(ExpectedDeeplink.pickupLatLng, deeplink.build())
     }
     
@@ -65,7 +65,7 @@ class UberDeeplinkTests: XCTestCase {
     */
     func testBuildDeeplinkWithAllPickupParamerets() {
         let deeplink = UberDeeplink(clientID: "clientID1234")
-        deeplink.addPickupLocation("37.770", longitude: "-122.466", nickname: "California Academy of Science", address: "55 Music Concourse Drive, San Francisco")
+        deeplink.setPickupLocation("37.770", longitude: "-122.466", nickname: "California Academy of Science", address: "55 Music Concourse Drive, San Francisco")
         XCTAssertEqual(ExpectedDeeplink.allPickupParameters, deeplink.build())
     }
     
@@ -74,7 +74,7 @@ class UberDeeplinkTests: XCTestCase {
     */
     func testBuildDeeplinkWithoutPickupParameters() {
         let deeplink = UberDeeplink(clientID: "clientID1234")
-        deeplink.addDropoffLocation("37.791", longitude: "-122.405")
+        deeplink.setDropoffLocation("37.791", longitude: "-122.405")
         XCTAssertEqual(ExpectedDeeplink.dropoffLatLng, deeplink.build())
     }
     
@@ -83,9 +83,9 @@ class UberDeeplinkTests: XCTestCase {
     */
     func testBuildDeeplinkWithAllParameters() {
         let deeplink = UberDeeplink(clientID: "clientID1234")
-        deeplink.addProductID("productID1234")
-        deeplink.addPickupLocation("37.770", longitude: "-122.466", nickname: "California Academy of Science", address: "55 Music Concourse Drive, San Francisco")
-        deeplink.addDropoffLocation("37.791", longitude: "-122.405", nickname: "Pier 39", address: "Beach Street & The Embarcadero, San Francisco")
+        deeplink.setProductID("productID1234")
+        deeplink.setPickupLocation("37.770", longitude: "-122.466", nickname: "California Academy of Science", address: "55 Music Concourse Drive, San Francisco")
+        deeplink.setDropoffLocation("37.791", longitude: "-122.405", nickname: "Pier 39", address: "Beach Street & The Embarcadero, San Francisco")
         XCTAssertEqual(ExpectedDeeplink.allParameters, deeplink.build())
     }
 }

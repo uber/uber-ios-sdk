@@ -6,15 +6,15 @@
 //
 
 import Foundation
-
+import UIKit
 
 /// UberDeeplink builds and executes a deeplink to the native Uber app.
-class UberDeeplink {
+public class UberDeeplink {
     private var parameters: [QueryParameter]
     private var clientID: String
     private var deeplinkURI: String?
     
-    init(clientID: String) {
+    public init(clientID: String) {
         parameters = [QueryParameter(name: .clientID, value: clientID)]
         self.clientID = clientID
     }
@@ -22,7 +22,7 @@ class UberDeeplink {
     /**
     Build a deeplink URI.
     */
-    func build() -> String {
+    public func build() -> String {
         if !PickupLocationSet() {
             setPickupLocationToCurrentLocation()
         }
@@ -37,9 +37,23 @@ class UberDeeplink {
     }
     
     /**
+    Execute deeplink to launch the Uber app. Redirect to the app store if the app is not installed.
+    */
+    public func execute() {
+        let deeplinkNSURL = NSURL(string: deeplinkURI!)
+        let appstoreNSURL = NSURL(string: "https://m.uber.com/sign-up?client_id=" + clientID)
+        
+        if UIApplication.sharedApplication().canOpenURL(deeplinkNSURL!) {
+            UIApplication.sharedApplication().openURL(deeplinkNSURL!)
+        } else {
+            UIApplication.sharedApplication().openURL(appstoreNSURL!)
+        }
+    }
+    
+    /**
     Set the user's current location as a default pickup location.
     */
-    func setPickupLocationToCurrentLocation() {
+    public func setPickupLocationToCurrentLocation() {
         parameters.append(QueryParameter(name: .action, value: "setPickup"))
         parameters.append(QueryParameter(name: .pickupDefault, value: "my_location"))
     }
@@ -52,7 +66,7 @@ class UberDeeplink {
     - parameter nickname:  Optional pickup location name
     - parameter address:   Optional pickup location address
     */
-    func addPickupLocation(latitude: String, longitude: String, nickname: String? = nil, address: String? = nil) {
+    public func setPickupLocation(latitude: String, longitude: String, nickname: String? = nil, address: String? = nil) {
         parameters.append(QueryParameter(name: .action, value: "setPickup"))
         parameters.append(QueryParameter(name: .pickupLatitude, value: latitude))
         parameters.append(QueryParameter(name: .pickupLongitude, value: longitude))
@@ -73,7 +87,7 @@ class UberDeeplink {
     - parameter nickname:  Optional dropoff location name
     - parameter address:   Optional dropoff location address
     */
-    func addDropoffLocation(latitude: String, longitude: String, nickname: String? = nil, address: String? = nil) {
+    public func setDropoffLocation(latitude: String, longitude: String, nickname: String? = nil, address: String? = nil) {
         parameters.append(QueryParameter(name: .dropoffLatitude, value: latitude))
         parameters.append(QueryParameter(name: .dropoffLongitude, value: longitude))
         
@@ -91,7 +105,7 @@ class UberDeeplink {
     
     - parameter productID: Unique identifier of the product to populate in pickup
     */
-    func addProductID(productID: String) {
+    public func setProductID(productID: String) {
         parameters.append(QueryParameter(name: .productID, value: productID))
     }
     
