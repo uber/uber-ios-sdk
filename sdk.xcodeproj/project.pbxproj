@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AC136F391BD1791D003390B5 /* UberDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC43ADEE1BD02616007A875D /* UberDeeplink.swift */; settings = {ASSET_TAGS = (); }; };
+		AC2954A31BE81AAC00E3369E /* UberRidesDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2954A21BE81AAC00E3369E /* UberRidesDeeplink.swift */; };
 		AC43AD9E1BD01092007A875D /* sdk.h in Headers */ = {isa = PBXBuildFile; fileRef = AC43AD9D1BD01092007A875D /* sdk.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AC43ADA51BD01092007A875D /* sdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC43AD9A1BD01092007A875D /* sdk.framework */; settings = {ASSET_TAGS = (); }; };
-		AC43ADAA1BD01092007A875D /* UberDeeplinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC43ADA91BD01092007A875D /* UberDeeplinkTests.swift */; };
-		AC43ADEF1BD02616007A875D /* UberDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC43ADEE1BD02616007A875D /* UberDeeplink.swift */; settings = {ASSET_TAGS = (); }; };
+		AC43ADA51BD01092007A875D /* sdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC43AD9A1BD01092007A875D /* sdk.framework */; };
+		AC43ADAA1BD01092007A875D /* UberRidesDeeplinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC43ADA91BD01092007A875D /* UberRidesDeeplinkTests.swift */; };
+		AC82EEA11BE8744100DBF642 /* UberRidesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC82EEA01BE8744100DBF642 /* UberRidesButton.swift */; };
+		AC82EEFD1BE87E7600DBF642 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC82EEFC1BE87E7600DBF642 /* Media.xcassets */; };
+		ACEA1EB61BEAF3D7001C4DCA /* UberRidesClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEA1EB51BEAF3D7001C4DCA /* UberRidesClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,13 +27,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AC2954A21BE81AAC00E3369E /* UberRidesDeeplink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberRidesDeeplink.swift; sourceTree = "<group>"; };
 		AC43AD9A1BD01092007A875D /* sdk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = sdk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC43AD9D1BD01092007A875D /* sdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sdk.h; sourceTree = "<group>"; };
 		AC43AD9F1BD01092007A875D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC43ADA41BD01092007A875D /* sdkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sdkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AC43ADA91BD01092007A875D /* UberDeeplinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberDeeplinkTests.swift; sourceTree = "<group>"; };
+		AC43ADA91BD01092007A875D /* UberRidesDeeplinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberRidesDeeplinkTests.swift; sourceTree = "<group>"; };
 		AC43ADAB1BD01092007A875D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AC43ADEE1BD02616007A875D /* UberDeeplink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberDeeplink.swift; sourceTree = "<group>"; };
+		AC82EEA01BE8744100DBF642 /* UberRidesButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberRidesButton.swift; sourceTree = "<group>"; };
+		AC82EEFC1BE87E7600DBF642 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		ACEA1EB51BEAF3D7001C4DCA /* UberRidesClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberRidesClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +81,10 @@
 			children = (
 				AC43AD9D1BD01092007A875D /* sdk.h */,
 				AC43AD9F1BD01092007A875D /* Info.plist */,
-				AC43ADEE1BD02616007A875D /* UberDeeplink.swift */,
+				AC2954A21BE81AAC00E3369E /* UberRidesDeeplink.swift */,
+				ACEA1EB51BEAF3D7001C4DCA /* UberRidesClient.swift */,
+				AC82EEA01BE8744100DBF642 /* UberRidesButton.swift */,
+				AC82EEFC1BE87E7600DBF642 /* Media.xcassets */,
 			);
 			path = sdk;
 			sourceTree = "<group>";
@@ -84,7 +92,7 @@
 		AC43ADA81BD01092007A875D /* sdkTests */ = {
 			isa = PBXGroup;
 			children = (
-				AC43ADA91BD01092007A875D /* UberDeeplinkTests.swift */,
+				AC43ADA91BD01092007A875D /* UberRidesDeeplinkTests.swift */,
 				AC43ADAB1BD01092007A875D /* Info.plist */,
 			);
 			path = sdkTests;
@@ -182,6 +190,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC82EEFD1BE87E7600DBF642 /* Media.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,7 +208,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC43ADEF1BD02616007A875D /* UberDeeplink.swift in Sources */,
+				ACEA1EB61BEAF3D7001C4DCA /* UberRidesClient.swift in Sources */,
+				AC2954A31BE81AAC00E3369E /* UberRidesDeeplink.swift in Sources */,
+				AC82EEA11BE8744100DBF642 /* UberRidesButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,8 +218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC43ADAA1BD01092007A875D /* UberDeeplinkTests.swift in Sources */,
-				AC136F391BD1791D003390B5 /* UberDeeplink.swift in Sources */,
+				AC43ADAA1BD01092007A875D /* UberRidesDeeplinkTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
