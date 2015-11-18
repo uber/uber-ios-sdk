@@ -1,14 +1,15 @@
 //
-//  RidesTests.swift
-//  RidesTests
+//  Swift_SDKTests.swift
+//  Swift SDKTests
 //
-//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
+//  Created by Christine Kim on 11/16/15.
+//  Copyright © 2015 Uber. All rights reserved.
 //
 
 import XCTest
-@testable import Rides
+@testable import Swift_SDK
 
-class RidesTests: XCTestCase {
+class Swift_SDKTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
