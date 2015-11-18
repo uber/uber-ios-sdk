@@ -1,6 +1,6 @@
 # Uber Rides iOS SDK
 
-This Swift library allows you to integrate Uber into your iOS app.
+This Swift library allows you to integrate Uber into your iOS app. It is designed to make it quick and easy to add a 'Request a Ride' button in your application, seamlessly connecting your users with Uber.
 
 ## Requirements
 
