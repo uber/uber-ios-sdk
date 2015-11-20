@@ -44,13 +44,13 @@ public class RequestButton: UIButton {
     required public init?(coder aDecoder: NSCoder) {
         uberImageView = UIImageView()
         uberTitleLabel = UILabel()
-        buttonStyle = .black
+        buttonStyle = .Black
         super.init(coder: aDecoder)
-        setUp(.black)
+        setUp(.Black)
     }
     
     public convenience init() {
-        self.init(colorStyle: .black)
+        self.init(colorStyle: .Black)
     }
     
     // swift-style initializer
@@ -68,8 +68,8 @@ public class RequestButton: UIButton {
             addTarget(self, action: "uberButtonTapped:", forControlEvents: .TouchUpInside)
         } catch RequestButtonError.NullClientID {
             print("No Client ID attached to the deeplink.")
-        } catch {
-            print("Unknown Error")
+        } catch let error {
+            print(error)
         }
         
         setContent()
@@ -203,12 +203,12 @@ public class RequestButton: UIButton {
         buttonStyle = style
         
         switch style {
-        case .black:
-            uberTitleLabel.textColor = uberUIColor(.uberWhite)
-            backgroundColor = uberUIColor(.uberBlack)
-        case .white :
-            uberTitleLabel.textColor = uberUIColor(.uberBlack)
-            backgroundColor = uberUIColor(.uberWhite)
+        case .Black:
+            uberTitleLabel.textColor = uberUIColor(.UberWhite)
+            backgroundColor = uberUIColor(.UberBlack)
+        case .White :
+            uberTitleLabel.textColor = uberUIColor(.UberBlack)
+            backgroundColor = uberUIColor(.UberWhite)
         }
     }
     
@@ -222,17 +222,17 @@ public class RequestButton: UIButton {
     // override to change colors when button is tapped
     override public var highlighted: Bool {
         didSet {
-            if buttonStyle == .black {
+            if buttonStyle == .Black {
                 if highlighted {
-                    backgroundColor = uberUIColor(.blackHighlighted)
+                    backgroundColor = uberUIColor(.BlackHighlighted)
                 } else {
-                    backgroundColor = uberUIColor(.uberBlack)
+                    backgroundColor = uberUIColor(.UberBlack)
                 }
-            } else if buttonStyle == .white {
+            } else if buttonStyle == .White {
                 if highlighted {
-                    backgroundColor = uberUIColor(.whiteHighlighted)
+                    backgroundColor = uberUIColor(.WhiteHighlighted)
                 } else {
-                    backgroundColor = uberUIColor(.uberWhite)
+                    backgroundColor = uberUIColor(.UberWhite)
                 }
             }
         }
@@ -247,10 +247,10 @@ public class RequestButton: UIButton {
 }
 
 @objc public enum RequestButtonColorStyle: Int {
-    case black
-    case white
+    case Black
+    case White
 }
 
-public enum RequestButtonError: ErrorType {
+private enum RequestButtonError: ErrorType {
     case NullClientID
 }

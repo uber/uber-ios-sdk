@@ -39,7 +39,7 @@ public class RequestDeeplink: NSObject {
     public init(withClientID: String, fromSource: SourceParameter = .deeplink) {
         clientID = withClientID
         source = fromSource
-        parameters = [QueryParameter(parameterName: .clientID, parameterValue: clientID)]
+        parameters = [QueryParameter(parameterName: .ClientID, parameterValue: clientID)]
     }
     
     /**
@@ -77,23 +77,23 @@ public class RequestDeeplink: NSObject {
      Set the user's current location as a default pickup location.
      */
     public func setPickupLocationToCurrentLocation() {
-        parameters.append(QueryParameter(parameterName: .action, parameterValue: "setPickup"))
-        parameters.append(QueryParameter(parameterName: .pickupDefault, parameterValue: "my_location"))
+        parameters.append(QueryParameter(parameterName: .Action, parameterValue: "setPickup"))
+        parameters.append(QueryParameter(parameterName: .PickupDefault, parameterValue: "my_location"))
     }
     
     /**
      Set deeplink pickup location information.
      */
     public func setPickupLocation(latitude lat: String, longitude: String, nickname: String? = nil, address: String? = nil) {
-        parameters.append(QueryParameter(parameterName: .action, parameterValue: "setPickup"))
-        parameters.append(QueryParameter(parameterName: .pickupLatitude, parameterValue: lat))
-        parameters.append(QueryParameter(parameterName: .pickupLongitude, parameterValue: longitude))
+        parameters.append(QueryParameter(parameterName: .Action, parameterValue: "setPickup"))
+        parameters.append(QueryParameter(parameterName: .PickupLatitude, parameterValue: lat))
+        parameters.append(QueryParameter(parameterName: .PickupLongitude, parameterValue: longitude))
         
         if nickname != nil {
-            parameters.append(QueryParameter(parameterName: .pickupNickname, parameterValue: nickname!))
+            parameters.append(QueryParameter(parameterName: .PickupNickname, parameterValue: nickname!))
         }
         if address != nil {
-            parameters.append(QueryParameter(parameterName: .pickupAddress, parameterValue: address!))
+            parameters.append(QueryParameter(parameterName: .PickupAddress, parameterValue: address!))
         }
     }
     
@@ -101,14 +101,14 @@ public class RequestDeeplink: NSObject {
      Set deeplink dropoff location information.
      */
     public func setDropoffLocation(latitude lat: String, longitude: String, nickname: String? = nil, address: String? = nil) {
-        parameters.append(QueryParameter(parameterName: .dropoffLatitude, parameterValue: lat))
-        parameters.append(QueryParameter(parameterName: .dropoffLongitude, parameterValue: longitude))
+        parameters.append(QueryParameter(parameterName: .DropoffLatitude, parameterValue: lat))
+        parameters.append(QueryParameter(parameterName: .DropoffLongitude, parameterValue: longitude))
         
         if nickname != nil {
-            parameters.append(QueryParameter(parameterName: .dropoffNickname, parameterValue: nickname!))
+            parameters.append(QueryParameter(parameterName: .DropoffNickname, parameterValue: nickname!))
         }
         if address != nil {
-            parameters.append(QueryParameter(parameterName: .dropoffAddress, parameterValue: address!))
+            parameters.append(QueryParameter(parameterName: .DropoffAddress, parameterValue: address!))
         }
     }
     
@@ -117,7 +117,7 @@ public class RequestDeeplink: NSObject {
      location with the Rides API `GET /v1/products` endpoint.
      */
     public func setProductID(productID: String) {
-        parameters.append(QueryParameter(parameterName: .productID, parameterValue: productID))
+        parameters.append(QueryParameter(parameterName: .ProductID, parameterValue: productID))
     }
     
     /**
@@ -128,9 +128,9 @@ public class RequestDeeplink: NSObject {
         var hasLongitude = false
         
         for parameter in parameters {
-            if parameter.name == .pickupLatitude {
+            if parameter.name == .PickupLatitude {
                 hasLatitude = true
-            } else if parameter.name == .pickupLongitude {
+            } else if parameter.name == .PickupLongitude {
                 hasLongitude = true
             }
         }
@@ -176,18 +176,18 @@ private class QueryParameter: NSObject {
      information, like a user's destination, over to the native Uber App.
      */
     private enum QueryParameterName: Int {
-        case action
-        case clientID
-        case productID
-        case pickupDefault
-        case pickupLatitude
-        case pickupLongitude
-        case pickupNickname
-        case pickupAddress
-        case dropoffLatitude
-        case dropoffLongitude
-        case dropoffNickname
-        case dropoffAddress
+        case Action
+        case ClientID
+        case ProductID
+        case PickupDefault
+        case PickupLatitude
+        case PickupLongitude
+        case PickupNickname
+        case PickupAddress
+        case DropoffLatitude
+        case DropoffLongitude
+        case DropoffNickname
+        case DropoffAddress
     }
     
     private let name: QueryParameterName
@@ -207,29 +207,29 @@ private class QueryParameter: NSObject {
     
     private func encodeName() -> String {
         switch name {
-        case .action:
+        case .Action:
             return "action"
-        case .clientID:
+        case .ClientID:
             return "client_id"
-        case .productID:
+        case .ProductID:
             return "product_id"
-        case .pickupDefault:
+        case .PickupDefault:
             return "pickup"
-        case .pickupLatitude:
+        case .PickupLatitude:
             return "pickup[latitude]"
-        case .pickupLongitude:
+        case .PickupLongitude:
             return "pickup[longitude]"
-        case .pickupNickname:
+        case .PickupNickname:
             return "pickup[nickname]"
-        case .pickupAddress:
+        case .PickupAddress:
             return "pickup[formatted_address]"
-        case .dropoffLatitude:
+        case .DropoffLatitude:
             return "dropoff[latitude]"
-        case .dropoffLongitude:
+        case .DropoffLongitude:
             return "dropoff[longitude]"
-        case .dropoffNickname:
+        case .DropoffNickname:
             return "dropoff[nickname]"
-        case .dropoffAddress:
+        case .DropoffAddress:
             return "dropoff[formatted_address]"
         }
     }

@@ -19,12 +19,15 @@ class ViewController: UIViewController {
         let bottomView = UIView()
         view.addSubview(bottomView)
         
-        // add (default) black request button
+        // add black request button with default configurations
         let blackRequestButton = RequestButton()
         topView.addSubview(blackRequestButton)
         
-        // add white request button
-        let whiteRequestButton = RequestButton(colorStyle: .white)
+        // add white request button and add custom configurations
+        let whiteRequestButton = RequestButton(colorStyle: .White)
+        whiteRequestButton.setProductID("a1111c8c-c720-46c3-8534-2fcdd730040d")
+        whiteRequestButton.setPickupLocation(latitude: "37.770", longitude: "-122.466", nickname: "California Academy of Sciences")
+        whiteRequestButton.setDropoffLocation(latitude: "37.791", longitude: "-122.405", nickname: "Pier 39")
         bottomView.addSubview(whiteRequestButton)
         
         // position UIViews and request buttons

@@ -29,21 +29,21 @@
 import Foundation
 
 @objc internal enum UberButtonColor: Int {
-    case uberBlack
-    case uberWhite
-    case blackHighlighted
-    case whiteHighlighted
+    case UberBlack
+    case UberWhite
+    case BlackHighlighted
+    case WhiteHighlighted
 }
 
 private func encodeColor(color: UberButtonColor) -> String {
     switch color {
-    case .uberBlack:
+    case .UberBlack:
         return "09091A"
-    case .uberWhite:
+    case .UberWhite:
         return "C0C0C8"
-    case .blackHighlighted:
+    case .BlackHighlighted:
         return "222231"
-    case .whiteHighlighted:
+    case .WhiteHighlighted:
         return "CDCDD3"
     }
 }
