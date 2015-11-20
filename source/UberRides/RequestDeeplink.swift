@@ -197,11 +197,11 @@ private class QueryParameter: NSObject {
     
     private func toString() -> String {
         let customAllowedChars =  NSCharacterSet(charactersInString: " =\"#%/<>?@\\^`{|}!$&'()*+,:;[]%").invertedSet
-        let encodeValue = value.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedChars)!
-        return "\(encodeName())=\(encodeValue)"
+        let stringFromParameterValue = value.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedChars)!
+        return "\(stringFromParameterName())=\(stringFromParameterValue)"
     }
     
-    private func encodeName() -> String {
+    private func stringFromParameterName() -> String {
         switch name {
         case .Action:
             return "action"

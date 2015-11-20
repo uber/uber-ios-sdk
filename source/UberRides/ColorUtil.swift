@@ -35,7 +35,7 @@ import Foundation
     case WhiteHighlighted
 }
 
-private func encodeColor(color: UberButtonColor) -> String {
+private func hexCodeFromColor(color: UberButtonColor) -> String {
     switch color {
     case .UberBlack:
         return "09091A"
@@ -50,7 +50,7 @@ private func encodeColor(color: UberButtonColor) -> String {
 
 // convert hex color code into UIColor
 internal func uberUIColor(color: UberButtonColor) -> UIColor {
-    let hexCode = encodeColor(color)
+    let hexCode = hexCodeFromColor(color)
     let scanner = NSScanner(string: hexCode)
     var color: UInt32 = 0;
     scanner.scanHexInt(&color)
