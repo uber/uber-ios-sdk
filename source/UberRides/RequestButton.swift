@@ -84,7 +84,7 @@ public class RequestButton: UIButton {
         }
         
         let clientID = RidesClient.sharedInstance.clientID
-        deeplink = RequestDeeplink(withClientID: clientID!, fromSource: .button)
+        deeplink = RequestDeeplink(withClientID: clientID!, fromSource: .Button)
         deeplink!.build()
     }
     

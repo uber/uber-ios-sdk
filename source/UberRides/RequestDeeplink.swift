@@ -36,7 +36,7 @@ public class RequestDeeplink: NSObject {
     private var deeplinkURI: String?
     private var source: RequestDeeplink.SourceParameter
     
-    public init(withClientID: String, fromSource: SourceParameter = .deeplink) {
+    public init(withClientID: String, fromSource: SourceParameter = .Deeplink) {
         clientID = withClientID
         source = fromSource
         parameters = [QueryParameter(parameterName: .ClientID, parameterValue: clientID)]
@@ -46,7 +46,7 @@ public class RequestDeeplink: NSObject {
      Build a deeplink URI.
      */
     public func build() -> String {
-        if !PickupLocationSet() {
+        if !pickupLocationSet() {
             setPickupLocationToCurrentLocation()
         }
         
@@ -123,7 +123,7 @@ public class RequestDeeplink: NSObject {
     /**
      Return true if deeplink has set pickup latitude and longitude, false otherwise.
      */
-    internal func PickupLocationSet() -> Bool {
+    internal func pickupLocationSet() -> Bool {
         var hasLatitude = false
         var hasLongitude = false
         
@@ -135,19 +135,15 @@ public class RequestDeeplink: NSObject {
             }
         }
         
-        if hasLatitude && hasLongitude {
-            return true
-        } else {
-            return false
-        }
+        return (hasLatitude && hasLongitude)
     }
     
     /**
      Possible sources for the deeplink.
      */
     @objc public enum SourceParameter: Int {
-        case button
-        case deeplink
+        case Button
+        case Deeplink
     }
     
     /**
@@ -155,9 +151,9 @@ public class RequestDeeplink: NSObject {
      */
     private func createURL(var url: String) -> NSURL {
         switch source {
-        case .button:
+        case .Button:
             url += "&user-agent=rides-button-v0.1.0"
-        case .deeplink:
+        case .Deeplink:
             url += "user-agent=rides-deeplink-v0.1.0"
         }
         return NSURL(string: url)!

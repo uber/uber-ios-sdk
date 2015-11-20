@@ -32,7 +32,7 @@ class UberRidesDeeplinkTests: XCTestCase {
      */
     func testPickupLocationSetIsFalseWithNoPickupParameters() {
         let deeplink = RequestDeeplink(withClientID: "clientID1234")
-        XCTAssertFalse(deeplink.PickupLocationSet())
+        XCTAssertFalse(deeplink.pickupLocationSet())
     }
     
     /**
@@ -41,7 +41,7 @@ class UberRidesDeeplinkTests: XCTestCase {
     func testPickupLocationSetIsTrueWithPickupParameters() {
         let deeplink = RequestDeeplink(withClientID: "clientID1234")
         deeplink.setPickupLocation(latitude: "37.770", longitude: "-122.466")
-        XCTAssertTrue(deeplink.PickupLocationSet())
+        XCTAssertTrue(deeplink.pickupLocationSet())
     }
     
     /**
