@@ -14,5 +14,3 @@ FOUNDATION_EXPORT double UberRidesVersionNumber;
 FOUNDATION_EXPORT const unsigned char UberRidesVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <UberRides/PublicHeader.h>
-
-
