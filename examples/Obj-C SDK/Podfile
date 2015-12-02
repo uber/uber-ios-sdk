@@ -1,0 +1,5 @@
+use_frameworks!
+
+target 'Obj-C SDK' do
+pod 'UberRides'
+end

@@ -1,0 +1,5 @@
+use_frameworks!
+
+target 'Swift SDK' do
+pod 'UberRides'
+end

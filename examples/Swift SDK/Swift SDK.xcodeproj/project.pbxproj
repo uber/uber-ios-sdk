@@ -14,7 +14,6 @@
 		AC0404B21BFAD0C800AC1501 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC0404B01BFAD0C800AC1501 /* LaunchScreen.storyboard */; };
 		AC0404BD1BFAD0C800AC1501 /* Swift_SDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404BC1BFAD0C800AC1501 /* Swift_SDKTests.swift */; };
 		AC0404C81BFAD0C800AC1501 /* Swift_SDKUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404C71BFAD0C800AC1501 /* Swift_SDKUITests.swift */; };
-		AC0404E31BFAD54200AC1501 /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC0404DB1BFAD0D800AC1501 /* UberRides.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,27 +31,6 @@
 			remoteGlobalIDString = AC0404A31BFAD0C800AC1501;
 			remoteInfo = "Swift SDK";
 		};
-		AC0404DA1BFAD0D800AC1501 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AC0404D51BFAD0D700AC1501 /* UberRides.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AC0404751BFACD1D00AC1501;
-			remoteInfo = UberRides;
-		};
-		AC0404DC1BFAD0D800AC1501 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AC0404D51BFAD0D700AC1501 /* UberRides.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AC04047F1BFACD1D00AC1501;
-			remoteInfo = UberRidesTests;
-		};
-		AC0404E11BFAD53200AC1501 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AC0404D51BFAD0D700AC1501 /* UberRides.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = AC0404741BFACD1D00AC1501;
-			remoteInfo = UberRides;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -69,7 +47,6 @@
 		AC0404C31BFAD0C800AC1501 /* Swift SDKUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swift SDKUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC0404C71BFAD0C800AC1501 /* Swift_SDKUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_SDKUITests.swift; sourceTree = "<group>"; };
 		AC0404C91BFAD0C800AC1501 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AC0404D51BFAD0D700AC1501 /* UberRides.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UberRides.xcodeproj; path = ../../source/UberRides.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +54,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC0404E31BFAD54200AC1501 /* UberRides.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,7 +77,6 @@
 		AC04049B1BFAD0C800AC1501 = {
 			isa = PBXGroup;
 			children = (
-				AC0404D51BFAD0D700AC1501 /* UberRides.xcodeproj */,
 				AC0404A61BFAD0C800AC1501 /* Swift SDK */,
 				AC0404BB1BFAD0C800AC1501 /* Swift SDKTests */,
 				AC0404C61BFAD0C800AC1501 /* Swift SDKUITests */,
@@ -150,15 +125,6 @@
 			path = "Swift SDKUITests";
 			sourceTree = "<group>";
 		};
-		AC0404D61BFAD0D700AC1501 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				AC0404DB1BFAD0D800AC1501 /* UberRides.framework */,
-				AC0404DD1BFAD0D800AC1501 /* UberRidesTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -173,7 +139,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				AC0404E21BFAD53200AC1501 /* PBXTargetDependency */,
 			);
 			name = "Swift SDK";
 			productName = "Swift SDK";
@@ -252,12 +217,6 @@
 			mainGroup = AC04049B1BFAD0C800AC1501;
 			productRefGroup = AC0404A51BFAD0C800AC1501 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = AC0404D61BFAD0D700AC1501 /* Products */;
-					ProjectRef = AC0404D51BFAD0D700AC1501 /* UberRides.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				AC0404A31BFAD0C800AC1501 /* Swift SDK */,
@@ -266,23 +225,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		AC0404DB1BFAD0D800AC1501 /* UberRides.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = UberRides.framework;
-			remoteRef = AC0404DA1BFAD0D800AC1501 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AC0404DD1BFAD0D800AC1501 /* UberRidesTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = UberRidesTests.xctest;
-			remoteRef = AC0404DC1BFAD0D800AC1501 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AC0404A21BFAD0C800AC1501 /* Resources */ = {
@@ -349,11 +291,6 @@
 			isa = PBXTargetDependency;
 			target = AC0404A31BFAD0C800AC1501 /* Swift SDK */;
 			targetProxy = AC0404C41BFAD0C800AC1501 /* PBXContainerItemProxy */;
-		};
-		AC0404E21BFAD53200AC1501 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = UberRides;
-			targetProxy = AC0404E11BFAD53200AC1501 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

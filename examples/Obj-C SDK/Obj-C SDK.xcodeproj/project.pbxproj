@@ -15,8 +15,6 @@
 		AC0405001BFB82CC00AC1501 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC0404FE1BFB82CC00AC1501 /* LaunchScreen.storyboard */; };
 		AC04050B1BFB82CC00AC1501 /* Obj_C_SDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AC04050A1BFB82CC00AC1501 /* Obj_C_SDKTests.m */; };
 		AC0405161BFB82CC00AC1501 /* Obj_C_SDKUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = AC0405151BFB82CC00AC1501 /* Obj_C_SDKUITests.m */; };
-		AC0405741BFBB32500AC1501 /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC0405291BFB836000AC1501 /* UberRides.framework */; };
-		AC0405751BFBB32500AC1501 /* UberRides.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AC0405291BFB836000AC1501 /* UberRides.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,34 +32,6 @@
 			remoteGlobalIDString = AC0404EC1BFB82CC00AC1501;
 			remoteInfo = "Obj-C SDK";
 		};
-		AC0405281BFB836000AC1501 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AC0405231BFB836000AC1501 /* UberRides.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AC0404751BFACD1D00AC1501;
-			remoteInfo = UberRides;
-		};
-		AC04052A1BFB836000AC1501 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AC0405231BFB836000AC1501 /* UberRides.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AC04047F1BFACD1D00AC1501;
-			remoteInfo = UberRidesTests;
-		};
-		AC04052C1BFB837100AC1501 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AC0405231BFB836000AC1501 /* UberRides.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = AC0404741BFACD1D00AC1501;
-			remoteInfo = UberRides;
-		};
-		AC0405761BFBB32500AC1501 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AC0405231BFB836000AC1501 /* UberRides.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = AC0404741BFACD1D00AC1501;
-			remoteInfo = UberRides;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -71,7 +41,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				AC0405751BFBB32500AC1501 /* UberRides.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,7 +64,6 @@
 		AC0405111BFB82CC00AC1501 /* Obj-C SDKUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Obj-C SDKUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC0405151BFB82CC00AC1501 /* Obj_C_SDKUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Obj_C_SDKUITests.m; sourceTree = "<group>"; };
 		AC0405171BFB82CC00AC1501 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AC0405231BFB836000AC1501 /* UberRides.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UberRides.xcodeproj; path = ../../source/UberRides.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +71,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC0405741BFBB32500AC1501 /* UberRides.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,7 +94,6 @@
 		AC0404E41BFB82CC00AC1501 = {
 			isa = PBXGroup;
 			children = (
-				AC0405231BFB836000AC1501 /* UberRides.xcodeproj */,
 				AC0404EF1BFB82CC00AC1501 /* Obj-C SDK */,
 				AC0405091BFB82CC00AC1501 /* Obj-C SDKTests */,
 				AC0405141BFB82CC00AC1501 /* Obj-C SDKUITests */,
@@ -187,15 +153,6 @@
 			path = "Obj-C SDKUITests";
 			sourceTree = "<group>";
 		};
-		AC0405241BFB836000AC1501 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				AC0405291BFB836000AC1501 /* UberRides.framework */,
-				AC04052B1BFB836000AC1501 /* UberRidesTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -211,8 +168,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				AC04052D1BFB837100AC1501 /* PBXTargetDependency */,
-				AC0405771BFBB32500AC1501 /* PBXTargetDependency */,
 			);
 			name = "Obj-C SDK";
 			productName = "Obj-C SDK";
@@ -290,12 +245,6 @@
 			mainGroup = AC0404E41BFB82CC00AC1501;
 			productRefGroup = AC0404EE1BFB82CC00AC1501 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = AC0405241BFB836000AC1501 /* Products */;
-					ProjectRef = AC0405231BFB836000AC1501 /* UberRides.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				AC0404EC1BFB82CC00AC1501 /* Obj-C SDK */,
@@ -304,23 +253,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		AC0405291BFB836000AC1501 /* UberRides.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = UberRides.framework;
-			remoteRef = AC0405281BFB836000AC1501 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AC04052B1BFB836000AC1501 /* UberRidesTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = UberRidesTests.xctest;
-			remoteRef = AC04052A1BFB836000AC1501 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AC0404EB1BFB82CC00AC1501 /* Resources */ = {
@@ -388,16 +320,6 @@
 			isa = PBXTargetDependency;
 			target = AC0404EC1BFB82CC00AC1501 /* Obj-C SDK */;
 			targetProxy = AC0405121BFB82CC00AC1501 /* PBXContainerItemProxy */;
-		};
-		AC04052D1BFB837100AC1501 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = UberRides;
-			targetProxy = AC04052C1BFB837100AC1501 /* PBXContainerItemProxy */;
-		};
-		AC0405771BFBB32500AC1501 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = UberRides;
-			targetProxy = AC0405761BFBB32500AC1501 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
