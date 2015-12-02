@@ -121,7 +121,7 @@ RequestButton *button = [[RequestButton alloc] init];
 
 This will create a request button with default behavior, with the pickup pin set to the user’s current location. The user will need to select a product and input additional information when they are switched over to the Uber application.
 
-### Adding Paramters
+### Adding Parameters
 
 We suggest passing additional parameters to make the Uber experience even more seamless for your users. For example, dropoff location parameters can be used to automatically pass the user’s destination information over to the driver:
 
