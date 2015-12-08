@@ -1,6 +1,6 @@
-# Uber Rides iOS SDK
+# Uber Rides iOS SDK (beta)
 
-This Swift library allows you to integrate Uber into your iOS app. It is designed to make it quick and easy to add a 'Request a Ride' button in your application, seamlessly connecting your users with Uber.
+This Swift library allows you to integrate Uber into your iOS app.
 
 ## Requirements
 
@@ -22,7 +22,7 @@ $ gem install cocoapods
 To integrate Uber Rides into your Xcode project, add it to your `Podfile`:
 
 ```ruby
-pod 'Alamofire'
+pod 'UberRides'
 ```
 
 Then, run the following command to install the dependency:
@@ -54,15 +54,17 @@ Build the framework:
 $ carthage
 ```
 
-Then drag the built `Rides.framework` into your project.
+Then drag the built `UberRides.framework` into your project.
 
 ### Manually Add Subprojects
 
 You can integrate Uber Rides into your project manually without using a dependency manager.
 
-Drag the `Rides` framework project into your own and add the resource as an Embedded Binary, as well as a Target Dependency and Linked Framework (under Build Phases) in order to build on the simulator and on a device.
+Drag the `UberRides` framework project into your own and add the resource as an Embedded Binary, as well as a Target Dependency and Linked Framework (under Build Phases) in order to build on the simulator and on a device.
 
-![Alt text](/img/manual_install.png?raw=true "Build Phases Screenshot")
+<p align="center">
+  <img src="https://github.com/uber/rides-ios-sdk/blob/master/img/manual_install.png?raw=true" alt="Manually Install Framework"/>
+</p>
 
 ### Configuring iOS 9.0
 
@@ -75,7 +77,9 @@ If you are compiling on iOS SDK 9.0, you will need to modify your application’
 </array>
 ```
 
-![Alt text](/img/modify_plist.png?raw=true "Modify App's plist")
+<p align="center">
+  <img src="https://github.com/uber/rides-ios-sdk/blob/master/img/modify_plist.png?raw=true" alt="Modify App's plist"/>
+</p>
 
 This will allow the Uber iOS integration to properly identify and switch to the installed Uber application. If you are not on iOS SDK 9.0, then you are allowed to have up to 50 unique app schemes and do not need to modify your app’s `plist`.
 
@@ -83,38 +87,39 @@ This will allow the Uber iOS integration to properly identify and switch to the 
 
 Import the library into your project:
 
-**Swift**
+
 ```swift
+// Swift
 import UberRides
 ```
 
-**Objective-C**
 ```objective-c
+// Objective-C
 @import UberRides;
 ```
 
 Configure `RidesClient` with your registered Client ID. The end of `application (application, didFinishLaunchingWithOptions)` in your `AppDelegate` is a good place to do this:
 
-**Swift**
 ```swift
+// Swift
 RidesClient.sharedInstance.configureClientID("YOUR_CLIENT_ID")
 ```
 
-**Objective-C**
 ```objective-c
+// Objective-C
 [[RidesClient sharedInstance] configureClientID:@"YOUR_CLIENT_ID"];
 ```
 
 You can add a Ride Request Button to your view like you would any other UIView:
 
-**Swift**
 ```swift
+// Swift
 let button = RequestButton()
 view.addSubview(button)
 ```
 
-**Objective-C**
 ```objective-c
+// Objective-C
 RequestButton *button = [[RequestButton alloc] init];
 [view addSubview:button];
 ```
@@ -125,15 +130,15 @@ This will create a request button with default behavior, with the pickup pin set
 
 We suggest passing additional parameters to make the Uber experience even more seamless for your users. For example, dropoff location parameters can be used to automatically pass the user’s destination information over to the driver:
 
-**Swift**
 ```swift
+// Swift
 button.setProductID("abc123-productID")
 button.setPickupLocation(latitude: "37.770", longitude: "-122.466", nickname: "California Academy of Sciences")
 button.setDropoffLocation(latitude: "37.791", longitude: "-122.405", nickname: "Pier 39")
 ```
 
-**Objective-C**
 ```objective-c
+// Objective-C
 [button setProductID:@"abc123-productID"];
 [button setPickupLocationWithLatitude:@"37.770" longitude:@"-122.466" nickname:@"California Academy of Sciences" address:nil];
 [button setDropoffLocationWithLatitude:@"37.791" longitude:@"-122.405" nickname:@"Pier 39" address:nil];
@@ -145,25 +150,25 @@ With all the necessary parameters set, pressing the button will seamlessly promp
 
 The default color has a black background with white text:
 
-**Swift**
 ```swift
+// Swift
 let button = RequestButton()
 ```
 
-**Objective-C**
 ```objective-c
+// Objective-C
 RequestButton *button = [[RequestButton alloc] init];
 ```
 
 For a button with a white background and black text:
 
-**Swift**
 ```swift
+// Swift
 let button = RequestButton(.white)
 ```
 
-**Objective-C**
 ```objective-c
+// Objective-C
 RequestButton *whiteRequestButton = [[RequestButton alloc] initWithColorStyle:RequestButtonColorStyleWhite];
 ```
 
@@ -173,7 +178,9 @@ Example apps can be found in the `examples` folder. To run it, browse to the `ex
 
 Don’t forget to configure `RidesClient` with your Client ID in `AppDelegate.swift`.
 
-![Alt text](/img/example_app.png?raw=true "Example App Screenshot")
+<p align="center">
+  <img src="https://github.com/uber/rides-ios-sdk/blob/master/img/example_app.png?raw=true" alt="Example App Screenshot"/>
+</p>
 
 ## Getting help
 
@@ -183,8 +190,8 @@ For full documentation about our API, visit our [Developer Site](https://develop
 
 ## Contributing
 
-We love contributions. If you’ve found a bug in the library or would like new features added, go ahead and open issues or pull requests against this repo. Write a test to show your bug was fixed or the feature works as expected.
+We :heart: contributions. If you’ve found a bug in the library or would like new features added, go ahead and open issues or pull requests against this repo. Write a test to show your bug was fixed or the feature works as expected.
 
 ## License
 
-Uber Rides is released under the MIT license. See the LICENSE file for more details.
+The Uber Rides iOS SDK is released under the MIT license. See the LICENSE file for more details.

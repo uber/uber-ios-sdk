@@ -228,7 +228,6 @@
 				TargetAttributes = {
 					AC0404A31BFAD0C800AC1501 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = 36UPBWHAQE;
 					};
 					AC0404B71BFAD0C800AC1501 = {
 						CreatedOnToolsVersion = 7.1;
@@ -463,6 +462,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Swift SDK/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uber.sdk.Swift-SDK";
@@ -474,6 +474,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Swift SDK/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uber.sdk.Swift-SDK";
