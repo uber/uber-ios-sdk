@@ -19,10 +19,14 @@ The Uber Rides iOS SDK is a CocoaPod written in Swift. [CocoaPods](http://cocoap
 $ gem install cocoapods
 ```
 
-To integrate Uber Rides into your Xcode project, navigate to the directory that contains your project and create a new **Podfile** with `pod init` or open an existing one, then add the following line:
+To integrate Uber Rides into your Xcode project, navigate to the directory that contains your project and create a new **Podfile** with `pod init` or open an existing one, then add `pod 'UberRides'` to the main loop. If you are using the Swift SDK, make sure to add the line `use_frameworks!`.
 
 ```ruby
+use_frameworks!
+
+target 'Your Project Name' do
 pod 'UberRides'
+end
 ```
 
 Then, run the following command to install the dependency:
