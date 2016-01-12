@@ -14,8 +14,8 @@
 		AC0404921BFACD7C00AC1501 /* RequestButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404911BFACD7C00AC1501 /* RequestButton.swift */; };
 		AC0404941BFACDAF00AC1501 /* RequestDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404931BFACDAF00AC1501 /* RequestDeeplink.swift */; };
 		AC0404961BFACDC900AC1501 /* RidesClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404951BFACDC900AC1501 /* RidesClient.swift */; };
-		AC0404981BFACE0600AC1501 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC0404971BFACE0600AC1501 /* Media.xcassets */; };
 		AC04049A1BFACE5400AC1501 /* RequestDeeplinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404991BFACE5400AC1501 /* RequestDeeplinkTests.swift */; };
+		D8F92D9A1C4486E100D65712 /* UberRidesResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D8F92D991C4486E100D65712 /* UberRidesResources.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,8 +39,8 @@
 		AC0404911BFACD7C00AC1501 /* RequestButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestButton.swift; sourceTree = "<group>"; };
 		AC0404931BFACDAF00AC1501 /* RequestDeeplink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDeeplink.swift; sourceTree = "<group>"; };
 		AC0404951BFACDC900AC1501 /* RidesClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesClient.swift; sourceTree = "<group>"; };
-		AC0404971BFACE0600AC1501 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		AC0404991BFACE5400AC1501 /* RequestDeeplinkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDeeplinkTests.swift; sourceTree = "<group>"; };
+		D8F92D991C4486E100D65712 /* UberRidesResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UberRidesResources.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +89,7 @@
 				AC0404911BFACD7C00AC1501 /* RequestButton.swift */,
 				AC0404931BFACDAF00AC1501 /* RequestDeeplink.swift */,
 				AC0404951BFACDC900AC1501 /* RidesClient.swift */,
-				AC0404971BFACE0600AC1501 /* Media.xcassets */,
+				D8F92D991C4486E100D65712 /* UberRidesResources.bundle */,
 			);
 			path = UberRides;
 			sourceTree = "<group>";
@@ -179,6 +179,8 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				"zh-Hans",
+				"zh-Hant",
 			);
 			mainGroup = AC04046B1BFACD1D00AC1501;
 			productRefGroup = AC0404761BFACD1D00AC1501 /* Products */;
@@ -196,7 +198,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC0404981BFACE0600AC1501 /* Media.xcassets in Resources */,
+				D8F92D9A1C4486E100D65712 /* UberRidesResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

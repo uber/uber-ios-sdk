@@ -141,7 +141,8 @@ public class RequestButton: UIButton {
     // add title, image, and sizing configuration
     private func setContent() {
         // add title label
-        uberTitleLabel.text = "Ride there with Uber"
+        let bundle = NSBundle(forClass: RequestButton.self)
+        uberTitleLabel.text = NSLocalizedString("RequestButton.TitleText", bundle: bundle, comment: "Request button description")
         uberTitleLabel.font = UIFont.systemFontOfSize(17)
         uberTitleLabel.numberOfLines = 1;
         
