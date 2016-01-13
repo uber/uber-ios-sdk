@@ -47,12 +47,17 @@ public class RequestDeeplink: NSObject {
             setPickupLocationToCurrentLocation()
         }
         
-        let deeplink = "uber://?"
-        var parameterStrings: [String] = []
+        let components = NSURLComponents()
+        components.scheme = "uber"
+        components.host = ""
+        
+        var queryItems = [NSURLQueryItem]()
         for parameter in parameters {
-            parameterStrings.append(parameter.toString())
+            queryItems.append(parameter.toQueryItem())
         }
-        deeplinkURI = deeplink + parameterStrings.joinWithSeparator("&")
+        components.queryItems = queryItems
+        
+        deeplinkURI = components.string?.stringByRemovingPercentEncoding
         return deeplinkURI!
     }
     
@@ -191,11 +196,15 @@ private class QueryParameter: NSObject {
         value = parameterValue
         super.init()
     }
+
+    private func toQueryItem() -> NSURLQueryItem {
+        let queryItem = NSURLQueryItem(name: stringFromParameterName(), value: stringFromParamaterValue())
+        return queryItem
+    }
     
-    private func toString() -> String {
+    private func stringFromParamaterValue() -> String {
         let customAllowedChars =  NSCharacterSet(charactersInString: " =\"#%/<>?@\\^`{|}!$&'()*+,:;[]%").invertedSet
-        let stringFromParameterValue = value.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedChars)!
-        return "\(stringFromParameterName())=\(stringFromParameterValue)"
+        return value.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedChars)!
     }
     
     private func stringFromParameterName() -> String {
