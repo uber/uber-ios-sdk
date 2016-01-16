@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.authors      = { "Christine Kim" => "christinek@uber.com", "Farwa Naqi" => "farwa@uber.com" }
 
   s.platform     = :ios, "8.0"
-  s.source       = { :git => "https://github.com/uber/rides-ios-sdk.git", :tag => s.version }
+  s.source       = { :git => "https://github.com/uber/rides-ios-sdk.git", :tag => 'v' + s.version.to_s }
   s.source_files = "source/UberRides/*.swift"
   s.resource     = "source/UberRides/UberRidesResources.bundle/*"
   s.requires_arc = true
