@@ -82,7 +82,6 @@ public class RequestButton: UIButton {
         
         let clientID = RidesClient.sharedInstance.clientID
         deeplink = RequestDeeplink(withClientID: clientID!, fromSource: .Button)
-        deeplink!.build()
     }
     
     /**
@@ -91,7 +90,6 @@ public class RequestButton: UIButton {
     public func setPickupLocationToCurrentLocation() {
         if RidesClient.sharedInstance.hasClientID() {
             deeplink!.setPickupLocationToCurrentLocation()
-            deeplink!.build()
         }
     }
     
@@ -106,7 +104,6 @@ public class RequestButton: UIButton {
     public func setPickupLocation(latitude lat: String, longitude: String, nickname: String? = nil, address: String? = nil) {
         if RidesClient.sharedInstance.hasClientID() {
             deeplink!.setPickupLocation(latitude: lat, longitude: longitude, nickname: nickname, address: address)
-            deeplink!.build()
         }
     }
     
@@ -121,7 +118,6 @@ public class RequestButton: UIButton {
     public func setDropoffLocation(latitude lat: String, longitude: String, nickname: String? = nil, address: String? = nil) {
         if RidesClient.sharedInstance.hasClientID() {
             deeplink!.setDropoffLocation(latitude: lat, longitude: longitude, nickname: nickname, address: address)
-            deeplink!.build()
         }
     }
     
@@ -134,14 +130,14 @@ public class RequestButton: UIButton {
     public func setProductID(productID: String) {
         if RidesClient.sharedInstance.hasClientID() {
             deeplink!.setProductID(productID)
-            deeplink!.build()
         }
     }
     
     // add title, image, and sizing configuration
     private func setContent() {
         // add title label
-        uberTitleLabel.text = "Ride there with Uber"
+        let bundle = NSBundle(forClass: RequestButton.self)
+        uberTitleLabel.text = NSLocalizedString("RequestButton.TitleText", bundle: bundle, comment: "Request button description")
         uberTitleLabel.font = UIFont.systemFontOfSize(17)
         uberTitleLabel.numberOfLines = 1;
         
@@ -238,6 +234,7 @@ public class RequestButton: UIButton {
     // initiate deeplink when button is tapped
     public func uberButtonTapped(sender: UIButton) {
         if RidesClient.sharedInstance.hasClientID() {
+            deeplink!.build()
             deeplink!.execute()
         }
     }

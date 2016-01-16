@@ -28,15 +28,16 @@ import UIKit
 
 // RequestDeeplink builds and executes a deeplink to the native Uber app.
 public class RequestDeeplink: NSObject {
-    private var parameters: [QueryParameter]
+    private var parameters: QueryParameters
     private var clientID: String
     private var deeplinkURI: String?
     private var source: RequestDeeplink.SourceParameter
     
     public init(withClientID: String, fromSource: SourceParameter = .Deeplink) {
+        parameters = QueryParameters()
         clientID = withClientID
         source = fromSource
-        parameters = [QueryParameter(parameterName: .ClientID, parameterValue: clientID)]
+        parameters.setParameter(.ClientID, parameterValue: clientID)
     }
     
     /**
@@ -47,12 +48,18 @@ public class RequestDeeplink: NSObject {
             setPickupLocationToCurrentLocation()
         }
         
-        let deeplink = "uber://?"
-        var parameterStrings: [String] = []
-        for parameter in parameters {
-            parameterStrings.append(parameter.toString())
+        if !parameters.pendingChanges {
+            return deeplinkURI!
         }
-        deeplinkURI = deeplink + parameterStrings.joinWithSeparator("&")
+        
+        let components = NSURLComponents()
+        components.scheme = "uber"
+        components.host = ""
+        components.queryItems = parameters.getQueryItems()
+        
+        parameters.pendingChanges = false;
+        
+        deeplinkURI = components.string?.stringByRemovingPercentEncoding
         return deeplinkURI!
     }
     
@@ -74,38 +81,42 @@ public class RequestDeeplink: NSObject {
      Set the user's current location as a default pickup location.
      */
     public func setPickupLocationToCurrentLocation() {
-        parameters.append(QueryParameter(parameterName: .Action, parameterValue: "setPickup"))
-        parameters.append(QueryParameter(parameterName: .PickupDefault, parameterValue: "my_location"))
+        parameters.setParameter(.Action, parameterValue: "setPickup")
+        parameters.setParameter(.PickupDefault, parameterValue: "my_location")
+        parameters.deleteParameters([.PickupLatitude, .PickupLongitude, .PickupAddress, .PickupNickname])
     }
     
     /**
      Set deeplink pickup location information.
      */
     public func setPickupLocation(latitude lat: String, longitude: String, nickname: String? = nil, address: String? = nil) {
-        parameters.append(QueryParameter(parameterName: .Action, parameterValue: "setPickup"))
-        parameters.append(QueryParameter(parameterName: .PickupLatitude, parameterValue: lat))
-        parameters.append(QueryParameter(parameterName: .PickupLongitude, parameterValue: longitude))
+        parameters.deleteParameters([.PickupNickname, .PickupAddress])
+        parameters.setParameter(.Action, parameterValue: "setPickup")
+        parameters.setParameter(.PickupLatitude, parameterValue: lat)
+        parameters.setParameter(.PickupLongitude, parameterValue: longitude)
         
         if nickname != nil {
-            parameters.append(QueryParameter(parameterName: .PickupNickname, parameterValue: nickname!))
+            parameters.setParameter(.PickupNickname, parameterValue: nickname!)
         }
         if address != nil {
-            parameters.append(QueryParameter(parameterName: .PickupAddress, parameterValue: address!))
+            parameters.setParameter(.PickupAddress, parameterValue: address!)
         }
+        
+        parameters.deleteParameters([.PickupDefault])
     }
     
     /**
      Set deeplink dropoff location information.
      */
     public func setDropoffLocation(latitude lat: String, longitude: String, nickname: String? = nil, address: String? = nil) {
-        parameters.append(QueryParameter(parameterName: .DropoffLatitude, parameterValue: lat))
-        parameters.append(QueryParameter(parameterName: .DropoffLongitude, parameterValue: longitude))
+        parameters.setParameter(.DropoffLatitude, parameterValue: lat)
+        parameters.setParameter(.DropoffLongitude, parameterValue: longitude)
         
         if nickname != nil {
-            parameters.append(QueryParameter(parameterName: .DropoffNickname, parameterValue: nickname!))
+            parameters.setParameter(.DropoffNickname, parameterValue: nickname!)
         }
         if address != nil {
-            parameters.append(QueryParameter(parameterName: .DropoffAddress, parameterValue: address!))
+            parameters.setParameter(.DropoffAddress, parameterValue: address!)
         }
     }
     
@@ -114,25 +125,14 @@ public class RequestDeeplink: NSObject {
      location with the Rides API `GET /v1/products` endpoint.
      */
     public func setProductID(productID: String) {
-        parameters.append(QueryParameter(parameterName: .ProductID, parameterValue: productID))
+        parameters.setParameter(.ProductID, parameterValue: productID)
     }
     
     /**
      Return true if deeplink has set pickup latitude and longitude, false otherwise.
      */
     internal func pickupLocationSet() -> Bool {
-        var hasLatitude = false
-        var hasLongitude = false
-        
-        for parameter in parameters {
-            if parameter.name == .PickupLatitude {
-                hasLatitude = true
-            } else if parameter.name == .PickupLongitude {
-                hasLongitude = true
-            }
-        }
-        
-        return (hasLatitude && hasLongitude)
+        return (parameters.doesParameterExist(.PickupLatitude) && parameters.doesParameterExist(.PickupLongitude)) || parameters.doesParameterExist(.PickupDefault)
     }
     
     /**
@@ -158,8 +158,14 @@ public class RequestDeeplink: NSObject {
 }
 
 
-// Store information about the name and value of a query parameter.
-private class QueryParameter: NSObject {
+// Store mapping of parameter names to values
+private class QueryParameters: NSObject {
+    private var params = [String: String]()
+    private var pendingChanges: Bool
+    
+    private override init() {
+        pendingChanges = false;
+    }
     
     /**
      QueryParameterName is a set of query parameters than can be sent
@@ -183,22 +189,47 @@ private class QueryParameter: NSObject {
         case DropoffAddress
     }
     
-    private let name: QueryParameterName
-    private let value: String
-    
-    private init(parameterName: QueryParameterName, parameterValue: String) {
-        name = parameterName
-        value = parameterValue
-        super.init()
+    /**
+     Adds a query parameter. If parameterName has already been assigned a value,
+     its overwritten with parameterValue.
+     */
+    private func setParameter(parameterName: QueryParameterName, parameterValue: String) {
+        params[stringFromParameterName(parameterName)] = stringFromParameterValue(parameterValue)
+        pendingChanges = true
     }
     
-    private func toString() -> String {
-        let customAllowedChars =  NSCharacterSet(charactersInString: " =\"#%/<>?@\\^`{|}!$&'()*+,:;[]%").invertedSet
-        let stringFromParameterValue = value.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedChars)!
-        return "\(stringFromParameterName())=\(stringFromParameterValue)"
+    /**
+     Removes key-value pair of all query parameters in array of parameter names.
+    */
+    private func deleteParameters(parameters: Array<QueryParameterName>) {
+        for name in parameters {
+            params.removeValueForKey(stringFromParameterName(name))
+        }
+        pendingChanges = true
     }
     
-    private func stringFromParameterName() -> String {
+    /**
+     - returns: An array containing an NSURLQueryItem for every parameter
+     */
+    private func getQueryItems() -> Array<NSURLQueryItem> {
+        var queryItems = [NSURLQueryItem]()
+        
+        for (parameterName, parameterValue) in params {
+            let queryItem = NSURLQueryItem(name: parameterName, value: parameterValue)
+            queryItems.append(queryItem)
+        }
+        
+        return queryItems
+    }
+    
+    /**
+     - returns: true if given query parameter has been set; false otherwise.
+     */
+    private func doesParameterExist(parameterName: QueryParameterName) -> Bool {
+        return params[stringFromParameterName(parameterName)] != nil
+    }
+    
+    private func stringFromParameterName(name: QueryParameterName) -> String {
         switch name {
         case .Action:
             return "action"
@@ -225,5 +256,10 @@ private class QueryParameter: NSObject {
         case .DropoffAddress:
             return "dropoff[formatted_address]"
         }
+    }
+    
+    private func stringFromParameterValue(value: String) -> String {
+        let customAllowedChars =  NSCharacterSet(charactersInString: " =\"#%/<>?@\\^`{|}!$&'()*+,:;[]%").invertedSet
+        return value.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedChars)!
     }
 }
