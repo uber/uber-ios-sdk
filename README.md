@@ -9,7 +9,7 @@ This [Swift library] (https://developer.apple.com/library/ios/documentation/Gene
 
 ## Getting Started
 
-Before using this SDK, register your application on the [Uber Developer Site](https://developer.uber.com/dashboard/create)
+Before using this SDK, register your application on the [Uber Developer Site](https://developer.uber.com/dashboard/create).
 
 ### CocoaPods
 
