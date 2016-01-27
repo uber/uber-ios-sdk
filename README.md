@@ -35,6 +35,8 @@ Then, run the following command to install the dependency:
 $ pod install
 ```
 
+For Objective-C projects, set the **Embedded Content Contains Swift Code** flag in your project to **Yes** (found under **Build Options** in the **Build Phases** tab).
+
 ### Carthage
 
 Uber Rides is also available through [Carthage](https://github.com/Carthage/Carthage), a decentralized dependency manager that builds dependencies and provides you with binary frameworks, giving you full control over your project structure and setup.
@@ -48,7 +50,7 @@ $ brew install carthage
 
 To integrate Uber Rides into your Xcode project, navigate to the directory that contains your project and create a new **Cartfile** with `touch Cartfile` or open an existing one, then add the following line:
 
-```ogdl
+```
 github "uber/rides-ios-sdk"
 ```
 
@@ -58,7 +60,13 @@ Build the framework:
 $ carthage update
 ```
 
-Now add the `UberRides.framework` (in `Carthage/Build/iOS`) as a Linked Framework in Xcode (See the **Linked Frameworks and Libraries** section under the **General** tab of your project target).
+Now add the `UberRides.framework` (in `Carthage/Build/iOS`) as a Linked Framework in Xcode (See the **Linked Frameworks and Libraries** section under the **General** tab of your project target). 
+
+Then, on your application targets' **Build Phases** tab, click the '+' button and choose **New Run Script Phase**. Add the run script `/usr/local/bin/carthage copy-frameworks` and add the path to the UberRides framework under **Input Files**: `$(SRCROOT)/Carthage/Build/iOS/UberRides.framework`.
+
+![Screenshot](/img/carthage_script.png?raw=true "Carthage Run Script Screenshot")
+
+For Objective-C projects, set the **Embedded Content Contains Swift Code** flag to **Yes** (found under **Build Options** in the **Build Phases** tab).
 
 ### Manually Add Subprojects
 

@@ -15,7 +15,10 @@
 		AC0404941BFACDAF00AC1501 /* RequestDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404931BFACDAF00AC1501 /* RequestDeeplink.swift */; };
 		AC0404961BFACDC900AC1501 /* RidesClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404951BFACDC900AC1501 /* RidesClient.swift */; };
 		AC04049A1BFACE5400AC1501 /* RequestDeeplinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404991BFACE5400AC1501 /* RequestDeeplinkTests.swift */; };
-		D8F92D9A1C4486E100D65712 /* UberRidesResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D8F92D991C4486E100D65712 /* UberRidesResources.bundle */; };
+		D8A196BB1C56FC250050A264 /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = D8A196B71C56FC250050A264 /* en.lproj */; };
+		D8A196BC1C56FC250050A264 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8A196B81C56FC250050A264 /* Media.xcassets */; };
+		D8A196BD1C56FC250050A264 /* zh-Hans.lproj in Resources */ = {isa = PBXBuildFile; fileRef = D8A196B91C56FC250050A264 /* zh-Hans.lproj */; };
+		D8A196BE1C56FC250050A264 /* zh-Hant.lproj in Resources */ = {isa = PBXBuildFile; fileRef = D8A196BA1C56FC250050A264 /* zh-Hant.lproj */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,7 +43,10 @@
 		AC0404931BFACDAF00AC1501 /* RequestDeeplink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDeeplink.swift; sourceTree = "<group>"; };
 		AC0404951BFACDC900AC1501 /* RidesClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesClient.swift; sourceTree = "<group>"; };
 		AC0404991BFACE5400AC1501 /* RequestDeeplinkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDeeplinkTests.swift; sourceTree = "<group>"; };
-		D8F92D991C4486E100D65712 /* UberRidesResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UberRidesResources.bundle; sourceTree = "<group>"; };
+		D8A196B71C56FC250050A264 /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Resources/en.lproj; sourceTree = "<group>"; };
+		D8A196B81C56FC250050A264 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = Resources/Media.xcassets; sourceTree = "<group>"; };
+		D8A196B91C56FC250050A264 /* zh-Hans.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "zh-Hans.lproj"; path = "Resources/zh-Hans.lproj"; sourceTree = "<group>"; };
+		D8A196BA1C56FC250050A264 /* zh-Hant.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "zh-Hant.lproj"; path = "Resources/zh-Hant.lproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,13 +89,13 @@
 		AC0404771BFACD1D00AC1501 /* UberRides */ = {
 			isa = PBXGroup;
 			children = (
+				D8A196B61C56FC1A0050A264 /* Resources */,
 				AC0404781BFACD1D00AC1501 /* UberRides.h */,
 				AC04047A1BFACD1D00AC1501 /* Info.plist */,
 				AC04048F1BFACD6000AC1501 /* ColorUtil.swift */,
 				AC0404911BFACD7C00AC1501 /* RequestButton.swift */,
 				AC0404931BFACDAF00AC1501 /* RequestDeeplink.swift */,
 				AC0404951BFACDC900AC1501 /* RidesClient.swift */,
-				D8F92D991C4486E100D65712 /* UberRidesResources.bundle */,
 			);
 			path = UberRides;
 			sourceTree = "<group>";
@@ -102,6 +108,17 @@
 				AC0404861BFACD1D00AC1501 /* Info.plist */,
 			);
 			path = UberRidesTests;
+			sourceTree = "<group>";
+		};
+		D8A196B61C56FC1A0050A264 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D8A196B71C56FC250050A264 /* en.lproj */,
+				D8A196B81C56FC250050A264 /* Media.xcassets */,
+				D8A196B91C56FC250050A264 /* zh-Hans.lproj */,
+				D8A196BA1C56FC250050A264 /* zh-Hant.lproj */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,7 +215,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8F92D9A1C4486E100D65712 /* UberRidesResources.bundle in Resources */,
+				D8A196BE1C56FC250050A264 /* zh-Hant.lproj in Resources */,
+				D8A196BC1C56FC250050A264 /* Media.xcassets in Resources */,
+				D8A196BD1C56FC250050A264 /* zh-Hans.lproj in Resources */,
+				D8A196BB1C56FC250050A264 /* en.lproj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
