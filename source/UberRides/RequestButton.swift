@@ -101,9 +101,9 @@ public class RequestButton: UIButton {
      - parameter nickname:  Optional pickup location name
      - parameter address:   Optional pickup location address
      */
-    public func setPickupLocation(latitude lat: String, longitude: String, nickname: String? = nil, address: String? = nil) {
+    public func setPickupLocation(latitude latitude: Double, longitude: Double, nickname: String? = nil, address: String? = nil) {
         if RidesClient.sharedInstance.hasClientID() {
-            deeplink!.setPickupLocation(latitude: lat, longitude: longitude, nickname: nickname, address: address)
+            deeplink!.setPickupLocation(latitude: latitude, longitude: longitude, nickname: nickname, address: address)
         }
     }
     
@@ -115,9 +115,9 @@ public class RequestButton: UIButton {
      - parameter nickname:  Optional dropoff location name
      - parameter address:   Optional dropoff location address
      */
-    public func setDropoffLocation(latitude lat: String, longitude: String, nickname: String? = nil, address: String? = nil) {
+    public func setDropoffLocation(latitude latitude: Double, longitude: Double, nickname: String? = nil, address: String? = nil) {
         if RidesClient.sharedInstance.hasClientID() {
-            deeplink!.setDropoffLocation(latitude: lat, longitude: longitude, nickname: nickname, address: address)
+            deeplink!.setDropoffLocation(latitude: latitude, longitude: longitude, nickname: nickname, address: address)
         }
     }
     

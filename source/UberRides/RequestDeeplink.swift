@@ -88,12 +88,17 @@ public class RequestDeeplink: NSObject {
     
     /**
      Set deeplink pickup location information.
+     
+     - parameter latitude: The latitude coordinate for pickup.
+     - parameter longitude: The longitude coordinate for pickup.
+     - parameter nickname: A URL-encoded string of the pickup location name. (Optional)
+     - parameter address:  A URL-encoded string of the pickup address. (Optional)
      */
-    public func setPickupLocation(latitude lat: String, longitude: String, nickname: String? = nil, address: String? = nil) {
+    public func setPickupLocation(latitude latitude: Double, longitude: Double, nickname: String? = nil, address: String? = nil) {
         parameters.deleteParameters([.PickupNickname, .PickupAddress])
         parameters.setParameter(.Action, parameterValue: "setPickup")
-        parameters.setParameter(.PickupLatitude, parameterValue: lat)
-        parameters.setParameter(.PickupLongitude, parameterValue: longitude)
+        parameters.setParameter(.PickupLatitude, parameterValue: "\(latitude)")
+        parameters.setParameter(.PickupLongitude, parameterValue: "\(longitude)")
         
         if nickname != nil {
             parameters.setParameter(.PickupNickname, parameterValue: nickname!)
@@ -107,10 +112,16 @@ public class RequestDeeplink: NSObject {
     
     /**
      Set deeplink dropoff location information.
+     
+     - parameter latitude: The latitude coordinate for dropoff.
+     - parameter longitude: The longitude coordinate for dropoff.
+     - parameter nickname: A URL-encoded string of the dropoff location name. (Optional)
+     - parameter address:  A URL-encoded string of the dropoff address. (Optional)
      */
-    public func setDropoffLocation(latitude lat: String, longitude: String, nickname: String? = nil, address: String? = nil) {
-        parameters.setParameter(.DropoffLatitude, parameterValue: lat)
-        parameters.setParameter(.DropoffLongitude, parameterValue: longitude)
+    public func setDropoffLocation(latitude latitude: Double, longitude: Double, nickname: String? = nil, address: String? = nil) {
+        parameters.deleteParameters([.DropoffNickname, .DropoffAddress])
+        parameters.setParameter(.DropoffLatitude, parameterValue: "\(latitude)")
+        parameters.setParameter(.DropoffLongitude, parameterValue: "\(longitude)")
         
         if nickname != nil {
             parameters.setParameter(.DropoffNickname, parameterValue: nickname!)

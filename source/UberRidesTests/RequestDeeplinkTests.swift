@@ -28,10 +28,10 @@ import XCTest
 
 let clientID = "clientID1234"
 let productID = "productID1234"
-let pickupLat = "37.770"
-let pickupLong = "-122.466"
-let dropoffLat = "37.791"
-let dropoffLong = "-122.405"
+let pickupLat = 37.770
+let pickupLong = -122.466
+let dropoffLat = 37.791
+let dropoffLong = -122.405
 let pickupNickname = "California Academy of Science"
 let pickupAddress = "55 Music Concourse Drive, San Francisco"
 let dropoffNickname = "Pier 39"

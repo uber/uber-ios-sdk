@@ -140,15 +140,15 @@ We suggest passing additional parameters to make the Uber experience even more s
 ```swift
 // Swift
 button.setProductID("abc123-productID")
-button.setPickupLocation(latitude: "37.770", longitude: "-122.466", nickname: "California Academy of Sciences")
-button.setDropoffLocation(latitude: "37.791", longitude: "-122.405", nickname: "Pier 39")
+button.setPickupLocation(latitude: 37.770, longitude: -122.466, nickname: "California Academy of Sciences")
+button.setDropoffLocation(latitude: 37.791, longitude: -122.405, nickname: "Pier 39")
 ```
 
 ```objective-c
 // Objective-C
 [button setProductID:@"abc123-productID"];
-[button setPickupLocationWithLatitude:@"37.770" longitude:@"-122.466" nickname:@"California Academy of Sciences" address:nil];
-[button setDropoffLocationWithLatitude:@"37.791" longitude:@"-122.405" nickname:@"Pier 39" address:nil];
+[button setPickupLocationWithLatitude:37.770 longitude:-122.466 nickname:@"California Academy of Sciences" address:nil];
+[button setDropoffLocationWithLatitude:37.791 longitude:-122.405 nickname:@"Pier 39" address:nil];
 ```
 
 With all the necessary parameters set, pressing the button will seamlessly prompt a ride request confirmation screen.
