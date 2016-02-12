@@ -244,4 +244,34 @@ class UberRidesDeeplinkTests: XCTestCase {
         
         XCTAssertNotEqual(originalAddress, rebuiltAddress)
     }
+    
+    /**
+     *  Test createURL with source button.
+     */
+    func testCreateURLWithButtonSource() {
+        let urlString = "https://m.uber.com/sign-up?client_id=\(clientID)"
+        let deeplink = RequestDeeplink(withClientID: clientID, fromSource: .Button)
+        let url = deeplink.createURL(urlString)
+        
+        let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false)
+        XCTAssertNotNil(components)
+        
+        XCTAssertEqual(components!.queryItems!.count, 2)
+        XCTAssertTrue(components!.query!.containsString("&user-agent=rides-button-v0.1.0"))
+    }
+    
+    /**
+     *  Test createURL with source deeplink.
+     */
+    func testCreateURLWithDeeplinkSource() {
+        let urlString = "https://m.uber.com/sign-up?client_id=\(clientID)"
+        let deeplink = RequestDeeplink(withClientID: clientID, fromSource: .Deeplink)
+        let url = deeplink.createURL(urlString)
+        
+        let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false)
+        XCTAssertNotNil(components)
+        
+        XCTAssertEqual(components!.queryItems!.count, 2)
+        XCTAssertTrue(components!.query!.containsString("&user-agent=rides-deeplink-v0.1.0"))
+    }
 }

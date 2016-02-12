@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.3.1] 2016-02-11
+### Fixed
+- [Issue #12](https://github.com/uber/rides-ios-sdk/issues/12) where there's a "&" missing in the user-agent query item.
+
 ## [0.3.0] 2016-02-01
 ### Breaking
 - Change function signature of `setPickupLocationWithLatitude:longitude:nickname:address:` and `setDropoffLocationWithLatitude:longitude:nickname:address:` in `RequestButton` and `RequestDeeplink` to accept `Double` for latitude and longitude parameters instead of `String`.

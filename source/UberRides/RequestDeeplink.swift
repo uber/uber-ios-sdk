@@ -157,12 +157,12 @@ public class RequestDeeplink: NSObject {
     /**
      Create an NSURL from a String. Add parameter for tracking and affiliation program.
      */
-    private func createURL(var url: String) -> NSURL {
+    func createURL(var url: String) -> NSURL {
         switch source {
         case .Button:
             url += "&user-agent=rides-button-v0.1.0"
         case .Deeplink:
-            url += "user-agent=rides-deeplink-v0.1.0"
+            url += "&user-agent=rides-deeplink-v0.1.0"
         }
         return NSURL(string: url)!
     }
