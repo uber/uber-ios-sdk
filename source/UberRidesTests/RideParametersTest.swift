@@ -1,0 +1,158 @@
+//
+//  RideParametersTest.swift
+//  UberRides
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
+import XCTest
+import MapKit
+@testable import UberRides
+
+class RideParametersTest: XCTestCase {
+    private var versionNumber: String?
+    private var baseUserAgent: String?
+    
+    private var builder: RideParametersBuilder = RideParametersBuilder()
+    
+    override func setUp() {
+        super.setUp()
+        builder = RideParametersBuilder()
+        versionNumber = NSBundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
+        baseUserAgent = "rides-ios-v\(versionNumber!)"
+    }
+    
+    func testBuilder_withNoParams() {
+        let params = builder.build()
+        XCTAssertNotNil(params)
+        XCTAssertTrue(params.useCurrentLocationForPickup)
+        XCTAssertNil(params.pickupLocation)
+        XCTAssertNil(params.pickupAddress)
+        XCTAssertNil(params.pickupNickname)
+        XCTAssertNil(params.dropoffLocation)
+        XCTAssertNil(params.dropoffAddress)
+        XCTAssertNil(params.dropoffNickname)
+        XCTAssertNil(params.productID)
+        XCTAssertEqual(params.userAgent, baseUserAgent)
+    }
+    
+    func testBuilder_correctUseCurrentLocation() {
+        let testPickup = CLLocation(latitude: 32.0, longitude: -32.0)
+        builder.setPickupLocation(testPickup)
+        let params = builder.build()
+        XCTAssertFalse(params.useCurrentLocationForPickup)
+        XCTAssertEqual(testPickup, params.pickupLocation)
+        XCTAssertNil(params.pickupAddress)
+        XCTAssertNil(params.pickupNickname)
+        XCTAssertNil(params.dropoffLocation)
+        XCTAssertNil(params.dropoffAddress)
+        XCTAssertNil(params.dropoffNickname)
+        XCTAssertNil(params.productID)
+        XCTAssertEqual(params.userAgent, baseUserAgent)
+    }
+    
+    func testBuilder_withAllParameters() {
+
+        let testPickupLocation = CLLocation(latitude: 32.0, longitude: -32.0)
+        let testDropoffLocation = CLLocation(latitude: 62.0, longitude: -62.0)
+        let testPickupNickname = "testPickup"
+        let testPickupAddress = "123 pickup address"
+        let testDropoffNickname = "testDropoff"
+        let testDropoffAddress = "123 dropoff address"
+        let testProductID = "test ID"
+        let testSource = "test source"
+        let expectedUserAgent = "\(baseUserAgent!)-\(testSource)"
+        builder.setPickupLocation(testPickupLocation, nickname: testPickupNickname, address: testPickupAddress)
+        builder.setDropoffLocation(testDropoffLocation, nickname: testDropoffNickname, address: testDropoffAddress)
+        builder.setProductID(testProductID).setSource(testSource)
+        let params = builder.build()
+        
+        XCTAssertFalse(params.useCurrentLocationForPickup)
+        XCTAssertEqual(params.pickupLocation, testPickupLocation)
+        XCTAssertEqual(params.pickupAddress, testPickupAddress)
+        XCTAssertEqual(params.pickupNickname, testPickupNickname)
+        XCTAssertEqual(params.dropoffLocation, testDropoffLocation)
+        XCTAssertEqual(params.dropoffAddress, testDropoffAddress)
+        XCTAssertEqual(params.dropoffNickname, testDropoffNickname)
+        XCTAssertEqual(params.productID, testProductID)
+        XCTAssertEqual(params.userAgent, expectedUserAgent)
+    }
+    
+    func testBuilder_updateParameter() {
+        let testPickupLocation1 = CLLocation(latitude: 32.0, longitude: -32.0)
+        let testPickupLocation2 = CLLocation(latitude: 62.0, longitude: -62.0)
+        builder.setPickupLocation(testPickupLocation1)
+        builder.setPickupLocation(testPickupLocation2)
+        let params = builder.build()
+        XCTAssertFalse(params.useCurrentLocationForPickup)
+        XCTAssertEqual(params.pickupLocation, testPickupLocation2)
+        XCTAssertNil(params.pickupAddress)
+        XCTAssertNil(params.pickupNickname)
+        XCTAssertNil(params.dropoffLocation)
+        XCTAssertNil(params.dropoffAddress)
+        XCTAssertNil(params.dropoffNickname)
+        XCTAssertNil(params.productID)
+        XCTAssertEqual(params.userAgent, baseUserAgent)
+    }
+    
+    func testBuilder_useCurrentLocation() {
+        let testPickupLocation = CLLocation(latitude: 32.0, longitude: -32.0)
+        let testPickupNickname = "testPickup nickname"
+        let testPickupAddress = "123 test pickup st"
+        builder.setPickupLocation(testPickupLocation, nickname: testPickupNickname, address: testPickupAddress)
+        builder.setPickupToCurrentLocation()
+        let params = builder.build()
+        XCTAssertTrue(params.useCurrentLocationForPickup)
+        XCTAssertNil(params.pickupLocation)
+        XCTAssertNil(params.pickupAddress)
+        XCTAssertNil(params.pickupNickname)
+        XCTAssertNil(params.dropoffLocation)
+        XCTAssertNil(params.dropoffAddress)
+        XCTAssertNil(params.dropoffNickname)
+        XCTAssertNil(params.productID)
+        XCTAssertEqual(params.userAgent, baseUserAgent)
+    }
+    
+    func testBuilder_withExistingParameters() {
+        let expectedBuilder = RideParametersBuilder()
+        let testPickupLocation = CLLocation(latitude: 32.0, longitude: -32.0)
+        let testDropoffLocation = CLLocation(latitude: 62.0, longitude: -62.0)
+        let testPickupNickname = "testPickup"
+        let testPickupAddress = "123 pickup address"
+        let testDropoffNickname = "testDropoff"
+        let testDropoffAddress = "123 dropoff address"
+        let testProductID = "test ID"
+        let testSource = "test source"
+        
+        expectedBuilder.setPickupLocation(testPickupLocation, nickname: testPickupNickname, address: testPickupAddress)
+        expectedBuilder.setDropoffLocation(testDropoffLocation, nickname: testDropoffNickname, address: testDropoffAddress)
+        expectedBuilder.setProductID(testProductID).setSource(testSource)
+        let expectedParams = expectedBuilder.build()
+        let params = RideParametersBuilder(rideParameters: expectedParams).build()
+        
+        XCTAssertEqual(params.useCurrentLocationForPickup, expectedParams.useCurrentLocationForPickup)
+        XCTAssertEqual(params.pickupLocation, expectedParams.pickupLocation)
+        XCTAssertEqual(params.pickupAddress, expectedParams.pickupAddress)
+        XCTAssertEqual(params.pickupNickname, expectedParams.pickupNickname)
+        XCTAssertEqual(params.dropoffLocation, expectedParams.dropoffLocation)
+        XCTAssertEqual(params.dropoffAddress, expectedParams.dropoffAddress)
+        XCTAssertEqual(params.dropoffNickname, expectedParams.dropoffNickname)
+        XCTAssertEqual(params.productID, expectedParams.productID)
+        XCTAssertEqual(params.userAgent, expectedParams.userAgent)
+    }
+}

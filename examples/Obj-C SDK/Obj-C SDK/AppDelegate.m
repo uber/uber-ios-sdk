@@ -23,7 +23,8 @@
 //  THE SOFTWARE.
 
 #import "AppDelegate.h"
-@import UberRides;
+
+#import <UberRides/UberRides-Swift.h>
 
 @interface AppDelegate ()
 
@@ -34,7 +35,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [[RidesClient sharedInstance] configureClientID:@"YOUR_CLIENT_ID"];
+    
+    // Uncomment if your app is registered in China
+    //[UBSDKConfiguration setRegion:RegionChina];
+    
+    //Make requests to sandbox for development
+    [UBSDKConfiguration setSandboxEnabled:YES];
+    
     return YES;
 }
 

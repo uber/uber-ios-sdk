@@ -24,9 +24,11 @@
 
 
 import XCTest
+import CoreLocation
 @testable import UberRides
 
 let clientID = "clientID1234"
+let redirectURI = "http://localhost:1234/"
 let productID = "productID1234"
 let pickupLat = 37.770
 let pickupLong = -122.466
@@ -54,75 +56,86 @@ struct ExpectedDeeplink {
 }
 
 class UberRidesDeeplinkTests: XCTestCase {
+    private var versionNumber: String?
+    private var expectedDeeplinkUserAgent: String?
+    private var expectedButtonUserAgent: String?
+    let timeout: Double = 2
     
     override func setUp() {
         super.setUp()
+        Configuration.restoreDefaults()
+        Configuration.plistName = "testInfo"
+        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.setClientID(clientID)
+        Configuration.setSandboxEnabled(true)
+        versionNumber = NSBundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
+        expectedDeeplinkUserAgent = "rides-ios-v\(versionNumber!)-deeplink"
+        expectedButtonUserAgent = "rides-ios-v\(versionNumber!)-button"
     }
     
     override func tearDown() {
+        Configuration.restoreDefaults()
         super.tearDown()
-    }
-    
-    /**
-     Test that PickupLocationSet check returns False if no Pickup Parameters were added
-     */
-    func testPickupLocationSetIsFalseWithNoPickupParameters() {
-        let deeplink = RequestDeeplink(withClientID: clientID)
-        XCTAssertFalse(deeplink.pickupLocationSet())
-    }
-    
-    /**
-     Test that PickupLocationSet check returns True if Pickup Parameters are added
-     */
-    func testPickupLocationSetIsTrueWithPickupParameters() {
-        let deeplink = RequestDeeplink(withClientID: clientID)
-        deeplink.setPickupLocation(latitude: pickupLat, longitude: pickupLong)
-        XCTAssertTrue(deeplink.pickupLocationSet())
     }
     
     /**
      Test to build an UberDeeplink with no PickupLatLng and assign user's current location as default
      */
     func testBuildDeeplinkWithClientIDHasDefaultParameters() {
-        let deeplink = RequestDeeplink(withClientID: clientID)
-        let uri = deeplink.build()
+        let deeplink = RequestDeeplink()
+        guard let uri = deeplink.deeplinkURL?.absoluteString else {
+            XCTAssert(false)
+            return
+        }
         XCTAssertTrue(uri.containsString(ExpectedDeeplink.uberScheme))
         
         let components = NSURLComponents(string: uri)
-        XCTAssertEqual(components?.queryItems?.count, 3)
+        XCTAssertEqual(components?.queryItems?.count, 4)
         
         let query = components?.query
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.clientIDQuery))
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.setPickupAction))
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.defaultPickupQuery))
+        XCTAssertTrue(query!.containsString(expectedDeeplinkUserAgent!))
     }
     
     /**
      Test to build an UberDeeplink with a Pickup Latitude and Longitude.
      */
     func testBuildDeeplinkWithPickupLatLng() {
-        let deeplink = RequestDeeplink(withClientID: clientID)
-        deeplink.setPickupLocation(latitude: pickupLat, longitude: pickupLong)
+        let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
+        let rideParams = RideParametersBuilder().setPickupLocation(location).build()
+        let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = NSURLComponents(URL: NSURL(string: deeplink.build())!, resolvingAgainstBaseURL: false)
-        XCTAssertEqual(components?.queryItems?.count, 4)
+        guard let uri = deeplink.deeplinkURL else {
+            XCTAssert(false)
+            return
+        }
+        let components = NSURLComponents(URL: uri, resolvingAgainstBaseURL: false)
+        XCTAssertEqual(components?.queryItems?.count, 5)
         
         let query = components?.query
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.clientIDQuery))
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.setPickupAction))
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupLatQuery))
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupLongQuery))
+        XCTAssertTrue(query!.containsString(expectedDeeplinkUserAgent!))
     }
     
     /**
      Test to build an UberDeeplink with all optional Pickup Parameters.
      */
     func testBuildDeeplinkWithAllPickupParameters() {
-        let deeplink = RequestDeeplink(withClientID: clientID)
-        deeplink.setPickupLocation(latitude: pickupLat, longitude: pickupLong, nickname: pickupNickname, address: pickupAddress)
+        let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
+        let rideParams = RideParametersBuilder().setPickupLocation(location, nickname: pickupNickname, address: pickupAddress).build()
+        let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = NSURLComponents(URL: NSURL(string: deeplink.build())!, resolvingAgainstBaseURL: false)
-        XCTAssertEqual(components?.queryItems?.count, 6)
+        guard let uri = deeplink.deeplinkURL else {
+            XCTAssert(false)
+            return
+        }
+        let components = NSURLComponents(URL: uri, resolvingAgainstBaseURL: false)
+        XCTAssertEqual(components?.queryItems?.count, 7)
         
         let query = components?.query
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.clientIDQuery))
@@ -131,17 +144,23 @@ class UberRidesDeeplinkTests: XCTestCase {
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupLongQuery))
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupNicknameQuery))
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupAddressQuery))
+        XCTAssertTrue(query!.containsString(expectedDeeplinkUserAgent!))
     }
     
     /**
      Test to build an UberDeeplink with only Dropoff Parameters (set default Pickup Parameters).
      */
     func testBuildDeeplinkWithoutPickupParameters() {
-        let deeplink = RequestDeeplink(withClientID: clientID)
-        deeplink.setDropoffLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let location = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setDropoffLocation(location).build()
+        let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = NSURLComponents(URL: NSURL(string: deeplink.build())!, resolvingAgainstBaseURL: false)
-        XCTAssertEqual(components?.queryItems?.count, 5)
+        guard let uri = deeplink.deeplinkURL else {
+            XCTAssert(false)
+            return
+        }
+        let components = NSURLComponents(URL: uri, resolvingAgainstBaseURL: false)
+        XCTAssertEqual(components?.queryItems?.count, 6)
         
         let query = components?.query
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.clientIDQuery))
@@ -149,19 +168,25 @@ class UberRidesDeeplinkTests: XCTestCase {
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.defaultPickupQuery))
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffLatQuery))
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffLongQuery))
+        XCTAssertTrue(query!.containsString(expectedDeeplinkUserAgent!))
     }
     
     /**
      Test to build an UberDeeplink with all possible query parameters.
      */
     func testBuildDeeplinkWithAllParameters() {
-        let deeplink = RequestDeeplink(withClientID: clientID)
-        deeplink.setProductID(productID)
-        deeplink.setPickupLocation(latitude: pickupLat, longitude: pickupLong, nickname: pickupNickname, address: pickupAddress)
-        deeplink.setDropoffLocation(latitude: dropoffLat, longitude: dropoffLong, nickname: dropoffNickname, address: dropoffAddress)
+        let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
+        let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation, nickname: pickupNickname, address: pickupAddress)
+            .setDropoffLocation(dropoffLocation, nickname: dropoffNickname, address: dropoffAddress).build()
+        let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = NSURLComponents(URL: NSURL(string: deeplink.build())!, resolvingAgainstBaseURL: false)
-        XCTAssertEqual(components?.queryItems?.count, 11)
+        guard let uri = deeplink.deeplinkURL else {
+            XCTAssert(false)
+            return
+        }
+        let components = NSURLComponents(URL: uri, resolvingAgainstBaseURL: false)
+        XCTAssertEqual(components?.queryItems?.count, 12)
         
         let query = components?.query
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.clientIDQuery))
@@ -175,103 +200,80 @@ class UberRidesDeeplinkTests: XCTestCase {
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffLongQuery))
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffNicknameQuery))
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffAddressQuery))
+        XCTAssertTrue(query!.containsString(expectedDeeplinkUserAgent!))
     }
     
     /**
-     Test to set deeplink to default location, then override with another location.
-     Test ensures deeplink removes original default location parameter.
-     */
-    func testOverrideDefaultPickupWithPickupLocation() {
-        let deeplink = RequestDeeplink(withClientID: clientID)
-        deeplink.setPickupLocationToCurrentLocation()
-        
-        var components = NSURLComponents(URL: NSURL(string: deeplink.build())!, resolvingAgainstBaseURL: false)
-        XCTAssertEqual(components?.queryItems?.count, 3)
-        
-        var query = components?.query
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.defaultPickupQuery))
-        
-        deeplink.setPickupLocation(latitude: pickupLat, longitude: pickupLong)
-        components = NSURLComponents(URL: NSURL(string: deeplink.build())!, resolvingAgainstBaseURL: false)
-        query = components?.query
-        
-        XCTAssertEqual(components?.queryItems?.count, 4)
-        XCTAssertFalse(query!.containsString(ExpectedDeeplink.defaultPickupQuery))
-    }
-    
-    /**
-     Test to set deeplink to pickup location, then override with current location.
-     Test ensures deeplink removes original pickup location parameters.
-     */
-    func testOverridePickupLocationWithDefault() {
-        let deeplink = RequestDeeplink(withClientID: clientID)
-        deeplink.setPickupLocation(latitude: pickupLat, longitude: pickupLong, nickname: pickupNickname, address: pickupAddress)
-        
-        var components = NSURLComponents(URL: NSURL(string: deeplink.build())!, resolvingAgainstBaseURL: false)
-        XCTAssertEqual(components?.queryItems?.count, 6)
-        
-        deeplink.setPickupLocationToCurrentLocation()
-        components = NSURLComponents(URL: NSURL(string: deeplink.build())!, resolvingAgainstBaseURL: false)
-        let query = components?.query
-        
-        XCTAssertEqual(components?.queryItems?.count, 3)
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.defaultPickupQuery))
-    }
-    
-    /**
-     Test to rebuild deep link without making changes and verify that the same string is returned.
-     */
-    func testRebuildingDeeplinkWithoutChanges() {
-        let deeplink = RequestDeeplink(withClientID: clientID)
-        deeplink.setPickupLocation(latitude: pickupLat, longitude: pickupLong, nickname: pickupNickname, address: pickupAddress)
-        
-        let originalAddress = unsafeAddressOf(deeplink.build())
-        let rebuiltAddress = unsafeAddressOf(deeplink.build())
-        
-        XCTAssertEqual(originalAddress, rebuiltAddress)
-    }
-    
-    /**
-     Test to rebuild deep link after making changes and verify that the deep link has been built again.
-     */
-    func testRebuildingDeeplinWithChanges() {
-        let deeplink = RequestDeeplink(withClientID: clientID)
-        deeplink.setPickupLocation(latitude: pickupLat, longitude: pickupLong, nickname: pickupNickname, address: pickupAddress)
-        
-        let originalAddress = unsafeAddressOf(deeplink.build())
-        deeplink.setProductID(productID)
-        let rebuiltAddress = unsafeAddressOf(deeplink.build())
-        
-        XCTAssertNotEqual(originalAddress, rebuiltAddress)
-    }
-    
-    /**
-     *  Test createURL with source button.
-     */
+    *  Test createURL with source button.
+    */
     func testCreateURLWithButtonSource() {
-        let urlString = "https://m.uber.com/sign-up?client_id=\(clientID)"
-        let deeplink = RequestDeeplink(withClientID: clientID, fromSource: .Button)
-        let url = deeplink.createURL(urlString)
+        let expectedUrlString = "https://m.uber.com/sign-up?client_id=\(clientID)&user-agent=\(expectedButtonUserAgent!)"
+        let urlString = "https://m.uber.com/sign-up"
+        let rideParams = RideParametersBuilder().setSource(RideRequestButton.sourceString).build()
+        let deeplink = RequestDeeplink(rideParameters: rideParams)
+        guard let url = deeplink.createURL(urlString) else {
+            XCTAssert(false)
+            return
+        }
         
         let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false)
         XCTAssertNotNil(components)
         
+        XCTAssertEqual(expectedUrlString, url.absoluteString)
         XCTAssertEqual(components!.queryItems!.count, 2)
-        XCTAssertTrue(components!.query!.containsString("&user-agent=rides-button-v0.1.0"))
+        XCTAssertTrue(components!.query!.containsString("&user-agent=\(expectedButtonUserAgent!)"))
     }
     
     /**
      *  Test createURL with source deeplink.
      */
     func testCreateURLWithDeeplinkSource() {
-        let urlString = "https://m.uber.com/sign-up?client_id=\(clientID)"
-        let deeplink = RequestDeeplink(withClientID: clientID, fromSource: .Deeplink)
-        let url = deeplink.createURL(urlString)
+        let expectedUrlString = "https://m.uber.com/sign-up?client_id=\(clientID)&user-agent=\(expectedDeeplinkUserAgent!)"
+        let urlString = "https://m.uber.com/sign-up"
+        let rideParams = RideParametersBuilder().setSource(RequestDeeplink.sourceString).build()
+        let deeplink = RequestDeeplink(rideParameters: rideParams)
+        guard let url = deeplink.createURL(urlString) else {
+            XCTAssert(false)
+            return
+        }
         
         let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false)
         XCTAssertNotNil(components)
         
+        XCTAssertEqual(expectedUrlString, url.absoluteString)
         XCTAssertEqual(components!.queryItems!.count, 2)
-        XCTAssertTrue(components!.query!.containsString("&user-agent=rides-deeplink-v0.1.0"))
+        XCTAssertTrue(components!.query!.containsString("&user-agent=\(expectedDeeplinkUserAgent!)"))
+    }
+    
+    func testDeeplinkDefaultSource() {
+        let expectation = expectationWithDescription("Test Deeplink source parameter")
+        let expectationClosure: (NSURL?) -> (Bool) = { url in
+            expectation.fulfill()
+            guard let url = url, let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false), let items = components.queryItems else {
+                XCTAssert(false)
+                return false
+            }
+            XCTAssertTrue(items.count > 0)
+            var foundUserAgent = false
+            for item in items {
+                if (item.name == "user-agent") {
+                    if let value = item.value {
+                        foundUserAgent = true
+                        XCTAssertTrue(value.containsString(RequestDeeplink.sourceString))
+                        break
+                    }
+                }
+            }
+            XCTAssert(foundUserAgent)
+            return false
+        }
+        
+        let deeplink = RequestDeeplinkMock(rideParameters: RideParametersBuilder().build(), testClosure: expectationClosure)
+        
+        deeplink.execute()
+        
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            XCTAssertNil(error)
+        })
     }
 }

@@ -32,7 +32,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        RidesClient.sharedInstance.configureClientID("YOUR_CLIENT_ID")
+        
+        // Uncomment if your app is registered in China
+        //Configuration.setRegion(.China)
+        
+        // Make requests to sandbox by default
+        Configuration.setSandboxEnabled(true)
         return true
     }
 

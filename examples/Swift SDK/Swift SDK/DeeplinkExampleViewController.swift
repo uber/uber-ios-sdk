@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  DeeplinkExampleViewController.swift
 //  Swift SDK
 //
 //  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
@@ -24,11 +24,16 @@
 
 import UIKit
 import UberRides
+import CoreLocation
 
-class ViewController: UIViewController {
+/// This class provides an example for using the RideRequestButton to initiate a deeplink
+/// into the Uber app
+class DeeplinkExampleViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationItem.title = "Deeplink Buttons"
         
         // create background UIViews
         let topView = UIView()
@@ -37,14 +42,28 @@ class ViewController: UIViewController {
         view.addSubview(bottomView)
         
         // add black request button with default configurations
-        let blackRequestButton = RequestButton()
+        let blackRequestButton = RideRequestButton()
         topView.addSubview(blackRequestButton)
         
         // add white request button and add custom configurations
-        let whiteRequestButton = RequestButton(colorStyle: .White)
-        whiteRequestButton.setProductID("a1111c8c-c720-46c3-8534-2fcdd730040d")
-        whiteRequestButton.setPickupLocation(latitude: 37.770, longitude: -122.466, nickname: "California Academy of Sciences")
-        whiteRequestButton.setDropoffLocation(latitude: 37.791, longitude: -122.405, nickname: "Pier 39")
+        let whiteRequestButton = RideRequestButton()
+        
+        //Create the DeeplinkRequestingBehavior
+        //The RideRequestButton is initialized with this behavior by default, shown
+        //as an example
+        let deeplinkBehavior = DeeplinkRequestingBehavior()
+        whiteRequestButton.requestBehavior = deeplinkBehavior
+        
+        whiteRequestButton.colorStyle = .White
+        let parameterBuilder = RideParametersBuilder()
+        parameterBuilder.setProductID("a1111c8c-c720-46c3-8534-2fcdd730040d")
+        let pickupLocation = CLLocation(latitude: 37.770, longitude: -122.466)
+        parameterBuilder.setPickupLocation(pickupLocation, nickname: "California Academy of Sciences")
+        let dropoffLocation = CLLocation(latitude: 37.791, longitude: -122.405)
+        parameterBuilder.setDropoffLocation(dropoffLocation, nickname: "Pier 39")
+
+        whiteRequestButton.rideParameters = parameterBuilder.build()
+        
         bottomView.addSubview(whiteRequestButton)
         
         // position UIViews and request buttons
@@ -75,7 +94,7 @@ class ViewController: UIViewController {
     }
     
     // center button position inside each background UIView
-    func centerButton(forButton button: RequestButton, inView: UIView) {
+    func centerButton(forButton button: RideRequestButton, inView: UIView) {
         button.translatesAutoresizingMaskIntoConstraints = false
         
         // position constraints
@@ -85,12 +104,5 @@ class ViewController: UIViewController {
         // add constraints to view
         inView.addConstraints([horizontalConstraint, verticalConstraint])
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-
 }
 

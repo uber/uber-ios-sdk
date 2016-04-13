@@ -1,6 +1,6 @@
 //
-//  ColorUtil.swift
-//  UberRides
+//  UBSDKExampleTableViewCell.h
+//  Obj-C SDK
 //
 //  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
 //
@@ -22,41 +22,30 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+#import <UIKit/UIKit.h>
 
-import Foundation
+NS_ASSUME_NONNULL_BEGIN
 
-@objc internal enum UberButtonColor: Int {
-    case UberBlack
-    case UberWhite
-    case BlackHighlighted
-    case WhiteHighlighted
-}
+@interface UBSDKExampleTableViewCell : UITableViewCell
 
-private func hexCodeFromColor(color: UberButtonColor) -> String {
-    switch color {
-    case .UberBlack:
-        return "09091A"
-    case .UberWhite:
-        return "C0C0C8"
-    case .BlackHighlighted:
-        return "222231"
-    case .WhiteHighlighted:
-        return "CDCDD3"
-    }
-}
+/**
+ Initializes a UBSDKExampleTableViewCell with the provided behaviorBlock.
 
-// convert hex color code into UIColor
-internal func uberUIColor(color: UberButtonColor) -> UIColor {
-    let hexCode = hexCodeFromColor(color)
-    let scanner = NSScanner(string: hexCode)
-    var color: UInt32 = 0;
-    scanner.scanHexInt(&color)
-    
-    let mask = 0x000000FF
-    
-    let redValue = CGFloat(Int(color >> 16)&mask)/255.0
-    let greenValue = CGFloat(Int(color >> 8)&mask)/255.0
-    let blueValue = CGFloat(Int(color)&mask)/255.0
-    
-    return UIColor(red: redValue, green: greenValue, blue: blueValue, alpha: 1.0)
-}
+ @param behaviorBlock The block to be executed when executeBehaviorBlock is called
+ 
+ @return Initialized UBSDKExcampleTableViewCell
+ */
+- (id)initWithBehaviorBlock:(void (^_Nullable)(void))behaviorBlock NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier NS_UNAVAILABLE;
+
+/**
+ Executes the behavior block that was set during initialization. If no block was provided, this method does nothing.
+ */
+- (void)executeBehaviorBlock;
+
+@end
+
+NS_ASSUME_NONNULL_END

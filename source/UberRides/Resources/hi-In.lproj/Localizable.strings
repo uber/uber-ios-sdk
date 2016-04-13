@@ -1,0 +1,20 @@
+/* The title of the request button that deep links to the Uber app */
+"Ride there with Uber" = "Uber के साथ राइड करें";
+"Sign in with Uber" = "Uber के साथ साइन इन करें";
+"There was a problem authenticating you." = "आपका प्रमाणन करने में कोई समस्या थी.";
+"The Ride Request Widget encountered a problem." = "राइड अनुरोध विजेट में कोई समस्या आई.";
+"OK" = "ठीक";
+"Done" = "संपन्न हुआ";
+"Invalid Client ID provided." = "Invalid Client ID provided.";
+"Invalid Redirect URI provided." = "Invalid Redirect URI provided.";
+"The server was unable to understand your request." = "The server was unable to understand your request.";
+"Unable to interpret the response from the server." = "Unable to interpret the response from the server.";
+"Your app is not authorized for the requested scopes." = "Your app is not authorized for the requested scopes.";
+"The Redirect URI provided did not match what was expected." = "The Redirect URI provided did not match what was expected.";
+"A server error occurred." = "A server error occurred.";
+"Unable to present the login view." = "Unable to present the login view.";
+"Unable to save the access token." = "Unable to save the access token.";
+"Login is temporarily unavailable." = "Login is temporarily unavailable.";
+"User cancelled the login process." = "User cancelled the login process.";
+"Try Again" = "पुन: प्रयास करें";
+"Cancel" = "रद्द";

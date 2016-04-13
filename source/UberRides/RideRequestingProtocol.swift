@@ -1,8 +1,8 @@
 //
-//  ViewController.h
-//  Obj-C SDK
+//  RideRequestingProtocol.swift
+//  UberRides
 //
-//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +22,15 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
-
-@interface ViewController : UIViewController
-
-
-@end
-
+/**
+ *  Protocol for an object that defines how to request a ride. Is expected to be used
+ *  by any control that can request a ride for a user.
+ */
+@objc(UBSDKRideRequesting) public protocol RideRequesting {
+     /**
+     Requests a ride using the provided RideParameters.
+     
+     - parameter rideParameters: The RideParameters to use for the ride request
+     */
+    @objc func requestRide(rideParameters: RideParameters?)
+}

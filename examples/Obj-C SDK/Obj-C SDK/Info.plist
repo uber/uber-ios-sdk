@@ -40,5 +40,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UberClientID</key>
+	<string>YOUR_CLIENT_ID</string>
+	<key>UberCallbackURI</key>
+	<string>callback://your_callback_uri</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We use your location to make specifying a pickup spot easy as pie</string>
 </dict>
 </plist>
