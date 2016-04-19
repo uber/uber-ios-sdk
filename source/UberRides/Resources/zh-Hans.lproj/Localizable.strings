@@ -18,3 +18,4 @@
 "User cancelled the login process." = "User cancelled the login process.";
 "Try Again" = "重试";
 "Cancel" = "取消";
+"The operation you are attempting is not supported on the current device." = "The operation you are attempting is not supported on the current device.";

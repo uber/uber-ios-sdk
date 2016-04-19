@@ -403,4 +403,45 @@ class RideRequestViewControllerTests: XCTestCase {
         })
     }
     
+    func testPresentNotSupportedErrorAlert_whenNotSupportedError() {
+        let expectation = expectationWithDescription("Test presentNotSupportedAlert() call")
+        
+        let notSupportedClosure: () -> () = {
+            expectation.fulfill()
+        }
+        let testIdentifier = "testAccessTokenIdentifier"
+        TokenManager.deleteToken(testIdentifier)
+        
+        let loginManager = LoginManager(accessTokenIdentifier: testIdentifier)
+        
+        let rideRequestViewControllerMock = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), loginManager: loginManager, notSupportedClosure: notSupportedClosure)
+        
+        rideRequestViewControllerMock.rideRequestView(rideRequestViewControllerMock.rideRequestView, didReceiveError: RideRequestViewErrorFactory.errorForType(.NotSupported))
+        
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            XCTAssertNil(error)
+        })
+    }
+    
+    func testPresentNotSupportedErrorAlert_presentsAlertView() {
+        let expectation = expectationWithDescription("Test presentNotSupportedAlert() call")
+        
+        let presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ()) = { (viewController, flag, completion) in
+            expectation.fulfill()
+            XCTAssertTrue(viewController.dynamicType == UIAlertController.self)
+        }
+        
+        let testIdentifier = "testAccessTokenIdentifier"
+        TokenManager.deleteToken(testIdentifier)
+        
+        let loginManager = LoginManager(accessTokenIdentifier: testIdentifier)
+        
+        let rideRequestViewControllerMock = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), loginManager: loginManager, presentViewControllerClosure: presentViewControllerClosure)
+        
+        rideRequestViewControllerMock.rideRequestView(rideRequestViewControllerMock.rideRequestView, didReceiveError: RideRequestViewErrorFactory.errorForType(.NotSupported))
+        
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            XCTAssertNil(error)
+        })
+    }
 }

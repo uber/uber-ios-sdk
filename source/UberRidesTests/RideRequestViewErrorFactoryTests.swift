@@ -27,6 +27,8 @@ class RideRequestViewErrorFactoryTests: XCTestCase {
     let expectedErrorToStringMapping = [
         RideRequestViewErrorType.AccessTokenExpired : RideRequestViewErrorType.AccessTokenExpired.toString(),
         RideRequestViewErrorType.AccessTokenMissing : RideRequestViewErrorType.AccessTokenMissing.toString(),
+        RideRequestViewErrorType.NetworkError : RideRequestViewErrorType.NetworkError.toString(),
+        RideRequestViewErrorType.NotSupported : RideRequestViewErrorType.NotSupported.toString(),
         RideRequestViewErrorType.Unknown : RideRequestViewErrorType.Unknown.toString()
     ]
     

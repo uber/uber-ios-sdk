@@ -41,11 +41,23 @@ For Objective-C projects, set the **Embedded Content Contains Swift Code** flag 
 
 You can integrate Uber Rides into your project manually without using a dependency manager.
 
-Drag the `UberRides` project into your own and add the resource as an **Embedded Binary**, as well as a **Target Dependency** and **Linked Framework** (under Build Phases) in order to build on the simulator and on a device.
+Drag the `UberRides.xcodeproj` project into your project as a subproject
 
-<p align="center">
-  <img src="https://github.com/uber/rides-ios-sdk/blob/master/img/manual_install.png?raw=true" alt="Manually Install Framework"/>
-</p>
+In your project's Build Target, click on the **General** tab and then under **Embedded Binaries** click the `+` button. Choose the `UberRides.framework` in your project.
+
+Now click on the `UberRides.xcodeproj` sub project and open the **General** tab. Under **Linked Frameworks and Libraries** delete the `Pods.framework` entry
+
+Now click on **Build Phase** (still in the UberRides subproject) and delete the **Check Pods Manifest.lock** & **Copy Pods Resources** script phases
+
+Now we need to get our dependencies. Clone the ObjectMapper dependency [found here](https://github.com/Hearst-DD/ObjectMapper) (we use version 1.1.5)
+
+Once you have that, also drag the `ObjectMapper.xcodeproj` into your project
+
+Click back onto the UberRides subproject, go to the **General** tab and click the `+` button under **Linked Frameworks and Libraries**
+
+Choose the ObjectMapper iOS framework
+
+Now build your project and everything should be good to go
 
 ### Configuring iOS 9.0
 
@@ -78,7 +90,7 @@ Add the following code snippet, replacing the placeholders with your app’s inf
 
 Additionally, the SDK provides a static Configuration class to further customize your settings. Inside of `application:didFinishLaunchingWithOptions:` in your `AppDelegate` is a good place to do this:
 
-```
+```swift
 // Don’t forget to import UberRides
 // Swift
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -91,7 +103,7 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
     }
 ```
 
-```
+```objective-c
 // Objective-C
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // China based apps should specify the region
@@ -112,7 +124,7 @@ Getting the user to authorize location services can be done with Apple’s CoreL
 
 The Uber Rides SDK provides a simple way to add the Ride Request Widget in only a few lines of code via the `RideRequestButton`. You simply need to provide a `RideRequesting` object and an optional `RideParameters` object.
 
-```
+```swift
 // Swift
 // Pass in a UIViewController to modally present the Ride Request Widget over
 let behavior = RideRequestViewRequestingBehavior(presentingViewController: self)
@@ -123,7 +135,7 @@ let button = RideRequestButton(rideParameters: parameters, requestingBehavior: b
 self.view.addSubview(button)
 ```
 
-```
+```objective-c
 // Objective-C
 // Pass in a UIViewController to modally present the Ride Request Widget over
 id<UBSDKRideRequesting> behavior = [[UBSDKRideRequestViewRequestingBehavior alloc] initWithPresentingViewController: self];
@@ -140,7 +152,7 @@ That’s it! When a user taps the button, a **RideRequestViewController** will b
 
 Basic error handling is provided by default, but can be overwritten by specifying a **RideRequestViewControllerDelegate**.
 
-```
+```swift
 // Swift
 extension your_class : RideRequestViewControllerDelegate {
    func rideRequestViewController(rideRequestViewController: RideRequestViewController, didReceiveError error: NSError) {
@@ -151,6 +163,10 @@ extension your_class : RideRequestViewControllerDelegate {
             // No AccessToken saved
         case .AccessTokenExpired:
             // AccessToken expired / invalid
+        case .NetworkError:
+            // A network connectivity error
+        case .NotSupported:
+            // The attempted operation is not supported on the current device
         case .Unknown:
             // Other error
         }
@@ -165,7 +181,7 @@ behavior.modalRideRequestViewController.rideRequestViewController.delegate = del
 let button = RideRequestButton(rideParameters: parameters, requestingBehavior: behavior)
 ```
 
-```
+```objective-c
 // Objective-C
 // Need to implement the UBSDKRideRequestViewControllerDelegate
 @interface your_class () <UBSDKRideRequestViewControllerDelegate>
@@ -183,6 +199,9 @@ let button = RideRequestButton(rideParameters: parameters, requestingBehavior: b
             break;
         case RideRequestViewErrorTypeAccessTokenMissing:
             // AccessToken expired / invalid
+            break;
+        case RideRequestViewErrorTypeNetworkError:
+            // A network connectivity error
             break;
         case RideRequestViewErrorTypeUnknown:
             // Other error
@@ -205,7 +224,7 @@ UBSDKRideRequestButton *button = [[UBSDKRideRequestButton alloc] initWithRidePar
 
 Import the library into your project, and add a Ride Request Button to your view like you would any other UIView:
 
-```
+```swift
 // Swift
 import UberRides
 
@@ -213,7 +232,7 @@ let button = RideRequestButton()
 view.addSubview(button)
 ```
 
-```
+```objective-c
 // Objective-C
 @import UberRides;
 
@@ -227,7 +246,7 @@ This will create a request button with default behavior, with the pickup pin set
 
 The SDK provides an simple object for defining your ride requests. The `RideParameters` object lets you specify pickup location, dropoff location, product ID, and more. Creating `RideParameters` is easy using the `RideParametersBuilder` object.
 
-```
+```swift
 // Swift
 let builder = RideParametersBuilder()
 let pickupLocation = CLLocation(latitude: 37.787654, longitude: -122.402760)
@@ -237,7 +256,7 @@ builder.setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation)
 let rideParameters = builder.build()
 ```
 
-```
+```objective-c
 // Objective-C
 UBSDKRideParametersBuilder *builder = [[UBSDKRideParametersBuilder alloc] init];
 CLLocation *pickupLocation = [[CLLocation alloc] initWithLatitude:37.787654 longitude:-122.402760];
@@ -249,7 +268,7 @@ UBSDKRideParameters *rideParameters = [builder build];
 
 You can also have the SDK determine the user’s current location (you must handle getting location permission beforehand, however)
 
-```
+```swift
 // Swift
 // If no pickup location is specified, the default is to use current location
 let parameters = RideParametersBuilder().build()
@@ -259,7 +278,7 @@ builder.setPickupToCurrentLocation()
 let parameters = builder.build()  // Both 'parameters' variables are equivalent
 ```
 
-```
+```objective-c
 // Objective-C
 // If no pickup location is specified, the default is to use current location
 UBSDKRideParameters *parameters = [[[UBSDKRideParametersBuilder alloc] init] build];
@@ -275,13 +294,13 @@ We suggest passing additional parameters to make the Uber experience even more s
 
 The default color has a black background with white text. You can update the button to have a white background with black text by setting the color style
 
-```
+```swift
 // Swift
 let button = RideRequestButton() // Black Background, White Text
 button.colorStyle = .White // White Background, Black Text
 ```
 
-```
+```objective-c
 // Objective-C
 UBSDKRideRequestButton *button = [[UBSDKRideRequestButton alloc] init]; // Black Background, White Text
 [button setColorStyle:RequestButtonColorStyleWhite]; // White Background, Black Text
@@ -293,7 +312,7 @@ If you want to provide a more custom experience in your app, there are a few cla
 ### Implicit Grant Authorization
 Before you can request any rides, you need to get an `AccessToken`. The Uber Rides SDK provides the `LoginManager` class for this task. Simply instantiate an instance use its login method to present the login screen to the user.
 
-```
+```swift
 // Swift
 let loginManager = LoginManager()
 loginManager.login(requestedScopes:[.RideWidgets], presentingViewController: self, completion: { accessToken, error in
@@ -302,7 +321,7 @@ loginManager.login(requestedScopes:[.RideWidgets], presentingViewController: sel
 })
 ```
 
-```
+```objective-c
 // Objective-C
 UBSDKLoginManager *loginManager = [[UBSDKLoginManager alloc] init];
 [loginManager loginWithRequestedScopes:@[ UBSDKRidesScope.RideWidgets ] presentingViewController: self completion: ^(UBSDKAccessToken * _Nullable accessToken, NSError * _Nullable error) {
@@ -318,7 +337,7 @@ The SDK presents a web view controller where the user logs into their Uber accou
 ### Custom Authorization / TokenManager
 If your app allows users to authorize via your own customized logic, you will need to create an `AccessToken` manually and save it in the keychain using the `TokenManager`.
 
-```
+```swift
 // Swift
 let accessTokenString = "access_token_string"
 let token = AccessToken(tokenString: accessTokenString)
@@ -329,7 +348,7 @@ if TokenManager.saveToken(token) {
 }
 ```
 
-```
+```objective-c
 // Objective-C
 NSString *accessTokenString = @"access_token_string";
 UBSDKAccessToken *token = [[UBSDKAccessToken alloc] initWithTokenString: accessTokenString];
@@ -342,13 +361,13 @@ if ([UBSDKTokenManager saveToken: token]) {
 
 The `TokenManager` can also be used to fetch and delete `AccessToken`s
 
-```
+```swift
 // Swift
 TokenManger.fetchToken()
 TokenManager.deleteToken()
 ```
 
-```
+```objective-c
 // Objective-C
 [UBSDKTokenManager fetchToken];
 [UBSDKTokenManager deleteToken];
@@ -357,7 +376,7 @@ TokenManager.deleteToken()
 ### RideRequestView
 The `RideRequestView` is like any other view you’d add to your app. Create a new instance using a `RideParameters` object and add it to your app wherever you like. 
 
-```
+```swift
 // Swift
 // Example of setting up the RideRequestView
 let location = CLLocation(latitude: 37.787654, longitude: -122.402760)
@@ -366,7 +385,7 @@ let rideRequestView = RideRequestView(rideParameters: parameters, frame: self.vi
 self.view.addSubview(rideRequestView)
 ```
 
-```
+```objective-c
 // Objective-C
 // Example of setting up the UBSDKRideRequestView
 CLLocation *location = [[CLLocation alloc] initWithLatitude: 37.787654 longitude: -122.402760];
@@ -380,7 +399,7 @@ That’s it! When you’re ready to show the control, call the load() function. 
 
 You can also optionally specify a `RideRequestViewDelegate` to handle errors loading the widget.
 
-```
+```swift
 // Swift
 extension your_class : RideRequestViewDelegate {
    func rideRequestView(rideRequestView: RideRequestView, didReceiveError error: NSError) {
@@ -391,13 +410,17 @@ extension your_class : RideRequestViewDelegate {
             // No AccessToken saved
         case .AccessTokenExpired:
             // AccessToken expired / invalid
+        case .NetworkError:
+            // A network connectivity error
+        case .NotSupported:
+            // The attempted operation is not supported on the current device
         case .Unknown:
             // Other error
         }
     }
 }
 ```
-```
+```objective-c
 // Objective-C
 // Delegate methods
 - (void)rideRequestView:(UBSDKRideRequestView *)rideRequestView didReceiveError:(NSError *)error {
@@ -411,6 +434,9 @@ extension your_class : RideRequestViewDelegate {
         case RideRequestViewErrorTypeAccessTokenMissing:
             // AccessToken expired / invalid
             break;
+        case RideRequestViewErrorTypeNetworkError:
+        	  // A network connectivity error
+        	  break;
         case RideRequestViewErrorTypeUnknown:
             // Other error
             break;
@@ -423,14 +449,14 @@ extension your_class : RideRequestViewDelegate {
 ### RideRequestViewController
 A `RideRequestViewController` is simply a `UIViewController` that contains a fullscreen `RideRequestView`. It also handles logging in non-authenticated users for you. Create a new instance with your desired `RideParameters` and `LoginManager` (used to log in, if necessary). 
 
-```
+```swift
 // Swift
 // Setting up a RideRequestViewController
 let parameters = RideParametersBuilder().build()
 let loginManager = LoginManager()
 let rideRequestViewController = RideRequestViewController(rideParameters: parameters, loginManager: loginManager)
 ```
-```
+```objective-c
 // Objective-C
 // Setting up a RideRequestViewController
 UBSDKRideParameters *parameters = [[[UBSDKRideParametersBuilder alloc] init] build];
@@ -440,7 +466,7 @@ UBSDKRideRequestViewController *rideRequestViewController = [[UBSDKRideRequestVi
 
 You can also optionally specify a RideRequestViewControllerDelegate to handle potential errors passed from the wrapped RideRequestView
 
-```
+```swift
 // Swift
 extension your_class : RideRequestViewControllerDelegate {
     func rideRequestViewController(rideRequestViewController: RideRequestViewController, didReceiveError error: NSError) {
@@ -451,13 +477,17 @@ extension your_class : RideRequestViewControllerDelegate {
             // No AccessToken saved
         case .AccessTokenExpired:
             // AccessToken expired / invalid
+        case .NetworkError:
+            // A network connectivity error
+        case .NotSupported:
+            // The attempted operation is not supported on the current device
         case .Unknown:
             // Other error
         }
     }
 }
 ```
-```
+```objective-c
 // Objective-C
 // Implement the delegate methods
 - (void)rideRequestViewController:(UBSDKRideRequestViewController *)rideRequestViewController didReceiveError:(NSError *)error {
@@ -471,6 +501,9 @@ extension your_class : RideRequestViewControllerDelegate {
         case RideRequestViewErrorTypeAccessTokenMissing:
             // AccessToken expired / invalid
             break;
+        case RideRequestViewErrorTypeNetworkError:
+        	  // A network connectivity error
+        	  break;
         case RideRequestViewErrorTypeUnknown:
             // Other error
             break;

@@ -50,10 +50,13 @@ class RideRequestViewMock : RideRequestView {
 class RideRequestViewControllerMock : RideRequestViewController {
     var loadClosure: (() -> ())?
     var networkClosure: (() -> ())?
+    var notSupportedClosure: (() -> ())?
     var presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ())?
-    init(rideParameters: RideParameters, loginManager: LoginManager, loadClosure: (() -> ())?, networkClosure: (() -> ())?, presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ())?) {
+    
+    init(rideParameters: RideParameters, loginManager: LoginManager, loadClosure: (() -> ())? = nil, networkClosure: (() -> ())? = nil, presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ())? = nil, notSupportedClosure: (() -> ())? = nil) {
         self.loadClosure = loadClosure
         self.networkClosure = networkClosure
+        self.notSupportedClosure = notSupportedClosure
         self.presentViewControllerClosure = presentViewControllerClosure
         super.init(rideParameters: rideParameters, loginManager: loginManager)
     }
@@ -75,6 +78,14 @@ class RideRequestViewControllerMock : RideRequestViewController {
             networkClosure()
         } else {
             super.displayNetworkErrorAlert()
+        }
+    }
+    
+    override func displayNotSupportedErrorAlert() {
+        if let notSupportedClosure = notSupportedClosure {
+            notSupportedClosure()
+        } else {
+            super.displayNotSupportedErrorAlert()
         }
     }
     

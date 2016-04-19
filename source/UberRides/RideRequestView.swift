@@ -221,6 +221,12 @@ extension RideRequestView: WKNavigationDelegate {
                 delegate?.rideRequestView(self, didReceiveError: error)
                 decisionHandler(.Cancel)
                 return
+            } else if url.scheme == "tel" || url.scheme == "sms" {
+                if (!UIApplication.sharedApplication().openURL(url)) {
+                    delegate?.rideRequestView(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.NotSupported))
+                }
+                decisionHandler(.Cancel)
+                return
             }
         }
         

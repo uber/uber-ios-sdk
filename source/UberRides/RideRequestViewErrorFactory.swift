@@ -55,6 +55,8 @@ class RideRequestViewErrorFactory {
         switch rawValue {
         case "network_error":
             return .NetworkError
+        case "not_supported":
+            return .NotSupported
         case "no_access_token":
             return .AccessTokenMissing
         case "unauthorized":

@@ -189,6 +189,13 @@ import MapKit
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     
+    func displayNotSupportedErrorAlert() {
+        let alertController = UIAlertController(title: nil, message: LocalizationUtil.localizedString(forKey: "The operation you are attempting is not supported on the current device.", comment: "The operation you are attempting is not supported on the current device."), preferredStyle: .Alert)
+        let okayAction = UIAlertAction(title: LocalizationUtil.localizedString(forKey: "OK", comment: "OK"), style: .Default, handler: nil)
+        alertController.addAction(okayAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
     //MARK: Private
     
     private func setupRideRequestView() {
@@ -241,6 +248,9 @@ extension RideRequestViewController : RideRequestViewDelegate {
         switch errorType {
         case .NetworkError:
             self.displayNetworkErrorAlert()
+            break
+        case .NotSupported:
+            self.displayNotSupportedErrorAlert()
             break
         case .AccessTokenMissing:
             fallthrough

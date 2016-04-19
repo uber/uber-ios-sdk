@@ -183,6 +183,75 @@ class RideRequestViewTests: XCTestCase {
             XCTAssertNil(error)
         })
     }
+    
+    func testNotSupportedDelegateCalled_whenSMS() {
+        expectation = expectationWithDescription("Delegate called")
+        let cancelRequestExpectation = expectationWithDescription("Request was cancelled")
+        
+        let rideRequestView = RideRequestView(rideParameters: RideParametersBuilder().build(), accessToken:nil, frame:CGRectZero)
+        rideRequestView.delegate = self
+        let smsURLString = "sms:5555555555"
+        guard let smsURL = NSURL(string: smsURLString) else {
+            XCTAssert(false)
+            return
+        }
+        let smsURLRequest = NSURLRequest(URL: smsURL)
+        let navigationActionMock = WKNavigationActionMock(urlRequest: smsURLRequest)
+        
+        if let delegate = rideRequestView.webView.navigationDelegate {
+            delegate.webView!(rideRequestView.webView, decidePolicyForNavigationAction: navigationActionMock, decisionHandler: { (policy: WKNavigationActionPolicy) -> Void in
+                XCTAssertEqual(policy, WKNavigationActionPolicy.Cancel)
+                cancelRequestExpectation.fulfill()
+            })
+            
+            waitForExpectationsWithTimeout(timeout, handler: { error in
+                XCTAssertNotNil(self.error)
+                XCTAssertEqual(self.error?.code, RideRequestViewErrorType.NotSupported.rawValue)
+            })
+        } else {
+            XCTAssert(false)
+        }
+    }
+    
+    func testNotSupportedDelegateCalled_whenTel() {
+        expectation = expectationWithDescription("Delegate called")
+        let cancelRequestExpectation = expectationWithDescription("Request was cancelled")
+        
+        let rideRequestView = RideRequestView(rideParameters: RideParametersBuilder().build(), accessToken:nil, frame:CGRectZero)
+        rideRequestView.delegate = self
+        let telURLString = "tel:5555555555"
+        guard let telURL = NSURL(string: telURLString) else {
+            XCTAssert(false)
+            return
+        }
+        let telURLRequest = NSURLRequest(URL: telURL)
+        let navigationActionMock = WKNavigationActionMock(urlRequest: telURLRequest)
+        
+        if let delegate = rideRequestView.webView.navigationDelegate {
+            delegate.webView!(rideRequestView.webView, decidePolicyForNavigationAction: navigationActionMock, decisionHandler: { (policy: WKNavigationActionPolicy) -> Void in
+                XCTAssertEqual(policy, WKNavigationActionPolicy.Cancel)
+                cancelRequestExpectation.fulfill()
+            })
+            
+            waitForExpectationsWithTimeout(timeout, handler: { error in
+                XCTAssertNotNil(self.error)
+                XCTAssertEqual(self.error?.code, RideRequestViewErrorType.NotSupported.rawValue)
+            })
+        } else {
+            XCTAssert(false)
+        }
+    }
+}
+
+private class WKNavigationActionMock : WKNavigationAction {
+    override var request: NSURLRequest {
+        return backingRequest
+    }
+    var backingRequest = NSURLRequest()
+    init(urlRequest: NSURLRequest) {
+        backingRequest = urlRequest
+        super.init()
+    }
 }
 
 extension RideRequestViewTests: RideRequestViewDelegate {
