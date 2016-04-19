@@ -1,5 +1,20 @@
 # Change Log
 
+## [0.4.2] 2016-04-19
+
+### Changed
+
+Correctly updated Change Log
+
+## [0.4.1] 2016-04-19
+### Added
+
+`NotSupported` RideRequestViewErrorType, which occurs when an operation is not supported by the current device (currently fired if you attempt to open an `sms` or `tel` link on the simulator
+
+### Fixed
+
+- [Issue #22](https://github.com/uber/rides-ios-sdk/issues/22) Attempting to Call / Text driver resulted in Ride Request Widget Closing
+
 ## [0.4.0] 2016-04-11
 ### Added
 
