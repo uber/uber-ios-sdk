@@ -147,6 +147,17 @@ UBSDKRideParameters *parameters = [builder build];
 UBSDKRideRequestButton *button = [[UBSDKRideRequestButton alloc] initWithRideParameters: parameters requestingBehavior: behavior];
 [self.view addSubview:button];
 ```
+####Using a custom button to request the ride widget
+This uses the ActionButton class which creates a material design button where if tapped, further buttons (ActionButtonItems) are shown which do a particular task when pressed:
+ Creating the ActionButton and ActionButtonItems, refer to [ActionButton](https://github.com/Dershowitz011/ActionButton/blob/master/README.md) readme.
+
+```swift
+// Call this in the buttonPressed(_:) or similar action in your code
+ 
+ActionButtonItem.requestaride(RideParameter:     , RequestBehavior:     )
+
+```
+
 
 That’s it! When a user taps the button, a **RideRequestViewController** will be modally presented, containing a **RideRequestView** prefilled with the information provided from the **RideParameters** object. If they aren’t signed in, the modal will display a login page and automatically continue to the Ride Request Widget once they sign in. 
 
