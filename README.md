@@ -88,6 +88,8 @@ Add the following code snippet, replacing the placeholders with your app’s inf
 <string>[redirect URL]</string>
 ```
 
+Make sure UberCallbackURI mathes one, which is set on developer dashboard (use localhost for testing).
+
 Additionally, the SDK provides a static Configuration class to further customize your settings. Inside of `application:didFinishLaunchingWithOptions:` in your `AppDelegate` is a good place to do this:
 
 ```swift
