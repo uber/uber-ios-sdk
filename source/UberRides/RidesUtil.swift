@@ -34,8 +34,7 @@ import CoreLocation
 }
 
 class ColorUtil {
-    /// Convert hex color code into UIColor
-    static func uberUIColor(color: UberButtonColor) -> UIColor {
+    static func convertHexToUIColor(color: UberButtonColor) -> UIColor {
         let hexCode = hexCodeFromColor(color)
         let scanner = NSScanner(string: hexCode)
         var color: UInt32 = 0;

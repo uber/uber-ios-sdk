@@ -105,25 +105,31 @@ import CoreLocation
         sizeToFit()
     }
     
-    // add title, image, and sizing configuration
     override func setContent() {
         super.setContent()
         
+        setSizesConfigs()
+        addTitle()
+        addImage()
+    }
+    
+    private func setSizesConfigs() {
         uberTitleLabel.font = UIFont.systemFontOfSize(17)
         uberTitleLabel.numberOfLines = 2;
         uberTitleLabel.textAlignment = .Right
-        
-        // Add title label
+    }
+    
+    private func addTitle() {
         let titleText = LocalizationUtil.localizedString(forKey: "Ride there with Uber", comment: "Request button description")
         uberTitleLabel.text = titleText
-        
-        // add image
+    }
+    
+    private func addImage() {
         let logo = getImage("Badge")
         uberImageView.image = logo
         uberImageView.contentMode = .Center
     }
     
-    // get image from media directory
     private func getImage(name: String) -> UIImage {
         let bundle = NSBundle(forClass: RideRequestButton.self)
         let image = UIImage(named: name, inBundle: bundle, compatibleWithTraitCollection: nil)
