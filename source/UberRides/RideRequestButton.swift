@@ -161,7 +161,7 @@ import CoreLocation
         return CGSizeMake(width, height)
     }
     
-    // initiate deeplink when button is tapped
+    // Initiate deeplink when button is tapped
     func uberButtonTapped(sender: UIButton) {
         rideParameters.source = RideRequestButton.sourceString
         
