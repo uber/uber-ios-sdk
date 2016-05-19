@@ -108,9 +108,8 @@ import CoreLocation
     override func setContent() {
         super.setContent()
         
-        setSizesConfigs()
-        addTitle()
-        addImage()
+        configureTitleLabel()
+        configureImage()
     }
     
     private func setSizesConfigs() {
@@ -119,12 +118,13 @@ import CoreLocation
         uberTitleLabel.textAlignment = .Right
     }
     
-    private func addTitle() {
+    private func configureTitleLabel() {
+        setSizesConfigs()
         let titleText = LocalizationUtil.localizedString(forKey: "Ride there with Uber", comment: "Request button description")
         uberTitleLabel.text = titleText
     }
     
-    private func addImage() {
+    private func configureImage() {
         let logo = getImage("Badge")
         uberImageView.image = logo
         uberImageView.contentMode = .Center
