@@ -46,19 +46,8 @@ import UIKit
     
     override public var highlighted: Bool {
         didSet {
-            changeColors()
+            updateColors(highlighted)
         }
-    }
-    
-    private func changeColors() {
-        var color: UberButtonColor
-        switch colorStyle {
-        case .Black:
-            color = highlighted ? .BlackHighlighted : .UberBlack
-        case .White:
-            color = highlighted ? .WhiteHighlighted : .UberWhite
-        }
-        backgroundColor = ColorUtil.convertHexToUIColor(color)
     }
     
     /// Set color scheme
@@ -68,15 +57,26 @@ import UIKit
         }
     }
     
+    private func updateColors(highlighted : Bool) {
+        var color: UberButtonColor
+        switch colorStyle {
+        case .Black:
+            color = highlighted ? .BlackHighlighted : .UberBlack
+        case .White:
+            color = highlighted ? .WhiteHighlighted : .UberWhite
+        }
+        backgroundColor = ColorUtil.colorForUberButtonColor(color)
+    }
+    
     /// Default is black background with white font
     private func setColorStyle(style: RequestButtonColorStyle) {
         switch colorStyle {
         case .Black:
-            backgroundColor = ColorUtil.convertHexToUIColor(.UberBlack)
-            uberTitleLabel.textColor = ColorUtil.convertHexToUIColor(.UberWhite)
+            backgroundColor = ColorUtil.colorForUberButtonColor(.UberBlack)
+            uberTitleLabel.textColor = ColorUtil.colorForUberButtonColor(.UberWhite)
         case .White :
-            backgroundColor = ColorUtil.convertHexToUIColor(.UberWhite)
-            uberTitleLabel.textColor = ColorUtil.convertHexToUIColor(.UberBlack)
+            backgroundColor = ColorUtil.colorForUberButtonColor(.UberWhite)
+            uberTitleLabel.textColor = ColorUtil.colorForUberButtonColor(.UberBlack)
         }
     }
     
