@@ -87,7 +87,7 @@ Add the following code snippet, replacing the placeholders with your app’s inf
 <key>UberCallbackURI</key>
 <string>[redirect URL]</string>
 ```
-Make sure the value for UberCallbackURI exactly matches one for the Redirect URLs you have set on your developer dashboard. (You can use `localhost` for testing.)
+Make sure the value for UberCallbackURI exactly matches one of the Redirect URLs you have set on your developer dashboard. (You can use `localhost` for testing.)
 
 Additionally, the SDK provides a static Configuration class to further customize your settings. Inside of `application:didFinishLaunchingWithOptions:` in your `AppDelegate` is a good place to do this:
 
