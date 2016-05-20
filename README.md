@@ -87,6 +87,7 @@ Add the following code snippet, replacing the placeholders with your app’s inf
 <key>UberCallbackURI</key>
 <string>[redirect URL]</string>
 ```
+Make sure the value for UberCallbackURI exactly matches one of the Redirect URLs you have set on your developer dashboard. (You can use `localhost` for testing.)
 
 Additionally, the SDK provides a static Configuration class to further customize your settings. Inside of `application:didFinishLaunchingWithOptions:` in your `AppDelegate` is a good place to do this:
 
@@ -531,7 +532,11 @@ For full documentation about our API, visit our [Developer Site](https://develop
 
 ## Contributing
 
-We :heart: contributions. If you’ve found a bug in the library or would like new features added, go ahead and open issues or pull requests against this repo. Write a test to show your bug was fixed or the feature works as expected.
+We :heart: contributions. Found a bug or looking for a new feature? Open an issue and we'll respond as fast as we can. Or, better yet, implement it yourself and open a pull request! We ask that you include tests to show the bug was fixed or the feature works as expected.
+
+**Note:** All contributors also need to fill out the [Uber Contributor License Agreement](http://t.uber.com/cla) before we can merge in any of your changes.
+
+Please open any pull requests against the latest development branch (currently `0.5.x-dev`)
 
 ## License
 
