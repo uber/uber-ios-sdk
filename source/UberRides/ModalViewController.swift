@@ -141,7 +141,7 @@ Possible Styles for the ModalViewController
     //MARK: Public
     
     /**
-    Function to dimiss the modalViewController.
+     Function to dimiss the modalViewController.
     */
     public func dismiss() {
         self.delegate?.modalViewControllerWillDismiss(self)
