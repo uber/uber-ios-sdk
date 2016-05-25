@@ -112,14 +112,11 @@ import CoreLocation
         configureImage()
     }
     
-    private func setSizesConfigs() {
+    private func configureTitleLabel() {
         uberTitleLabel.font = UIFont.systemFontOfSize(17)
         uberTitleLabel.numberOfLines = 2;
         uberTitleLabel.textAlignment = .Right
-    }
-    
-    private func configureTitleLabel() {
-        setSizesConfigs()
+        
         let titleText = LocalizationUtil.localizedString(forKey: "Ride there with Uber", comment: "Request button description")
         uberTitleLabel.text = titleText
     }
