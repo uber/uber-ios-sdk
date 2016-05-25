@@ -99,7 +99,7 @@ import CoreLocation
     }
     
     private func setUp() {
-        addTarget(self, action: Selector("uberButtonTapped:"), forControlEvents: .TouchUpInside)
+        addTarget(self, action: #selector(RideRequestButton.uberButtonTapped(_:)), forControlEvents: .TouchUpInside)
         setContent()
         setConstraints()
         sizeToFit()
