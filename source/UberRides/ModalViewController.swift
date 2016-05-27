@@ -188,12 +188,12 @@ Possible Styles for the ModalViewController
         case .Empty:
             break
         case .DoneButton:
-            let doneButton = UIBarButtonItem(barButtonSystemItem: .Done , target: self, action: #selector(ModalViewController.doneButtonPressed(_:)))
+            let doneButton = UIBarButtonItem(barButtonSystemItem: .Done , target: self, action: #selector(doneButtonPressed(_:)))
             doneButton.tintColor = iconTintColor
             self.wrappedViewController.navigationItem.rightBarButtonItem = doneButton
         case .BackButton:
             let backImage =  UIImage(named: "ic_back_arrow_white", inBundle: bundle, compatibleWithTraitCollection: nil)
-            let backButton = UIBarButtonItem(image: backImage, style: .Plain, target: self, action: #selector(ModalViewController.backButtonPressed(_:)))
+            let backButton = UIBarButtonItem(image: backImage, style: .Plain, target: self, action: #selector(backButtonPressed(_:)))
             backButton.tintColor = iconTintColor
             self.wrappedViewController.navigationItem.leftBarButtonItem = backButton
         }

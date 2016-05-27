@@ -181,8 +181,8 @@ import CoreLocation
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RideRequestView.keyboardWillAppear(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RideRequestView.keyboardDidAppear(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillAppear(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardDidAppear(_:)), name: UIKeyboardDidShowNotification, object: nil)
         
         setupWebView()
     }

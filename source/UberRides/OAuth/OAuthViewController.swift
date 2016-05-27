@@ -76,7 +76,7 @@ class OAuthViewController: UIViewController {
         self.view.addSubview(loginView)
         self.setupLoginView()
         // Set up navigation item
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(OAuthViewController.cancel))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.title = LocalizationUtil.localizedString(forKey: "Sign in with Uber", comment: "Title of navigation bar during OAuth")
     }
