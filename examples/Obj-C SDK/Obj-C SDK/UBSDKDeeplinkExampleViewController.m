@@ -33,8 +33,6 @@
 
 @property (nonatomic, readonly, nullable) UBSDKRideRequestButton *blackRideRequestButton;
 @property (nonatomic, readonly, nullable) UBSDKRideRequestButton *whiteRideRequestButton;
-@property (nonatomic, readonly, nullable) UIView *topView;
-@property (nonatomic, readonly, nullable) UIView *bottomView;
 
 @end
 
@@ -64,34 +62,24 @@
     [super viewDidLoad];
     
     self.navigationItem.title = UBSDKLOC(@"Deeplink Buttons");
-    self.view.backgroundColor = [UIColor whiteColor];
     
-    [self.view addSubview:self.topView];
-    [self.view addSubview:self.bottomView];
     [self.topView addSubview:self.blackRideRequestButton];
     [self.bottomView addSubview:self.whiteRideRequestButton];
     
-    [self _addTopViewConstraints];
-    [self _addBottomViewConstraints];
     [self _addBlackButtonConstraints];
     [self _addWhiteButtonConstraints];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.blackRideRequestButton loadRideInformation];
+    [self.whiteRideRequestButton loadRideInformation];
 }
 
 #pragma mark - Private
 
 - (void)_initialSetup {
-    _topView = ({
-        UIView *view = [[UIView alloc] init];
-        view.backgroundColor = [UIColor whiteColor];
-        view;
-    });
-    
-    _bottomView = ({
-        UIView *view = [[UIView alloc] init];
-        view.backgroundColor = [UIColor blackColor];
-        view;
-    });
-    
     _blackRideRequestButton = [[UBSDKRideRequestButton alloc] init];
     
     _whiteRideRequestButton = ({
@@ -114,74 +102,6 @@
     [builder setDropoffLocation:dropoffLocation nickname:@"Pier 39"];
     
     return [builder build];
-}
-
-- (void)_addTopViewConstraints {
-    self.topView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:self.topView
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.topLayoutGuide
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:0.0];
-    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:self.topView
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.view
-                                                                        attribute:NSLayoutAttributeCenterY
-                                                                       multiplier:1.0
-                                                                         constant:0.0];
-    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:self.topView
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.view
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                     multiplier:1.0
-                                                                       constant:0.0];
-    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:self.topView
-                                                                       attribute:NSLayoutAttributeRight
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.view
-                                                                       attribute:NSLayoutAttributeRight
-                                                                      multiplier:1.0
-                                                                        constant:0.0];
-    [self.view addConstraints:@[topConstraint, bottomConstraint, leftConstraint, rightConstraint]];
-}
-
-- (void)_addBottomViewConstraints {
-    self.bottomView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:self.bottomView
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.view
-                                                                     attribute:NSLayoutAttributeCenterY
-                                                                    multiplier:1.0
-                                                                      constant:0.0];
-    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomView
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.bottomLayoutGuide
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                       multiplier:1.0
-                                                                         constant:0.0];
-    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:self.bottomView
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.view
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                     multiplier:1.0
-                                                                       constant:0.0];
-    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:self.bottomView
-                                                                       attribute:NSLayoutAttributeRight
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.view
-                                                                       attribute:NSLayoutAttributeRight
-                                                                      multiplier:1.0
-                                                                        constant:0.0];
-    [self.view addConstraints:@[topConstraint, bottomConstraint, leftConstraint, rightConstraint]];
 }
 
 - (void)_addBlackButtonConstraints {

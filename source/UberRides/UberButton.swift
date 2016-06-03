@@ -26,87 +26,120 @@ import UIKit
 
 /// Base class for Uber buttons that sets up colors and some constraints.
 @objc(UBSDKUberButton) public class UberButton: UIButton {
-    let horizontalImagePadding: CGFloat = 12
-    let horizontalLabelPadding: CGFloat = 19
-    let imageLabelPadding: CGFloat = 9
+    let cornerRadius: CGFloat = 8
+    let horizontalEdgePadding: CGFloat = 16
+    let imageLabelPadding: CGFloat = 8
     let verticalPadding: CGFloat = 10
     
-    let uberImageView: UIImageView! = UIImageView()
-    let uberTitleLabel: UILabel! = UILabel()
+    let uberImageView: UIImageView = UIImageView()
+    let uberTitleLabel: UILabel = UILabel()
+    
+    public var colorStyle: RequestButtonColorStyle = .Black {
+        didSet {
+            colorStyleDidUpdate(colorStyle)
+        }
+    }
+    
+    override public var highlighted: Bool {
+        didSet {
+            updateColors(highlighted)
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setColorStyle(.Black)
+        setup()
+        colorStyleDidUpdate(.Black)
     }
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setColorStyle(.Black)
+        setup()
+        colorStyleDidUpdate(.Black)
     }
     
-    override public var highlighted: Bool {
-        // Change colors when button is highlighted
-        didSet {
-            var color: UberButtonColor
-            switch colorStyle {
-            case .Black:
-                color = highlighted ? .BlackHighlighted : .UberBlack
-            case .White:
-                color = highlighted ? .WhiteHighlighted : .UberWhite
-            }
-            backgroundColor = ColorUtil.uberUIColor(color)
-        }
+    /**
+     Function responsible for the initial setup of the button. 
+     Calls addSubviews(), setContent(), and setConstraints()
+     */
+    public func setup() {
+        addSubviews()
+        setContent()
+        setConstraints()
     }
     
-    /// Set color scheme, default is black background with white font.
-    public var colorStyle: RequestButtonColorStyle = .Black {
-        didSet {
-            setColorStyle(colorStyle)
-        }
+    /**
+     Function responsible for adding all the subviews to the button. Subclasses
+     should override this method and add any necessary subviews.
+     */
+    public func addSubviews() {
+        addSubview(uberImageView)
+        addSubview(uberTitleLabel)
     }
     
-    private func setColorStyle(style: RequestButtonColorStyle) {
-        switch colorStyle {
-        case .Black:
-            backgroundColor = ColorUtil.uberUIColor(.UberBlack)
-            uberTitleLabel.textColor = ColorUtil.uberUIColor(.UberWhite)
-        case .White :
-            backgroundColor = ColorUtil.uberUIColor(.UberWhite)
-            uberTitleLabel.textColor = ColorUtil.uberUIColor(.UberBlack)
-        }
-    }
-    
-    public func setImage(image: UIImage) {
-        uberImageView.image = image
-    }
-    
-    public func setText(text: String, font: UIFont?) {
-        uberTitleLabel.text = text
-        uberTitleLabel.font = font
-    }
-    
-    func setContent() {
-        self.dynamicType.loadFonts()
+    /**
+     Function responsible for updating content on the button. Subclasses should
+     override and do any necessary view setup
+     */
+    public func setContent() {
         clipsToBounds = true
-        layer.cornerRadius = 5
+        layer.cornerRadius = cornerRadius
     }
     
-    private static func loadFonts() {
-        struct DispatchOnce { static var token: dispatch_once_t = 0}
-        dispatch_once(&DispatchOnce.token, {
-            FontUtil.loadFontWithName("ClanPro-Book", familyName: "Clan Pro")
-            FontUtil.loadFontWithName("ClanPro-Medium", familyName: "Clan Pro")
-        })
-    }
-    
-    func setConstraints() {
-        let views = ["imageView": uberImageView, "titleView": uberTitleLabel]
-        let metrics = ["horizontalImagePadding": horizontalImagePadding, "horizontalLabelPadding": horizontalLabelPadding, "verticalPadding": verticalPadding]
+    /**
+     Function responsible for adding autolayout constriants on the button. Subclasses
+     should override and add any additional autolayout constraints
+     */
+    public func setConstraints() {
         
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-horizontalImagePadding-[imageView]-imageLabelPadding-[titleLabel]-horizontalLabelPadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
-        let verticalContraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-verticalPadding-[imageView]-verticalPadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
+        uberTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        uberImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let views = ["imageView": uberImageView, "titleLabel": uberTitleLabel]
+        let metrics = ["edgePadding": horizontalEdgePadding, "verticalPadding": verticalPadding, "imageLabelPadding": imageLabelPadding]
+        
+        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-edgePadding-[imageView]-imageLabelPadding-[titleLabel]-(edgePadding)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
+        let verticalContraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-verticalPadding-[imageView]-verticalPadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
         
         addConstraints(horizontalConstraints)
         addConstraints(verticalContraints)
+    }
+    
+    override public func sizeThatFits(size: CGSize) -> CGSize {
+        let logoSize = uberImageView.image?.size ?? CGSizeZero
+        let titleSize = uberTitleLabel.intrinsicContentSize()
+        
+        let width: CGFloat = 4*horizontalEdgePadding + imageLabelPadding + logoSize.width + titleSize.width
+        let height: CGFloat = 2*verticalPadding + max(logoSize.height, titleSize.height)
+        
+        return CGSizeMake(width, height)
+    }
+    
+    // Mark: Internal Interface
+
+    func colorStyleDidUpdate(style: RequestButtonColorStyle) {
+        switch colorStyle {
+        case .Black:
+            backgroundColor = ColorUtil.colorForUberButtonColor(.UberBlack)
+            uberTitleLabel.textColor = ColorUtil.colorForUberButtonColor(.UberWhite)
+            uberImageView.tintColor = ColorUtil.colorForUberButtonColor(.UberWhite)
+        case .White :
+            backgroundColor = ColorUtil.colorForUberButtonColor(.UberWhite)
+            uberTitleLabel.textColor = ColorUtil.colorForUberButtonColor(.UberBlack)
+            uberImageView.tintColor = ColorUtil.colorForUberButtonColor(.UberBlack)
+        }
+    }
+    
+    // Mark: Private Interface
+    
+    private func updateColors(highlighted : Bool) {
+        var color: UberButtonColor
+        switch colorStyle {
+        case .Black:
+            color = highlighted ? .BlackHighlighted : .UberBlack
+        case .White:
+            color = highlighted ? .WhiteHighlighted : .UberWhite
+        }
+        backgroundColor = ColorUtil.colorForUberButtonColor(color)
     }
 }

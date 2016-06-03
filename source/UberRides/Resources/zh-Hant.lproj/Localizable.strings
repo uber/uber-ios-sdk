@@ -1,5 +1,6 @@
 /* The title of the request button that deep links to the Uber app */
 "Ride there with Uber" = "搭乘优步前往";
+"Get a ride" = "開始搭乘";
 "Sign in with Uber" = "登入到Uber網站";
 "There was a problem authenticating you." = "身份驗證發生問題。";
 "The Ride Request Widget encountered a problem." = "乘客預約側邊欄出現問題。";
@@ -19,3 +20,8 @@
 "Try Again" = "再試";
 "Cancel" = "取消";
 "The operation you are attempting is not supported on the current device." = "The operation you are attempting is not supported on the current device.";
+"%d min away" = "相距 %d 分鐘";
+"%d mins away" = "相距 %d 分鐘";
+"%1$@ for %2$@" = "%2$@ 的估價為 %1$@";
+"Sign In" = "登入";
+"Sign Out" = "登出";

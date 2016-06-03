@@ -35,11 +35,21 @@
             return
         }
         let deeplink = createDeeplink(rideParameters)
-        deeplink.execute()
+        
+        let deeplinkCompletion: (NSError?) -> () = { error in
+            if let error = error where error.code != DeeplinkErrorType.DeeplinkNotFollowed.rawValue {
+                self.createAppStoreDeeplink(rideParameters).execute(nil)
+            }
+        }
+        
+        deeplink.execute(deeplinkCompletion)
     }
     
     func createDeeplink(rideParameters: RideParameters) -> RequestDeeplink {
         return RequestDeeplink(rideParameters: rideParameters)
     }
     
+    func createAppStoreDeeplink(rideParameters: RideParameters) -> Deeplinking {
+        return AppStoreDeeplink(userAgent: rideParameters.userAgent)
+    }
 }

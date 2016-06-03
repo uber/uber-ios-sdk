@@ -27,6 +27,9 @@ import Foundation
 /// Manager class for saving and deleting AccessTokens. Allows you to manage tokens based on token identifier & keychain access group
 @objc(UBSDKTokenManager) public class TokenManager: NSObject {
 
+    public static let TokenManagerDidSaveTokenNotification = "TokenManagerDidSaveTokenNotification"
+    public static let TokenManagerDidDeleteTokenNotification = "TokenManagerDidDeleteTokenNotification"
+    
     private static let keychainWrapper = KeychainWrapper()
 
     //MARK: Get
@@ -87,7 +90,11 @@ import Foundation
      */
     @objc public static func saveToken(accessToken: AccessToken, tokenIdentifier: String, accessGroup: String) -> Bool {
         keychainWrapper.setAccessGroup(accessGroup)
-        return keychainWrapper.setObject(accessToken, key: tokenIdentifier)
+        let success = keychainWrapper.setObject(accessToken, key: tokenIdentifier)
+        if success {
+            NSNotificationCenter.defaultCenter().postNotificationName(TokenManagerDidSaveTokenNotification, object: self)
+        }
+        return success
     }
     
     /**
@@ -134,7 +141,11 @@ import Foundation
     @objc public static func deleteToken(tokenIdentifier: String, accessGroup: String) -> Bool {
         keychainWrapper.setAccessGroup(accessGroup)
         deleteCookies()
-        return keychainWrapper.deleteObjectForKey(tokenIdentifier)
+        let success = keychainWrapper.deleteObjectForKey(tokenIdentifier)
+        if success {
+            NSNotificationCenter.defaultCenter().postNotificationName(TokenManagerDidDeleteTokenNotification, object: self)
+        }
+        return success
     }
     
     /**
@@ -164,12 +175,11 @@ import Foundation
     
     private static func deleteCookies() {
         Configuration.resetProcessPool()
-        let loginEndpoint = OAuth.Login(clientID: Configuration.getClientID(), scopes: [], redirect: Configuration.getCallbackURIString())
         var urlsToClear = [NSURL]()
-        if let loginURL = NSURL(string: loginEndpoint.regionHostString(.Default)) {
+        if let loginURL = NSURL(string: OAuth.regionHostString(.Default)) {
             urlsToClear.append(loginURL)
         }
-        if let loginURL = NSURL(string: loginEndpoint.regionHostString(.China)) {
+        if let loginURL = NSURL(string: OAuth.regionHostString(.China)) {
             urlsToClear.append(loginURL)
         }
         

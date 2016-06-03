@@ -23,14 +23,18 @@
 //  THE SOFTWARE.
 
 import XCTest
+import OHHTTPStubs
 import CoreLocation
 import WebKit
 @testable import UberRides
 
 class RequestButtonTests: XCTestCase {
+    var client: RidesClient!
     var button: RideRequestButton!
-    var expectation: XCTestExpectation!
-    let timeout: Double = 2
+    weak var expectation: XCTestExpectation?
+    weak var errorExpectation: XCTestExpectation?
+    var rideButtonError: RidesError!
+    let timeout: Double = 5
     
     override func setUp() {
         super.setUp()
@@ -38,10 +42,12 @@ class RequestButtonTests: XCTestCase {
         Configuration.plistName = "testInfo"
         Configuration.bundle = NSBundle(forClass: self.dynamicType)
         Configuration.setSandboxEnabled(true)
+        client = RidesClient()
     }
     
     override func tearDown() {
         Configuration.restoreDefaults()
+        OHHTTPStubs.removeAllStubs();
         super.tearDown()
     }
     
@@ -49,7 +55,7 @@ class RequestButtonTests: XCTestCase {
      Test that title is initialized properly to default value.
      */
     func testInitRequestButtonDefaultText() {
-        button = RideRequestButton()
+        button = RideRequestButton(client: client)
         XCTAssertEqual(button.uberTitleLabel.text!, "Ride there with Uber")
     }
     
@@ -138,6 +144,162 @@ class RequestButtonTests: XCTestCase {
         })
     }
     
+    /**
+     Test that product ID is set on metadata.
+     */
+    func testSetProductID() {
+        let rideParams = RideParametersBuilder().setProductID(productID).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.loadRideInformation()
+        XCTAssertEqual(button.metadata.productID, productID)
+    }
+    
+    /**
+     Test that pickup location lat/long is set on metadata.
+     */
+    func testSetPickupLocation() {
+        let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
+        let rideParams = RideParametersBuilder().setPickupLocation(location).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.loadRideInformation()
+        XCTAssertEqual(button.metadata.pickupLatitude, pickupLat)
+        XCTAssertEqual(button.metadata.pickupLongitude, pickupLong)
+    }
+    
+    /**
+     Test that dropoff location lat/long is set on metadata.
+     */
+    func testSetDropoffLocation() {
+        let location = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setDropoffLocation(location).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.loadRideInformation()
+        XCTAssertEqual(button.metadata.dropoffLatitude, dropoffLat)
+        XCTAssertEqual(button.metadata.dropoffLongitude, dropoffLong)
+    }
+    
+    /**
+     Test get metadata with productID and pickup location only. Expected only time estimate label.
+     */
+    func testGetMetadataSimple() {
+        stub(isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("gettimeestimateproduct.json", self.dynamicType)!, statusCode:200, headers:nil)
+        }
+        
+        expectation = expectationWithDescription("information loaded")
+        
+        let location = CLLocation(latitude: dropoffLat, longitude: pickupLong)
+        let rideParams = RideParametersBuilder().setPickupLocation(location).setProductID(productID).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.delegate = self
+        button.loadRideInformation()
+        
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(self.button.uberTitleLabel.text!, "Get a ride")
+            XCTAssertEqual(self.button.uberMetadataLabel.text!, "4 MINS AWAY")
+        })
+    }
+    
+    /**
+     Test get metadata with productID, pickup, and dropoff locations. Expected time and price estimates on label.
+     */
+    func testGetMetadataDetailed() {
+        stub(isHost("sandbox-api.uber.com")) { urlRequest in
+            if isPath("/v1/estimates/price")(urlRequest) {
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getpriceestimates.json", self.dynamicType)!, statusCode:200, headers:nil)
+            } else if isPath("/v1/estimates/time")(urlRequest) {
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("gettimeestimateproduct.json", self.dynamicType)!, statusCode:200, headers:nil)
+            } else {
+                XCTAssert(false)
+                return OHHTTPStubsResponse()
+            }
+        }
+        
+        expectation = expectationWithDescription("information loaded")
+        let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
+        let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.delegate = self
+        button.loadRideInformation()
+        
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(self.button.uberTitleLabel.text!, "Get a ride")
+            XCTAssertEqual(self.button.uberMetadataLabel.text!, "4 MINS AWAY\n$15 for uberX")
+        })
+    }
+    
+    func testErrorGettingPriceEstimates() {
+        stub(isHost("sandbox-api.uber.com")) { urlRequest in
+            if isPath("/v1/estimates/time")(urlRequest) {
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("gettimeestimateproduct.json", self.dynamicType)!, statusCode:200, headers: [ "Authorization" : "Bearer token" ])
+            } else if isPath("/v1/estimates/price")(urlRequest) {
+                let obj = ["code":"price_estimate_error"]
+                return OHHTTPStubsResponse(JSONObject: obj, statusCode: 404, headers: nil)
+            } else {
+                XCTAssert(false)
+                return OHHTTPStubsResponse()
+            }
+        }
+    
+        errorExpectation = expectationWithDescription("price estimate error")
+        let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
+        let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.delegate = self
+        button.loadRideInformation()
+        
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(self.button.uberTitleLabel.text!, "Get a ride")
+            XCTAssertEqual(self.button.uberMetadataLabel.text!, "4 MINS AWAY")
+            XCTAssertEqual(self.rideButtonError.code, "price_estimate_error")
+        })
+    }
+    
+    func testErrorGettingTimeEstimates() {
+        stub(isHost("sandbox-api.uber.com")) { urlRequest in
+            if isPath("/v1/estimates/price")(urlRequest) {
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getpriceestimates.json", self.dynamicType)!, statusCode:200, headers:nil)
+            } else if isPath("/v1/estimates/time")(urlRequest) {
+                let obj = ["code":"time_estimate_error"]
+                return OHHTTPStubsResponse(JSONObject: obj, statusCode: 404, headers: nil)
+            } else {
+                XCTAssert(false)
+                return OHHTTPStubsResponse()
+            }
+        }
+        
+        errorExpectation = expectationWithDescription("time estimate error")
+        let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
+        let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.delegate = self
+        button.loadRideInformation()
+        
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(self.button.uberTitleLabel.text!, "Ride there with Uber")
+            XCTAssertEqual(self.rideButtonError.code, "time_estimate_error")
+        })
+    }
+    
+    /**
+     Test that button defaults to "Get a Ride" when no productID is set.
+     */
+    func testMetadataSimpleWithNoProductID() {
+        let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
+        let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.loadRideInformation()
+        
+        XCTAssertEqual(self.button.uberTitleLabel.text!, "Ride there with Uber")
+    }
 }
 
 private class UIViewControllerMock : UIViewController {
@@ -151,5 +313,18 @@ private class UIViewControllerMock : UIViewController {
         }
         
         return
+    }
+}
+
+// MARK: RequestButtonDelegate
+
+extension RequestButtonTests: RideRequestButtonDelegate {
+    func rideRequestButtonDidLoadRideInformation(button: RideRequestButton) {
+        expectation?.fulfill()
+    }
+    
+    func rideRequestButton(button: RideRequestButton, didReceiveError error: RidesError) {
+        self.rideButtonError = error
+        errorExpectation?.fulfill()
     }
 }

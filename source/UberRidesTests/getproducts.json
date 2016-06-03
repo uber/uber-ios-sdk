@@ -1,0 +1,90 @@
+{
+    "products": [
+                 {
+                 "capacity": 4,
+                 "description": "The low-cost Uber",
+                 "price_details": {
+                 "distance_unit": "mile",
+                 "cost_per_minute": 0.26,
+                 "service_fees": [
+                                  {
+                                  "fee": 1.0,
+                                  "name": "Safe Rides Fee"
+                                  }
+                                  ],
+                 "minimum": 5.0,
+                 "cost_per_distance": 1.3,
+                 "base": 2.2,
+                 "cancellation_fee": 5.0,
+                 "currency_code": "USD"
+                 },
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car.jpg",
+                 "display_name": "uberX",
+                 "product_id": "a1111c8c-c720-46c3-8534-2fcdd730040d"
+                 },
+                 {
+                 "capacity": 6,
+                 "description": "low-cost rides for large groups",
+                 "price_details": {
+                 "distance_unit": "mile",
+                 "cost_per_minute": 0.45,
+                 "service_fees": [
+                                  {
+                                  "fee": 1.0,
+                                  "name": "Safe Rides Fee"
+                                  }
+                                  ],
+                 "minimum": 8.0,
+                 "cost_per_distance": 2.15,
+                 "base": 5.0,
+                 "cancellation_fee": 5.0,
+                 "currency_code": "USD"
+                 },
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car.jpg",
+                 "display_name": "uberXL",
+                 "product_id": "821415d8-3bd5-4e27-9604-194e4359a449"
+                 },
+                 {
+                 "capacity": 4,
+                 "description": "The original Uber",
+                 "price_details": {
+                 "distance_unit": "mile",
+                 "cost_per_minute": 0.65,
+                 "service_fees": [],
+                 "minimum": 15.0,
+                 "cost_per_distance": 3.75,
+                 "base": 8.0,
+                 "cancellation_fee": 10.0,
+                 "currency_code": "USD"
+                 },
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car.jpg",
+                 "display_name": "UberBLACK",
+                 "product_id": "d4abaae7-f4d6-4152-91cc-77523e8165a4"
+                 },
+                 {
+                 "capacity": 6,
+                 "description": "Room for everyone",
+                 "price_details": {
+                 "distance_unit": "mile",
+                 "cost_per_minute": 0.9,
+                 "service_fees": [],
+                 "minimum": 25.0,
+                 "cost_per_distance": 3.75,
+                 "base": 15.0,
+                 "cancellation_fee": 10.0,
+                 "currency_code": "USD"
+                 },
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car.jpg",
+                 "display_name": "UberSUV",
+                 "product_id": "8920cb5e-51a4-4fa4-acdf-dd86c5e18ae0"
+                 },
+                 {
+                 "capacity": 4,
+                 "description": "Taxi without the hassle",
+                 "price_details": null,
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car.jpg",
+                 "display_name": "uberTAXI",
+                 "product_id": "3ab64887-4842-4c8e-9780-ccecd3a0391d"
+                 }
+                 ]
+}

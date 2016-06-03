@@ -28,29 +28,32 @@ import CoreLocation
 
 /// This class provides an example for using the RideRequestButton to initiate a deeplink
 /// into the Uber app
-class DeeplinkExampleViewController: UIViewController {
+public class DeeplinkExampleViewController: ButtonExampleViewController {
 
-    override func viewDidLoad() {
+    let blackRequestButton = RideRequestButton()
+    let whiteRequestButton = RideRequestButton()
+    
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationItem.title = "Deeplink Buttons"
         
-        // create background UIViews
-        let topView = UIView()
-        view.addSubview(topView)
-        let bottomView = UIView()
-        view.addSubview(bottomView)
-        
-        // add black request button with default configurations
-        let blackRequestButton = RideRequestButton()
         topView.addSubview(blackRequestButton)
+        bottomView.addSubview(whiteRequestButton)
         
-        // add white request button and add custom configurations
-        let whiteRequestButton = RideRequestButton()
-        
-        //Create the DeeplinkRequestingBehavior
-        //The RideRequestButton is initialized with this behavior by default, shown
-        //as an example
+        initialSetup()
+        addBlackRequestButtonConstraints()
+        addWhiteRequestButtonConstraints()
+    }
+    
+    override public func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        whiteRequestButton.loadRideInformation()
+    }
+    
+    // Mark: Private Interface
+    
+    private func initialSetup() {
         let deeplinkBehavior = DeeplinkRequestingBehavior()
         whiteRequestButton.requestBehavior = deeplinkBehavior
         
@@ -61,48 +64,26 @@ class DeeplinkExampleViewController: UIViewController {
         parameterBuilder.setPickupLocation(pickupLocation, nickname: "California Academy of Sciences")
         let dropoffLocation = CLLocation(latitude: 37.791, longitude: -122.405)
         parameterBuilder.setDropoffLocation(dropoffLocation, nickname: "Pier 39")
-
+        
         whiteRequestButton.rideParameters = parameterBuilder.build()
-        
-        bottomView.addSubview(whiteRequestButton)
-        
-        // position UIViews and request buttons
-        setUpBackgroundViews(top: topView, bottom: bottomView)
-        centerButton(forButton: blackRequestButton, inView: topView)
-        centerButton(forButton: whiteRequestButton, inView: bottomView)
     }
     
-    // set up two white and black background UIViews with autolayout constraints
-    func setUpBackgroundViews(top topView: UIView, bottom: UIView) {
-        topView.backgroundColor = UIColor.whiteColor()
-        bottom.backgroundColor = UIColor.blackColor()
-        topView.translatesAutoresizingMaskIntoConstraints = false
-        bottom.translatesAutoresizingMaskIntoConstraints = false
+    private func addBlackRequestButtonConstraints() {
+        blackRequestButton.translatesAutoresizingMaskIntoConstraints = false
         
-        // pass views in dictionary
-        let views = ["top": topView, "bottom": bottom]
+        let centerYConstraint = NSLayoutConstraint(item: blackRequestButton, attribute: .CenterY, relatedBy: .Equal, toItem: topView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
+        let centerXConstraint = NSLayoutConstraint(item: blackRequestButton, attribute: .CenterX, relatedBy: .Equal, toItem: topView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
         
-        // position constraints
-        let horizontalTopConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:|[top]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-        let horizontalBottomConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:|[bottom]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-        let verticalConstraint = NSLayoutConstraint.constraintsWithVisualFormat("V:|[top(bottom)][bottom]|", options: NSLayoutFormatOptions.AlignAllLeading, metrics: nil, views: views)
-        
-        // add constraints to view
-        view.addConstraints(horizontalTopConstraint)
-        view.addConstraints(horizontalBottomConstraint)
-        view.addConstraints(verticalConstraint)
+        topView.addConstraints([centerYConstraint, centerXConstraint])
     }
     
-    // center button position inside each background UIView
-    func centerButton(forButton button: RideRequestButton, inView: UIView) {
-        button.translatesAutoresizingMaskIntoConstraints = false
+    private func addWhiteRequestButtonConstraints() {
+        whiteRequestButton.translatesAutoresizingMaskIntoConstraints = false
         
-        // position constraints
-        let horizontalConstraint = NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: inView, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
-        let verticalConstraint = NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: inView, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0)
+        let centerYConstraint = NSLayoutConstraint(item: whiteRequestButton, attribute: .CenterY, relatedBy: .Equal, toItem: bottomView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
+        let centerXConstraint = NSLayoutConstraint(item: whiteRequestButton, attribute: .CenterX, relatedBy: .Equal, toItem: bottomView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
         
-        // add constraints to view
-        inView.addConstraints([horizontalConstraint, verticalConstraint])
+        bottomView.addConstraints([centerYConstraint, centerXConstraint])
     }
 }
 

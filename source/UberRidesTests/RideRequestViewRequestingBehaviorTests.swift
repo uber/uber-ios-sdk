@@ -41,7 +41,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
     
     func testUpdateLoginManager() {
         let baseVC = UIViewController()
-        let initialLoginManger = LoginManager()
+        let initialLoginManger = LoginManager(loginType: .Native)
         let behavior = RideRequestViewRequestingBehavior(presentingViewController: baseVC, loginManager: initialLoginManger)
         XCTAssertNotNil(behavior.loginManager)
         XCTAssertEqual(behavior.modalRideRequestViewController.rideRequestViewController.loginManager, initialLoginManger)
@@ -60,7 +60,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
         }
         
         let baseVC = UIViewControllerMock()
-        let initialLoginManger = LoginManager()
+        let initialLoginManger = LoginManager(loginType: .Native)
         let behavior = RideRequestViewRequestingBehavior(presentingViewController: baseVC, loginManager: initialLoginManger)
         XCTAssertNotNil(behavior.modalRideRequestViewController)
         XCTAssertNotNil(behavior.modalRideRequestViewController.rideRequestViewController)
@@ -95,7 +95,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
         }
         
         let baseVC = UIViewControllerMock(testClosure: expectationClosure)
-        let initialLoginManger = LoginManager()
+        let initialLoginManger = LoginManager(loginType: .Native)
         let behavior = RideRequestViewRequestingBehavior(presentingViewController: baseVC, loginManager: initialLoginManger)
         behavior.requestRide(RideParametersBuilder().build())
         waitForExpectationsWithTimeout(2.0) {error in

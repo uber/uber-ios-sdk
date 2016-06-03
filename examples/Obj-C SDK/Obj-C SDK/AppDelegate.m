@@ -42,6 +42,9 @@
     //Make requests to sandbox for development
     [UBSDKConfiguration setSandboxEnabled:YES];
     
+    //Handle incoming SSO Requests
+    [[UBSDKRidesAppDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+    
     return YES;
 }
 
@@ -65,6 +68,13 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
+    //Check & handle incoming SSO URL
+    BOOL handledUberURL = [[UBSDKRidesAppDelegate sharedInstance] application:app openURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+    
+    return handledUberURL;
 }
 
 @end

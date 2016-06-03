@@ -28,7 +28,13 @@ import XCTest
 class ConfigurationTests: XCTestCase {
 
     private let defaultClientID = "testClientID"
-    private let defaultCallbackString = "testUri://uberConnect"
+    private let defaultDisplayName = "My Awesome App"
+    private let defaultCallbackString = "testURI://uberConnect"
+    private let defaultGeneralCallbackString = "testURI://uberConnectGeneral"
+    private let defaultAuthorizationCodeCallbackString = "testURI://uberConnectAuthorizationCode"
+    private let defaultImplicitCallbackString = "testURI://uberConnectImplicit"
+    private let defaultNativeCallbackString = "testURI://uberConnectNative"
+    private let defaultServerToken = "testServerToken"
     private let defaultAccessTokenIdentifier = "RidesAccessTokenKey"
     private let defaultRegion = Region.Default
     private let defaultSandbox = false
@@ -51,6 +57,8 @@ class ConfigurationTests: XCTestCase {
         
         let newClientID = "newID"
         let newCallback = "newCallback://"
+        let newDisplay = "newDisplay://"
+        let newServerToken = "newserver"
         let newGroup = "new group"
         let newTokenId = "newTokenID"
         let newRegion = Region.China
@@ -58,6 +66,8 @@ class ConfigurationTests: XCTestCase {
         
         Configuration.setClientID(newClientID)
         Configuration.setCallbackURIString(newCallback)
+        Configuration.setAppDisplayName(newDisplay)
+        Configuration.setServerToken(newServerToken)
         Configuration.setDefaultKeychainAccessGroup(newGroup)
         Configuration.setDefaultAccessTokenIdentifier(newTokenId)
         Configuration.setRegion(newRegion)
@@ -65,6 +75,8 @@ class ConfigurationTests: XCTestCase {
         
         XCTAssertEqual(newClientID, Configuration.getClientID())
         XCTAssertEqual(newCallback, Configuration.getCallbackURIString())
+        XCTAssertEqual(newDisplay, Configuration.getAppDisplayName())
+        XCTAssertEqual(newServerToken, Configuration.getServerToken())
         XCTAssertEqual(newGroup, Configuration.getDefaultKeychainAccessGroup())
         XCTAssertEqual(newTokenId, Configuration.getDefaultAccessTokenIdentifier())
         XCTAssertEqual(newRegion, Configuration.getRegion())
@@ -78,7 +90,9 @@ class ConfigurationTests: XCTestCase {
         Configuration.bundle = NSBundle(forClass: self.dynamicType)
         
         XCTAssertEqual(Configuration.getClientID(), defaultClientID)
-        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString())
+        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString())
+        XCTAssertEqual(defaultDisplayName, Configuration.getAppDisplayName())
+        XCTAssertEqual(defaultServerToken, Configuration.getServerToken())
         XCTAssertEqual("", Configuration.getDefaultKeychainAccessGroup())
         XCTAssertEqual(defaultAccessTokenIdentifier, Configuration.getDefaultAccessTokenIdentifier())
         XCTAssertEqual(defaultRegion, Configuration.getRegion())
@@ -108,7 +122,7 @@ class ConfigurationTests: XCTestCase {
     //MARK: Callback URI String Tests
     
     func testCallbackURIString_getDefault() {
-        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString())
+        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString())
     }
     
     func testCallbackURIString_overwriteDefault() {
@@ -123,7 +137,132 @@ class ConfigurationTests: XCTestCase {
         
         Configuration.setCallbackURIString(nil)
         
-        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString())
+        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString())
+    }
+    
+    func testCallbackURIString_getDefault_getTypes() {
+        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString(.General))
+        XCTAssertEqual(defaultAuthorizationCodeCallbackString, Configuration.getCallbackURIString(.AuthorizationCode))
+        XCTAssertEqual(defaultImplicitCallbackString, Configuration.getCallbackURIString(.Implicit))
+        XCTAssertEqual(defaultNativeCallbackString, Configuration.getCallbackURIString(.Native))
+    }
+    
+    func testCallbackURIString_overwriteDefault_allTypes() {
+        let generalCallbackString = "testURI://uberConnectGeneralNew"
+        let authorizationCodeCallbackString = "testURI://uberConnectAuthorizationCodeNew"
+        let implicitCallbackString = "testURI://uberConnectImplicitNew"
+        let nativeCallbackString = "testURI://uberConnectNativeNew"
+        
+        Configuration.setCallbackURIString(generalCallbackString, type: .General)
+        Configuration.setCallbackURIString(authorizationCodeCallbackString, type: .AuthorizationCode)
+        Configuration.setCallbackURIString(implicitCallbackString, type: .Implicit)
+        Configuration.setCallbackURIString(nativeCallbackString, type: .Native)
+        
+        XCTAssertEqual(generalCallbackString, Configuration.getCallbackURIString(.General))
+        XCTAssertEqual(authorizationCodeCallbackString, Configuration.getCallbackURIString(.AuthorizationCode))
+        XCTAssertEqual(implicitCallbackString, Configuration.getCallbackURIString(.Implicit))
+        XCTAssertEqual(nativeCallbackString, Configuration.getCallbackURIString(.Native))
+    }
+    
+    func testCallbackURIString_resetDefault_allTypes() {
+        let generalCallbackString = "testURI://uberConnectGeneralNew"
+        let authorizationCodeCallbackString = "testURI://uberConnectAuthorizationCodeNew"
+        let implicitCallbackString = "testURI://uberConnectImplicitNew"
+        let nativeCallbackString = "testURI://uberConnectNativeNew"
+        
+        Configuration.setCallbackURIString(generalCallbackString, type: .General)
+        Configuration.setCallbackURIString(authorizationCodeCallbackString, type: .AuthorizationCode)
+        Configuration.setCallbackURIString(implicitCallbackString, type: .Implicit)
+        Configuration.setCallbackURIString(nativeCallbackString, type: .Native)
+        
+        Configuration.setCallbackURIString(nil, type: .General)
+        Configuration.setCallbackURIString(nil, type: .AuthorizationCode)
+        Configuration.setCallbackURIString(nil, type: .Implicit)
+        Configuration.setCallbackURIString(nil, type: .Native)
+        
+        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString(.General))
+        XCTAssertEqual(defaultAuthorizationCodeCallbackString, Configuration.getCallbackURIString(.AuthorizationCode))
+        XCTAssertEqual(defaultImplicitCallbackString, Configuration.getCallbackURIString(.Implicit))
+        XCTAssertEqual(defaultNativeCallbackString, Configuration.getCallbackURIString(.Native))
+    }
+    
+    func testCallbackURIString_resetDefault_oneType() {
+        let generalCallbackString = "testURI://uberConnectGeneralNew"
+        let authorizationCodeCallbackString = "testURI://uberConnectAuthorizationCodeNew"
+        let implicitCallbackString = "testURI://uberConnectImplicitNew"
+        let nativeCallbackString = "testURI://uberConnectNativeNew"
+        
+        Configuration.setCallbackURIString(generalCallbackString, type: .General)
+        Configuration.setCallbackURIString(authorizationCodeCallbackString, type: .AuthorizationCode)
+        Configuration.setCallbackURIString(implicitCallbackString, type: .Implicit)
+        Configuration.setCallbackURIString(nativeCallbackString, type: .Native)
+
+        Configuration.setCallbackURIString(nil, type: .Native)
+        
+        XCTAssertEqual(generalCallbackString, Configuration.getCallbackURIString(.General))
+        XCTAssertEqual(authorizationCodeCallbackString, Configuration.getCallbackURIString(.AuthorizationCode))
+        XCTAssertEqual(implicitCallbackString, Configuration.getCallbackURIString(.Implicit))
+        XCTAssertEqual(defaultNativeCallbackString, Configuration.getCallbackURIString(.Native))
+    }
+    
+    func testCallbackURIStringFallback_whenCallbackURIsMissing() {
+        Configuration.plistName = "testInfoMissingCallbacks"
+        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.General))
+        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.AuthorizationCode))
+        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.Implicit))
+        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.Native))
+    }
+    
+    func testCallbackURIStringFallbackUsesGeneralOverride_whenCallbackURIsMissing() {
+        Configuration.plistName = "testInfoMissingCallbacks"
+        let override = "testURI://override"
+        Configuration.setCallbackURIString(override, type: .General)
+        XCTAssertEqual(override, Configuration.getCallbackURIString(.General))
+        XCTAssertEqual(override, Configuration.getCallbackURIString(.AuthorizationCode))
+        XCTAssertEqual(override, Configuration.getCallbackURIString(.Implicit))
+        XCTAssertEqual(override, Configuration.getCallbackURIString(.Native))
+    }
+    
+    //MARK: App Display Name Tests
+    
+    func testAppDisplayName_getDefault() {
+        XCTAssertEqual(defaultDisplayName, Configuration.getAppDisplayName())
+    }
+    
+    func testAppDisplayName_overwriteDefault() {
+        let appDisplayName = "Test App"
+        Configuration.setAppDisplayName(appDisplayName)
+        
+        XCTAssertEqual(appDisplayName, Configuration.getAppDisplayName())
+    }
+    
+    func testAppDisplayName_resetDefault() {
+        Configuration.setAppDisplayName("new app name")
+        
+        Configuration.setAppDisplayName(nil)
+        
+        XCTAssertEqual(defaultDisplayName, Configuration.getAppDisplayName())
+    }
+    
+    //MARK: Server Token Tests
+    
+    func testServerToken_getDefault() {
+        XCTAssertEqual(defaultServerToken, Configuration.getServerToken())
+    }
+    
+    func testServerToken_overwriteDefault() {
+        let serverToken = "nonDefaultToken"
+        Configuration.setServerToken(serverToken)
+        
+        XCTAssertEqual(serverToken, Configuration.getServerToken())
+    }
+    
+    func testServerToken_resetDefault() {
+        Configuration.setServerToken("nonDefaultToken")
+        
+        Configuration.setServerToken(nil)
+        
+        XCTAssertEqual(defaultServerToken, Configuration.getServerToken())
     }
     
     //MARK: Keychain Access Group Tests

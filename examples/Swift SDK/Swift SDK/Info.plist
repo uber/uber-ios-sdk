@@ -4,6 +4,7 @@
 <dict>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>uberauth</string>
 		<string>uber</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
@@ -42,8 +43,23 @@
 	</array>
 	<key>UberClientID</key>
 	<string>YOUR_CLIENT_ID</string>
-	<key>UberCallbackURI</key>
-	<string>callback://your_callback_uri</string>
+	<key>UberDisplayName</key>
+	<string>YOUR_APP_NAME</string>
+	<key>UberCallbackURIs</key>
+	<array>
+		<dict>
+			<key>UberCallbackURIType</key>
+			<string>General</string>
+			<key>URIString</key>
+			<string>callback://your_callback_uri</string>
+		</dict>
+		<dict>
+			<key>UberCallbackURIType</key>
+			<string>AuthorizationCode</string>
+			<key>URIString</key>
+			<string>callback://optional_authorization_code_uri</string>
+		</dict>
+	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location to make specifying a pickup spot easy as pie</string>
 </dict>

@@ -1,0 +1,22 @@
+{
+    "capacity": 4,
+    "description": "The original Uber",
+    "price_details": {
+        "distance_unit": "mile",
+        "cost_per_minute": 0.65,
+        "service_fees": [
+            {
+                "fee": 1.0,
+                "name": "Safe Rides Fee"
+            }
+        ],
+        "minimum": 15.0,
+        "cost_per_distance": 3.75,
+        "base": 8.0,
+        "cancellation_fee": 10.0,
+        "currency_code": "USD"
+    },
+    "image": "http://d1a3f4spazzrp4.cloudfront.net/car.jpg",
+    "display_name": "UberBLACK",
+    "product_id": "d4abaae7-f4d6-4152-91cc-77523e8165a4"
+}

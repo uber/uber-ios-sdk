@@ -30,44 +30,23 @@ import UIKit
 @objc(UBSDKOAuthViewController)
 class OAuthViewController: UIViewController {
     
-    var scopes: [RidesScope]? {
-        didSet {
-            loginView.scopes = scopes
-        }
-    }
-    
     var hasLoaded = false
     var loginView: LoginView
     
     /**
      Initializes the web view controller with the necessary information.
      
-     - parameter scopes:            An array of scopes to request the user to authorize. (see RidesScope)
+     - parameter loginAuthenticator: the login authentication process to use
      
      - returns: An initialized OAuthWebViewController
     */
-    @objc init(scopes: [RidesScope]) {
-        loginView = LoginView(scopes: scopes)
+    @objc init(loginAuthenticator: LoginViewAuthenticator) {
+        loginView = LoginView(loginAuthenticator: loginAuthenticator)
         super.init(nibName: nil, bundle: nil)
     }
     
-    /**
-     Initializer for storyboard. If using this, you must set your scopes before attempting
-     to present this view controller
-     
-     - parameter aDecoder: the coder to use
-     
-     - returns: An initialized OAuthWebViewController, or nil if something went wrong
-     */
     @objc required init?(coder aDecoder: NSCoder) {
-        guard let loginView = LoginView(coder: aDecoder) else {
-            self.loginView = LoginView(scopes: [])
-            super.init(nibName: nil, bundle: nil)
-            return nil
-        }
-        
-        self.loginView = loginView
-        super.init(coder: aDecoder)
+        fatalError("initWithCoder: is not supported")
     }
     
     override func viewDidLoad() {
@@ -76,7 +55,7 @@ class OAuthViewController: UIViewController {
         self.view.addSubview(loginView)
         self.setupLoginView()
         // Set up navigation item
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: Selector("cancel"))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.title = LocalizationUtil.localizedString(forKey: "Sign in with Uber", comment: "Title of navigation bar during OAuth")
     }
@@ -90,7 +69,7 @@ class OAuthViewController: UIViewController {
     }
     
     func cancel() {
-        self.loginView.delegate?.loginView(self.loginView, didFailWithError: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .UserCancelled))
+        self.loginView.loginAuthenticator.loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .UserCancelled))
         dismissViewControllerAnimated(true, completion: nil)
     }
     

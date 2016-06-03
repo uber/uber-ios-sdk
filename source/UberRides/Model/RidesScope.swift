@@ -40,46 +40,55 @@ import UIKit
  - AllTrips:       Get details of the trip the user is currently taking.
  - History:        Pull trip data of a user's historical pickups and drop-offs.
  - HistoryLite:    Same as History without city information.
- - PaymentMethods: Retrieve user's available registered payment methods.
  - Places:         Save and retrieve user's favorite places.
  - Profile:        Access basic profile information on a user's Uber account.
- - RideWidgets:    The scope for using the Ride Request Widget
-
+ - Request:        Make requests for Uber rides on behalf of users.
+ - RideReceipt:    Get receipt details for requests made by application.
+ - RideWidgets:    The scope for using the Ride Request Widget.
  */
 @objc public enum RidesScopeType: Int {
+    case AllTrips
     case History
     case HistoryLite
-    case PaymentMethods
     case Places
     case Profile
+    case Request
+    case RequestReceipt
     case RideWidgets
     
     
     var type: ScopeType {
         switch(self) {
-        case History: fallthrough
-        case HistoryLite: fallthrough
-        case PaymentMethods: fallthrough
-        case Places: fallthrough
-        case Profile: fallthrough
+        case .History: fallthrough
+        case .HistoryLite: fallthrough
+        case .Places: fallthrough
+        case .Profile: fallthrough
         case .RideWidgets:
             return .General
+        case .AllTrips: fallthrough
+        case .Request: fallthrough
+        case .RequestReceipt:
+            return .Privileged
         }
     }
     
     func toString() -> String {
         switch self {
-        case History:
+        case .AllTrips:
+            return "all_trips"
+        case .History:
             return "history"
-        case HistoryLite:
+        case .HistoryLite:
             return "history_lite"
-        case PaymentMethods:
-            return "payment_methods_readonly"
-        case Places:
+        case .Places:
             return "places"
-        case Profile:
+        case .Profile:
             return "profile"
-        case RideWidgets:
+        case .Request:
+            return "request"
+        case .RequestReceipt:
+            return "request_receipt"
+        case .RideWidgets:
             return "ride_widgets"
         }
     }
@@ -114,20 +123,26 @@ import UIKit
         return ridesScopeType.rawValue.hashValue
     }
     
+    /// Convenience variable for the AllTrips scope
+    public static let AllTrips = RidesScope(ridesScopeType: .AllTrips)
+    
     /// Convenience variable for the History scope
     public static let History = RidesScope(ridesScopeType: .History)
     
     /// Convenience variable for the HistoryLite scope
     public static let HistoryLite = RidesScope(ridesScopeType: .HistoryLite)
     
-    /// Convenience variable for the PaymentMethods scope
-    public static let PaymentMethods = RidesScope(ridesScopeType: .PaymentMethods)
-    
     /// Convenience variable for the Places scope
     public static let Places = RidesScope(ridesScopeType: .Places)
     
     /// Convenience variable for the Profile scope
     public static let Profile = RidesScope(ridesScopeType: .Profile)
+    
+    /// Convenience variable for the Request scope
+    public static let Request = RidesScope(ridesScopeType: .Request)
+    
+    /// Convenience variable for the RequestReceipt scope
+    public static let RequestReceipt = RidesScope(ridesScopeType: .RequestReceipt)
     
     /// Convenience variable for the RideWidgets scope
     public static let RideWidgets = RidesScope(ridesScopeType: .RideWidgets)
@@ -152,8 +167,6 @@ class RidesScopeFactory : NSObject {
             return .History
         case RidesScopeType.HistoryLite.toString():
             return .HistoryLite
-        case RidesScopeType.PaymentMethods.toString():
-            return .PaymentMethods
         case RidesScopeType.Places.toString():
             return .Places
         case RidesScopeType.Profile.toString():

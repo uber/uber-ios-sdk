@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9950A42DC5E55EA5A03D13A9 /* Pods_Swift_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BA4ECB19AAC4C640E1A50AD /* Pods_Swift_SDK.framework */; };
 		AC0404A81BFAD0C800AC1501 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404A71BFAD0C800AC1501 /* AppDelegate.swift */; };
 		AC0404AA1BFAD0C800AC1501 /* DeeplinkExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404A91BFAD0C800AC1501 /* DeeplinkExampleViewController.swift */; };
 		AC0404AD1BFAD0C800AC1501 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC0404AB1BFAD0C800AC1501 /* Main.storyboard */; };
@@ -15,9 +14,15 @@
 		AC0404B21BFAD0C800AC1501 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC0404B01BFAD0C800AC1501 /* LaunchScreen.storyboard */; };
 		AC0404BD1BFAD0C800AC1501 /* Swift_SDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404BC1BFAD0C800AC1501 /* Swift_SDKTests.swift */; };
 		AC0404C81BFAD0C800AC1501 /* Swift_SDKUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404C71BFAD0C800AC1501 /* Swift_SDKUITests.swift */; };
+		D825C5CA1CD19773001FE3A7 /* AuthorizationCodeGrantExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D825C5C91CD19773001FE3A7 /* AuthorizationCodeGrantExampleViewController.swift */; };
+		D825C5CC1CD267C0001FE3A7 /* AuthorizationBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D825C5CB1CD267C0001FE3A7 /* AuthorizationBaseViewController.swift */; };
 		DC78EC781CB34AC600850814 /* ExampleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC78EC771CB34AC600850814 /* ExampleTableViewController.swift */; };
 		DC78EC7A1CB34D4800850814 /* RideRequestWidgetExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC78EC791CB34D4800850814 /* RideRequestWidgetExampleViewController.swift */; };
 		DC78EC7C1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC78EC7B1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift */; };
+		DCA45A1A1D009158003CBA3D /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA45A171D00914D003CBA3D /* UberRides.framework */; };
+		DCA45A1B1D009158003CBA3D /* UberRides.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DCA45A171D00914D003CBA3D /* UberRides.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DCD806161CFE7F4300EF6EB1 /* ButtonExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD806151CFE7F4300EF6EB1 /* ButtonExampleViewController.swift */; };
+		DCD806181CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD806171CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,10 +40,44 @@
 			remoteGlobalIDString = AC0404A31BFAD0C800AC1501;
 			remoteInfo = "Swift SDK";
 		};
+		DCA45A161D00914D003CBA3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCA45A111D00914D003CBA3D /* UberRides.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AC0404751BFACD1D00AC1501;
+			remoteInfo = UberRides;
+		};
+		DCA45A181D00914D003CBA3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCA45A111D00914D003CBA3D /* UberRides.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AC04047F1BFACD1D00AC1501;
+			remoteInfo = UberRidesTests;
+		};
+		DCA45A1C1D009158003CBA3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCA45A111D00914D003CBA3D /* UberRides.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = AC0404741BFACD1D00AC1501;
+			remoteInfo = UberRides;
+		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		DCA45A1E1D009158003CBA3D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				DCA45A1B1D009158003CBA3D /* UberRides.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		0BA4ECB19AAC4C640E1A50AD /* Pods_Swift_SDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swift_SDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		936D353832B2D6A2F78B5456 /* Pods-Swift SDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swift SDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-Swift SDK/Pods-Swift SDK.release.xcconfig"; sourceTree = "<group>"; };
 		AC0404A41BFAD0C800AC1501 /* Swift SDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift SDK.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC0404A71BFAD0C800AC1501 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -54,6 +93,8 @@
 		AC0404C71BFAD0C800AC1501 /* Swift_SDKUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_SDKUITests.swift; sourceTree = "<group>"; };
 		AC0404C91BFAD0C800AC1501 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C5ADDC8A8EE48350FDC38319 /* Pods-Swift SDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swift SDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Swift SDK/Pods-Swift SDK.debug.xcconfig"; sourceTree = "<group>"; };
+		D825C5C91CD19773001FE3A7 /* AuthorizationCodeGrantExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrantExampleViewController.swift; sourceTree = "<group>"; };
+		D825C5CB1CD267C0001FE3A7 /* AuthorizationBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationBaseViewController.swift; sourceTree = "<group>"; };
 		DC78EC771CB34AC600850814 /* ExampleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTableViewController.swift; sourceTree = "<group>"; };
 		DC78EC791CB34D4800850814 /* RideRequestWidgetExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestWidgetExampleViewController.swift; sourceTree = "<group>"; };
 		DC78EC7B1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImplicitGrantExampleViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +104,9 @@
 		DC8FC36A1CBDF5C700D58839 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		DC8FC36B1CBDF5D200D58839 /* hi-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-IN"; path = "hi-IN.lproj/Main.strings"; sourceTree = "<group>"; };
 		DC8FC36C1CBDF5D200D58839 /* hi-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-IN"; path = "hi-IN.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		DCA45A111D00914D003CBA3D /* UberRides.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UberRides.xcodeproj; path = ../../source/UberRides.xcodeproj; sourceTree = "<group>"; };
+		DCD806151CFE7F4300EF6EB1 /* ButtonExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonExampleViewController.swift; sourceTree = "<group>"; };
+		DCD806171CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeLoginExampleViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9950A42DC5E55EA5A03D13A9 /* Pods_Swift_SDK.framework in Frameworks */,
+				DCA45A1A1D009158003CBA3D /* UberRides.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,7 +147,7 @@
 		823B0AE4697BBA3B456C5C93 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0BA4ECB19AAC4C640E1A50AD /* Pods_Swift_SDK.framework */,
+				DCA45A111D00914D003CBA3D /* UberRides.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -137,7 +181,11 @@
 				DC78EC771CB34AC600850814 /* ExampleTableViewController.swift */,
 				DC78EC791CB34D4800850814 /* RideRequestWidgetExampleViewController.swift */,
 				AC0404A91BFAD0C800AC1501 /* DeeplinkExampleViewController.swift */,
+				D825C5CB1CD267C0001FE3A7 /* AuthorizationBaseViewController.swift */,
 				DC78EC7B1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift */,
+				D825C5C91CD19773001FE3A7 /* AuthorizationCodeGrantExampleViewController.swift */,
+				DCD806171CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift */,
+				DCD806151CFE7F4300EF6EB1 /* ButtonExampleViewController.swift */,
 				AC0404AB1BFAD0C800AC1501 /* Main.storyboard */,
 				AC0404AE1BFAD0C800AC1501 /* Assets.xcassets */,
 				AC0404B01BFAD0C800AC1501 /* LaunchScreen.storyboard */,
@@ -164,6 +212,15 @@
 			path = "Swift SDKUITests";
 			sourceTree = "<group>";
 		};
+		DCA45A121D00914D003CBA3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DCA45A171D00914D003CBA3D /* UberRides.framework */,
+				DCA45A191D00914D003CBA3D /* UberRidesTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -171,16 +228,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AC0404CC1BFAD0C800AC1501 /* Build configuration list for PBXNativeTarget "Swift SDK" */;
 			buildPhases = (
-				6FEA69134FB8E38A6A356E62 /* Check Pods Manifest.lock */,
 				AC0404A01BFAD0C800AC1501 /* Sources */,
 				AC0404A11BFAD0C800AC1501 /* Frameworks */,
 				AC0404A21BFAD0C800AC1501 /* Resources */,
-				C6730F1AF1962CE782882276 /* Embed Pods Frameworks */,
-				4C91B192F5D293C3FF882A6E /* Copy Pods Resources */,
+				DCA45A1E1D009158003CBA3D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DCA45A1D1D009158003CBA3D /* PBXTargetDependency */,
 			);
 			name = "Swift SDK";
 			productName = "Swift SDK";
@@ -259,6 +315,12 @@
 			mainGroup = AC04049B1BFAD0C800AC1501;
 			productRefGroup = AC0404A51BFAD0C800AC1501 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = DCA45A121D00914D003CBA3D /* Products */;
+					ProjectRef = DCA45A111D00914D003CBA3D /* UberRides.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				AC0404A31BFAD0C800AC1501 /* Swift SDK */,
@@ -267,6 +329,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		DCA45A171D00914D003CBA3D /* UberRides.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = UberRides.framework;
+			remoteRef = DCA45A161D00914D003CBA3D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DCA45A191D00914D003CBA3D /* UberRidesTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UberRidesTests.xctest;
+			remoteRef = DCA45A181D00914D003CBA3D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AC0404A21BFAD0C800AC1501 /* Resources */ = {
@@ -295,63 +374,19 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		4C91B192F5D293C3FF882A6E /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Swift SDK/Pods-Swift SDK-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6FEA69134FB8E38A6A356E62 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		C6730F1AF1962CE782882276 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Swift SDK/Pods-Swift SDK-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		AC0404A01BFAD0C800AC1501 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				DC78EC781CB34AC600850814 /* ExampleTableViewController.swift in Sources */,
+				DCD806161CFE7F4300EF6EB1 /* ButtonExampleViewController.swift in Sources */,
 				DC78EC7C1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift in Sources */,
+				DCD806181CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift in Sources */,
 				AC0404AA1BFAD0C800AC1501 /* DeeplinkExampleViewController.swift in Sources */,
 				AC0404A81BFAD0C800AC1501 /* AppDelegate.swift in Sources */,
+				D825C5CC1CD267C0001FE3A7 /* AuthorizationBaseViewController.swift in Sources */,
+				D825C5CA1CD19773001FE3A7 /* AuthorizationCodeGrantExampleViewController.swift in Sources */,
 				DC78EC7A1CB34D4800850814 /* RideRequestWidgetExampleViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -384,6 +419,11 @@
 			isa = PBXTargetDependency;
 			target = AC0404A31BFAD0C800AC1501 /* Swift SDK */;
 			targetProxy = AC0404C41BFAD0C800AC1501 /* PBXContainerItemProxy */;
+		};
+		DCA45A1D1D009158003CBA3D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = UberRides;
+			targetProxy = DCA45A1C1D009158003CBA3D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -496,10 +536,11 @@
 		};
 		AC0404CD1BFAD0C800AC1501 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C5ADDC8A8EE48350FDC38319 /* Pods-Swift SDK.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Swift SDK/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uber.sdk.Swift-SDK";
@@ -509,10 +550,11 @@
 		};
 		AC0404CE1BFAD0C800AC1501 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 936D353832B2D6A2F78B5456 /* Pods-Swift SDK.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Swift SDK/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uber.sdk.Swift-SDK";

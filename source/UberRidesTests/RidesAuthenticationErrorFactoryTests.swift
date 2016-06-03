@@ -26,19 +26,33 @@ import XCTest
 @testable import UberRides
 
 class RidesAuthenticationErrorFactoryTests: XCTestCase {
-
+    
     let expectedErrorToStringMapping = [
-        RidesAuthenticationErrorType.MismatchingRedirect : "mismatching_redirect_uri",
+        RidesAuthenticationErrorType.AccessDenied : "access_denied",
+        RidesAuthenticationErrorType.ExpiredJWT : "expired_jwt",
+        RidesAuthenticationErrorType.GeneralError : "general_error",
+        RidesAuthenticationErrorType.InternalServerError : "internal_server_error",
+        RidesAuthenticationErrorType.InvalidAppSignature : "invalid_app_signature",
+        RidesAuthenticationErrorType.InvalidAuthCode : "invalid_auth_code",
+        RidesAuthenticationErrorType.InvalidClientID : "invalid_client_id",
+        RidesAuthenticationErrorType.InvalidFlowError : "invalid_flow_error",
+        RidesAuthenticationErrorType.InvalidJWT : "invalid_jwt",
+        RidesAuthenticationErrorType.InvalidJWTSignature : "invalid_jwt_signature",
+        RidesAuthenticationErrorType.InvalidNonce : "invalid_nonce",
         RidesAuthenticationErrorType.InvalidRedirect : "invalid_redirect_uri",
         RidesAuthenticationErrorType.InvalidRequest : "invalid_parameters",
+        RidesAuthenticationErrorType.InvalidResponse : "invalid_response",
         RidesAuthenticationErrorType.InvalidScope : "invalid_scope",
+        RidesAuthenticationErrorType.InvalidSSOResponse : "invalid_sso_response",
+        RidesAuthenticationErrorType.InvalidUserID : "invalid_user_id",
+        RidesAuthenticationErrorType.MalformedRequest : "malformed_request",
+        RidesAuthenticationErrorType.MismatchingRedirect : "mismatching_redirect_uri",
+        RidesAuthenticationErrorType.NetworkError : "network_error",
         RidesAuthenticationErrorType.ServerError : "server_error",
-        RidesAuthenticationErrorType.InvalidClientID : "invalid_client_id",
+        RidesAuthenticationErrorType.UnableToPresentLogin : "present_login_failed",
+        RidesAuthenticationErrorType.UnableToSaveAccessToken : "token_not_saved",
         RidesAuthenticationErrorType.Unavailable : "temporarily_unavailable",
         RidesAuthenticationErrorType.UserCancelled : "cancelled",
-        RidesAuthenticationErrorType.InvalidResponse : "invalid_response",
-        RidesAuthenticationErrorType.UnableToSaveAccessToken : "token_not_saved",
-        RidesAuthenticationErrorType.UnableToPresentLogin : "present_login_failed",
     ]
     
     func testCreateErrorsByErrorType() {

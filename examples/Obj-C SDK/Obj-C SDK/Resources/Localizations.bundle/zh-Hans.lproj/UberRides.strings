@@ -1,5 +1,5 @@
-"Deeplink Request Buttons" = "Deeplink Request Buttons";
-"Ride Request Widget Button" = "Ride Request Widget Button";
-"Implicit Grant / Login Manager" = "Implicit Grant / Login Manager";
-"Logout" = "Logout";
-"Saved access token!" = "Saved access token!";
+"Deeplink Request Buttons" = "深度链接叫车按钮";
+"Ride Request Widget Button" = "叫车工具按钮";
+"Implicit Grant / Login Manager" = "隐式授权/登录管理器";
+"Logout" = "退出";
+"Saved access token!" = "已成功保存访问口令！";

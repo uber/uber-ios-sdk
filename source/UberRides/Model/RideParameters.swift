@@ -42,6 +42,9 @@ import MapKit
     /// The address of the pickup location of the ride
     public let pickupAddress: String?
     
+    /// This is the name of an Uber saved place. Only “home” or “work” is acceptable.
+    public let pickupPlaceID: String?
+    
     /// The dropoff location to use for the ride
     public let dropoffLocation: CLLocation?
     
@@ -50,6 +53,15 @@ import MapKit
     
     /// The adress of the dropoff location of the ride
     public let dropoffAddress: String?
+    
+    /// This is the name of an Uber saved place. Only “home” or “work” is acceptable.
+    public let dropoffPlaceID: String?
+    
+    /// The unique identifier of the payment method selected by a user.
+    public let paymentMethod: String?
+    
+    /// The unique identifier of the surge session for a user.
+    public let surgeConfirmationID: String?
     
     var userAgent: String {
         var userAgentString: String = ""
@@ -64,24 +76,32 @@ import MapKit
     
     var source: String?
     
-    private init(useCurrentLocationForPickup: Bool,
-        productID: String?,
-        pickupLocation: CLLocation?,
-        pickupNickname: String?,
-        pickupAddress: String?,
+    private init(dropoffAddress: String?,
         dropoffLocation: CLLocation?,
         dropoffNickname: String?,
-        dropoffAddress: String?,
-        source: String?) {
+        dropoffPlaceID: String?,
+        paymentMethod: String?,
+        pickupAddress: String?,
+        pickupLocation: CLLocation?,
+        pickupNickname: String?,
+        pickupPlaceID: String?,
+        productID: String?,
+        source: String?,
+        surgeConfirmationID: String?,
+        useCurrentLocationForPickup: Bool) {
         
             self.useCurrentLocationForPickup = useCurrentLocationForPickup
             self.productID = productID
             self.pickupLocation = pickupLocation
             self.pickupNickname = pickupNickname
             self.pickupAddress = pickupAddress
+            self.pickupPlaceID = pickupPlaceID
             self.dropoffLocation = dropoffLocation
             self.dropoffNickname = dropoffNickname
             self.dropoffAddress = dropoffAddress
+            self.dropoffPlaceID = dropoffPlaceID
+            self.paymentMethod = paymentMethod
+            self.surgeConfirmationID = surgeConfirmationID
             self.source = source
     }
     
@@ -95,9 +115,13 @@ import MapKit
     private var pickupLocation: CLLocation?
     private var pickupNickname: String?
     private var pickupAddress: String?
+    private var pickupPlaceID: String?
     private var dropoffLocation: CLLocation?
     private var dropoffNickname: String?
     private var dropoffAddress: String?
+    private var dropoffPlaceID: String?
+    private var paymentMethod: String?
+    private var surgeConfirmationID: String?
     private var source: String?
     
     @objc public convenience override init() {
@@ -111,9 +135,14 @@ import MapKit
             pickupLocation = rideParameters.pickupLocation
             pickupNickname = rideParameters.pickupNickname
             pickupAddress = rideParameters.pickupAddress
+            pickupPlaceID = rideParameters.pickupPlaceID
             dropoffLocation = rideParameters.dropoffLocation
             dropoffNickname =  rideParameters.dropoffNickname
             dropoffAddress = rideParameters.dropoffAddress
+            dropoffPlaceID = rideParameters.dropoffPlaceID
+            paymentMethod = rideParameters.paymentMethod
+            surgeConfirmationID = rideParameters.surgeConfirmationID
+            
             source = rideParameters.source
         } else {
             useCurrentLocationForPickup = true
@@ -139,6 +168,24 @@ import MapKit
      */
     public func setPickupToCurrentLocation() -> RideParametersBuilder {
         useCurrentLocationForPickup = true
+        pickupLocation = nil
+        pickupNickname = nil
+        pickupAddress = nil
+        
+        return self
+    }
+    
+    /**
+     Sets the builder to use the given place ID as the pickup location. This will remove any existing pickup location.
+     Please note that place IDs are not supported for RequestDeeplink.
+     
+     - parameter placeID: the place ID of the pickup location - either "home" or "work".
+     
+     - returns: RideParametersBuilder to continue chaining.
+     */
+    public func setPickupPlaceID(placeID: String) -> RideParametersBuilder {
+        useCurrentLocationForPickup = false
+        pickupPlaceID = placeID
         pickupLocation = nil
         pickupNickname = nil
         pickupAddress = nil
@@ -252,6 +299,53 @@ import MapKit
     }
     
     /**
+     Sets the builder to use the given place ID as the dropoff location. This will remove any existing dropoff location.
+     Please note that place IDs are not supported for RequestDeeplink and the Ride Request Widget.
+     
+     - parameter placeID: the place ID of the dropoff location - either "home" or "work".
+     
+     - returns: RideParametersBuilder to continue chaining.
+     */
+    public func setDropoffPlaceID(placeID: String) -> RideParametersBuilder {
+        dropoffPlaceID = placeID
+        dropoffLocation = nil
+        dropoffNickname = nil
+        dropoffAddress = nil
+        
+        return self
+    }
+    
+    /**
+     Sets the builder to use the given payment method for the user. 
+     If set, the trip will be requested using this payment method.
+     If not set, the trip will be requested using the user’s last used payment method.
+     Please note that payment methods are not supported for RequestDeeplink and the Ride Request Widget.
+     
+     - parameter method: unique identifier of payment method.
+     
+     - returns: RideParametersBuilder to continue chaining.
+     */
+    public func setPaymentMethod(method: String) -> RideParametersBuilder {
+        paymentMethod = method
+        
+        return self
+    }
+    
+    /**
+     Sets the builder to use the surge confirmation ID for making ride requests that have surge.
+     Please note surge confirmation is not supported for RequestDeeplink and the Ride Request Widget.
+     
+     - parameter surgeConfirmation: the unique identifier of the surge session for a user.
+     
+     - returns: RideParametersBuilder to continue chaining.
+     */
+    public func setSurgeConfirmationID(surgeConfirmation: String) -> RideParametersBuilder {
+        surgeConfirmationID = surgeConfirmation
+        
+        return self
+    }
+    
+    /**
      Set the source to use for attributing the ride
      
      - parameter source: The source string to use
@@ -270,15 +364,19 @@ import MapKit
      - returns: An initialized RideParameters object
      */
     public func build() -> RideParameters {
-        return RideParameters(useCurrentLocationForPickup: useCurrentLocationForPickup,
-            productID: productID,
-            pickupLocation: pickupLocation,
-            pickupNickname: pickupNickname,
-            pickupAddress: pickupAddress,
+        return RideParameters(dropoffAddress: dropoffAddress,
             dropoffLocation: dropoffLocation,
             dropoffNickname: dropoffNickname,
-            dropoffAddress: dropoffAddress,
-            source: source)
+            dropoffPlaceID: dropoffPlaceID,
+            paymentMethod: paymentMethod,
+            pickupAddress: pickupAddress,
+            pickupLocation: pickupLocation,
+            pickupNickname: pickupNickname,
+            pickupPlaceID: pickupPlaceID,
+            productID: productID,
+            source: source,
+            surgeConfirmationID: surgeConfirmationID,
+            useCurrentLocationForPickup: useCurrentLocationForPickup)
     }
     
 }

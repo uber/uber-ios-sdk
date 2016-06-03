@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4B084CB5DB2D61553B75B29F /* Pods_Obj_C_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4731F65F1A889A3400FFF8CB /* Pods_Obj_C_SDK.framework */; };
 		AC0404F21BFB82CC00AC1501 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AC0404F11BFB82CC00AC1501 /* main.m */; };
 		AC0404F51BFB82CC00AC1501 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AC0404F41BFB82CC00AC1501 /* AppDelegate.m */; };
 		AC0404F81BFB82CC00AC1501 /* UBSDKDeeplinkExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC0404F71BFB82CC00AC1501 /* UBSDKDeeplinkExampleViewController.m */; };
@@ -16,8 +15,14 @@
 		AC0405001BFB82CC00AC1501 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC0404FE1BFB82CC00AC1501 /* LaunchScreen.storyboard */; };
 		AC04050B1BFB82CC00AC1501 /* Obj_C_SDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AC04050A1BFB82CC00AC1501 /* Obj_C_SDKTests.m */; };
 		AC0405161BFB82CC00AC1501 /* Obj_C_SDKUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = AC0405151BFB82CC00AC1501 /* Obj_C_SDKUITests.m */; };
+		DC1AE1C21CF906E200B8CFCB /* UBSDKButtonExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1AE1C11CF906E200B8CFCB /* UBSDKButtonExampleViewController.m */; };
+		DC1AE1C51CF9137A00B8CFCB /* UBSDKNativeLoginExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1AE1C41CF9137A00B8CFCB /* UBSDKNativeLoginExampleViewController.m */; };
 		DC44CE531CB7256800E09AAC /* UBSDKExampleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44CE521CB7256800E09AAC /* UBSDKExampleTableViewCell.m */; };
 		DC44CE561CB72CB400E09AAC /* Localizations.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DC44CE551CB72CB400E09AAC /* Localizations.bundle */; };
+		DC9B5B7E1D00CC1200FFD5DF /* UBSDKUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9B5B7D1D00CC1200FFD5DF /* UBSDKUtility.m */; };
+		DCD806081CFE35EF00EF6EB1 /* UBSDKLoginButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCD806071CFE35EF00EF6EB1 /* UBSDKLoginButtonView.m */; };
+		DCA45A281D00928D003CBA3D /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA45A251D009280003CBA3D /* UberRides.framework */; };
+		DCA45A291D00928D003CBA3D /* UberRides.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DCA45A251D009280003CBA3D /* UberRides.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DCEC0CAA1CB5D7780086C6D7 /* UBSDKExampleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEC0CA91CB5D7780086C6D7 /* UBSDKExampleTableViewController.m */; };
 		DCEC0CAD1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEC0CAC1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.m */; };
 		DCEC0CB01CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEC0CAF1CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.m */; };
@@ -38,6 +43,27 @@
 			remoteGlobalIDString = AC0404EC1BFB82CC00AC1501;
 			remoteInfo = "Obj-C SDK";
 		};
+		DCA45A241D009280003CBA3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCA45A1F1D009280003CBA3D /* UberRides.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AC0404751BFACD1D00AC1501;
+			remoteInfo = UberRides;
+		};
+		DCA45A261D009280003CBA3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCA45A1F1D009280003CBA3D /* UberRides.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AC04047F1BFACD1D00AC1501;
+			remoteInfo = UberRidesTests;
+		};
+		DCA45A2A1D00928D003CBA3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCA45A1F1D009280003CBA3D /* UberRides.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = AC0404741BFACD1D00AC1501;
+			remoteInfo = UberRides;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +73,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				DCA45A291D00928D003CBA3D /* UberRides.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -55,7 +82,6 @@
 
 /* Begin PBXFileReference section */
 		37530499F1568B296FCB29A9 /* Pods-Obj-C SDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Obj-C SDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-Obj-C SDK/Pods-Obj-C SDK.release.xcconfig"; sourceTree = "<group>"; };
-		4731F65F1A889A3400FFF8CB /* Pods_Obj_C_SDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Obj_C_SDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69772C0193161EB42F63FC6B /* Pods-Obj-C SDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Obj-C SDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Obj-C SDK/Pods-Obj-C SDK.debug.xcconfig"; sourceTree = "<group>"; };
 		AC0404ED1BFB82CC00AC1501 /* Obj-C SDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Obj-C SDK.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC0404F11BFB82CC00AC1501 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -73,6 +99,10 @@
 		AC0405111BFB82CC00AC1501 /* Obj-C SDKUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Obj-C SDKUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC0405151BFB82CC00AC1501 /* Obj_C_SDKUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Obj_C_SDKUITests.m; sourceTree = "<group>"; };
 		AC0405171BFB82CC00AC1501 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DC1AE1C01CF906E200B8CFCB /* UBSDKButtonExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKButtonExampleViewController.h; sourceTree = "<group>"; };
+		DC1AE1C11CF906E200B8CFCB /* UBSDKButtonExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSDKButtonExampleViewController.m; sourceTree = "<group>"; };
+		DC1AE1C31CF9137A00B8CFCB /* UBSDKNativeLoginExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKNativeLoginExampleViewController.h; sourceTree = "<group>"; };
+		DC1AE1C41CF9137A00B8CFCB /* UBSDKNativeLoginExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSDKNativeLoginExampleViewController.m; sourceTree = "<group>"; };
 		DC44CE511CB7256800E09AAC /* UBSDKExampleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKExampleTableViewCell.h; sourceTree = "<group>"; };
 		DC44CE521CB7256800E09AAC /* UBSDKExampleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSDKExampleTableViewCell.m; sourceTree = "<group>"; };
 		DC44CE551CB72CB400E09AAC /* Localizations.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Localizations.bundle; path = Resources/Localizations.bundle; sourceTree = "<group>"; };
@@ -83,6 +113,11 @@
 		DC8FC3701CBDF7ED00D58839 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		DC8FC3711CBDF7FD00D58839 /* hi-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-IN"; path = "hi-IN.lproj/Main.strings"; sourceTree = "<group>"; };
 		DC8FC3721CBDF7FD00D58839 /* hi-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-IN"; path = "hi-IN.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		DC9B5B7C1D00CC1200FFD5DF /* UBSDKUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKUtility.h; sourceTree = "<group>"; };
+		DC9B5B7D1D00CC1200FFD5DF /* UBSDKUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSDKUtility.m; sourceTree = "<group>"; };
+		DCD806061CFE35EF00EF6EB1 /* UBSDKLoginButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKLoginButtonView.h; sourceTree = "<group>"; };
+		DCD806071CFE35EF00EF6EB1 /* UBSDKLoginButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSDKLoginButtonView.m; sourceTree = "<group>"; };
+		DCA45A1F1D009280003CBA3D /* UberRides.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UberRides.xcodeproj; path = ../../source/UberRides.xcodeproj; sourceTree = "<group>"; };
 		DCEC0CA81CB5D7780086C6D7 /* UBSDKExampleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKExampleTableViewController.h; sourceTree = "<group>"; };
 		DCEC0CA91CB5D7780086C6D7 /* UBSDKExampleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSDKExampleTableViewController.m; sourceTree = "<group>"; };
 		DCEC0CAB1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKRideRequestWidgetExampleViewController.h; sourceTree = "<group>"; };
@@ -96,7 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B084CB5DB2D61553B75B29F /* Pods_Obj_C_SDK.framework in Frameworks */,
+				DCA45A281D00928D003CBA3D /* UberRides.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,7 +155,7 @@
 		28A6CFC4B4A38C240D740F18 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4731F65F1A889A3400FFF8CB /* Pods_Obj_C_SDK.framework */,
+				DCA45A1F1D009280003CBA3D /* UberRides.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -150,10 +185,12 @@
 		AC0404EF1BFB82CC00AC1501 /* Obj-C SDK */ = {
 			isa = PBXGroup;
 			children = (
-				DC44CE571CB72D5000E09AAC /* UBSDKLocalization.h */,
+				DC9B5B7B1D00CBD600FFD5DF /* Utility */,
 				DC44CE501CB7254500E09AAC /* Views */,
 				AC0404F31BFB82CC00AC1501 /* AppDelegate.h */,
 				AC0404F41BFB82CC00AC1501 /* AppDelegate.m */,
+				DC1AE1C01CF906E200B8CFCB /* UBSDKButtonExampleViewController.h */,
+				DC1AE1C11CF906E200B8CFCB /* UBSDKButtonExampleViewController.m */,
 				DCEC0CA81CB5D7780086C6D7 /* UBSDKExampleTableViewController.h */,
 				DCEC0CA91CB5D7780086C6D7 /* UBSDKExampleTableViewController.m */,
 				AC0404F61BFB82CC00AC1501 /* UBSDKDeeplinkExampleViewController.h */,
@@ -162,6 +199,8 @@
 				DCEC0CAC1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.m */,
 				DCEC0CAE1CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.h */,
 				DCEC0CAF1CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.m */,
+				DC1AE1C31CF9137A00B8CFCB /* UBSDKNativeLoginExampleViewController.h */,
+				DC1AE1C41CF9137A00B8CFCB /* UBSDKNativeLoginExampleViewController.m */,
 				AC0404F91BFB82CC00AC1501 /* Main.storyboard */,
 				AC0404FC1BFB82CC00AC1501 /* Assets.xcassets */,
 				AC0404FE1BFB82CC00AC1501 /* LaunchScreen.storyboard */,
@@ -203,6 +242,8 @@
 			children = (
 				DC44CE511CB7256800E09AAC /* UBSDKExampleTableViewCell.h */,
 				DC44CE521CB7256800E09AAC /* UBSDKExampleTableViewCell.m */,
+				DCD806061CFE35EF00EF6EB1 /* UBSDKLoginButtonView.h */,
+				DCD806071CFE35EF00EF6EB1 /* UBSDKLoginButtonView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -213,6 +254,34 @@
 				DC44CE551CB72CB400E09AAC /* Localizations.bundle */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		DC9B5B7B1D00CBD600FFD5DF /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				DC44CE571CB72D5000E09AAC /* UBSDKLocalization.h */,
+				DC9B5B7C1D00CC1200FFD5DF /* UBSDKUtility.h */,
+				DC9B5B7D1D00CC1200FFD5DF /* UBSDKUtility.m */,
+			);
+			name = Utility;
+			sourceTree = "<group>";
+		};
+		DCA45A201D009280003CBA3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DCA45A251D009280003CBA3D /* UberRides.framework */,
+				DCA45A271D009280003CBA3D /* UberRidesTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DCA45A201D009280003CBA3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DCA45A251D009280003CBA3D /* UberRides.framework */,
+				DCA45A271D009280003CBA3D /* UberRidesTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		F00ED5F19A7501D03901A5C7 /* Pods */ = {
@@ -231,17 +300,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AC04051A1BFB82CC00AC1501 /* Build configuration list for PBXNativeTarget "Obj-C SDK" */;
 			buildPhases = (
-				A9039065CE15663FDAF89019 /* Check Pods Manifest.lock */,
 				AC0404E91BFB82CC00AC1501 /* Sources */,
 				AC0404EA1BFB82CC00AC1501 /* Frameworks */,
 				AC0404EB1BFB82CC00AC1501 /* Resources */,
 				AC0405781BFBB32500AC1501 /* Embed Frameworks */,
-				454384D96A25F017381B8A5A /* Embed Pods Frameworks */,
-				7038EA1FAB7DC76D36E9E0F7 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DCA45A2B1D00928D003CBA3D /* PBXTargetDependency */,
 			);
 			name = "Obj-C SDK";
 			productName = "Obj-C SDK";
@@ -319,6 +386,12 @@
 			mainGroup = AC0404E41BFB82CC00AC1501;
 			productRefGroup = AC0404EE1BFB82CC00AC1501 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = DCA45A201D009280003CBA3D /* Products */;
+					ProjectRef = DCA45A1F1D009280003CBA3D /* UberRides.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				AC0404EC1BFB82CC00AC1501 /* Obj-C SDK */,
@@ -327,6 +400,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		DCA45A251D009280003CBA3D /* UberRides.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = UberRides.framework;
+			remoteRef = DCA45A241D009280003CBA3D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DCA45A271D009280003CBA3D /* UberRidesTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UberRidesTests.xctest;
+			remoteRef = DCA45A261D009280003CBA3D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AC0404EB1BFB82CC00AC1501 /* Resources */ = {
@@ -356,63 +446,19 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		454384D96A25F017381B8A5A /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Obj-C SDK/Pods-Obj-C SDK-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7038EA1FAB7DC76D36E9E0F7 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Obj-C SDK/Pods-Obj-C SDK-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A9039065CE15663FDAF89019 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		AC0404E91BFB82CC00AC1501 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				DCEC0CAA1CB5D7780086C6D7 /* UBSDKExampleTableViewController.m in Sources */,
+				DCD806081CFE35EF00EF6EB1 /* UBSDKLoginButtonView.m in Sources */,
+				DC9B5B7E1D00CC1200FFD5DF /* UBSDKUtility.m in Sources */,
+				DC1AE1C21CF906E200B8CFCB /* UBSDKButtonExampleViewController.m in Sources */,
 				DCEC0CAD1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.m in Sources */,
 				AC0404F81BFB82CC00AC1501 /* UBSDKDeeplinkExampleViewController.m in Sources */,
 				AC0404F51BFB82CC00AC1501 /* AppDelegate.m in Sources */,
+				DC1AE1C51CF9137A00B8CFCB /* UBSDKNativeLoginExampleViewController.m in Sources */,
 				DC44CE531CB7256800E09AAC /* UBSDKExampleTableViewCell.m in Sources */,
 				AC0404F21BFB82CC00AC1501 /* main.m in Sources */,
 				DCEC0CB01CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.m in Sources */,
@@ -447,6 +493,11 @@
 			isa = PBXTargetDependency;
 			target = AC0404EC1BFB82CC00AC1501 /* Obj-C SDK */;
 			targetProxy = AC0405121BFB82CC00AC1501 /* PBXContainerItemProxy */;
+		};
+		DCA45A2B1D00928D003CBA3D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = UberRides;
+			targetProxy = DCA45A2A1D00928D003CBA3D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -558,29 +609,31 @@
 		};
 		AC04051B1BFB82CC00AC1501 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 69772C0193161EB42F63FC6B /* Pods-Obj-C SDK.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = "$(inherited)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Obj-C SDK/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uber.sdk.Obj-C-SDK";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
 		AC04051C1BFB82CC00AC1501 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 37530499F1568B296FCB29A9 /* Pods-Obj-C SDK.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = "$(inherited)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Obj-C SDK/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uber.sdk.Obj-C-SDK";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

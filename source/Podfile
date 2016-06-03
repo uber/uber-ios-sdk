@@ -1,6 +1,0 @@
-use_frameworks!
-
-pod 'ObjectMapper', '~> 1.1.0'
-
-target 'UberRidesTests' do
-end

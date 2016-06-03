@@ -29,6 +29,7 @@
 #import "UBSDKImplicitGrantExampleViewController.h"
 #import "UBSDKLocalization.h"
 #import "UBSDKRideRequestWidgetExampleViewController.h"
+#import "UBSDKNativeLoginExampleViewController.h"
 
 #import <UberRides/UberRides-Swift.h>
 
@@ -72,6 +73,7 @@
     [sectionOneExampleCells addObject:[self _createDeeplinkExampleCell]];
     [sectionOneExampleCells addObject:[self _createRideRequestWidgetButtonExampleCell]];
     [sectionOneExampleCells addObject:[self _createImplicitGrantExampleCell]];
+    [sectionOneExampleCells addObject:[self _createNativeLoginExampleCell]];
 
     [tableCellMap setObject:sectionOneExampleCells forKey:@(0)];
     
@@ -115,6 +117,17 @@
     UBSDKExampleTableViewCell *implicitGrantExampleCell = [[UBSDKExampleTableViewCell alloc] initWithBehaviorBlock:behaviorBlock];
     implicitGrantExampleCell.textLabel.text = UBSDKLOC(@"Implicit Grant / Login Manager");
     return implicitGrantExampleCell;
+}
+
+- (UBSDKExampleTableViewCell *)_createNativeLoginExampleCell {
+    UBSDKExampleTableViewController __weak *weakSelf = self;
+    void (^behaviorBlock)() = ^void() {
+        UBSDKNativeLoginExampleViewController *nativeLoginExampleViewController = [[UBSDKNativeLoginExampleViewController alloc] init];
+        [weakSelf.navigationController pushViewController:nativeLoginExampleViewController animated:YES];
+    };
+    UBSDKExampleTableViewCell *nativeLoginExampleCell = [[UBSDKExampleTableViewCell alloc] initWithBehaviorBlock:behaviorBlock];
+    nativeLoginExampleCell.textLabel.text = @"Native Login";
+    return nativeLoginExampleCell;
 }
 
 - (UBSDKExampleTableViewCell *)_createLogoutExampleCell {

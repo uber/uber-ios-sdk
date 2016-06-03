@@ -209,4 +209,20 @@ class AccessTokenFactoryTests: XCTestCase {
         }
     }
 
+    func testParseValidJsonStringToAccessToken() {
+        let tokenString = "tokenString1234"
+        let jsonString = "{\"access_token\": \"\(tokenString)\"}"
+        let accessToken = AccessTokenFactory.createAccessTokenFromJSONString(jsonString)
+        
+        XCTAssertNotNil(accessToken)
+        XCTAssertEqual(accessToken?.tokenString, tokenString)
+    }
+    
+    func testParseInvalidJsonStringToAccessToken() {
+        let tokenString = "tokenString1234"
+        let jsonString = "{\"access_token\": \"\(tokenString)\""
+        let accessToken = AccessTokenFactory.createAccessTokenFromJSONString(jsonString)
+        
+        XCTAssertNil(accessToken)
+    }
 }

@@ -26,6 +26,9 @@ import UIKit
 import UberRides
 
 class ExampleTableViewController: UITableViewController {
+    
+    let authorizationCodeGrantSegueIdentifier = "AuthorizationCodeGrantSegue"
+    let implicitGrantSegueIdentifier = "ImplicitGrantSegue"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +53,14 @@ class ExampleTableViewController: UITableViewController {
                 cell.accessoryType = .DisclosureIndicator
             case 2:
                 cell.textLabel?.text = "Implicit Grant / Login Manager"
+                cell.textLabel?.textColor = UIColor.blackColor()
+                cell.accessoryType = .DisclosureIndicator
+            case 3:
+                cell.textLabel?.text = "Authorization Code Grant / Login Manager"
+                cell.textLabel?.textColor = UIColor.blackColor()
+                cell.accessoryType = .DisclosureIndicator
+            case 4:
+                cell.textLabel?.text = "Native Login"
                 cell.textLabel?.textColor = UIColor.blackColor()
                 cell.accessoryType = .DisclosureIndicator
             default:
@@ -83,7 +94,13 @@ class ExampleTableViewController: UITableViewController {
             case 1:
                 viewControllerToPush = RideRequestWidgetExampleViewController()
             case 2:
-                viewControllerToPush = ImplicitGrantExampleViewController()
+                performSegueWithIdentifier(implicitGrantSegueIdentifier, sender: self)
+                return
+            case 3:
+                performSegueWithIdentifier(authorizationCodeGrantSegueIdentifier, sender: self)
+                return
+            case 4:
+                viewControllerToPush = NativeLoginExampleViewController()
             default:
                 break
             }
@@ -109,7 +126,7 @@ class ExampleTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 3
+            return 5
         case 1:
             return 1
         default:

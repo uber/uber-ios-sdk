@@ -1,0 +1,33 @@
+{
+    "request_id":"17cb78a7-b672-4d34-a288-a6c6e44d5315",
+    "status":"accepted",
+    "location":{
+        "latitude":37.7886532015,
+        "longitude":-122.3961987534,
+        "bearing":135
+    },
+    "pickup":{
+        "latitude":37.7872486012,
+        "longitude":-122.4026315287,
+        "eta":5
+    },
+    "destination":{
+        "latitude":37.7766874,
+        "longitude":-122.394857,
+        "eta":19
+    },
+    "driver": {
+        "phone_number": "(555)555-5555",
+        "rating": 5,
+        "picture_url": "https://d1w2poirtb3as9.cloudfront.net/img.jpeg",
+        "name": "Bob"
+    },
+    "vehicle":{
+        "make": "Bugatti",
+        "model": "Veyron",
+        "license_plate": "I<3Uber",
+        "picture_url": "https://d1w2poirtb3as9.cloudfront.net/car.jpeg"
+    },
+    "surge_multiplier":1.0,
+    "eta": 5
+}

@@ -48,15 +48,14 @@ import MapKit
     /// The LoginManager to use for managing the login process
     public var loginManager: LoginManager {
         didSet {
-            loginView.delegate = loginManager
-            loginManager.loginCompletion = loginCompletion
             accessTokenIdentifier = loginManager.accessTokenIdentifier
             keychainAccessGroup = loginManager.keychainAccessGroup
         }
     }
     
     lazy var rideRequestView: RideRequestView = RideRequestView()
-    lazy var loginView: LoginView = LoginView(scopes: [RidesScope.RideWidgets])
+    lazy var loginView: LoginView = LoginView(loginAuthenticator: ImplicitGrantAuthenticator(presentingViewController: self, scopes: [.RideWidgets]))
+    lazy var nativeAuthenticator = NativeAuthenticator(scopes: [.RideWidgets])
     
     static let sourceString = "ride_request_widget"
     
@@ -116,27 +115,13 @@ import MapKit
         super.viewDidLoad()
         self.edgesForExtendedLayout = UIRectEdge.None
         self.view.backgroundColor = UIColor.whiteColor()
-        loginCompletion = { token, error in
-            guard let token = token else {
-                if error?.code == RidesAuthenticationErrorType.NetworkError.rawValue {
-                    self.displayNetworkErrorAlert()
-                } else {
-                    self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.AccessTokenMissing))
-                }
-                return
-            }
-            self.loginView.hidden = true
-            self.rideRequestView.accessToken = token
-            self.rideRequestView.hidden = false
-            self.load()
-        }
         
         setupRideRequestView()
         setupLoginView()
     }
     
-    public override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
         self.load()
     }
@@ -162,11 +147,23 @@ import MapKit
             loginView.hidden = true
             rideRequestView.load()
         } else {
-            loginManager.loginCompletion = loginCompletion
-            loginView.hidden = false
-            rideRequestView.hidden = true
-            loginView.load()
+            switch loginManager.loginType {
+            case .Native:
+                executeNativeLogin()
+            case .Implicit:
+                fallthrough
+            case .AuthorizationCode:
+                loginView.hidden = false
+                rideRequestView.hidden = true
+                loginView.load()
+            }
         }
+    }
+    
+    func executeNativeLogin() {
+        loginManager.authenticator = nativeAuthenticator
+        loginManager.loggingIn = true
+        nativeAuthenticator.login()
     }
     
     func stopLoading() {
@@ -214,15 +211,36 @@ import MapKit
     }
     
     private func setupLoginView() {
-        switch loginManager.loginBehavior {
+        switch loginManager.loginType {
+        case .AuthorizationCode:
+            fallthrough
         case .Implicit:
             setupImplicitLoginView()
+            break
+        case .Native:
+            setupNativeLogin()
             break
         }
     }
     
     private func setupImplicitLoginView() {
-        let loginView = LoginView(scopes: [RidesScope.RideWidgets])
+        let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: self, scopes: [.RideWidgets])
+        loginBehavior.loginCompletion = { token, error in
+            guard let token = token else {
+                if error?.code == RidesAuthenticationErrorType.NetworkError.rawValue {
+                    self.displayNetworkErrorAlert()
+                } else {
+                    self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.AccessTokenMissing))
+                }
+                return
+            }
+            self.loginView.hidden = true
+            self.rideRequestView.accessToken = token
+            self.rideRequestView.hidden = false
+            self.load()
+        }
+        loginManager.authenticator = loginBehavior
+        let loginView = LoginView(loginAuthenticator: loginBehavior)
         self.view.addSubview(loginView)
         loginView.hidden = true
         loginView.translatesAutoresizingMaskIntoConstraints = false
@@ -234,9 +252,35 @@ import MapKit
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)
         
-        loginView.delegate = loginManager
-        loginManager.loginCompletion = self.loginCompletion
         self.loginView = loginView
+    }
+    
+    private func setupNativeLogin() {
+        
+        nativeAuthenticator.loginCompletion = { token, error in
+            guard let token = token else {
+                if error?.code == RidesAuthenticationErrorType.NetworkError.rawValue {
+                    self.displayNetworkErrorAlert()
+                } else if error?.code == RidesAuthenticationErrorType.Unavailable.rawValue {
+                    self.loginManager.loginType = .Implicit
+                    self.setupLoginView()
+                    self.load()
+                    self.loginManager.loginType = .Native
+                } else {
+                    self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.AccessTokenMissing))
+                }
+                return
+            }
+            self.loginView.hidden = true
+            self.rideRequestView.accessToken = token
+            self.rideRequestView.hidden = false
+            self.load()
+        }
+        nativeAuthenticator.deeplinkCompletion = { error in
+            if (error == nil) {
+                RidesAppDelegate.sharedInstance.loginManager = self.loginManager
+            }
+        };
     }
 }
 

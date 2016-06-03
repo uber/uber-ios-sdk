@@ -29,7 +29,6 @@ class RidesScopeFactoryTests: XCTestCase {
         RidesScopeType.History : RidesScopeType.History.toString(),
         RidesScopeType.HistoryLite : RidesScopeType.HistoryLite.toString(),
         RidesScopeType.Places : RidesScopeType.Places.toString(),
-        RidesScopeType.PaymentMethods : RidesScopeType.PaymentMethods.toString(),
         RidesScopeType.RideWidgets : RidesScopeType.RideWidgets.toString(),
     ]
     

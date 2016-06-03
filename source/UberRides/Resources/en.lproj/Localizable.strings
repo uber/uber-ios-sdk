@@ -1,5 +1,6 @@
 /* The title of the request button that deep links to the Uber app */
 "Ride there with Uber" = "Ride there with Uber";
+"Get a ride" = "Get a ride";
 "Sign in with Uber" = "Sign in with Uber";
 "There was a problem authenticating you." = "There was a problem authenticating you.";
 "The Ride Request Widget encountered a problem." = "The Ride Request Widget encountered a problem.";
@@ -19,3 +20,8 @@
 "Try Again" = "Try Again";
 "Cancel" = "Cancel";
 "The operation you are attempting is not supported on the current device." = "The operation you are attempting is not supported on the current device.";
+"%d min away" = "%d min away";
+"%d mins away" = "%d mins away";
+"%1$@ for %2$@" = "%1$@ for %2$@";
+"Sign In" = "Sign In";
+"Sign Out" = "Sign Out";

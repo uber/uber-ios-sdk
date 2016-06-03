@@ -27,6 +27,7 @@ import XCTest
 
 class TokenManagerTests: XCTestCase {
     
+    private var notificationFired = false
     private var keychain: KeychainWrapper?
     
     override func setUp() {
@@ -34,6 +35,7 @@ class TokenManagerTests: XCTestCase {
         Configuration.plistName = "testInfo"
         Configuration.bundle = NSBundle(forClass: self.dynamicType)
         keychain = KeychainWrapper()
+        notificationFired = false
     }
     
     override func tearDown() {
@@ -58,6 +60,31 @@ class TokenManagerTests: XCTestCase {
         }
         XCTAssertEqual(actualToken.tokenString, token.tokenString)
         
+        
+        keychain?.deleteObjectForKey(identifier)
+        
+    }
+    
+    func testSave_firesNotification() {
+        let identifier = "testIdentifier"
+        let accessGroup = "testAccessGroup"
+        
+        let token = getTestToken()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTokenManagerNotifications), name: TokenManager.TokenManagerDidSaveTokenNotification, object: nil)
+        
+        XCTAssertTrue(TokenManager.saveToken(token, tokenIdentifier:identifier, accessGroup: accessGroup))
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+        keychain?.setAccessGroup(accessGroup)
+        guard let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken else {
+            XCTAssert(false)
+            return
+        }
+        XCTAssertEqual(actualToken.tokenString, token.tokenString)
+        
+        XCTAssertTrue(notificationFired)
         
         keychain?.deleteObjectForKey(identifier)
         
@@ -111,6 +138,44 @@ class TokenManagerTests: XCTestCase {
         
         XCTAssertFalse(TokenManager.deleteToken(identifier))
         
+    }
+    
+    func testDelete_firesNotification() {
+        
+        let identifier = "testIdentifier"
+        let accessGroup = "testAccessGroup"
+        
+        let token = getTestToken()
+        
+        keychain?.setAccessGroup(accessGroup)
+        keychain?.setObject(token, key: identifier)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTokenManagerNotifications), name: TokenManager.TokenManagerDidDeleteTokenNotification, object: nil)
+        
+        XCTAssertTrue(TokenManager.deleteToken(identifier, accessGroup: accessGroup))
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+        XCTAssertTrue(notificationFired)
+        
+        let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken
+        guard actualToken == nil else {
+            XCTAssert(false)
+            keychain?.deleteObjectForKey(identifier)
+            return
+        }
+    }
+    
+    func testDelete_nonExistent_doesNotFireNotification() {
+        let identifier = "there.is.no.token.named.this.123412wfdasd3o"
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTokenManagerNotifications), name: TokenManager.TokenManagerDidDeleteTokenNotification, object: nil)
+        
+        XCTAssertFalse(TokenManager.deleteToken(identifier))
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+        XCTAssertFalse(notificationFired)
     }
     
     func testCookiesCleared_whenTokenDeleted() {
@@ -197,5 +262,9 @@ class TokenManagerTests: XCTestCase {
             return [secureChinaCookie, unsecureChinaCookie]
         }
         return []
+    }
+    
+    func handleTokenManagerNotifications() {
+        notificationFired = true
     }
 }

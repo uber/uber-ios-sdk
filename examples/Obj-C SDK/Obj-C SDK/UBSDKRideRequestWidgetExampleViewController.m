@@ -31,7 +31,8 @@
 
 @interface UBSDKRideRequestWidgetExampleViewController () <UBSDKModalViewControllerDelegate>
 
-@property (nonatomic, readonly, nonnull) UBSDKRideRequestButton *rideRequestButton;
+@property (nonatomic, readonly, nonnull) UBSDKRideRequestButton *blackRideRequestButton;
+@property (nonatomic, readonly, nonnull) UBSDKRideRequestButton *whiteRideRequestButton;
 @property (nonatomic, readonly, nullable) CLLocationManager *locationManager;
 
 @end
@@ -56,9 +57,11 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = UBSDKLOC(@"Ride Request Widget");
     
-    [self.view addSubview:self.rideRequestButton];
+    [self.view addSubview:self.blackRideRequestButton];
+    [self.view addSubview:self.whiteRideRequestButton];
     
-    [self _addRequestButtonConstraints];
+    [self _addBlackRequestButtonConstraints];
+    [self _addWhiteRequestButtonConstraints];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -69,13 +72,19 @@
 #pragma mark - Private
 
 - (void)_initialSetup {
-    _rideRequestButton = [self _buildRideRequestWidgetButton];
+    _blackRideRequestButton = [self _buildRideRequestWidgetButtonWithLoginType:UBSDKLoginTypeNative];
+    
+    _whiteRideRequestButton = [self _buildRideRequestWidgetButtonWithLoginType:UBSDKLoginTypeImplicit];
+    [_whiteRideRequestButton setColorStyle:RequestButtonColorStyleWhite];
+    
     _locationManager = [[CLLocationManager alloc] init];
 }
 
-- (UBSDKRideRequestButton *)_buildRideRequestWidgetButton {
-    UBSDKRideRequestViewRequestingBehavior *requestBehavior = [[UBSDKRideRequestViewRequestingBehavior alloc] initWithPresentingViewController:self];
+- (UBSDKRideRequestButton *)_buildRideRequestWidgetButtonWithLoginType:(UBSDKLoginType)loginType {
+    UBSDKLoginManager *loginManager = [[UBSDKLoginManager alloc] initWithLoginType:loginType];
+    UBSDKRideRequestViewRequestingBehavior *requestBehavior = [[UBSDKRideRequestViewRequestingBehavior alloc] initWithPresentingViewController:self loginManager:loginManager];
     requestBehavior.modalRideRequestViewController.delegate = self;
+    
     
     UBSDKRideParameters *rideParameters = [self _buildRideParameters];
     
@@ -88,21 +97,42 @@
     return [parameterBuilder build];
 }
 
-- (void)_addRequestButtonConstraints {
-    self.rideRequestButton.translatesAutoresizingMaskIntoConstraints = NO;
+- (void)_addBlackRequestButtonConstraints {
+    self.blackRideRequestButton.translatesAutoresizingMaskIntoConstraints = NO;
     
     // Center the button in the view
-    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:self.rideRequestButton
+    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:self.blackRideRequestButton
                                                                          attribute:NSLayoutAttributeCenterX
                                                                          relatedBy:NSLayoutRelationEqual
                                                                             toItem:self.view
                                                                          attribute:NSLayoutAttributeCenterX
                                                                         multiplier:1.0
                                                                           constant:0.0];
-    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:self.rideRequestButton
+    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:self.blackRideRequestButton
                                                                          attribute:NSLayoutAttributeCenterY
                                                                          relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.topView
+                                                                         attribute:NSLayoutAttributeCenterY
+                                                                        multiplier:1.0
+                                                                          constant:0.0];
+    [self.view addConstraints:@[centerXConstraint, centerYConstraint]];
+}
+
+- (void)_addWhiteRequestButtonConstraints {
+    self.whiteRideRequestButton.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    // Center the button in the view
+    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:self.whiteRideRequestButton
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                         relatedBy:NSLayoutRelationEqual
                                                                             toItem:self.view
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                        multiplier:1.0
+                                                                          constant:0.0];
+    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:self.whiteRideRequestButton
+                                                                         attribute:NSLayoutAttributeCenterY
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.bottomView
                                                                          attribute:NSLayoutAttributeCenterY
                                                                         multiplier:1.0
                                                                           constant:0.0];

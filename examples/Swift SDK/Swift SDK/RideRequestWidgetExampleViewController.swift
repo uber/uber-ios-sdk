@@ -28,56 +28,66 @@ import CoreLocation
 
 /// This class provides an example of how to use the RideRequestButton to initiate
 /// a ride request using the Ride Request Widget
-class RideRequestWidgetExampleViewController: UIViewController {
-    /// The RideRequestButton instance
-    let rideRequestButton = RideRequestButton()
-    /// Location manger for getting user location
+class RideRequestWidgetExampleViewController: ButtonExampleViewController {
+    
+    var blackRideRequestButton: RideRequestButton!
+    var whiteRideRequestButton: RideRequestButton!
+    
     let locationManger:CLLocationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.whiteColor()
+        
         self.navigationItem.title = "Ride Request Widget"
         
-        // Create a RideRequestViewRequestingBehavior for the RideRequestButton
-        let requestBehavior = RideRequestViewRequestingBehavior(presentingViewController: self)
+        blackRideRequestButton = buildRideRequestWidgetButton(.Native)
+        whiteRideRequestButton = buildRideRequestWidgetButton(.Implicit)
         
-        // Optionally subscribe to the ModalRideRequestViewController delegate
-        requestBehavior.modalRideRequestViewController.delegate = self
-        // Set the RideRequestButton behavior
-        rideRequestButton.requestBehavior = requestBehavior
+        whiteRideRequestButton.colorStyle = .White
         
-        // Subscribe to the CLLocationManager location updates
+        topView.addSubview(blackRideRequestButton)
+        bottomView.addSubview(whiteRideRequestButton)
+        
+        addBlackRequestButtonConstraints()
+        addWhiteRequestButtonConstraints()
+        
         locationManger.delegate = self
         
-        setupRideRequestButton()
-        
-        //Check location authorization
         if !checkLocationServices() {
             locationManger.requestWhenInUseAuthorization()
         }
     }
     
-    /**
-     Sets up the RideRequestButton
-     */
-    private func setupRideRequestButton() {
-        // Using autolayout
-        rideRequestButton.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(rideRequestButton)
+    // Mark: Private Interface
+    
+    private func buildRideRequestWidgetButton(loginType: LoginType) -> RideRequestButton {
+        let loginManager = LoginManager(loginType: loginType)
+        let requestBehavior = RideRequestViewRequestingBehavior(presentingViewController: self, loginManager: loginManager)
+        requestBehavior.modalRideRequestViewController.delegate = self
         
-        // Center the button in the view
-        let centerXConstraint = NSLayoutConstraint(item: rideRequestButton, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0)
-        let centerYConstraint = NSLayoutConstraint(item: rideRequestButton, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0)
+        let rideParameters = RideParametersBuilder().build()
         
-        self.view.addConstraints([ centerXConstraint, centerYConstraint ])
+        return RideRequestButton(rideParameters: rideParameters, requestingBehavior: requestBehavior)
+    }
+    
+    private func addBlackRequestButtonConstraints() {
+        blackRideRequestButton.translatesAutoresizingMaskIntoConstraints = false
         
-        // Setup our RideParameters. This button will be using the users current location
-        let parameterBuilder = RideParametersBuilder()
-        parameterBuilder.setPickupToCurrentLocation()
-        let rideParameters = parameterBuilder.build()
-        rideRequestButton.rideParameters = rideParameters
+        let centerYConstraint = NSLayoutConstraint(item: blackRideRequestButton, attribute: .CenterY, relatedBy: .Equal, toItem: topView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
+        let centerXConstraint = NSLayoutConstraint(item: blackRideRequestButton, attribute: .CenterX, relatedBy: .Equal, toItem: topView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
+        
+        topView.addConstraints([centerYConstraint, centerXConstraint])
+    }
+    
+    private func addWhiteRequestButtonConstraints() {
+        whiteRideRequestButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        let centerYConstraint = NSLayoutConstraint(item: whiteRideRequestButton, attribute: .CenterY, relatedBy: .Equal, toItem: bottomView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
+        let centerXConstraint = NSLayoutConstraint(item: whiteRideRequestButton, attribute: .CenterX, relatedBy: .Equal, toItem: bottomView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
+        
+        bottomView.addConstraints([centerYConstraint, centerXConstraint])
     }
     
     private func checkLocationServices() -> Bool {
@@ -100,12 +110,10 @@ class RideRequestWidgetExampleViewController: UIViewController {
 //MARK: ModalViewControllerDelegate
 
 extension RideRequestWidgetExampleViewController : ModalViewControllerDelegate {
-    // Fired when the modal is dismissed
     func modalViewControllerDidDismiss(modalViewController: ModalViewController) {
         print("did dismiss")
     }
     
-    // Fired right before the modal dismisses
     func modalViewControllerWillDismiss(modalViewController: ModalViewController) {
         print("will dismiss")
     }

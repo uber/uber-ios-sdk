@@ -27,6 +27,9 @@ import XCTest
 
 class OauthEndpointTests: XCTestCase {
     
+    // {redirect_to_login:true}
+    let base64EncodedSignup = "eyJyZWRpcmVjdF90b19sb2dpbiI6dHJ1ZX0="
+    
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
@@ -56,10 +59,11 @@ class OauthEndpointTests: XCTestCase {
             ("scope", expectedScopes),
             ("client_id", expectedClientID),
             ("redirect_uri", expectedRedirect),
-            ("response_type", expectedTokenType),
-            ("show_fb", expectedShowFB))
+            ("show_fb", expectedShowFB),
+            ("signup_params", base64EncodedSignup),
+            ("response_type", expectedTokenType))
         
-        let login = OAuth.Login(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
+        let login = OAuth.ImplicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
         
         XCTAssertEqual(login.host, expectedHost)
         XCTAssertEqual(login.path, expectedPath)
@@ -83,10 +87,11 @@ class OauthEndpointTests: XCTestCase {
             ("scope", expectedScopes),
             ("client_id", expectedClientID),
             ("redirect_uri", expectedRedirect),
-            ("response_type", expectedTokenType),
-            ("show_fb", expectedShowFB))
+            ("show_fb", expectedShowFB),
+            ("signup_params", base64EncodedSignup),
+            ("response_type", expectedTokenType))
         
-        let login = OAuth.Login(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
+        let login = OAuth.ImplicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
         
         XCTAssertEqual(login.host, expectedHost)
         XCTAssertEqual(login.path, expectedPath)
@@ -110,10 +115,11 @@ class OauthEndpointTests: XCTestCase {
             ("scope", expectedScopes),
             ("client_id", expectedClientID),
             ("redirect_uri", expectedRedirect),
-            ("response_type", expectedTokenType),
-            ("show_fb", expectedShowFB))
+            ("show_fb", expectedShowFB),
+            ("signup_params", base64EncodedSignup),
+            ("response_type", expectedTokenType))
         
-        let login = OAuth.Login(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
+        let login = OAuth.ImplicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
         
         XCTAssertEqual(login.host, expectedHost)
         XCTAssertEqual(login.path, expectedPath)
@@ -137,14 +143,69 @@ class OauthEndpointTests: XCTestCase {
             ("scope", expectedScopes),
             ("client_id", expectedClientID),
             ("redirect_uri", expectedRedirect),
-            ("response_type", expectedTokenType),
-            ("show_fb", expectedShowFB))
+            ("show_fb", expectedShowFB),
+            ("signup_params", base64EncodedSignup),
+            ("response_type", expectedTokenType))
         
-        let login = OAuth.Login(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
+        let login = OAuth.ImplicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
         
         XCTAssertEqual(login.host, expectedHost)
         XCTAssertEqual(login.path, expectedPath)
         XCTAssertEqual(login.query, expectedQueryItems)
     }
     
+    func testLogin_forAuthorizationCodeGrant_defaultSettings() {
+        let scopes = [ RidesScope.AllTrips, RidesScope.History ]
+        let expectedHost = "https://login.uber.com"
+        let expectedPath = "/oauth/v2/authorize"
+        let expectedScopes = scopes.toRidesScopeString()
+        let expectedClientID = Configuration.getClientID()
+        let expectedRedirect = Configuration.getCallbackURIString()
+        let expectedTokenType = "code"
+        let expectedState = "state123423"
+        let expectedShowFB = "false"
+        
+        let expectedQueryItems = queryBuilder(
+            ("scope", expectedScopes),
+            ("client_id", expectedClientID),
+            ("redirect_uri", expectedRedirect),
+            ("show_fb", expectedShowFB),
+            ("signup_params", base64EncodedSignup),
+            ("response_type", expectedTokenType),
+            ("state", expectedState))
+        
+        let login = OAuth.AuthorizationCodeLogin(clientID: expectedClientID, redirect: expectedRedirect, scopes: scopes, state: expectedState)
+        
+        XCTAssertEqual(login.host, expectedHost)
+        XCTAssertEqual(login.path, expectedPath)
+        XCTAssertEqual(login.query, expectedQueryItems)
+    }
+    
+    func testLogin_forAuthorizationCodeGrant_china() {
+        Configuration.setRegion(.China)
+        let scopes = [ RidesScope.AllTrips, RidesScope.History ]
+        let expectedHost = "https://login.uber.com.cn"
+        let expectedPath = "/oauth/v2/authorize"
+        let expectedScopes = scopes.toRidesScopeString()
+        let expectedClientID = Configuration.getClientID()
+        let expectedRedirect = Configuration.getCallbackURIString()
+        let expectedTokenType = "code"
+        let expectedState = "state123423"
+        let expectedShowFB = "false"
+        
+        let expectedQueryItems = queryBuilder(
+            ("scope", expectedScopes),
+            ("client_id", expectedClientID),
+            ("redirect_uri", expectedRedirect),
+            ("show_fb", expectedShowFB),
+            ("signup_params", base64EncodedSignup),
+            ("response_type", expectedTokenType),
+            ("state", expectedState))
+        
+        let login = OAuth.AuthorizationCodeLogin(clientID: expectedClientID, redirect: expectedRedirect, scopes: scopes, state: expectedState)
+        
+        XCTAssertEqual(login.host, expectedHost)
+        XCTAssertEqual(login.path, expectedPath)
+        XCTAssertEqual(login.query, expectedQueryItems)
+    }
 }

@@ -1,0 +1,8 @@
+{
+    "last_authenticated": 1464137596,
+    "access_token": "Access999Token",
+    "expires_in": 2592000,
+    "token_type": "Bearer",
+    "scope": "request all_trips profile ride_widgets history places history_lite",
+    "refresh_token": "888RefreshToken"
+}

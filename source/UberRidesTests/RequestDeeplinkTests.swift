@@ -28,6 +28,7 @@ import CoreLocation
 @testable import UberRides
 
 let clientID = "clientID1234"
+let serverToken = "serverToken1234"
 let redirectURI = "http://localhost:1234/"
 let productID = "productID1234"
 let pickupLat = 37.770
@@ -38,6 +39,8 @@ let pickupNickname = "California Academy of Science"
 let pickupAddress = "55 Music Concourse Drive, San Francisco"
 let dropoffNickname = "Pier 39"
 let dropoffAddress = "Beach Street & The Embarcadero, San Francisco"
+let surgeConfirm = "surgeConfirm"
+let paymentMethod = "paymentMethod"
 
 struct ExpectedDeeplink {
     static let uberScheme = "uber://?"
@@ -83,10 +86,8 @@ class UberRidesDeeplinkTests: XCTestCase {
      */
     func testBuildDeeplinkWithClientIDHasDefaultParameters() {
         let deeplink = RequestDeeplink()
-        guard let uri = deeplink.deeplinkURL?.absoluteString else {
-            XCTAssert(false)
-            return
-        }
+        let uri = deeplink.deeplinkURL.absoluteString
+        
         XCTAssertTrue(uri.containsString(ExpectedDeeplink.uberScheme))
         
         let components = NSURLComponents(string: uri)
@@ -107,11 +108,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = RideParametersBuilder().setPickupLocation(location).build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        guard let uri = deeplink.deeplinkURL else {
-            XCTAssert(false)
-            return
-        }
-        let components = NSURLComponents(URL: uri, resolvingAgainstBaseURL: false)
+        let components = NSURLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 5)
         
         let query = components?.query
@@ -130,11 +127,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = RideParametersBuilder().setPickupLocation(location, nickname: pickupNickname, address: pickupAddress).build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        guard let uri = deeplink.deeplinkURL else {
-            XCTAssert(false)
-            return
-        }
-        let components = NSURLComponents(URL: uri, resolvingAgainstBaseURL: false)
+        let components = NSURLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 7)
         
         let query = components?.query
@@ -155,11 +148,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = RideParametersBuilder().setDropoffLocation(location).build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        guard let uri = deeplink.deeplinkURL else {
-            XCTAssert(false)
-            return
-        }
-        let components = NSURLComponents(URL: uri, resolvingAgainstBaseURL: false)
+        let components = NSURLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 6)
         
         let query = components?.query
@@ -181,11 +170,7 @@ class UberRidesDeeplinkTests: XCTestCase {
             .setDropoffLocation(dropoffLocation, nickname: dropoffNickname, address: dropoffAddress).build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        guard let uri = deeplink.deeplinkURL else {
-            XCTAssert(false)
-            return
-        }
-        let components = NSURLComponents(URL: uri, resolvingAgainstBaseURL: false)
+        let components = NSURLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 12)
         
         let query = components?.query
@@ -201,48 +186,6 @@ class UberRidesDeeplinkTests: XCTestCase {
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffNicknameQuery))
         XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffAddressQuery))
         XCTAssertTrue(query!.containsString(expectedDeeplinkUserAgent!))
-    }
-    
-    /**
-    *  Test createURL with source button.
-    */
-    func testCreateURLWithButtonSource() {
-        let expectedUrlString = "https://m.uber.com/sign-up?client_id=\(clientID)&user-agent=\(expectedButtonUserAgent!)"
-        let urlString = "https://m.uber.com/sign-up"
-        let rideParams = RideParametersBuilder().setSource(RideRequestButton.sourceString).build()
-        let deeplink = RequestDeeplink(rideParameters: rideParams)
-        guard let url = deeplink.createURL(urlString) else {
-            XCTAssert(false)
-            return
-        }
-        
-        let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false)
-        XCTAssertNotNil(components)
-        
-        XCTAssertEqual(expectedUrlString, url.absoluteString)
-        XCTAssertEqual(components!.queryItems!.count, 2)
-        XCTAssertTrue(components!.query!.containsString("&user-agent=\(expectedButtonUserAgent!)"))
-    }
-    
-    /**
-     *  Test createURL with source deeplink.
-     */
-    func testCreateURLWithDeeplinkSource() {
-        let expectedUrlString = "https://m.uber.com/sign-up?client_id=\(clientID)&user-agent=\(expectedDeeplinkUserAgent!)"
-        let urlString = "https://m.uber.com/sign-up"
-        let rideParams = RideParametersBuilder().setSource(RequestDeeplink.sourceString).build()
-        let deeplink = RequestDeeplink(rideParameters: rideParams)
-        guard let url = deeplink.createURL(urlString) else {
-            XCTAssert(false)
-            return
-        }
-        
-        let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false)
-        XCTAssertNotNil(components)
-        
-        XCTAssertEqual(expectedUrlString, url.absoluteString)
-        XCTAssertEqual(components!.queryItems!.count, 2)
-        XCTAssertTrue(components!.query!.containsString("&user-agent=\(expectedDeeplinkUserAgent!)"))
     }
     
     func testDeeplinkDefaultSource() {

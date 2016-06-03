@@ -22,13 +22,13 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import "UBSDKButtonExampleViewController.h"
 
 /**
  This class provides an example of how to use the UBSDKRideRequestButton to initiate
  a ride request using the Ride Request Widget. Using the Ride Request Widget requires
  the RideRequestControl scope, so be sure to add it to your app.
  */
-@interface UBSDKRideRequestWidgetExampleViewController : UIViewController
+@interface UBSDKRideRequestWidgetExampleViewController : UBSDKButtonExampleViewController
 
 @end

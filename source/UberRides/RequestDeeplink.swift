@@ -26,12 +26,13 @@
 import CoreLocation
 import UIKit
 
-/// Builds and executes a deeplink to the native Uber app.
-@objc(UBSDKRequestDeeplink) public class RequestDeeplink: NSObject {
+/**
+ *  Builds and executes a deeplink to the native Uber app to request a ride.
+ */
+@objc(UBSDKRequestDeeplink) public class RequestDeeplink: BaseDeeplink {
+    
     private let parameters: RideParameters
     private let clientID: String
-    
-    let deeplinkURL: NSURL?
     
     static let sourceString = "deeplink"
     
@@ -43,35 +44,10 @@ import UIKit
             rideParameters.source = RequestDeeplink.sourceString
         }
         
-        do {
-            try deeplinkURL = RequestURLUtil.buildURL(rideParameters)
-        } catch {
-            deeplinkURL = nil
-        }
-    }
-    
-    /**
-     Execute deeplink to launch the Uber app. Redirect to the app store if the app is not installed.
-     
-     - returns: true if the deeplink was executed, false otherwise. Note that an appstore redirect is considered success
-     */
-    @objc public func execute() -> Bool {
-        if let deeplinkURL = deeplinkURL where UIApplication.sharedApplication().canOpenURL(deeplinkURL) {
-            return UIApplication.sharedApplication().openURL(deeplinkURL)
-        }
+        let queryItems = RequestURLUtil.buildRequestQueryParameters(rideParameters)
+        let scheme = "uber"
+        let domain = ""
         
-        if let appstoreURL = createURL("https://m.uber.com/sign-up") {
-            return UIApplication.sharedApplication().openURL(appstoreURL)
-        }
-        
-        return false
-    }
-    
-    func createURL(url: String) -> NSURL? {
-        let clientIDItem = NSURLQueryItem(name: RequestURLUtil.clientIDKey, value: clientID)
-        let userAgentItem = NSURLQueryItem(name: RequestURLUtil.userAgentKey, value: parameters.userAgent)
-        let urlComponents = NSURLComponents(string: url)
-        urlComponents?.queryItems = [ clientIDItem, userAgentItem ]
-        return urlComponents?.URL
+        super.init(scheme: scheme, domain: domain, path: nil, queryItems: queryItems)!
     }
 }

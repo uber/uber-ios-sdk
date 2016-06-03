@@ -1,5 +1,115 @@
 # Change Log
 
+## [0.5.0] 2016-06-2
+### Added
+
+#### SSO (Native login with Uber) 
+Introducing **SSO**. Allows a user to sign in & authorize your application via the native Uber app. Users no longer have to remember their username & password as long as they are signed into the Uber app.
+
+- Added `LoginType.Native`
+- Added `NativeLoginAuthenticator` 
+- Added `LoginButton`
+
+#### LoginButton
+Added a built in button to make login easier. Uses a `LoginManager` to initiate the login process when the user taps the button. Reflects the logged in / logged out state of the user
+
+#### Support all REST API Endpoints
+Updated `RidesClient` to support all of the REST API endpoints. See https://developer.uber.com/docs/api-overview for a complete overview of the endpoints
+
+#### UberAuthenticating Classes
+Added Authenticating classes to handle the possible login types
+
+- ImplicitGrantAuthenticator
+- AuthorizationCodeGrantAuthenticator
+- NativeAuthenticator
+
+These classes should be created with your requested scopes (and potentially other information) and will handle making the correct login call for you. LoginView and LoginManager have been updated to use these new classes
+
+#### Deeplinks
+
+All deeplink objects now subclass the `BaseDeeplink` which encapsulates shared logic for executing a deeplink.
+
+Added new `Deeplinking` objects, `AuthenticationDeeplink` which is used for SSO, and `AppStoreDeeplink` which is used to fallback to the Uber App on the App Store
+
+
+### Changed
+
+#### Swift 2.2
+Updated to using Swift 2.2. XCode 7.3+ is now required
+
+#### Info.plist
+
+There has been an update in how you define your callback URIs in your Info.plist. We now support callbackURIs for different login types. Anything that is not defined will use the `General` type (if you still use the old `UberCallbackURI` key, that will be treated as `General`)
+
+We have also added `UberDisplayName`. This should contain the name of your application. See an example of the new format below
+
+```
+	<key>UberClientID</key>
+	<string>YOUR_CLIENT_ID</string>
+	<key>UberDisplayName</key>
+	<string>YOUR_APP_NAME</string>
+	<key>UberCallbackURIs</key>
+	<array>
+		<dict>
+			<key>UberCallbackURIType</key>
+			<string>General</string>
+			<key>URIString</key>
+			<string>callback://your_callback_uri</string>
+		</dict>
+		<dict>
+			<key>UberCallbackURIType</key>
+			<string>AuthorizationCode</string>
+			<key>URIString</key>
+			<string>callback://optional_authorization_code_uri</string>
+		</dict>
+	</array>
+```
+
+You also need to add a new Application Query Scheme on iOS 9+ in order to use SSO
+
+```
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>uberauth</string>
+		<string>uber</string>
+	</array>
+```
+
+#### RideRequestButton
+The RideRequestButton has been updated to show information about your Uber ride. Requires setting a product ID in your RideParameters and optionally a dropoff address. 
+
+- If only a productID is set, the button will update with a time estimate of how far away a car is
+- If dropoff address & productID are set, the button will show a time estimate and a price estimate of the trip
+
+#### Ride Request Widget Button
+The Ride Request Widget Button now defaults to using the `.Native` LoginType instead of the previous `.Implicit`. If Native login is unavailable, it will automatically fallback to Implicit
+
+### Breaking
+
+#### LoginBehavior -> LoginType
+
+`LoginBehavior` has been removed, replaced by `LoginType`. Available login types:
+
+- .Implicit
+- .AuthorizationCode
+- .Native
+
+#### LoginManager
+`LoginManager` now takes a `LoginType` instead of a `LoginBehavior`
+
+#### LoginView
+`LoginView` is now initialized using the new UberAuthenticating classes rather than an array of `RidesScope`
+
+#### RidesClient
+
+Renamed `getAccessToken()` to `fetchAccessToken()`
+
+### Fixed
+- [Issue #29](https://github.com/uber/rides-ios-sdk/issues/29) Carthage Compatible. Updated the SDK to work with Carthage
+- [Issue #25](https://github.com/uber/rides-ios-sdk/issues/25) AllTrips scope missing. With the addition of Authorization Code Grant & Native it is now possible to request privileged scopes
+- [Issue #17](https://github.com/uber/rides-ios-sdk/issues/17) Warnings with Xcode 7.3. Selector syntax has been updated for Swift 2.2
+- [Issue #1](https://github.com/uber/rides-ios-sdk/issues/1) Unclear documentation. Updated README to be more clear
+
 ## [0.4.2] 2016-04-19
 
 ### Changed

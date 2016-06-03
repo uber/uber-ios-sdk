@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  UBSDKDeeplinkExampleViewController.h
 //  Obj-C SDK
 //
 //  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
@@ -22,12 +22,13 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import "UBSDKButtonExampleViewController.h"
+
 
 /**
  This class provides an example for using the UBSDKRideRequestButton to initiate a deeplink into the Uber app
  */
-@interface UBSDKDeeplinkExampleViewController : UIViewController
+@interface UBSDKDeeplinkExampleViewController : UBSDKButtonExampleViewController
 
 
 @end

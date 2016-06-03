@@ -28,7 +28,12 @@ import Foundation
 /**
 Factory class to build access tokens
 */
-class AccessTokenFactory {
+@objc(UBSDKAccessTokenFactory) public class AccessTokenFactory: NSObject {
+    
+    @objc public static func createAccessTokenFromJSONString(string: String) -> AccessToken? {
+        return ModelMapper<AccessToken>().mapFromJSON(string)
+    }
+    
     /**
      Builds an AccessToken from the provided redirect URL
      
