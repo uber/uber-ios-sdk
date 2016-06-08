@@ -43,6 +43,9 @@ public class NativeLoginExampleViewController: ButtonExampleViewController, Logi
         whiteLoginButton.colorStyle = .White
         
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+
+        blackLoginButton.presentingViewController = self
+        whiteLoginButton.presentingViewController = self
         
         blackLoginButton.delegate = self
         whiteLoginButton.delegate = self
@@ -97,7 +100,7 @@ public class NativeLoginExampleViewController: ButtonExampleViewController, Logi
     
     public func loginButton(button: LoginButton, didLogoutWithSuccess success: Bool) {
         if success {
-            showMessage("Saved access token!")
+            showMessage("Logout")
         }
     }
     

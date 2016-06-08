@@ -19,10 +19,12 @@
 		DC78EC781CB34AC600850814 /* ExampleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC78EC771CB34AC600850814 /* ExampleTableViewController.swift */; };
 		DC78EC7A1CB34D4800850814 /* RideRequestWidgetExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC78EC791CB34D4800850814 /* RideRequestWidgetExampleViewController.swift */; };
 		DC78EC7C1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC78EC7B1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift */; };
-		DCA45A1A1D009158003CBA3D /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA45A171D00914D003CBA3D /* UberRides.framework */; };
-		DCA45A1B1D009158003CBA3D /* UberRides.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DCA45A171D00914D003CBA3D /* UberRides.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DCD806161CFE7F4300EF6EB1 /* ButtonExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD806151CFE7F4300EF6EB1 /* ButtonExampleViewController.swift */; };
 		DCD806181CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD806171CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift */; };
+		DCEB808A1D078BCA00899810 /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB80891D078BCA00899810 /* UberRides.framework */; };
+		DCEB808B1D078BCA00899810 /* UberRides.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB80891D078BCA00899810 /* UberRides.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DCEB808D1D078BD200899810 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB808C1D078BD200899810 /* ObjectMapper.framework */; };
+		DCEB808E1D078BD200899810 /* ObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB808C1D078BD200899810 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,37 +42,17 @@
 			remoteGlobalIDString = AC0404A31BFAD0C800AC1501;
 			remoteInfo = "Swift SDK";
 		};
-		DCA45A161D00914D003CBA3D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DCA45A111D00914D003CBA3D /* UberRides.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AC0404751BFACD1D00AC1501;
-			remoteInfo = UberRides;
-		};
-		DCA45A181D00914D003CBA3D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DCA45A111D00914D003CBA3D /* UberRides.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AC04047F1BFACD1D00AC1501;
-			remoteInfo = UberRidesTests;
-		};
-		DCA45A1C1D009158003CBA3D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DCA45A111D00914D003CBA3D /* UberRides.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = AC0404741BFACD1D00AC1501;
-			remoteInfo = UberRides;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		DCA45A1E1D009158003CBA3D /* Embed Frameworks */ = {
+		DCEB80851D078BB500899810 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DCA45A1B1D009158003CBA3D /* UberRides.framework in Embed Frameworks */,
+				DCEB808E1D078BD200899810 /* ObjectMapper.framework in Embed Frameworks */,
+				DCEB808B1D078BCA00899810 /* UberRides.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -104,9 +86,10 @@
 		DC8FC36A1CBDF5C700D58839 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		DC8FC36B1CBDF5D200D58839 /* hi-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-IN"; path = "hi-IN.lproj/Main.strings"; sourceTree = "<group>"; };
 		DC8FC36C1CBDF5D200D58839 /* hi-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-IN"; path = "hi-IN.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		DCA45A111D00914D003CBA3D /* UberRides.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UberRides.xcodeproj; path = ../../source/UberRides.xcodeproj; sourceTree = "<group>"; };
 		DCD806151CFE7F4300EF6EB1 /* ButtonExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonExampleViewController.swift; sourceTree = "<group>"; };
 		DCD806171CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeLoginExampleViewController.swift; sourceTree = "<group>"; };
+		DCEB80891D078BCA00899810 /* UberRides.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UberRides.framework; path = Carthage/Build/iOS/UberRides.framework; sourceTree = "<group>"; };
+		DCEB808C1D078BD200899810 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +97,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCA45A1A1D009158003CBA3D /* UberRides.framework in Frameworks */,
+				DCEB808D1D078BD200899810 /* ObjectMapper.framework in Frameworks */,
+				DCEB808A1D078BCA00899810 /* UberRides.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,7 +131,8 @@
 		823B0AE4697BBA3B456C5C93 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DCA45A111D00914D003CBA3D /* UberRides.xcodeproj */,
+				DCEB808C1D078BD200899810 /* ObjectMapper.framework */,
+				DCEB80891D078BCA00899810 /* UberRides.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -212,15 +197,6 @@
 			path = "Swift SDKUITests";
 			sourceTree = "<group>";
 		};
-		DCA45A121D00914D003CBA3D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DCA45A171D00914D003CBA3D /* UberRides.framework */,
-				DCA45A191D00914D003CBA3D /* UberRidesTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -231,12 +207,12 @@
 				AC0404A01BFAD0C800AC1501 /* Sources */,
 				AC0404A11BFAD0C800AC1501 /* Frameworks */,
 				AC0404A21BFAD0C800AC1501 /* Resources */,
-				DCA45A1E1D009158003CBA3D /* Embed Frameworks */,
+				DCEB807E1D078ACC00899810 /* Copy Carthage Frameworks */,
+				DCEB80851D078BB500899810 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DCA45A1D1D009158003CBA3D /* PBXTargetDependency */,
 			);
 			name = "Swift SDK";
 			productName = "Swift SDK";
@@ -315,12 +291,6 @@
 			mainGroup = AC04049B1BFAD0C800AC1501;
 			productRefGroup = AC0404A51BFAD0C800AC1501 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = DCA45A121D00914D003CBA3D /* Products */;
-					ProjectRef = DCA45A111D00914D003CBA3D /* UberRides.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				AC0404A31BFAD0C800AC1501 /* Swift SDK */,
@@ -329,23 +299,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		DCA45A171D00914D003CBA3D /* UberRides.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = UberRides.framework;
-			remoteRef = DCA45A161D00914D003CBA3D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DCA45A191D00914D003CBA3D /* UberRidesTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = UberRidesTests.xctest;
-			remoteRef = DCA45A181D00914D003CBA3D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AC0404A21BFAD0C800AC1501 /* Resources */ = {
@@ -373,6 +326,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DCEB807E1D078ACC00899810 /* Copy Carthage Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/UberRides.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ObjectMapper.framework",
+			);
+			name = "Copy Carthage Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AC0404A01BFAD0C800AC1501 /* Sources */ = {
@@ -419,11 +391,6 @@
 			isa = PBXTargetDependency;
 			target = AC0404A31BFAD0C800AC1501 /* Swift SDK */;
 			targetProxy = AC0404C41BFAD0C800AC1501 /* PBXContainerItemProxy */;
-		};
-		DCA45A1D1D009158003CBA3D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = UberRides;
-			targetProxy = DCA45A1C1D009158003CBA3D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -539,7 +506,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Swift SDK/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -553,7 +523,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Swift SDK/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -254,7 +254,7 @@ func application(application: UIApplication, openURL url: NSURL, sourceApplicati
     let handledURL = RidesAppDelegate.sharedInstance.application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
     
     if (!handledURL) {
-        // Other uRL parsing logic
+        // Other URL parsing logic
     }
     
     return true
@@ -919,9 +919,14 @@ extension your_class : RideRequestViewControllerDelegate {
 
 ## Example Apps
 
-Example apps can be found in the `examples` folder. To run it, browse to the `examples` directory, run `pod install`, then open `SwiftSDK.xcworkspace` or `ObjcSDK.xcworkspace` in Xcode and run it.
+Example apps can be found in the `examples` folder. To run build them, you need to use Carthage. (A quick overview of installing Carthage can be found in the **Getting Started** section.) From inside the `examples/Swift SDK` or `examples/Obj-C SDK` folder, run:
 
-Don’t forget to set `UberClientID` with your Client ID in your `Info.plist` file.
+```
+carthage update --platform iOS
+``` 
+This will build the required dependencies. Once you do that, open `Swift SDK.xcodeproj` or `Obj-C SDK.xcodeproj` in Xcode and run it.
+
+Don’t forget to set `UberClientID`, `UberDisplayName`, and `UberCallbackURIs` in your `Info.plist` file.
 
 <p align="center">
   <img src="https://github.com/uber/rides-ios-sdk/blob/master/img/example_app.png?raw=true" alt="Example App Screenshot"/>
