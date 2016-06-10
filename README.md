@@ -29,7 +29,7 @@ To integrate Uber Rides into your Xcode project, navigate to the directory that 
 use_frameworks!
 
 target 'Your Project Name' do
-pod 'UberRides'
+  pod 'UberRides'
 end
 ```
 
