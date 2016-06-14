@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.5.1] 2016-06-14
+### Fixed
+
+- [Issue #47](https://github.com/uber/rides-ios-sdk/issues/47) SSO fails for correctly configured China apps. SDK now sends the correct Region string for SSO 
+
 ## [0.5.0] 2016-06-2
 ### Added
 

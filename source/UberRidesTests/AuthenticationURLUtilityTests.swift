@@ -49,7 +49,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let expectedClientID = "testClientID"
         let expectedAppName = "My Awesome App"
         let expectedCallbackURI = "testURI://uberConnectNative"
-        let expectedLoginType = "Default"
+        let expectedLoginType = "default"
         let expectedSDK = "ios"
         let expectedSDKVersion = versionNumber
         
@@ -78,7 +78,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let expectedClientID = "testClientID"
         let expectedAppName = "My Awesome App"
         let expectedCallbackURI = "testURI://uberConnectNative"
-        let expectedLoginType = "Default"
+        let expectedLoginType = "default"
         let expectedSDK = "ios"
         let expectedSDKVersion = versionNumber
         
@@ -109,7 +109,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let expectedClientID = "testClientID"
         let expectedAppName = "My Awesome App"
         let expectedCallbackURI = "testURI://uberConnectNative"
-        let expectedLoginType = "China"
+        let expectedLoginType = "china"
         let expectedSDK = "ios"
         let expectedSDKVersion = versionNumber
         
@@ -140,7 +140,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let expectedClientID = "testClientID"
         let expectedAppName = "My Awesome App"
         let expectedCallbackURI = "testURI://uberConnectNative"
-        let expectedLoginType = "China"
+        let expectedLoginType = "china"
         let expectedSDK = "ios"
         let expectedSDKVersion = versionNumber
         
