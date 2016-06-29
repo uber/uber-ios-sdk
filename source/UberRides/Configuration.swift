@@ -120,9 +120,9 @@ import WebKit
     public static var regionString: String {
         switch region {
         case .China:
-            return "China"
+            return "china"
         case .Default:
-            return "Default"
+            return "default"
         }
     }
     
