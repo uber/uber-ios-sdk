@@ -40,6 +40,7 @@ class RidesAuthenticationErrorFactoryTests: XCTestCase {
         RidesAuthenticationErrorType.InvalidJWTSignature : "invalid_jwt_signature",
         RidesAuthenticationErrorType.InvalidNonce : "invalid_nonce",
         RidesAuthenticationErrorType.InvalidRedirect : "invalid_redirect_uri",
+        RidesAuthenticationErrorType.InvalidRefreshToken: "invalid_refresh_token",
         RidesAuthenticationErrorType.InvalidRequest : "invalid_parameters",
         RidesAuthenticationErrorType.InvalidResponse : "invalid_response",
         RidesAuthenticationErrorType.InvalidScope : "invalid_scope",

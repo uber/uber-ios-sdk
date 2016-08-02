@@ -302,14 +302,31 @@ extension RideRequestViewController : RideRequestViewDelegate {
             if accessTokenWasUnauthorizedOnPreviousAttempt {
                 fallthrough
             }
-            accessTokenWasUnauthorizedOnPreviousAttempt = true
-            self.rideRequestView.hidden = true
-            self.loginView.hidden = false
-            self.loginView.load()
+            attemptTokenRefresh(accessTokenIdentifier, accessGroup: keychainAccessGroup)
             break
         default:
             self.delegate?.rideRequestViewController(self, didReceiveError: error)
             break
+        }
+    }
+
+    private func attemptTokenRefresh(tokenIdentifier: String?, accessGroup: String?) {
+        let identifer = tokenIdentifier ?? Configuration.getDefaultAccessTokenIdentifier()
+        let group = accessGroup ?? Configuration.getDefaultKeychainAccessGroup()
+        guard let accessToken = TokenManager.fetchToken(identifer, accessGroup: group), refreshToken = accessToken.refreshToken else {
+            accessTokenWasUnauthorizedOnPreviousAttempt = true
+            TokenManager.deleteToken(identifer, accessGroup: group)
+            self.load()
+            return
+        }
+        TokenManager.deleteToken(accessTokenIdentifier, accessGroup: keychainAccessGroup)
+
+        let ridesClient = RidesClient(accessTokenIdentifier: identifer, keychainAccessGroup: group)
+        ridesClient.refreshAccessToken(refreshToken) { (accessToken, response) in
+            if let token = accessToken {
+                TokenManager.saveToken(token, tokenIdentifier: self.accessTokenIdentifier, accessGroup: self.keychainAccessGroup)
+            }
+            self.load()
         }
     }
 }

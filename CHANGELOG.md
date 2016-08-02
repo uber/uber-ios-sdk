@@ -1,5 +1,16 @@
 # Change Log
 
+## [0.5.2] 2016-08-2
+### Added
+The Ride Request Widget now attempts to refresh expired access tokens automatically. If you are using the RideRequestViewController, the SDK will attempt to hit the Refresh endpoint with your current Access Token's Refresh Token. If that fails, the user will be redirected to the appropriate login
+
+
+### Fixed
+
+- [Issue #64](https://github.com/uber/rides-ios-sdk/issues/64) Refresh Endpoint returning error
+- [Issue #57](https://github.com/uber/rides-ios-sdk/issues/57) Client login errors from expired access tokens. 
+- [Issue #52](https://github.com/uber/rides-ios-sdk/issues/57) Carthage setup incorrectly copying frameworks
+
 ## [0.5.1] 2016-06-14
 ### Fixed
 

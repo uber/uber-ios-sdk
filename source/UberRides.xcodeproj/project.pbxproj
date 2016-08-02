@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A66B4721D1F38D600B4F181 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA459AF1D000813003CBA3D /* ObjectMapper.framework */; };
 		AC0404791BFACD1D00AC1501 /* UberRides.h in Headers */ = {isa = PBXBuildFile; fileRef = AC0404781BFACD1D00AC1501 /* UberRides.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AC0404801BFACD1D00AC1501 /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC0404751BFACD1D00AC1501 /* UberRides.framework */; };
 		AC0404851BFACD1D00AC1501 /* UberRidesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404841BFACD1D00AC1501 /* UberRidesTests.swift */; };
@@ -296,6 +297,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A66B4721D1F38D600B4F181 /* ObjectMapper.framework in Frameworks */,
 				AC0404801BFACD1D00AC1501 /* UberRides.framework in Frameworks */,
 				DCA459D41D003EFC003CBA3D /* OHHTTPStubs.framework in Frameworks */,
 			);
@@ -546,7 +548,6 @@
 				AC0404711BFACD1D00AC1501 /* Frameworks */,
 				AC0404721BFACD1D00AC1501 /* Headers */,
 				AC0404731BFACD1D00AC1501 /* Resources */,
-				DCA459B11D000825003CBA3D /* Copy Carthage Frameworks */,
 			);
 			buildRules = (
 			);
@@ -656,21 +657,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		DCA459B11D000825003CBA3D /* Copy Carthage Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/../Carthage/Build/iOS/ObjectMapper.framework",
-			);
-			name = "Copy Carthage Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
 		DCA459D51D003F0F003CBA3D /* Copy Carthage Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
