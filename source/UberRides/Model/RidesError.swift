@@ -121,6 +121,7 @@ extension RidesError: UberModel {
  - InvalidJWTSignature:     There was a problem authorizing you.
  - InvalidNonce:            There was a problem authorizing you.
  - InvalidRedirect:         Redirect URI provided was invalid
+ - InvalidRefreshToken:     The provided Refresh Token was invalid
  - InvalidRequest:          General case for invalid requests.
  - InvalidResponse:         The response from the server was un-parseable
  - InvalidScope:            Scopes provided contains an invalid scope.
@@ -148,6 +149,7 @@ extension RidesError: UberModel {
     case InvalidJWTSignature
     case InvalidNonce
     case InvalidRedirect
+    case InvalidRefreshToken
     case InvalidRequest
     case InvalidResponse
     case InvalidScope
@@ -188,6 +190,8 @@ extension RidesError: UberModel {
             return "invalid_nonce"
         case .InvalidRedirect:
             return "invalid_redirect_uri"
+        case .InvalidRefreshToken:
+            return "invalid_refresh_token"
         case .InvalidRequest:
             return "invalid_parameters"
         case .InvalidResponse:
@@ -243,6 +247,8 @@ extension RidesError: UberModel {
             return "There was a problem authorizing you."
         case .InvalidRedirect:
             return "Invalid Redirect URI provided."
+        case .InvalidRefreshToken:
+            return "Invalid Refresh TOken provided."
         case .InvalidRequest:
             return "The server was unable to understand your request."
         case .InvalidResponse:
@@ -329,6 +335,8 @@ class RidesAuthenticationErrorFactory : NSObject {
             return .InvalidRequest
         case "invalid_redirect_uri":
             return .InvalidRedirect
+        case "invalid_refresh_token":
+            return .InvalidRefreshToken
         case "invalid_response":
             return .InvalidResponse
         case "invalid_scope":
