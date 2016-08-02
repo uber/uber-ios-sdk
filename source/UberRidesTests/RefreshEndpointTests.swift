@@ -55,15 +55,39 @@ class RefreshEndpointTests: XCTestCase {
             return OHHTTPStubsResponse(fileAtPath:OHPathForFile("refresh.json", self.dynamicType)!, statusCode:200, headers:self.headers)
         }
         let refreshToken = "ThisIsRefresh"
+        let clientID = Configuration.getClientID()
         let expectation = expectationWithDescription("200 success response")
         let endpoint = OAuth.Refresh(clientID: clientID, refreshToken: refreshToken)
         let request = Request(session: client.session, endpoint: endpoint)
+
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 200)
             XCTAssertNil(response.error)
-            
+
             expectation.fulfill()
         })
+
+        XCTAssertEqual(request.urlRequest.HTTPMethod, "POST")
+
+        guard let bodyData = request.urlRequest.HTTPBody, dataString = String(data: bodyData, encoding: NSUTF8StringEncoding) else {
+            XCTFail("Missing HTTP Body!")
+            return
+        }
+        let components = NSURLComponents()
+        components.query = dataString
+
+        let expectedClientID = NSURLQueryItem(name: "client_id", value: clientID)
+        let expectedRefreshToken = NSURLQueryItem(name: "refresh_token", value: refreshToken)
+
+        guard let queryItems = components.queryItems else {
+            XCTFail("Invalid HTTP Body!")
+            return
+        }
+
+        XCTAssertTrue(queryItems.contains(expectedClientID))
+        XCTAssertTrue(queryItems.contains(expectedRefreshToken))
+
+
         
         waitForExpectationsWithTimeout(timeout, handler: { error in
             if let error = error {

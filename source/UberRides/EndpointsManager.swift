@@ -198,6 +198,21 @@ enum OAuth: UberAPI {
     var host: String {
         return OAuth.regionHostString()
     }
+
+    var body: NSData? {
+        switch self {
+        case .Refresh(let clientID, let refreshToken):
+            let query = queryBuilder(
+                ("client_id", clientID),
+                ("refresh_token", refreshToken)
+            )
+            let components = NSURLComponents()
+            components.queryItems = query
+            return components.query?.dataUsingEncoding(NSUTF8StringEncoding)
+        default:
+            return nil
+        }
+    }
     
     static func regionHostString(region: Region = Configuration.getRegion()) -> String {
         switch region {
@@ -233,11 +248,8 @@ enum OAuth: UberAPI {
                                           ("state", state ?? ""))
             loginQuery.appendContentsOf(additionalQueryItems)
             return loginQuery
-        case .Refresh(let clientID, let refreshToken):
-            return queryBuilder(
-                ("client_id", clientID),
-                ("refresh_token", refreshToken)
-            )
+        case .Refresh:
+            return queryBuilder()
         }
     }
     
