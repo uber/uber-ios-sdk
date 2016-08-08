@@ -121,7 +121,7 @@ This will allow the Uber iOS integration to properly identify and switch to the 
 ## SDK Configuration
 In order for the SDK to function correctly, you need to add some information about your app. Locate the **Info.plist** file for your application. Usually found in the **Supporting Files** folder. Right-click this file and select **Open As > Source Code**
 
-Add the following code snippet, replacing the placeholders with your app’s information from the developer dashboard.
+Add the following code snippet, replacing the placeholders within the square brackets (`[]`) with your app’s information from the developer dashboard. (Note: Do not include the square brackets)
 
 ```
 <key>UberClientID</key>
@@ -134,7 +134,7 @@ Add the following code snippet, replacing the placeholders with your app’s inf
         <key>UberCallbackURIType</key>
         <string>General</string>
         <key>URIString</key>
-        <string>callback://your_callback_uri</string>
+        <string>[callback://your_callback_uri]</string>
     </dict>
 </array>
 ```
@@ -150,19 +150,19 @@ You can also define specific callback URIs for different login types. For exampl
         <key>UberCallbackURIType</key>
         <string>General</string>
         <key>URIString</key>
-        <string>callback://your_callback_uri</string>
+        <string>[callback://your_callback_uri]</string>
     </dict>
     <dict>
         <key>UberCallbackURIType</key>
         <string>AuthorizationCode</string>
         <key>URIString</key>
-        <string>callback://authorization_code_uri</string>
+        <string>[callback://authorization_code_uri]</string>
     </dict>
     <dict>
         <key>UberCallbackURIType</key>
         <string>Native</string>
         <key>URIString</key>
-        <string>myApp://native_deeplink_callback</string>
+        <string>[myApp://native_deeplink_callback]</string>
     </dict>    
 </array>
 ```
