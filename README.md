@@ -102,7 +102,7 @@ Now build your project and everything should be good to go!
 
 ### Configuring iOS 9.0
 
-If you are compiling on iOS SDK 9.0, you will need to modify your application’s `plist` to handle Apple’s [new security changes](https://developer.apple.com/videos/wwdc/2015/?id=703) to the `canOpenURL` function.
+If you are compiling on iOS SDK 9.0, you will need to modify your application’s `plist` to handle Apple’s [new security changes](https://developer.apple.com/videos/wwdc/2015/?id=703) to the `canOpenURL` function.  Locate the **Info.plist** file for your application. Usually found in the **Supporting Files** folder. Right-click this file and select **Open As > Source Code**
 
 ```
 <key>LSApplicationQueriesSchemes</key>
@@ -172,6 +172,9 @@ Additionally, the SDK provides a static Configuration class to further customize
 
 ```swift
 // Don’t forget to import UberRides
+import UberRides
+// ...
+
 // Swift
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // China based apps should specify the region
@@ -186,6 +189,10 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
 ```
 
 ```objective-c
+// Don’t forget to import UberRides
+#import <UberRides/UberRides-Swift.h>
+// ...
+
 // Objective-C
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // China based apps should specify the region
