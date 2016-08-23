@@ -931,7 +931,7 @@ This will build the required dependencies. Once you do that, open `Swift SDK.xco
 
 ### CocoaPods
 First, you will have to remove Carthage dependencies. Navigate to `examples/Swift SDK` or `examples/Obj-C SDK` and remove `Cartfile` and `Cartfile.resolved`. If you see a `Carthage` folder, remove that as well. Open .xcworkspace and navigate to  **General** tab, scroll to **Embedded Binaries** select `ObjectMapper.framework` and click the `-` button, do the same for `UberRides.framework`. Now go to  **Build Settings** tab and scroll to **Search Paths**, click on **Framework Search Paths** and remove the line $(PROJECT_DIR)/Carthage/Build/iOS.
-Now got to **Build Phases** find the **Copy Carthage Frameworks** and remove it.
+Now go to **Build Phases** find the **Copy Carthage Frameworks** and remove it.
 
 Now, still inside either `examples/Swift SDK` or `examples/Obj-C SDK`, create a new **Podfile** by running `pod init`, then add `pod 'UberRides'` to your main target. If you are using the Swift SDK, make sure to add the line `use_frameworks!`. Your **Podfile** should look something like this:
 
