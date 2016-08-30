@@ -305,7 +305,7 @@ You can optionally set a `LoginButtonDelegate` to handle logging in / logging ou
 
 ```swift
 // Swift
-let scopes = [.Profile, .Places, .Request]
+let scopes: [RidesScope] = [.Profile, .Places, .Request]
 let loginManager = LoginManager(loginType: .Native)
 let loginButton = LoginButton(frame: CGRectZero, scopes: scopes, loginManager: loginManager)
 loginButton.presentingViewController = self
