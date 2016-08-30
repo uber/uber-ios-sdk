@@ -29,11 +29,12 @@ import Foundation
 
     public static let TokenManagerDidSaveTokenNotification = "TokenManagerDidSaveTokenNotification"
     public static let TokenManagerDidDeleteTokenNotification = "TokenManagerDidDeleteTokenNotification"
-    
+
     private static let keychainWrapper = KeychainWrapper()
+    private static let kCheckFirstRun = "com.uber.checkFirstRun"
 
     //MARK: Get
-    
+
     /**
      Gets the AccessToken for the given tokenIdentifier and accessGroup.
 
@@ -43,30 +44,34 @@ import Foundation
      - returns: An AccessToken, or nil if one wasn't found
      */
     @objc public static func fetchToken(tokenIdentifier: String, accessGroup: String) -> AccessToken? {
+        guard NSUserDefaults.standardUserDefaults().boolForKey(kCheckFirstRun) else {
+            self.deleteToken()
+            return nil
+        }
         keychainWrapper.setAccessGroup(accessGroup)
         guard let token = keychainWrapper.getObjectForKey(tokenIdentifier) as? AccessToken else {
             return nil
         }
         return token
     }
-    
+
     /**
      Gets the AccessToken for the given tokenIdentifier.
      Uses the default value for keychain access group, as defined by your Configuration.
-     
+
      - parameter tokenIdentifier: The token identifier string to use
-     
+
      - returns: An AccessToken, or nil if one wasn't found
      */
     @objc public static func fetchToken(tokenIdentifier: String) -> AccessToken? {
         return self.fetchToken(tokenIdentifier,
             accessGroup: Configuration.getDefaultKeychainAccessGroup())
     }
-    
+
     /**
-     Gets the AccessToken using the default tokenIdentifier and accessGroup. 
+     Gets the AccessToken using the default tokenIdentifier and accessGroup.
      These values are the defined in your Configuration
-     
+
      - returns: An AccessToken, or nil if one wasn't found
      */
     @objc public static func fetchToken() -> AccessToken? {
@@ -75,11 +80,11 @@ import Foundation
     }
 
     //MARK: Save
-    
+
     /**
      Saves the given AccessToken using the provided tokenIdentifier and acessGroup.If no values
      are supplied, it uses the defaults defined in your Configuration.
-    
+
     Access Token is saved syncronously
 
      - parameter accessToken:     The AccessToken to save
@@ -92,43 +97,45 @@ import Foundation
         keychainWrapper.setAccessGroup(accessGroup)
         let success = keychainWrapper.setObject(accessToken, key: tokenIdentifier)
         if success {
+            NSUserDefaults.standardUserDefaults().setBool(YES, forKey: kCheckFirstRun)
+            NSUserDefaults.standardUserDefaults().synchronize()
             NSNotificationCenter.defaultCenter().postNotificationName(TokenManagerDidSaveTokenNotification, object: self)
         }
         return success
     }
-    
+
     /**
-     Saves the given AccessToken using the provided tokenIdentifier. 
+     Saves the given AccessToken using the provided tokenIdentifier.
      Uses the default keychain access group defined by your Configuration.
-     
+
      Access Token is saved syncronously
-     
+
      - parameter accessToken:     The AccessToken to save
      - parameter tokenIdentifier: The token identifier string to use
-     
+
      - returns: true if the accessToken was saved successfully, false otherwise
      */
     @objc public static func saveToken(accessToken: AccessToken, tokenIdentifier: String) -> Bool {
         return self.saveToken(accessToken, tokenIdentifier: tokenIdentifier, accessGroup: Configuration.getDefaultKeychainAccessGroup())
     }
-    
+
     /**
-     Saves the given AccessToken. 
+     Saves the given AccessToken.
      Uses the default access token identifier & keychain access group defined by your
      Configuration.
-     
+
      Access Token is saved syncronously
-     
+
      - parameter accessToken: The AccessToken to save
-     
+
      - returns: true if the accessToken was saved successfully, false otherwise
      */
     @objc public static func saveToken(accessToken: AccessToken) -> Bool {
-        return self.saveToken(accessToken,  tokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(), accessGroup: Configuration.getDefaultKeychainAccessGroup())
+        return self.saveToken(accessToken, tokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(), accessGroup: Configuration.getDefaultKeychainAccessGroup())
     }
-    
+
     //MARK: Delete
-    
+
     /**
      Deletes the AccessToken for the givent tokenIdentifier and accessGroup. If no values
      are supplied, it uses the defaults defined in your Configuration.
@@ -143,36 +150,38 @@ import Foundation
         deleteCookies()
         let success = keychainWrapper.deleteObjectForKey(tokenIdentifier)
         if success {
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(kCheckFirstRun)
+            NSUserDefaults.standardUserDefaults().synchronize()
             NSNotificationCenter.defaultCenter().postNotificationName(TokenManagerDidDeleteTokenNotification, object: self)
         }
         return success
     }
-    
+
     /**
      Deletes the AccessToken for the given tokenIdentifier.
      Uses the default keychain access group defined in your Configuration.
-     
+
      - parameter tokenIdentifier: The token identifier string to use
-     
+
      - returns: true if the token was deleted, false otherwise
      */
     @objc public static func deleteToken(tokenIdentifier: String) -> Bool {
         return self.deleteToken(tokenIdentifier, accessGroup: Configuration.getDefaultKeychainAccessGroup())
     }
-    
+
     /**
      Deletes an AccessToken.
      Uses the default token identifier defined in your Configuration.
      Uses the default keychain access group defined in your Configuration.
-     
+
      - returns: true if the token was deleted, false otherwise
      */
     @objc public static func deleteToken() -> Bool {
         return self.deleteToken(Configuration.getDefaultAccessTokenIdentifier(), accessGroup: Configuration.getDefaultKeychainAccessGroup())
     }
-    
+
     // MARK: Private Interface
-    
+
     private static func deleteCookies() {
         Configuration.resetProcessPool()
         var urlsToClear = [NSURL]()
@@ -182,9 +191,9 @@ import Foundation
         if let loginURL = NSURL(string: OAuth.regionHostString(.China)) {
             urlsToClear.append(loginURL)
         }
-        
+
         let sharedCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
-        
+
         for url in urlsToClear {
             if let cookies = sharedCookieStorage.cookiesForURL(url) {
                 for cookie in cookies {
