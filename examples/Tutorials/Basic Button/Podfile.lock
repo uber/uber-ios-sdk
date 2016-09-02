@@ -1,0 +1,15 @@
+PODS:
+  - ObjectMapper (1.4.0)
+  - UberRides (0.5.2):
+    - ObjectMapper (~> 1.0)
+
+DEPENDENCIES:
+  - UberRides (~> 0.5)
+
+SPEC CHECKSUMS:
+  ObjectMapper: a07ad0462c5adf014adc0f89ef04c29b626e855e
+  UberRides: 31c962f5b150fac726789e4de80f5fd468201dd5
+
+PODFILE CHECKSUM: 26ab02faf8ec8ac2cdd8b64fb9528410366c8af2
+
+COCOAPODS: 1.0.1
