@@ -923,6 +923,7 @@ class RidesClientTests: XCTestCase {
         
         keychainHelper.setAccessGroup(tokenGroup)
         keychainHelper.setObject(token, key: tokenKey)
+        saveFirstRunKey()
         defer {
             keychainHelper.deleteObjectForKey(tokenKey)
         }
@@ -962,6 +963,7 @@ class RidesClientTests: XCTestCase {
         
         keychainHelper.setAccessGroup(tokenGroup)
         keychainHelper.setObject(token, key: tokenKey)
+        saveFirstRunKey()
         defer {
             keychainHelper.deleteObjectForKey(tokenKey)
         }
@@ -991,6 +993,7 @@ class RidesClientTests: XCTestCase {
         
         keychainHelper.setAccessGroup(tokenGroup)
         keychainHelper.setObject(token, key: tokenKey)
+        saveFirstRunKey()
         defer {
             keychainHelper.deleteObjectForKey(tokenKey)
         }
@@ -1020,6 +1023,7 @@ class RidesClientTests: XCTestCase {
         
         keychainHelper.setAccessGroup(tokenGroup)
         keychainHelper.setObject(token, key: tokenKey)
+        saveFirstRunKey()
         defer {
             keychainHelper.deleteObjectForKey(tokenKey)
         }
@@ -1082,5 +1086,12 @@ class RidesClientTests: XCTestCase {
         let ridesClient = RidesClient(accessTokenIdentifier: tokenKey)
         let accessToken = ridesClient.fetchAccessToken()
         XCTAssertNil(accessToken)
+    }
+    
+    //MARK: Helper
+    func saveFirstRunKey() {
+        let kCheckFirstRun = "com.uber.checkFirstRun"
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: kCheckFirstRun)
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
 }

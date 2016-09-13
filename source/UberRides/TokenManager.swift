@@ -97,7 +97,7 @@ import Foundation
         keychainWrapper.setAccessGroup(accessGroup)
         let success = keychainWrapper.setObject(accessToken, key: tokenIdentifier)
         if success {
-            NSUserDefaults.standardUserDefaults().setBool(YES, forKey: kCheckFirstRun)
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: kCheckFirstRun)
             NSUserDefaults.standardUserDefaults().synchronize()
             NSNotificationCenter.defaultCenter().postNotificationName(TokenManagerDidSaveTokenNotification, object: self)
         }
