@@ -161,6 +161,10 @@ class WebViewMock : WKWebView {
         super.init(frame: frame, configuration: configuration)
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func loadRequest(request: NSURLRequest) -> WKNavigation? {
         testClosure?(request)
         return nil

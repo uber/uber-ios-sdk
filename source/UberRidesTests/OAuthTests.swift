@@ -279,7 +279,7 @@ class OAuthTests: XCTestCase {
      Test saving a duplicate key with different value and verify that value is updated.
      */
     func testSaveDuplicateObjectInKeychain() {
-        guard let token = tokenFixture(), newToken = tokenFixture("newTokenString") else {
+        guard let token = tokenFixture(), let newToken = tokenFixture("newTokenString") else {
             XCTAssert(false)
             return
         }

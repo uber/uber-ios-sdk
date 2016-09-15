@@ -61,7 +61,7 @@ class AuthenticationDeeplinkTests: XCTestCase {
         let authenticationDeeplink = AuthenticationDeeplink(scopes:scopes)
         let expectedURLPrefix = "uberauth://connect?"
         
-        XCTAssertTrue(authenticationDeeplink.deeplinkURL.absoluteString.hasPrefix(expectedURLPrefix))
+        XCTAssertTrue(authenticationDeeplink.deeplinkURL.absoluteString!.hasPrefix(expectedURLPrefix))
     }
 }
 
