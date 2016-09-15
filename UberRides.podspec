@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
   s.source_files = ["source/UberRides/*.swift", "source/UberRides/Model/*.swift", "source/UberRides/OAuth/*.swift", "source/UberRides/Utilities/*.swift"]
   s.resource     = "source/UberRides/Resources/**"
   s.requires_arc = true
-  s.dependency 'ObjectMapper', '~> 1.0'
+  s.dependency 'ObjectMapper', '~> 2.0'
 
 end
