@@ -216,7 +216,7 @@ import CoreLocation
 extension RideRequestView: WKNavigationDelegate {
     public func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
         if let url = navigationAction.request.URL {
-            if url.absoluteString.lowercaseString.hasPrefix(redirectURL.lowercaseString) {
+            if url.absoluteString!.lowercaseString.hasPrefix(redirectURL.lowercaseString) {
                 let error = OAuthUtil.parseRideWidgetErrorFromURL(url)
                 delegate?.rideRequestView(self, didReceiveError: error)
                 decisionHandler(.Cancel)
