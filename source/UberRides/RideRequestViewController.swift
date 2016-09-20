@@ -37,16 +37,16 @@ import MapKit
      - parameter rideRequestViewController: The RideRequestViewController that experienced the error
      - parameter error:                     The NSError that was experienced, with a code related to the appropriate RideRequestViewErrorType
      */
-    @objc func rideRequestViewController(rideRequestViewController: RideRequestViewController, didReceiveError error: NSError)
+    @objc func rideRequestViewController(_ rideRequestViewController: RideRequestViewController, didReceiveError error: NSError)
 }
 
 // View controller to wrap the RideRequestView
-@objc (UBSDKRideRequestViewController) public class RideRequestViewController: UIViewController {
+@objc (UBSDKRideRequestViewController) open class RideRequestViewController: UIViewController {
     /// The RideRequestViewControllerDelegate to handle the errors
-    public var delegate: RideRequestViewControllerDelegate?
+    open var delegate: RideRequestViewControllerDelegate?
     
     /// The LoginManager to use for managing the login process
-    public var loginManager: LoginManager {
+    open var loginManager: LoginManager {
         didSet {
             accessTokenIdentifier = loginManager.accessTokenIdentifier
             keychainAccessGroup = loginManager.keychainAccessGroup
@@ -59,10 +59,10 @@ import MapKit
     
     static let sourceString = "ride_request_widget"
     
-    private var accessTokenWasUnauthorizedOnPreviousAttempt = false
-    private var accessTokenIdentifier: String
-    private var keychainAccessGroup: String
-    private var loginCompletion: ((accessToken: AccessToken?, error: NSError?) -> Void)?
+    fileprivate var accessTokenWasUnauthorizedOnPreviousAttempt = false
+    fileprivate var accessTokenIdentifier: String
+    fileprivate var keychainAccessGroup: String
+    fileprivate var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
     
     /**
      Initializes a RideRequestViewController using the provided coder. By default,
@@ -111,22 +111,22 @@ import MapKit
     
     // MARK: View Lifecycle
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
-        self.edgesForExtendedLayout = UIRectEdge.None
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.edgesForExtendedLayout = UIRectEdge()
+        self.view.backgroundColor = UIColor.white
         
         setupRideRequestView()
         setupLoginView()
     }
     
-    public override func viewDidAppear(animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         self.load()
     }
     
-    public override func viewWillDisappear(animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopLoading()
         accessTokenWasUnauthorizedOnPreviousAttempt = false
@@ -134,8 +134,8 @@ import MapKit
     
     // MARK: UIViewController
     
-    public override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return [.Portrait, .PortraitUpsideDown]
+    open override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return [.portrait, .portraitUpsideDown]
     }
     
     // MARK: Internal
@@ -143,18 +143,18 @@ import MapKit
     func load() {
         if let accessToken = TokenManager.fetchToken(accessTokenIdentifier, accessGroup: keychainAccessGroup) {
             rideRequestView.accessToken = accessToken
-            rideRequestView.hidden = false
-            loginView.hidden = true
+            rideRequestView.isHidden = false
+            loginView.isHidden = true
             rideRequestView.load()
         } else {
             switch loginManager.loginType {
-            case .Native:
+            case .native:
                 executeNativeLogin()
-            case .Implicit:
+            case .implicit:
                 fallthrough
-            case .AuthorizationCode:
-                loginView.hidden = false
-                rideRequestView.hidden = true
+            case .authorizationCode:
+                loginView.isHidden = false
+                rideRequestView.isHidden = true
                 loginView.load()
             }
         }
@@ -174,35 +174,35 @@ import MapKit
     func displayNetworkErrorAlert() {
         self.rideRequestView.cancelLoad()
         self.loginView.cancelLoad()
-        let alertController = UIAlertController(title: nil, message: LocalizationUtil.localizedString(forKey: "The Ride Request Widget encountered a problem.", comment: "The Ride Request Widget encountered a problem."), preferredStyle: .Alert)
-        let tryAgainAction = UIAlertAction(title: LocalizationUtil.localizedString(forKey: "Try Again", comment: "Try Again"), style: .Default, handler: { (UIAlertAction) -> Void in
+        let alertController = UIAlertController(title: nil, message: LocalizationUtil.localizedString(forKey: "The Ride Request Widget encountered a problem.", comment: "The Ride Request Widget encountered a problem."), preferredStyle: .alert)
+        let tryAgainAction = UIAlertAction(title: LocalizationUtil.localizedString(forKey: "Try Again", comment: "Try Again"), style: .default, handler: { (UIAlertAction) -> Void in
             self.load()
         })
-        let cancelAction = UIAlertAction(title: LocalizationUtil.localizedString(forKey: "Cancel", comment: "Cancel"), style: .Cancel, handler: { (UIAlertAction) -> Void in
-            self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.NetworkError))
+        let cancelAction = UIAlertAction(title: LocalizationUtil.localizedString(forKey: "Cancel", comment: "Cancel"), style: .cancel, handler: { (UIAlertAction) -> Void in
+            self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.networkError))
         })
         alertController.addAction(tryAgainAction)
         alertController.addAction(cancelAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func displayNotSupportedErrorAlert() {
-        let alertController = UIAlertController(title: nil, message: LocalizationUtil.localizedString(forKey: "The operation you are attempting is not supported on the current device.", comment: "The operation you are attempting is not supported on the current device."), preferredStyle: .Alert)
-        let okayAction = UIAlertAction(title: LocalizationUtil.localizedString(forKey: "OK", comment: "OK"), style: .Default, handler: nil)
+        let alertController = UIAlertController(title: nil, message: LocalizationUtil.localizedString(forKey: "The operation you are attempting is not supported on the current device.", comment: "The operation you are attempting is not supported on the current device."), preferredStyle: .alert)
+        let okayAction = UIAlertAction(title: LocalizationUtil.localizedString(forKey: "OK", comment: "OK"), style: .default, handler: nil)
         alertController.addAction(okayAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     //MARK: Private
     
-    private func setupRideRequestView() {
+    fileprivate func setupRideRequestView() {
         self.view.addSubview(rideRequestView)
         
         rideRequestView.translatesAutoresizingMaskIntoConstraints = false
         
         let views = ["rideRequestView": rideRequestView]
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[rideRequestView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[rideRequestView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[rideRequestView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[rideRequestView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
         
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)
@@ -210,44 +210,44 @@ import MapKit
         rideRequestView.delegate = self
     }
     
-    private func setupLoginView() {
+    fileprivate func setupLoginView() {
         switch loginManager.loginType {
-        case .AuthorizationCode:
+        case .authorizationCode:
             fallthrough
-        case .Implicit:
+        case .implicit:
             setupImplicitLoginView()
             break
-        case .Native:
+        case .native:
             setupNativeLogin()
             break
         }
     }
     
-    private func setupImplicitLoginView() {
+    fileprivate func setupImplicitLoginView() {
         let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: self, scopes: [.RideWidgets])
         loginBehavior.loginCompletion = { token, error in
             guard let token = token else {
-                if error?.code == RidesAuthenticationErrorType.NetworkError.rawValue {
+                if error?.code == RidesAuthenticationErrorType.networkError.rawValue {
                     self.displayNetworkErrorAlert()
                 } else {
-                    self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.AccessTokenMissing))
+                    self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
                 }
                 return
             }
-            self.loginView.hidden = true
+            self.loginView.isHidden = true
             self.rideRequestView.accessToken = token
-            self.rideRequestView.hidden = false
+            self.rideRequestView.isHidden = false
             self.load()
         }
         loginManager.authenticator = loginBehavior
         let loginView = LoginView(loginAuthenticator: loginBehavior)
         self.view.addSubview(loginView)
-        loginView.hidden = true
+        loginView.isHidden = true
         loginView.translatesAutoresizingMaskIntoConstraints = false
         
         let views = ["loginView": loginView]
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[loginView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[loginView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[loginView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[loginView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
         
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)
@@ -255,25 +255,25 @@ import MapKit
         self.loginView = loginView
     }
     
-    private func setupNativeLogin() {
+    fileprivate func setupNativeLogin() {
         
         nativeAuthenticator.loginCompletion = { token, error in
             guard let token = token else {
-                if error?.code == RidesAuthenticationErrorType.NetworkError.rawValue {
+                if error?.code == RidesAuthenticationErrorType.networkError.rawValue {
                     self.displayNetworkErrorAlert()
-                } else if error?.code == RidesAuthenticationErrorType.Unavailable.rawValue {
-                    self.loginManager.loginType = .Implicit
+                } else if error?.code == RidesAuthenticationErrorType.unavailable.rawValue {
+                    self.loginManager.loginType = .implicit
                     self.setupLoginView()
                     self.load()
-                    self.loginManager.loginType = .Native
+                    self.loginManager.loginType = .native
                 } else {
-                    self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.AccessTokenMissing))
+                    self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
                 }
                 return
             }
-            self.loginView.hidden = true
+            self.loginView.isHidden = true
             self.rideRequestView.accessToken = token
-            self.rideRequestView.hidden = false
+            self.rideRequestView.isHidden = false
             self.load()
         }
         nativeAuthenticator.deeplinkCompletion = { error in
@@ -287,18 +287,18 @@ import MapKit
 //MARK: RideRequestView Delegate
 
 extension RideRequestViewController : RideRequestViewDelegate {
-    public func rideRequestView(rideRequestView: RideRequestView, didReceiveError error: NSError) {
-        let errorType = RideRequestViewErrorType(rawValue: error.code) ?? .Unknown
+    public func rideRequestView(_ rideRequestView: RideRequestView, didReceiveError error: NSError) {
+        let errorType = RideRequestViewErrorType(rawValue: error.code) ?? .unknown
         switch errorType {
-        case .NetworkError:
+        case .networkError:
             self.displayNetworkErrorAlert()
             break
-        case .NotSupported:
+        case .notSupported:
             self.displayNotSupportedErrorAlert()
             break
-        case .AccessTokenMissing:
+        case .accessTokenMissing:
             fallthrough
-        case .AccessTokenExpired:
+        case .accessTokenExpired:
             if accessTokenWasUnauthorizedOnPreviousAttempt {
                 fallthrough
             }
@@ -310,10 +310,10 @@ extension RideRequestViewController : RideRequestViewDelegate {
         }
     }
 
-    private func attemptTokenRefresh(tokenIdentifier: String?, accessGroup: String?) {
+    fileprivate func attemptTokenRefresh(_ tokenIdentifier: String?, accessGroup: String?) {
         let identifer = tokenIdentifier ?? Configuration.getDefaultAccessTokenIdentifier()
         let group = accessGroup ?? Configuration.getDefaultKeychainAccessGroup()
-        guard let accessToken = TokenManager.fetchToken(identifer, accessGroup: group), refreshToken = accessToken.refreshToken else {
+        guard let accessToken = TokenManager.fetchToken(identifer, accessGroup: group), let refreshToken = accessToken.refreshToken else {
             accessTokenWasUnauthorizedOnPreviousAttempt = true
             TokenManager.deleteToken(identifer, accessGroup: group)
             self.load()

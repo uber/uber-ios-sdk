@@ -26,9 +26,9 @@ import Foundation
 import WebKit
 
 /// Login Web View class. Wrapper around a WKWebView to handle Login flow for Implicit Grant
-@objc(UBSDKLoginView) public class LoginView : UIView {
+@objc(UBSDKLoginView) open class LoginView : UIView {
     
-    public var loginAuthenticator: LoginViewAuthenticator
+    open var loginAuthenticator: LoginViewAuthenticator
     
     var clientID = Configuration.getClientID()
     let webView: WKWebView
@@ -63,7 +63,7 @@ import WebKit
      - returns: An initialized LoginWebView
      */
     @objc public convenience init(loginAuthenticator: LoginViewAuthenticator) {
-        self.init(loginAuthenticator: loginAuthenticator, frame: CGRectZero)
+        self.init(loginAuthenticator: loginAuthenticator, frame: CGRect.zero)
     }
 
     /**
@@ -90,8 +90,8 @@ import WebKit
         self.webView.translatesAutoresizingMaskIntoConstraints = false
 
         let views = ["webView": webView]
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[webView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[webView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[webView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[webView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
         
         addConstraints(horizontalConstraints)
         addConstraints(verticalConstraints)
@@ -102,51 +102,51 @@ import WebKit
     /**
     Loads the login page
     */
-    public func load() {
+    open func load() {
         // Create URL for request
         let request = Request(session: nil, endpoint: loginAuthenticator.endpoint)
         request.prepare()
         
         guard let _ = request.requestURL() else {
-            loginAuthenticator.loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType:.InvalidRequest))
+            loginAuthenticator.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType:.invalidRequest))
             
             return
         }
         
         // Load request in web view
-        self.webView.loadRequest(request.urlRequest)
+        self.webView.load(request.urlRequest as URLRequest)
     }
     
     /**
      Stops loading the login page and clears the view.
      If the login page has already loaded, calling this still clears the view.
      */
-    public func cancelLoad() {
+    open func cancelLoad() {
         webView.stopLoading()
-        if let url = NSURL(string: "about:blank") {
-            webView.loadRequest(NSURLRequest(URL: url))
+        if let url = URL(string: "about:blank") {
+            webView.load(URLRequest(url: url))
         }
     }
 }
 
 extension LoginView : WKNavigationDelegate {
     
-    public func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
             
         if loginAuthenticator.handleRedirectRequest(navigationAction.request) {
-            decisionHandler(WKNavigationActionPolicy.Cancel)
+            decisionHandler(WKNavigationActionPolicy.cancel)
         } else {
-            decisionHandler(WKNavigationActionPolicy.Allow)
+            decisionHandler(WKNavigationActionPolicy.allow)
         }
     }
     
-    public func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
-        loginAuthenticator.loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .NetworkError))
+    public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        loginAuthenticator.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .networkError))
     }
     
-    public func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
-        if error.code != 102 {
-            loginAuthenticator.loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .NetworkError))
+    public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        if error._code != 102 {
+            loginAuthenticator.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .networkError))
         }
     }
 }

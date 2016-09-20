@@ -36,7 +36,7 @@ protocol UberAuthenticating {
     var keychainAccessGroup: String? { get set }
     
     /// Completion handler for success and errors.
-    var loginCompletion: ((accessToken: AccessToken?, error: NSError?) -> Void)? { get set }
+    var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)? { get set }
     
     /// Scopes to request during authorization.
     var scopes: [RidesScope] { get set }
@@ -52,7 +52,7 @@ protocol UberAuthenticating {
      
      - returns: true if a redirect was handled, false otherwise.
      */
-    func handleRedirectRequest(request: NSURLRequest) -> Bool
+    func handleRedirectRequest(_ request: URLRequest) -> Bool
     
     /**
      Performs login for the requested scopes.

@@ -32,8 +32,8 @@ import WebKit
  - China:   China, for apps that are based in China
  */
 @objc public enum Region : Int {
-    case Default
-    case China
+    case `default`
+    case china
 }
 
 /**
@@ -46,36 +46,36 @@ import WebKit
  - Native:            Callback URI to use for Native (SSO) flow
  */
 @objc public enum CallbackURIType : Int {
-    case AuthorizationCode
-    case General
-    case Implicit
-    case Native
+    case authorizationCode
+    case general
+    case implicit
+    case native
     
     func toString() -> String {
         switch self {
-        case .AuthorizationCode:
+        case .authorizationCode:
             return "AuthorizationCode"
-        case .General:
+        case .general:
             return "General"
-        case .Implicit:
+        case .implicit:
             return "Implicit"
-        case .Native:
+        case .native:
             return "Native"
         }
     }
     
-    static func fromString(string: String) -> CallbackURIType {
+    static func fromString(_ string: String) -> CallbackURIType {
         switch string {
-        case CallbackURIType.AuthorizationCode.toString():
-            return .AuthorizationCode
-        case CallbackURIType.Implicit.toString():
-            return .Implicit
-        case CallbackURIType.Native.toString():
-            return .Native
-        case CallbackURIType.General.toString():
+        case CallbackURIType.authorizationCode.toString():
+            return .authorizationCode
+        case CallbackURIType.implicit.toString():
+            return .implicit
+        case CallbackURIType.native.toString():
+            return .native
+        case CallbackURIType.general.toString():
             fallthrough
         default:
-            return .General
+            return .general
         }
     }
 }
@@ -85,50 +85,50 @@ import WebKit
  default values for Application-wide configuration properties. All properties are 
  configurable via the respective setter method
 */
-@objc(UBSDKConfiguration) public class Configuration : NSObject {
+@objc(UBSDKConfiguration) open class Configuration : NSObject {
     // MARK : Variables
     
     /// The .plist file to use, default is Info.plist
-    public static var plistName = "Info"
+    open static var plistName = "Info"
     
     /// The bundle that contains the .plist file. Default is the mainBundle()
-    public static var bundle = NSBundle.mainBundle()
+    open static var bundle = Bundle.main
     
     static var processPool = WKProcessPool()
     
-    private static let clientIDKey = "UberClientID"
-    private static let appNameKey = "UberDisplayName"
-    private static let serverTokenKey = "UberServerToken"
-    private static let callbackURIKey = "UberCallbackURI"
-    private static let callbackURIsKey = "UberCallbackURIs"
-    private static let callbackURIsTypeKey = "UberCallbackURIType"
-    private static let callbackURIStringKey = "URIString"
-    private static let accessTokenIdentifier = "RidesAccessTokenKey"
+    fileprivate static let clientIDKey = "UberClientID"
+    fileprivate static let appNameKey = "UberDisplayName"
+    fileprivate static let serverTokenKey = "UberServerToken"
+    fileprivate static let callbackURIKey = "UberCallbackURI"
+    fileprivate static let callbackURIsKey = "UberCallbackURIs"
+    fileprivate static let callbackURIsTypeKey = "UberCallbackURIType"
+    fileprivate static let callbackURIStringKey = "URIString"
+    fileprivate static let accessTokenIdentifier = "RidesAccessTokenKey"
     
-    private static var clientID : String?
-    private static var callbackURIString : String?
-    private static var callbackURIs = [CallbackURIType : String]()
-    private static var appDisplayName: String?
-    private static var serverToken: String?
-    private static var defaultKeychainAccessGroup: String?
-    private static var defaultAccessTokenIdentifier: String?
-    private static var region : Region = .Default
-    private static var isSandbox : Bool = false
-    private static var useFallback: Bool = true
+    fileprivate static var clientID : String?
+    fileprivate static var callbackURIString : String?
+    fileprivate static var callbackURIs = [CallbackURIType : String]()
+    fileprivate static var appDisplayName: String?
+    fileprivate static var serverToken: String?
+    fileprivate static var defaultKeychainAccessGroup: String?
+    fileprivate static var defaultAccessTokenIdentifier: String?
+    fileprivate static var region : Region = .default
+    fileprivate static var isSandbox : Bool = false
+    fileprivate static var useFallback: Bool = true
     
     /// The string value of the current region setting
-    public static var regionString: String {
+    open static var regionString: String {
         switch region {
-        case .China:
+        case .china:
             return "china"
-        case .Default:
+        case .default:
             return "default"
         }
     }
     
     /// The current version of the SDK as a string
-    public static var sdkVersion: String {
-        guard let version = NSBundle(forClass: self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String else {
+    open static var sdkVersion: String {
+        guard let version = Bundle(for: self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String else {
             return "Unknown"
         }
         return version
@@ -137,9 +137,9 @@ import WebKit
     /**
      Resets all of the Configuration's values to default
      */
-    public static func restoreDefaults() {
+    open static func restoreDefaults() {
         plistName = "Info"
-        bundle = NSBundle.mainBundle()
+        bundle = Bundle.main
         setClientID(nil)
         setCallbackURIString(nil)
         callbackURIs = parseCallbackURIs()
@@ -147,7 +147,7 @@ import WebKit
         setServerToken(nil)
         setDefaultAccessTokenIdentifier(nil)
         setDefaultKeychainAccessGroup(nil)
-        setRegion(Region.Default)
+        setRegion(Region.default)
         setSandboxEnabled(false)
         setFallbackEnabled(true)
         resetProcessPool()
@@ -161,7 +161,7 @@ import WebKit
     
      - returns: The string to use for the Client ID
     */
-    public static func getClientID() -> String {
+    open static func getClientID() -> String {
         if clientID == nil {
             guard let defaultValue = getDefaultValue(clientIDKey) else {
                 fatalConfigurationError("ClientID", key: clientIDKey)
@@ -178,8 +178,8 @@ import WebKit
      
      - returns: The string to use for the Callback URI
     */
-    public static func getCallbackURIString() -> String {
-        return getCallbackURIString(.General)
+    open static func getCallbackURIString() -> String {
+        return getCallbackURIString(.general)
     }
     
     /**
@@ -193,11 +193,11 @@ import WebKit
      
      - returns: The callbackURIString for the the requested type
      */
-    public static func getCallbackURIString(type: CallbackURIType) -> String {
+    open static func getCallbackURIString(_ type: CallbackURIType) -> String {
         if callbackURIs[type] == nil {
             let defaultCallbacks = parseCallbackURIs()
-            var fallback = defaultCallbacks[type] ?? callbackURIs[.General]
-            fallback = fallback ?? defaultCallbacks[.General]
+            var fallback = defaultCallbacks[type] ?? callbackURIs[.general]
+            fallback = fallback ?? defaultCallbacks[.general]
             fallback = fallback ?? getDefaultValue(callbackURIKey)
             guard let fallbackCallback = fallback else {
                 fatalConfigurationError("CallbackURIStrings[\(type.toString())]", key: callbackURIsKey)
@@ -213,7 +213,7 @@ import WebKit
      
      - returns: The app's name
     */
-    public static func getAppDisplayName() -> String {
+    open static func getAppDisplayName() -> String {
         if appDisplayName == nil {
             guard let defaultValue = getDefaultValue(appNameKey) else {
                 fatalConfigurationError("appDisplayName", key: appNameKey)
@@ -232,7 +232,7 @@ import WebKit
      
      - returns: The string Representing your app's server token
     */
-    public static func getServerToken() -> String? {
+    open static func getServerToken() -> String? {
         if serverToken == nil {
             serverToken = getDefaultValue(serverTokenKey)
         }
@@ -246,7 +246,7 @@ import WebKit
      
      - returns: The default keychain access group to use
     */
-    public static func getDefaultKeychainAccessGroup() -> String {
+    open static func getDefaultKeychainAccessGroup() -> String {
         guard let defaultKeychainAccessGroup = defaultKeychainAccessGroup else {
             return ""
         }
@@ -260,7 +260,7 @@ import WebKit
      
      - returns: The default access token identifier to use
     */
-    public static func getDefaultAccessTokenIdentifier() -> String {
+    open static func getDefaultAccessTokenIdentifier() -> String {
         guard let defaultAccessTokenIdentifier = defaultAccessTokenIdentifier else {
             return accessTokenIdentifier
         }
@@ -273,7 +273,7 @@ import WebKit
      
      - returns: The Region the SDK is using
      */
-    public static func getRegion() -> Region {
+    open static func getRegion() -> Region {
         return region
     }
     
@@ -282,7 +282,7 @@ import WebKit
      
      - returns: true if Sandbox is enabled, false otherwise
      */
-    public static func getSandboxEnabled() -> Bool {
+    open static func getSandboxEnabled() -> Bool {
         return isSandbox
     }
     
@@ -293,7 +293,7 @@ import WebKit
      
      - returns: true if fallback enabled, false otherwise
      */
-    public static func getFallbackEnabled() -> Bool {
+    open static func getFallbackEnabled() -> Bool {
         return useFallback
     }
     
@@ -305,7 +305,7 @@ import WebKit
     
      - parameter clientID: The client ID String to use
     */
-    public static func setClientID(clientID: String?) {
+    open static func setClientID(_ clientID: String?) {
         self.clientID = clientID
     }
     
@@ -317,8 +317,8 @@ import WebKit
      
      - parameter callbackURIString: The callback URI String to use
     */
-    public static func setCallbackURIString(callbackURIString: String?) {
-        setCallbackURIString(callbackURIString, type: .General)
+    open static func setCallbackURIString(_ callbackURIString: String?) {
+        setCallbackURIString(callbackURIString, type: .general)
     }
     
     /**
@@ -331,7 +331,7 @@ import WebKit
      - parameter callbackURIString: The callback URI String to use
      - parameter type:              The Callback URI Type to use
      */
-    public static func setCallbackURIString(callbackURIString: String?, type: CallbackURIType) {
+    open static func setCallbackURIString(_ callbackURIString: String?, type: CallbackURIType) {
         var callbackURIs = self.callbackURIs ?? [CallbackURIType : String]()
         callbackURIs[type] = callbackURIString
         self.callbackURIs = callbackURIs
@@ -344,7 +344,7 @@ import WebKit
      
      - parameter appDisplayName: The display name String to use
     */
-    public static func setAppDisplayName(appDisplayName: String?) {
+    open static func setAppDisplayName(_ appDisplayName: String?) {
         self.appDisplayName = appDisplayName
     }
     
@@ -354,7 +354,7 @@ import WebKit
      
      - parameter serverToken: The Server Token String to use
     */
-    public static func setServerToken(serverToken: String?) {
+    open static func setServerToken(_ serverToken: String?) {
         self.serverToken = serverToken
     }
     
@@ -364,7 +364,7 @@ import WebKit
      
      - parameter keychainAccessGroup: The client ID String to use
     */
-    public static func setDefaultKeychainAccessGroup(keychainAccessGroup: String?) {
+    open static func setDefaultKeychainAccessGroup(_ keychainAccessGroup: String?) {
         self.defaultKeychainAccessGroup = keychainAccessGroup
     }
     
@@ -374,7 +374,7 @@ import WebKit
      
      - parameter accessTokenIdentifier: The access token identifier to use
      */
-    public static func setDefaultAccessTokenIdentifier(accessTokenIdentifier: String?) {
+    open static func setDefaultAccessTokenIdentifier(_ accessTokenIdentifier: String?) {
         self.defaultAccessTokenIdentifier = accessTokenIdentifier
     }
     
@@ -384,7 +384,7 @@ import WebKit
      
      - parameter region: The region the SDK should use
      */
-    public static func setRegion(region: Region) {
+    open static func setRegion(_ region: Region) {
         self.region = region
     }
     
@@ -394,7 +394,7 @@ import WebKit
      
      - parameter enabled: Whether or not sandbox should be enabled
      */
-    public static func setSandboxEnabled(enabled: Bool) {
+    open static func setSandboxEnabled(_ enabled: Bool) {
         isSandbox = enabled
     }
     
@@ -405,7 +405,7 @@ import WebKit
      
      - parameter enabled: Whether or not fallback should be enabled
      */
-    public static func setFallbackEnabled(enabled: Bool) {
+    open static func setFallbackEnabled(_ enabled: Bool) {
         useFallback = enabled
     }
     
@@ -417,15 +417,15 @@ import WebKit
     
     // MARK: Private
     
-    private static func getPlistDictionary() -> [String : AnyObject]? {
-        guard let path = bundle.pathForResource(plistName, ofType: "plist"),
+    fileprivate static func getPlistDictionary() -> [String : AnyObject]? {
+        guard let path = bundle.path(forResource: plistName, ofType: "plist"),
             let dictionary = NSDictionary(contentsOfFile: path) as? [String: AnyObject] else {
                 return nil
         }
         return dictionary
     }
     
-    private static func getDefaultValue(key: String) -> String? {
+    fileprivate static func getDefaultValue(_ key: String) -> String? {
         guard let dictionary = getPlistDictionary(),
             let defaultValue = dictionary[key] as? String else {
                 return nil
@@ -434,7 +434,7 @@ import WebKit
         return defaultValue
     }
     
-    private static func parseCallbackURIs() -> [CallbackURIType : String] {
+    fileprivate static func parseCallbackURIs() -> [CallbackURIType : String] {
         guard let plist = getPlistDictionary(), let callbacks = plist[callbackURIsKey] as? [[String : AnyObject]] else {
             return [CallbackURIType : String]()
         }
@@ -450,7 +450,7 @@ import WebKit
         return callbackURIs
     }
     
-    @noreturn private static func fatalConfigurationError(variableName: String, key: String ) {
+    fileprivate static func fatalConfigurationError(_ variableName: String, key: String ) -> Never  {
         fatalError("Unable to get your \(variableName). Did you forget to set it in your \(plistName).plist? (Should be under \(key) key)")
     }
     

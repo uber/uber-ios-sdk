@@ -27,23 +27,23 @@ import XCTest
 
 class ConfigurationTests: XCTestCase {
 
-    private let defaultClientID = "testClientID"
-    private let defaultDisplayName = "My Awesome App"
-    private let defaultCallbackString = "testURI://uberConnect"
-    private let defaultGeneralCallbackString = "testURI://uberConnectGeneral"
-    private let defaultAuthorizationCodeCallbackString = "testURI://uberConnectAuthorizationCode"
-    private let defaultImplicitCallbackString = "testURI://uberConnectImplicit"
-    private let defaultNativeCallbackString = "testURI://uberConnectNative"
-    private let defaultServerToken = "testServerToken"
-    private let defaultAccessTokenIdentifier = "RidesAccessTokenKey"
-    private let defaultRegion = Region.Default
-    private let defaultSandbox = false
+    fileprivate let defaultClientID = "testClientID"
+    fileprivate let defaultDisplayName = "My Awesome App"
+    fileprivate let defaultCallbackString = "testURI://uberConnect"
+    fileprivate let defaultGeneralCallbackString = "testURI://uberConnectGeneral"
+    fileprivate let defaultAuthorizationCodeCallbackString = "testURI://uberConnectAuthorizationCode"
+    fileprivate let defaultImplicitCallbackString = "testURI://uberConnectImplicit"
+    fileprivate let defaultNativeCallbackString = "testURI://uberConnectNative"
+    fileprivate let defaultServerToken = "testServerToken"
+    fileprivate let defaultAccessTokenIdentifier = "RidesAccessTokenKey"
+    fileprivate let defaultRegion = Region.Default
+    fileprivate let defaultSandbox = false
     
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(forClass: type(of: self))
     }
     
     override func tearDown() {
@@ -84,10 +84,10 @@ class ConfigurationTests: XCTestCase {
         Configuration.restoreDefaults()
         
         XCTAssertEqual(Configuration.plistName, "Info")
-        XCTAssertEqual(Configuration.bundle, NSBundle.mainBundle())
+        XCTAssertEqual(Configuration.bundle, Bundle.mainBundle())
         
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(forClass: type(of: self))
         
         XCTAssertEqual(Configuration.getClientID(), defaultClientID)
         XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString())

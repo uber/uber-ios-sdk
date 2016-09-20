@@ -26,13 +26,13 @@ import WebKit
 @testable import UberRides
 
 class RideRequestViewControllerTests: XCTestCase {
-    private let timeout: Double = 2
+    fileprivate let timeout: Double = 2
     
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(forClass: type(of: self))
         Configuration.setSandboxEnabled(true)
     }
     
@@ -345,9 +345,9 @@ class RideRequestViewControllerTests: XCTestCase {
     func testRequestUsesCorrectSource_whenPresented() {
         var expectation = false
         
-        let expectationClosure: (NSURLRequest) -> () = { request in
+        let expectationClosure: (URLRequest) -> () = { request in
             expectation = true
-            guard let url = request.URL, let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false), let items = components.queryItems else {
+            guard let url = request.url, let components = URLComponents(url: url, resolvingAgainstBaseURL: false), let items = components.queryItems else {
                 XCTAssert(false)
                 return
             }
@@ -375,7 +375,7 @@ class RideRequestViewControllerTests: XCTestCase {
         let rideRequestVC = RideRequestViewController(rideParameters: RideParametersBuilder().build(), loginManager: loginManger)
         XCTAssertNotNil(rideRequestVC.view)
         
-        let webViewMock = WebViewMock(frame: CGRectZero, configuration: WKWebViewConfiguration(), testClosure: expectationClosure)
+        let webViewMock = WebViewMock(frame: CGRect.zero, configuration: WKWebViewConfiguration(), testClosure: expectationClosure)
         rideRequestVC.rideRequestView.webView = webViewMock
         
         rideRequestVC.load()
@@ -431,7 +431,7 @@ class RideRequestViewControllerTests: XCTestCase {
         
         let presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ()) = { (viewController, flag, completion) in
             expectation = true
-            XCTAssertTrue(viewController.dynamicType == UIAlertController.self)
+            XCTAssertTrue(type(of: viewController) == UIAlertController.self)
         }
         let testIdentifier = "testAccessTokenIdentifier"
         let testToken = AccessToken(JSON: ["access_token" : "testTokenString"])
@@ -485,7 +485,7 @@ class RideRequestViewControllerTests: XCTestCase {
         
         let presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ()) = { (viewController, flag, completion) in
             expectation = true
-            XCTAssertTrue(viewController.dynamicType == UIAlertController.self)
+            XCTAssertTrue(type(of: viewController) == UIAlertController.self)
         }
         
         let testIdentifier = "testAccessTokenIdentifier"

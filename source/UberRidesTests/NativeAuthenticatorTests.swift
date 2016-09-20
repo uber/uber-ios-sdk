@@ -26,18 +26,18 @@ import XCTest
 @testable import UberRides
 
 class NativeAuthenticatorTests: XCTestCase {
-    private var expectation: XCTestExpectation!
-    private var accessToken: AccessToken?
-    private var error: NSError?
-    private let timeout: NSTimeInterval = 2
-    private let tokenString = "accessToken1234"
-    private var redirectURI: String = ""
+    fileprivate var expectation: XCTestExpectation!
+    fileprivate var accessToken: AccessToken?
+    fileprivate var error: NSError?
+    fileprivate let timeout: TimeInterval = 2
+    fileprivate let tokenString = "accessToken1234"
+    fileprivate var redirectURI: String = ""
     
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(forClass: type(of: self))
         Configuration.setSandboxEnabled(true)
         redirectURI = Configuration.getCallbackURIString(.Native)
     }
@@ -54,8 +54,8 @@ class NativeAuthenticatorTests: XCTestCase {
     }
     
     func testNativeAuthenticator_deeplinkExecutedOnLogin() {
-        let expectation = self.expectationWithDescription("Execute should be called")
-        let executeClosure:((NSError?) -> ())? -> () = { _ in
+        let expectation = self.expectation(withDescription: "Execute should be called")
+        let executeClosure:(((NSError?) -> ())?) -> () = { _ in
             expectation.fulfill()
         }
         let nativeAuthenticator = NativeAuthenticator(scopes: [])
@@ -66,12 +66,12 @@ class NativeAuthenticatorTests: XCTestCase {
         
         nativeAuthenticator.login()
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testNativeAuthenticator_loginCompletionCalled_whenExecuteFails() {
-        let expectation = self.expectationWithDescription("Execute should be called")
-        let loginCompletion: ((accessToken: AccessToken?, error: NSError?) -> Void) = { (_,_) in
+        let expectation = self.expectation(withDescription: "Execute should be called")
+        let loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void) = { (_,_) in
             expectation.fulfill()
         }
         let nativeAuthenticator = NativeAuthenticator(scopes: [])
@@ -84,6 +84,6 @@ class NativeAuthenticatorTests: XCTestCase {
         
         nativeAuthenticator.login()
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 }

@@ -25,15 +25,15 @@ import MapKit
 @testable import UberRides
 
 class RideParametersTest: XCTestCase {
-    private var versionNumber: String?
-    private var baseUserAgent: String?
+    fileprivate var versionNumber: String?
+    fileprivate var baseUserAgent: String?
     
-    private var builder: RideParametersBuilder = RideParametersBuilder()
+    fileprivate var builder: RideParametersBuilder = RideParametersBuilder()
     
     override func setUp() {
         super.setUp()
         builder = RideParametersBuilder()
-        versionNumber = NSBundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
+        versionNumber = Bundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
         baseUserAgent = "rides-ios-v\(versionNumber!)"
     }
     

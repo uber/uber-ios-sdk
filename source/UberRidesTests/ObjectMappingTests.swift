@@ -43,10 +43,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping result of GET /v1/product/{product_id} endpoint.
      */
     func testGetProduct() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getproductid", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getproductid", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)!
                 let product = ModelMapper<UberProduct>().mapFromJSON(JSONString)
                 XCTAssertNotNil(product)
                 XCTAssertEqual(product!.productID, "d4abaae7-f4d6-4152-91cc-77523e8165a4")
@@ -78,13 +78,13 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping of malformed result of GET /v1/products endpoint.
      */
     func testGetProductBadJSON() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getproductid", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                var JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getproductid", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                var JSONString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)!
                 
                 // Represent some bad JSON
-                JSONString = JSONString.stringByReplacingOccurrencesOfString("[", withString: "")
+                JSONString = JSONString.replacingOccurrences(of: "[", with: "") as NSString
                 
                 let product = ModelMapper<UberProducts>().mapFromJSON(JSONString)
                 XCTAssertNil(product)
@@ -96,10 +96,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping result of GET /v1/products/{product_id} endpoint.
      */
     func testGetAllProducts() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getproducts", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getproducts", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)!
                 let products = ModelMapper<UberProducts>().mapFromJSON(JSONString)
                 XCTAssertNotNil(products)
                 XCTAssertNotNil(products!.list)
@@ -117,13 +117,13 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping of malformed result of GET /v1/products endpoint.
      */
     func testGetAllProductsBadJSON() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getproducts", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                var JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getproducts", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                var JSONString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)!
                 
                 // Represent some bad JSON
-                JSONString = JSONString.stringByReplacingOccurrencesOfString("[", withString: "")
+                JSONString = JSONString.replacingOccurrences(of: "[", with: "") as NSString
                 
                 let products = ModelMapper<UberProducts>().mapFromJSON(JSONString)
                 XCTAssertNil(products)
@@ -135,10 +135,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping result of GET /v1/estimates/time
      */
     func testGetTimeEstimates() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("gettimeestimates", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "gettimeestimates", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)!
                 let timeEstimates = ModelMapper<TimeEstimates>().mapFromJSON(JSONString)
                 XCTAssertNotNil(timeEstimates)
                 XCTAssertNotNil(timeEstimates!.list)
@@ -159,13 +159,13 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping of malformed result of GET /v1/estimates/time
      */
     func testGetTimeEstimatesBadJSON() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("gettimeestimates", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                var JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "gettimeestimates", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                var JSONString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)!
                 
                 // Represent some bad JSON
-                JSONString = JSONString.stringByReplacingOccurrencesOfString("[", withString: "")
+                JSONString = JSONString.replacingOccurrences(of: "[", with: "") as NSString
                 
                 let timeEstimates = ModelMapper<TimeEstimates>().mapFromJSON(JSONString)
                 XCTAssertNil(timeEstimates)
@@ -177,10 +177,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping result of GET /v1/estimates/price endpoint.
      */
     func testGetPriceEstimates() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getpriceestimates", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getpriceestimates", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)!
                 let priceEstimates = ModelMapper<PriceEstimates>().mapFromJSON(JSONString)
                 XCTAssertNotNil(priceEstimates)
                 XCTAssertNotNil(priceEstimates!.list)
@@ -204,13 +204,13 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping of malformed result of GET /v1/estimates/price endpoint.
      */
     func testGetPriceEstimatesBadJSON() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getpriceestimates", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                var JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getpriceestimates", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                var JSONString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)!
                 
                 // Represent some bad JSON
-                JSONString = JSONString.stringByReplacingOccurrencesOfString("[", withString: "")
+                JSONString = JSONString.replacingOccurrences(of: "[", with: "") as NSString
                 
                 let priceEstimates = ModelMapper<PriceEstimates>().mapFromJSON(JSONString)
                 XCTAssertNil(priceEstimates)
@@ -222,10 +222,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping result of GET /v1.2/history
      */
     func testGetTripHistory() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("gethistory", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "gethistory", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)!
                 let userActivity = ModelMapper<TripHistory>().mapFromJSON(JSONString)
                 XCTAssertNotNil(userActivity)
                 XCTAssertNotNil(userActivity!.history)
@@ -237,9 +237,9 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(history.count, 1)
                 XCTAssertEqual(history[0].status, RideStatus.Completed)
                 XCTAssertEqual(history[0].distance, 1.64691465)
-                XCTAssertEqual(history[0].requestTime, NSDate(timeIntervalSince1970: 1428876188))
-                XCTAssertEqual(history[0].startTime, NSDate(timeIntervalSince1970: 1428876374))
-                XCTAssertEqual(history[0].endTime, NSDate(timeIntervalSince1970: 1428876927))
+                XCTAssertEqual(history[0].requestTime, Date(timeIntervalSince1970: 1428876188))
+                XCTAssertEqual(history[0].startTime, Date(timeIntervalSince1970: 1428876374))
+                XCTAssertEqual(history[0].endTime, Date(timeIntervalSince1970: 1428876927))
                 XCTAssertEqual(history[0].requestID, "37d57a99-2647-4114-9dd2-c43bccf4c30b")
                 XCTAssertEqual(history[0].productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
                 
@@ -257,13 +257,13 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping of malformed result of GET /v1.2/history endpoint.
      */
     func testGetHistoryBadJSON() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("gethistory", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                var JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "gethistory", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                var JSONString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)!
                 
                 // Represent some bad JSON
-                JSONString = JSONString.stringByReplacingOccurrencesOfString("[", withString: "")
+                JSONString = JSONString.replacingOccurrences(of: "[", with: "") as NSString
                 
                 let userActivity = ModelMapper<TripHistory>().mapFromJSON(JSONString)
                 XCTAssertNil(userActivity)
@@ -275,10 +275,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping result of GET /v1/me endpoint.
      */
     func testGetUserProfile() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getme", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getme", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding:  String.Encoding.utf8.rawValue)!
                 let userProfile = ModelMapper<UserProfile>().mapFromJSON(JSONString)
                 XCTAssertNotNil(userProfile)
                 XCTAssertEqual(userProfile!.firstName, "Uber")
@@ -295,11 +295,11 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping of malformed result of GET /v1/me endpoint.
      */
     func testGetUserProfileBadJSON() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getme", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                var JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
-                JSONString = JSONString.stringByReplacingOccurrencesOfString("{", withString: "")
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getme", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                var JSONString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)!
+                JSONString = JSONString.replacingOccurrences(of: "{", with: "") as NSString
                 
                 let userProfile = ModelMapper<UserProfile>().mapFromJSON(JSONString)
                 XCTAssertNil(userProfile)
@@ -311,10 +311,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping result of POST /v1/requests
      */
     func testPostRequest() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("postrequests", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "postrequests", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding:  String.Encoding.utf8.rawValue)!
                 guard let trip = ModelMapper<Ride>().mapFromJSON(JSONString) else {
                     XCTAssert(false)
                     return
@@ -336,10 +336,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping result of GET /v1/requests/current or /v1/requests/{request_id}
      */
     func testGetRequest() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getrequest", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getrequest", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding:  String.Encoding.utf8.rawValue)!
                 guard let trip = ModelMapper<Ride>().mapFromJSON(JSONString) else {
                     XCTAssert(false)
                     return
@@ -384,10 +384,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping of POST /v1/requests/estimate endpoint.
      */
     func testGetRequestEstimate() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("requestestimate", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "requestestimate", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding:  String.Encoding.utf8.rawValue)!
                 let estimate = ModelMapper<RideEstimate>().mapFromJSON(JSONString)
                 XCTAssertNotNil(estimate)
                 XCTAssertEqual(estimate!.pickupEstimate, 2)
@@ -405,10 +405,10 @@ class ObjectMappingTests: XCTestCase {
     }
     
     func testGetRequestEstimateNoCars() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("RequestEstimateNoCars", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "RequestEstimateNoCars", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding:  String.Encoding.utf8.rawValue)!
                 let estimate = ModelMapper<RideEstimate>().mapFromJSON(JSONString)
                 XCTAssertNotNil(estimate)
                 XCTAssertEqual(estimate!.pickupEstimate, -1)
@@ -429,10 +429,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping of GET v1/places/{place_id} endpoint
      */
     func testGetPlace() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("place", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "place", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding:  String.Encoding.utf8.rawValue)!
                 guard let place = ModelMapper<Place>().mapFromJSON(JSONString) else {
                     XCTAssert(false)
                     return
@@ -450,10 +450,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping of GET /v1/payment-methods endpoint.
      */
     func testGetPaymentMethods() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getpaymentmethods", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getpaymentmethods", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding:  String.Encoding.utf8.rawValue)!
                 guard let paymentMethods = ModelMapper<PaymentMethods>().mapFromJSON(JSONString) else {
                     XCTAssert(false)
                     return
@@ -493,10 +493,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping of GET /v1/requests/{request_id}/receipt endpoint.
      */
     func testGetRideReceipt() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("ridereceipt", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "ridereceipt", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding:  String.Encoding.utf8.rawValue)!
                 guard let receipt = ModelMapper<RideReceipt>().mapFromJSON(JSONString) else {
                     XCTAssert(false)
                     return
@@ -562,10 +562,10 @@ class ObjectMappingTests: XCTestCase {
     }
     
     func testGetRideReceipt_withNullSurge_withTotalOwed() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("RideReceiptNullSurgeTotalOwed", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "RideReceiptNullSurgeTotalOwed", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding:  String.Encoding.utf8.rawValue)!
                 guard let receipt = ModelMapper<RideReceipt>().mapFromJSON(JSONString) else {
                     XCTAssert(false)
                     return
@@ -627,11 +627,11 @@ class ObjectMappingTests: XCTestCase {
      Test bad JSON for GET /v1/reqeuests/{request_id}/receipt
      */
     func testGetRideReceiptBadJSON() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("ridereceipt", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                var JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
-                JSONString = JSONString.stringByReplacingOccurrencesOfString("[", withString: "")
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "ridereceipt", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                var JSONString = NSString(data: jsonData, encoding:  String.Encoding.utf8.rawValue)!
+                JSONString = JSONString.replacingOccurrences(of: "[", with: "") as NSString
                 let receipt = ModelMapper<RideReceipt>().mapFromJSON(JSONString)
                 XCTAssertNil(receipt)
                 return
@@ -645,10 +645,10 @@ class ObjectMappingTests: XCTestCase {
      Tests mapping of GET /v1/requests/{request_id}/map endpoint.
      */
     func testGetRideMap() {
-        let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("ridemap", ofType: "json") {
-            if let jsonData = NSData(contentsOfFile: path) {
-                let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "ridemap", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                let JSONString = NSString(data: jsonData, encoding:  String.Encoding.utf8.rawValue)!
                 guard let map = ModelMapper<RideMap>().mapFromJSON(JSONString) else {
                     XCTAssert(false)
                     return

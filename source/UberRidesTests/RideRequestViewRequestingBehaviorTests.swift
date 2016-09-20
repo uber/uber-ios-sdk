@@ -30,7 +30,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(forClass: type(of: self))
         Configuration.setSandboxEnabled(true)
     }
     
@@ -54,7 +54,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
     
     func testRideParametersUpdated() {
         class UIViewControllerMock : UIViewController {
-            override func presentViewController(viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)?) {
+            override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)?) {
                 return
             }
         }
@@ -73,7 +73,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
     func testPresentModal() {
         class UIViewControllerMock : UIViewController {
             let testClosure: (UIViewController) -> ()
-            private init(testClosure: (UIViewController) -> ()) {
+            fileprivate init(testClosure: @escaping (UIViewController) -> ()) {
                 self.testClosure = testClosure
                 super.init(nibName: nil, bundle: nil)
             }
@@ -82,13 +82,13 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
                 fatalError("init(coder:) has not been implemented")
             }
             
-            override func presentViewController(viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)?) {
+            override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)?) {
                 self.testClosure(viewControllerToPresent)
                 return
             }
         }
         
-        let expectation = expectationWithDescription("ModalRideViewController is presented")
+        let expectation = self.expectation(description: "ModalRideViewController is presented")
         let expectationClosure: (UIViewController) -> () = { viewController in
             XCTAssertTrue(viewController.isKindOfClass(ModalRideRequestViewController))
             expectation.fulfill()
@@ -98,7 +98,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
         let initialLoginManger = LoginManager(loginType: .Native)
         let behavior = RideRequestViewRequestingBehavior(presentingViewController: baseVC, loginManager: initialLoginManger)
         behavior.requestRide(RideParametersBuilder().build())
-        waitForExpectationsWithTimeout(2.0) {error in
+        waitForExpectations(timeout: 2.0) {error in
             XCTAssertNil(error)
         }
     }

@@ -35,19 +35,19 @@ import CoreLocation
      - parameter rideRequestView: the RideRequestView
      - parameter error:           the NSError that occured, with a code of RideRequestViewErrorType
      */
-    func rideRequestView(rideRequestView: RideRequestView, didReceiveError error: NSError)
+    func rideRequestView(_ rideRequestView: RideRequestView, didReceiveError error: NSError)
 }
 
 /// A view that shows the embedded Uber experience. 
-@objc(UBSDKRideRequestView) public class RideRequestView: UIView {
+@objc(UBSDKRideRequestView) open class RideRequestView: UIView {
     /// The RideRequestViewDelegate of this view.
-    public var delegate: RideRequestViewDelegate?
+    open var delegate: RideRequestViewDelegate?
     
     /// The access token used to authorize the web view
-    public var accessToken: AccessToken?
+    open var accessToken: AccessToken?
     
     /// Ther RideParameters to use for prefilling the RideRequestView
-    public var rideParameters: RideParameters
+    open var rideParameters: RideParameters
     
     var webView: WKWebView
     let redirectURL = "uberconnect://oauth"
@@ -68,7 +68,7 @@ import CoreLocation
         self.accessToken = accessToken
         let configuration = WKWebViewConfiguration()
         configuration.processPool = Configuration.processPool
-        webView = WKWebView(frame: CGRectZero, configuration: configuration)
+        webView = WKWebView(frame: CGRect.zero, configuration: configuration)
         super.init(frame: frame)
         initialSetup()
     }
@@ -96,7 +96,7 @@ import CoreLocation
      - returns: An initialized RideRequestView
      */
     @objc public convenience init(rideParameters: RideParameters) {
-        self.init(rideParameters: rideParameters, accessToken: TokenManager.fetchToken(), frame: CGRectZero)
+        self.init(rideParameters: rideParameters, accessToken: TokenManager.fetchToken(), frame: CGRect.zero)
     }
     
     /**
@@ -121,21 +121,21 @@ import CoreLocation
      - returns: An initialized RideRequestView
      */
     @objc public convenience init() {
-        self.init(rideParameters: RideParametersBuilder().build(), accessToken: TokenManager.fetchToken(), frame: CGRectZero)
+        self.init(rideParameters: RideParametersBuilder().build(), accessToken: TokenManager.fetchToken(), frame: CGRect.zero)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         rideParameters = RideParametersBuilder().build()
         let configuration = WKWebViewConfiguration()
         configuration.processPool = Configuration.processPool
-        webView = WKWebView(frame: CGRectZero, configuration: configuration)
+        webView = WKWebView(frame: CGRect.zero, configuration: configuration)
         super.init(coder: aDecoder)
         initialSetup()
     }
     
     deinit {
         webView.scrollView.delegate = nil
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: Public
@@ -144,9 +144,9 @@ import CoreLocation
      Load the Uber Ride Request Widget view.
      Requires that the access token has been retrieved.
      */
-    public func load() {
+    open func load() {
         guard let accessToken = accessToken else {
-            self.delegate?.rideRequestView(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.AccessTokenMissing))
+            self.delegate?.rideRequestView(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
             return
         }
         
@@ -156,45 +156,45 @@ import CoreLocation
             rideParameters.source = RideRequestView.sourceString
         }
         
-        let endpoint = Components.RideRequestWidget(rideParameters: rideParameters)
-        let request = Request(session: nil, endpoint: endpoint, bearerToken: tokenString)
+        let endpoint = Components.rideRequestWidget(rideParameters: rideParameters)
+        let request = Request(session: nil, endpoint: endpoint, bearerToken: tokenString as NSString?)
         request.prepare()
         let urlRequest = request.urlRequest
-        urlRequest.cachePolicy = .ReturnCacheDataElseLoad
-        webView.loadRequest(urlRequest)
+        urlRequest.cachePolicy = .returnCacheDataElseLoad
+        webView.load(urlRequest as URLRequest)
     }
     
     /**
      Stop loading the Ride Request Widget View and clears the view.
      If the view has already loaded, calling this still clears the view.
     */
-    public func cancelLoad() {
+    open func cancelLoad() {
         webView.stopLoading()
-        if let url = NSURL(string: "about:blank") {
-            webView.loadRequest(NSURLRequest(URL: url))
+        if let url = URL(string: "about:blank") {
+            webView.load(URLRequest(url: url))
         }
     }
     
     // MARK: Private
     
-    private func initialSetup() {
+    fileprivate func initialSetup() {
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillAppear(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardDidAppear(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidAppear(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         
         setupWebView()
     }
     
-    private func setupWebView() {
+    fileprivate func setupWebView() {
         addSubview(webView)
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.scrollView.bounces = false
         
         let views = ["webView": webView]
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[webView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[webView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[webView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[webView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
         
         addConstraints(horizontalConstraints)
         addConstraints(verticalConstraints)
@@ -202,54 +202,54 @@ import CoreLocation
     
     // MARK: Keyboard Notifications
     
-    func keyboardWillAppear(notification: NSNotification) {
-        webView.scrollView.scrollEnabled = false
+    func keyboardWillAppear(_ notification: Notification) {
+        webView.scrollView.isScrollEnabled = false
     }
     
-    func keyboardDidAppear(notification: NSNotification) {
-        webView.scrollView.scrollEnabled = true
+    func keyboardDidAppear(_ notification: Notification) {
+        webView.scrollView.isScrollEnabled = true
     }
 }
 
 // MARK: WKNavigationDelegate
 
 extension RideRequestView: WKNavigationDelegate {
-    public func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
-        if let url = navigationAction.request.URL {
-            if url.absoluteString.lowercaseString.hasPrefix(redirectURL.lowercaseString) {
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if let url = navigationAction.request.url {
+            if url.absoluteString.lowercased().hasPrefix(redirectURL.lowercased()) {
                 let error = OAuthUtil.parseRideWidgetErrorFromURL(url)
                 delegate?.rideRequestView(self, didReceiveError: error)
-                decisionHandler(.Cancel)
+                decisionHandler(.cancel)
                 return
             } else if url.scheme == "tel" || url.scheme == "sms" {
-                if (!UIApplication.sharedApplication().openURL(url)) {
-                    delegate?.rideRequestView(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.NotSupported))
+                if (!UIApplication.shared.openURL(url)) {
+                    delegate?.rideRequestView(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.notSupported))
                 }
-                decisionHandler(.Cancel)
+                decisionHandler(.cancel)
                 return
             }
         }
         
-        decisionHandler(.Allow)
+        decisionHandler(.allow)
     }
     
-    public func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
-        delegate?.rideRequestView(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.NetworkError))
+    public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        delegate?.rideRequestView(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.networkError))
     }
     
-    public func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
-        guard error.code != 102 else {
+    public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        guard error._code != 102 else {
             return
         }
-        delegate?.rideRequestView(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.NetworkError))
+        delegate?.rideRequestView(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.networkError))
     }
 }
 
 // MARK: UIScrollViewDelegate
 
 extension RideRequestView : UIScrollViewDelegate {
-    public func scrollViewDidScroll(scrollView: UIScrollView) {
-        if !scrollView.scrollEnabled {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if !scrollView.isScrollEnabled {
             scrollView.bounds = self.webView.bounds
         }
     }
