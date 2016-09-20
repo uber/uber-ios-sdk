@@ -29,21 +29,21 @@ import ObjectMapper
 /**
  *  Contains information for an Uber driver's car.
  */
-@objc(UBSDKVehicle) public class Vehicle: NSObject {
+@objc(UBSDKVehicle) open class Vehicle: NSObject {
     
     /// The license plate number of the vehicle.
-    public private(set) var licensePlate: String?
+    open fileprivate(set) var licensePlate: String?
     
     /// The vehicle make or brand.
-    public private(set) var make: String?
+    open fileprivate(set) var make: String?
     
     /// The vehicle model or type.
-    public private(set) var model: String?
+    open fileprivate(set) var model: String?
     
     /// The URL to a stock photo of the vehicle (may be null).
-    public private(set) var pictureURL: String?
+    open fileprivate(set) var pictureURL: String?
     
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 }
 

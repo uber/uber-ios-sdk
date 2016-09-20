@@ -25,7 +25,7 @@
 import UIKit
 
 /// Base class for Uber buttons that sets up colors and some constraints.
-@objc(UBSDKUberButton) public class UberButton: UIButton {
+@objc(UBSDKUberButton) open class UberButton: UIButton {
     let cornerRadius: CGFloat = 8
     let horizontalEdgePadding: CGFloat = 16
     let imageLabelPadding: CGFloat = 8
@@ -34,35 +34,35 @@ import UIKit
     let uberImageView: UIImageView = UIImageView()
     let uberTitleLabel: UILabel = UILabel()
     
-    public var colorStyle: RequestButtonColorStyle = .Black {
+    open var colorStyle: RequestButtonColorStyle = .black {
         didSet {
             colorStyleDidUpdate(colorStyle)
         }
     }
     
-    override public var highlighted: Bool {
+    override open var isHighlighted: Bool {
         didSet {
-            updateColors(highlighted)
+            updateColors(isHighlighted)
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
-        colorStyleDidUpdate(.Black)
+        colorStyleDidUpdate(.black)
     }
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
-        colorStyleDidUpdate(.Black)
+        colorStyleDidUpdate(.black)
     }
     
     /**
      Function responsible for the initial setup of the button. 
      Calls addSubviews(), setContent(), and setConstraints()
      */
-    public func setup() {
+    open func setup() {
         addSubviews()
         setContent()
         setConstraints()
@@ -72,7 +72,7 @@ import UIKit
      Function responsible for adding all the subviews to the button. Subclasses
      should override this method and add any necessary subviews.
      */
-    public func addSubviews() {
+    open func addSubviews() {
         addSubview(uberImageView)
         addSubview(uberTitleLabel)
     }
@@ -81,7 +81,7 @@ import UIKit
      Function responsible for updating content on the button. Subclasses should
      override and do any necessary view setup
      */
-    public func setContent() {
+    open func setContent() {
         clipsToBounds = true
         layer.cornerRadius = cornerRadius
     }
@@ -90,7 +90,7 @@ import UIKit
      Function responsible for adding autolayout constriants on the button. Subclasses
      should override and add any additional autolayout constraints
      */
-    public func setConstraints() {
+    open func setConstraints() {
         
         uberTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         uberImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -98,47 +98,47 @@ import UIKit
         let views = ["imageView": uberImageView, "titleLabel": uberTitleLabel]
         let metrics = ["edgePadding": horizontalEdgePadding, "verticalPadding": verticalPadding, "imageLabelPadding": imageLabelPadding]
         
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-edgePadding-[imageView]-imageLabelPadding-[titleLabel]-(edgePadding)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
-        let verticalContraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-verticalPadding-[imageView]-verticalPadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
+        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-edgePadding-[imageView]-imageLabelPadding-[titleLabel]-(edgePadding)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
+        let verticalContraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-verticalPadding-[imageView]-verticalPadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
         
         addConstraints(horizontalConstraints)
         addConstraints(verticalContraints)
     }
     
-    override public func sizeThatFits(size: CGSize) -> CGSize {
-        let logoSize = uberImageView.image?.size ?? CGSizeZero
-        let titleSize = uberTitleLabel.intrinsicContentSize()
+    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+        let logoSize = uberImageView.image?.size ?? CGSize.zero
+        let titleSize = uberTitleLabel.intrinsicContentSize
         
         let width: CGFloat = 4*horizontalEdgePadding + imageLabelPadding + logoSize.width + titleSize.width
         let height: CGFloat = 2*verticalPadding + max(logoSize.height, titleSize.height)
         
-        return CGSizeMake(width, height)
+        return CGSize(width: width, height: height)
     }
     
     // Mark: Internal Interface
 
-    func colorStyleDidUpdate(style: RequestButtonColorStyle) {
+    func colorStyleDidUpdate(_ style: RequestButtonColorStyle) {
         switch colorStyle {
-        case .Black:
-            backgroundColor = ColorUtil.colorForUberButtonColor(.UberBlack)
-            uberTitleLabel.textColor = ColorUtil.colorForUberButtonColor(.UberWhite)
-            uberImageView.tintColor = ColorUtil.colorForUberButtonColor(.UberWhite)
-        case .White :
-            backgroundColor = ColorUtil.colorForUberButtonColor(.UberWhite)
-            uberTitleLabel.textColor = ColorUtil.colorForUberButtonColor(.UberBlack)
-            uberImageView.tintColor = ColorUtil.colorForUberButtonColor(.UberBlack)
+        case .black:
+            backgroundColor = ColorUtil.colorForUberButtonColor(.uberBlack)
+            uberTitleLabel.textColor = ColorUtil.colorForUberButtonColor(.uberWhite)
+            uberImageView.tintColor = ColorUtil.colorForUberButtonColor(.uberWhite)
+        case .white :
+            backgroundColor = ColorUtil.colorForUberButtonColor(.uberWhite)
+            uberTitleLabel.textColor = ColorUtil.colorForUberButtonColor(.uberBlack)
+            uberImageView.tintColor = ColorUtil.colorForUberButtonColor(.uberBlack)
         }
     }
     
     // Mark: Private Interface
     
-    private func updateColors(highlighted : Bool) {
+    fileprivate func updateColors(_ highlighted : Bool) {
         var color: UberButtonColor
         switch colorStyle {
-        case .Black:
-            color = highlighted ? .BlackHighlighted : .UberBlack
-        case .White:
-            color = highlighted ? .WhiteHighlighted : .UberWhite
+        case .black:
+            color = highlighted ? .blackHighlighted : .uberBlack
+        case .white:
+            color = highlighted ? .whiteHighlighted : .uberWhite
         }
         backgroundColor = ColorUtil.colorForUberButtonColor(color)
     }

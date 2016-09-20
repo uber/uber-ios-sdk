@@ -33,7 +33,7 @@ struct PaymentMethods {
     var lastUsed: String?
     var list: [PaymentMethod]?
     
-    init?(_ map: Map) {
+    init?(map: Map) {
     }
 }
 
@@ -46,18 +46,18 @@ extension PaymentMethods: UberModel {
 
 // MARK: PaymentMethod
 
-@objc(UBSDKPaymentMethod) public class PaymentMethod: NSObject {
+@objc(UBSDKPaymentMethod) open class PaymentMethod: NSObject {
     
     /// The account identification or description associated with the payment method.
-    public private(set) var paymentDescription: String?
+    open fileprivate(set) var paymentDescription: String?
     
     /// Unique identifier of the payment method.
-    public private(set) var methodID: String?
+    open fileprivate(set) var methodID: String?
     
     /// The type of the payment method. See https://developer.uber.com/docs/v1-payment-methods.
-    public private(set) var type: String?
+    open fileprivate(set) var type: String?
     
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 }
 

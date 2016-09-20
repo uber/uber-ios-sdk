@@ -29,18 +29,18 @@ import ObjectMapper
 /**
  *  Describes the charges made against the rider in a ride receipt.
  */
-@objc(UBSDKRideCharge) public class RideCharge: NSObject {
+@objc(UBSDKRideCharge) open class RideCharge: NSObject {
     
     /// The amount of the charge.
-    public private(set) var amount: Float = 0.0
+    open fileprivate(set) var amount: Float = 0.0
     
     /// The name of the charge.
-    public private(set) var name: String?
+    open fileprivate(set) var name: String?
     
     /// The type of the charge.
-    public private(set) var type: String?
+    open fileprivate(set) var type: String?
     
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 }
 

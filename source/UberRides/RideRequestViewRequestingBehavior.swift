@@ -24,17 +24,17 @@
 
 
 /// A RideRequesting object for requesting a ride via the RideRequestViewController
-@objc(UBSDKRideRequestViewRequestingBehavior) public class RideRequestViewRequestingBehavior : NSObject {
+@objc(UBSDKRideRequestViewRequestingBehavior) open class RideRequestViewRequestingBehavior : NSObject {
     
     /// The UIViewController to present the RideRequestViewController over
-    unowned public var presentingViewController: UIViewController
+    unowned open var presentingViewController: UIViewController
     
     /**
      The LoginManager to use with the RideRequestViewController. Uses the
      accessTokenIdentifier & keychainAccessGroup to get an AccessToken. Will be used
      to log a user in, if necessary
      */
-    public var loginManager: LoginManager {
+    open var loginManager: LoginManager {
         get {
             return self.modalRideRequestViewController.rideRequestViewController.loginManager
         }
@@ -44,7 +44,7 @@
     }
     
     /// The ModalRideRequestViewController that is created by this behavior, only exists after requestRide() is called
-    public internal(set) var modalRideRequestViewController: ModalRideRequestViewController
+    open internal(set) var modalRideRequestViewController: ModalRideRequestViewController
     
     /**
      Creates the RideRequestViewRequestingBehavior with the given presenting view controller.
@@ -86,10 +86,10 @@ extension RideRequestViewRequestingBehavior : RideRequesting {
      - parameter rideParameters: The RideParameters to use for building and prefilling
      the RideRequestView
      */
-    public func requestRide(rideParameters: RideParameters?) {
+    public func requestRide(_ rideParameters: RideParameters?) {
         if let rideParameters = rideParameters {
             modalRideRequestViewController.rideRequestViewController.rideRequestView.rideParameters = rideParameters
         }
-        presentingViewController.presentViewController(modalRideRequestViewController, animated: true, completion: nil)
+        presentingViewController.present(modalRideRequestViewController, animated: true, completion: nil)
     }
 }
