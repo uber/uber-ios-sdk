@@ -26,14 +26,14 @@ import XCTest
 
 class AuthenticationDeeplinkTests: XCTestCase {
     
-    private var versionNumber: String?
+    fileprivate var versionNumber: String?
     
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
-        versionNumber = NSBundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
+        Configuration.bundle = Bundle(forClass: type(of: self))
+        versionNumber = Bundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
     }
     
     override func tearDown() {

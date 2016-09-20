@@ -26,14 +26,14 @@ import XCTest
 @testable import UberRides
 
 class AccessTokenFactoryTests: XCTestCase {
-    private let redirectURI = "http://localhost:1234/"
-    private let tokenString = "token"
-    private let refreshTokenString = "refreshToken"
-    private let expirationTime = 10030.23
-    private let allowedScopesString = "profile history"
-    private let errorString = "invalid_parameters"
+    fileprivate let redirectURI = "http://localhost:1234/"
+    fileprivate let tokenString = "token"
+    fileprivate let refreshTokenString = "refreshToken"
+    fileprivate let expirationTime = 10030.23
+    fileprivate let allowedScopesString = "profile history"
+    fileprivate let errorString = "invalid_parameters"
     
-    private let maxExpirationDifference = 2.0
+    fileprivate let maxExpirationDifference = 2.0
     
     override func setUp() {
         super.setUp()
@@ -46,15 +46,15 @@ class AccessTokenFactoryTests: XCTestCase {
     }
 
     func testParseTokenFromURL_withSuccess() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)&expires_in=\(expirationTime)&scope=\(allowedScopesString)"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
         do {
-            let expectedExpirationInterval = NSDate().timeIntervalSince1970 + expirationTime
+            let expectedExpirationInterval = Date().timeIntervalSince1970 + expirationTime
             
             let token : AccessToken = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
             XCTAssertNotNil(token)
@@ -78,10 +78,10 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withError() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)&expires_in=\(expirationTime)&scope=\(allowedScopesString)&error=\(errorString)"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
@@ -96,10 +96,10 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withOnlyError() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "error=\(errorString)"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
@@ -114,10 +114,10 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withPartialParameters() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "access_token=\(tokenString)"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
@@ -136,11 +136,11 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withFragmentAndQuery_withError() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "access_token=\(tokenString)"
         components.query = "error=\(errorString)"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
@@ -155,16 +155,16 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withFragmentAndQuery_withSuccess() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)"
         components.query = "expires_in=\(expirationTime)&scope=\(allowedScopesString)"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
         do {
-            let expectedExpirationInterval = NSDate().timeIntervalSince1970 + expirationTime
+            let expectedExpirationInterval = Date().timeIntervalSince1970 + expirationTime
             
             let token : AccessToken = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
             XCTAssertNotNil(token)
@@ -188,10 +188,10 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withInvalidFragment() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "access_token=\(tokenString)&refresh_token"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }

@@ -26,18 +26,18 @@ import CoreLocation
 
 class DeeplinkRequestingBehaviorTests : XCTestCase {
     
-    private var versionNumber: String?
-    private var expectedDeeplinkUserAgent: String?
-    private var expectedButtonUserAgent: String?
+    fileprivate var versionNumber: String?
+    fileprivate var expectedDeeplinkUserAgent: String?
+    fileprivate var expectedButtonUserAgent: String?
     
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(forClass: type(of: self))
         Configuration.setClientID(clientID)
         Configuration.setSandboxEnabled(true)
-        versionNumber = NSBundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
+        versionNumber = Bundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
         expectedDeeplinkUserAgent = "rides-ios-v\(versionNumber!)-deeplink"
         expectedButtonUserAgent = "rides-ios-v\(versionNumber!)-button"
     }
@@ -58,7 +58,7 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
         
         let appStoreDeeplink = requestingBehavior.createAppStoreDeeplink(rideParameters)
         
-        let components = NSURLComponents(URL: appStoreDeeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(URL: appStoreDeeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertNotNil(components)
         
         XCTAssertEqual(expectedUrlString, appStoreDeeplink.deeplinkURL.absoluteString)
@@ -77,7 +77,7 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
         
         let appStoreDeeplink = requestingBehavior.createAppStoreDeeplink(rideParameters)
         
-        let components = NSURLComponents(URL: appStoreDeeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(URL: appStoreDeeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertNotNil(components)
         
         XCTAssertEqual(expectedUrlString, appStoreDeeplink.deeplinkURL.absoluteString)
@@ -87,8 +87,8 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
     
     func testRequestRideExecutesDeeplink() {
         let rideParameters = RideParametersBuilder().setSource(RideRequestButton.sourceString).build()
-        let expectation = expectationWithDescription("Deeplink executed")
-        let testClosure:((NSURL?) -> (Bool)) = { _ in
+        let expectation = self.expectation(description: "Deeplink executed")
+        let testClosure:((URL?) -> (Bool)) = { _ in
             expectation.fulfill()
             return false
         }
@@ -96,7 +96,7 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
         
         requestingBehavior.requestRide(rideParameters)
         
-        waitForExpectationsWithTimeout(0.5, handler: nil)
+        waitForExpectations(timeout: 0.5, handler: nil)
     }
 }
 

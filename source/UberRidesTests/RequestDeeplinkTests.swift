@@ -59,19 +59,19 @@ struct ExpectedDeeplink {
 }
 
 class UberRidesDeeplinkTests: XCTestCase {
-    private var versionNumber: String?
-    private var expectedDeeplinkUserAgent: String?
-    private var expectedButtonUserAgent: String?
+    fileprivate var versionNumber: String?
+    fileprivate var expectedDeeplinkUserAgent: String?
+    fileprivate var expectedButtonUserAgent: String?
     let timeout: Double = 2
     
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(forClass: type(of: self))
         Configuration.setClientID(clientID)
         Configuration.setSandboxEnabled(true)
-        versionNumber = NSBundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
+        versionNumber = Bundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
         expectedDeeplinkUserAgent = "rides-ios-v\(versionNumber!)-deeplink"
         expectedButtonUserAgent = "rides-ios-v\(versionNumber!)-button"
     }
@@ -90,7 +90,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         
         XCTAssertTrue(uri.containsString(ExpectedDeeplink.uberScheme))
         
-        let components = NSURLComponents(string: uri)
+        let components = URLComponents(string: uri)
         XCTAssertEqual(components?.queryItems?.count, 4)
         
         let query = components?.query
@@ -108,7 +108,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = RideParametersBuilder().setPickupLocation(location).build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = NSURLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 5)
         
         let query = components?.query
@@ -127,7 +127,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = RideParametersBuilder().setPickupLocation(location, nickname: pickupNickname, address: pickupAddress).build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = NSURLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 7)
         
         let query = components?.query
@@ -148,7 +148,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = RideParametersBuilder().setDropoffLocation(location).build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = NSURLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 6)
         
         let query = components?.query
@@ -170,7 +170,7 @@ class UberRidesDeeplinkTests: XCTestCase {
             .setDropoffLocation(dropoffLocation, nickname: dropoffNickname, address: dropoffAddress).build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = NSURLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 12)
         
         let query = components?.query
@@ -189,10 +189,10 @@ class UberRidesDeeplinkTests: XCTestCase {
     }
     
     func testDeeplinkDefaultSource() {
-        let expectation = expectationWithDescription("Test Deeplink source parameter")
-        let expectationClosure: (NSURL?) -> (Bool) = { url in
+        let expectation = self.expectation(description: "Test Deeplink source parameter")
+        let expectationClosure: (URL?) -> (Bool) = { url in
             expectation.fulfill()
-            guard let url = url, let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false), let items = components.queryItems else {
+            guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: false), let items = components.queryItems else {
                 XCTAssert(false)
                 return false
             }
@@ -215,7 +215,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         
         deeplink.execute()
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }

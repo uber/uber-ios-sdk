@@ -76,7 +76,7 @@ class APIManagerTests: XCTestCase {
      
      - returns: NSURLRequest with URL and HTTPMethod set.
      */
-    func buildRequestForEndpoint(endpoint: UberAPI) -> NSURLRequest {
+    func buildRequestForEndpoint(_ endpoint: UberAPI) -> URLRequest {
         let request = Request(session: nil, endpoint: endpoint)
         request.prepare()
         return request.urlRequest
@@ -233,7 +233,7 @@ class APIManagerTests: XCTestCase {
         
         var dict: NSDictionary?
         do {
-            dict = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
+            dict = try JSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
         } catch {
             XCTAssert(false)
         }
@@ -361,7 +361,7 @@ class APIManagerTests: XCTestCase {
         
         var dictionary: NSDictionary?
         do {
-            dictionary = try NSJSONSerialization.JSONObjectWithData(request.HTTPBody!, options: .MutableContainers) as? NSDictionary
+            dictionary = try JSONSerialization.JSONObjectWithData(request.HTTPBody!, options: .MutableContainers) as? NSDictionary
         } catch {
             XCTAssert(false)
         }
@@ -400,7 +400,7 @@ class APIManagerTests: XCTestCase {
         
         var dict: NSDictionary?
         do {
-            dict = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
+            dict = try JSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
         } catch {
             XCTAssert(false)
         }
@@ -439,7 +439,7 @@ class APIManagerTests: XCTestCase {
         
         var dict: NSDictionary?
         do {
-            dict = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
+            dict = try JSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
         } catch {
             XCTAssert(false)
         }

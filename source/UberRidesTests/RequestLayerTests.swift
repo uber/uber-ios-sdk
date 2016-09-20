@@ -28,14 +28,14 @@ import OHHTTPStubs
 
 class RequestLayerTests: XCTestCase {
     var client: RidesClient!
-    var headers: [NSObject: AnyObject]!
+    var headers: [AnyHashable: Any]!
     let timeout: Double = 10
     
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(forClass: type(of: self))
         Configuration.setSandboxEnabled(true)
         headers = ["Content-Type": "application/json"]
         client = RidesClient()
@@ -52,10 +52,10 @@ class RequestLayerTests: XCTestCase {
      */
     func test200Response() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getproductid.json", self.dynamicType)!, statusCode:200, headers:self.headers)
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getproductid.json", type(of: self))!, statusCode:200, headers:self.headers)
         }
         
-        let expectation = expectationWithDescription("200 success response")
+        let expectation = self.expectation(description: "200 success response")
         let endpoint = Products.GetProduct(productID: productID)
         let request = Request(session: client.session, endpoint: endpoint)
         request.execute({ response in
@@ -65,7 +65,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -85,7 +85,7 @@ class RequestLayerTests: XCTestCase {
             return OHHTTPStubsResponse(JSONObject: json, statusCode: 401, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("401 error response")
+        let expectation = self.expectation(description: "401 error response")
         let endpoint = Products.GetProduct(productID: productID)
         let request = Request(session: client.session, endpoint: endpoint)
         request.execute({ response in
@@ -99,7 +99,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -116,7 +116,7 @@ class RequestLayerTests: XCTestCase {
             return OHHTTPStubsResponse(JSONObject: json, statusCode: 409, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("409 error response")
+        let expectation = self.expectation(description: "409 error response")
         let endpoint = Products.GetProduct(productID: productID)
         let request = Request(session: client.session, endpoint: endpoint)
         request.execute({ response in
@@ -132,7 +132,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -153,7 +153,7 @@ class RequestLayerTests: XCTestCase {
             return OHHTTPStubsResponse(JSONObject: json, statusCode: 422, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("422 error response")
+        let expectation = self.expectation(description: "422 error response")
         let endpoint = Products.GetProduct(productID: productID)
         let request = Request(session: client.session, endpoint: endpoint)
         request.execute({ response in
@@ -171,7 +171,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -192,7 +192,7 @@ class RequestLayerTests: XCTestCase {
             return OHHTTPStubsResponse(JSONObject: json, statusCode: 422, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("422 error response")
+        let expectation = self.expectation(description: "422 error response")
         let endpoint = Products.GetProduct(productID: productID)
         let request = Request(session: client.session, endpoint: endpoint)
         request.execute({ response in
@@ -212,7 +212,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -232,7 +232,7 @@ class RequestLayerTests: XCTestCase {
             return OHHTTPStubsResponse(JSONObject: json, statusCode: 409, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("422 error response")
+        let expectation = self.expectation(description: "422 error response")
         let endpoint = Products.GetProduct(productID: productID)
         let request = Request(session: client.session, endpoint: endpoint)
         request.execute({ response in
@@ -250,7 +250,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -270,7 +270,7 @@ class RequestLayerTests: XCTestCase {
             return OHHTTPStubsResponse(JSONObject: json, statusCode: 500, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("500 error response")
+        let expectation = self.expectation(description: "500 error response")
         let endpoint = Products.GetProduct(productID: productID)
         let request = Request(session: client.session, endpoint: endpoint)
         request.execute({ response in
@@ -284,7 +284,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -304,7 +304,7 @@ class RequestLayerTests: XCTestCase {
             return OHHTTPStubsResponse(JSONObject: json, statusCode: 503, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("503 error response")
+        let expectation = self.expectation(description: "503 error response")
         let endpoint = Products.GetProduct(productID: productID)
         let request = Request(session: client.session, endpoint: endpoint)
         request.execute({ response in
@@ -318,7 +318,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -335,7 +335,7 @@ class RequestLayerTests: XCTestCase {
             return OHHTTPStubsResponse(error:notConnectedError)
         }
         
-        let expectation = expectationWithDescription("No network error response")
+        let expectation = self.expectation(description: "No network error response")
         let endpoint = Products.GetProduct(productID: productID)
         let request = Request(session: client.session, endpoint: endpoint)
         request.execute({ response in
@@ -349,7 +349,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }

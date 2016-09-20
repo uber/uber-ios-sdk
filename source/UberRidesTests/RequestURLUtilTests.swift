@@ -27,15 +27,15 @@ import CoreLocation
 
 class RequestURLUtilTests: XCTestCase {
     
-    private var versionNumber: String?
-    private var baseUserAgent: String?
+    fileprivate var versionNumber: String?
+    fileprivate var baseUserAgent: String?
     
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
-        versionNumber = NSBundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
+        Configuration.bundle = Bundle(forClass: type(of: self))
+        versionNumber = Bundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
         baseUserAgent = "rides-ios-v\(versionNumber!)"
     }
     
@@ -46,10 +46,10 @@ class RequestURLUtilTests: XCTestCase {
     
     func testCreateQueryParameters_withDefaultRideParameters() {
         let parameters = RideParametersBuilder().build()
-        let locationQueryItem = NSURLQueryItem(name: "pickup", value: "my_location")
-        let actionQueryItem = NSURLQueryItem(name: "action", value: "setPickup")
-        let clientIdQueryItem = NSURLQueryItem(name: "client_id", value: "testClientID")
-        let userAgentQueryItem = NSURLQueryItem(name: "user-agent", value: baseUserAgent)
+        let locationQueryItem = URLQueryItem(name: "pickup", value: "my_location")
+        let actionQueryItem = URLQueryItem(name: "action", value: "setPickup")
+        let clientIdQueryItem = URLQueryItem(name: "client_id", value: "testClientID")
+        let userAgentQueryItem = URLQueryItem(name: "user-agent", value: baseUserAgent)
         let expectedQueryParameters = [clientIdQueryItem, actionQueryItem, locationQueryItem, userAgentQueryItem]
         let comparisonSet = NSSet(array: expectedQueryParameters)
         
@@ -71,20 +71,20 @@ class RequestURLUtilTests: XCTestCase {
         let testSource = "test source"
         let expectedUserAgent = "\(baseUserAgent!)-\(testSource)"
         
-        let pickupLatitudeQueryItem = NSURLQueryItem(name: "pickup[latitude]", value: "\(testPickupLocation.coordinate.latitude)")
-        let pickupLongitudeQueryItem = NSURLQueryItem(name: "pickup[longitude]", value: "\(testPickupLocation.coordinate.longitude)")
-        let pickupNicknameQueryItem = NSURLQueryItem(name: "pickup[nickname]", value: testPickupNickname)
-        let pickupAddressQueryItem = NSURLQueryItem(name: "pickup[formatted_address]", value: testPickupAddress)
+        let pickupLatitudeQueryItem = URLQueryItem(name: "pickup[latitude]", value: "\(testPickupLocation.coordinate.latitude)")
+        let pickupLongitudeQueryItem = URLQueryItem(name: "pickup[longitude]", value: "\(testPickupLocation.coordinate.longitude)")
+        let pickupNicknameQueryItem = URLQueryItem(name: "pickup[nickname]", value: testPickupNickname)
+        let pickupAddressQueryItem = URLQueryItem(name: "pickup[formatted_address]", value: testPickupAddress)
         
-        let dropoffLatitudeQueryItem = NSURLQueryItem(name: "dropoff[latitude]", value: "\(testDropoffLocation.coordinate.latitude)")
-        let dropoffLongitudeQueryItem = NSURLQueryItem(name: "dropoff[longitude]", value: "\(testDropoffLocation.coordinate.longitude)")
-        let dropoffNicknameQueryItem = NSURLQueryItem(name: "dropoff[nickname]", value: testDropoffNickname)
-        let dropoffAddressQueryItem = NSURLQueryItem(name: "dropoff[formatted_address]", value: testDropoffAddress)
+        let dropoffLatitudeQueryItem = URLQueryItem(name: "dropoff[latitude]", value: "\(testDropoffLocation.coordinate.latitude)")
+        let dropoffLongitudeQueryItem = URLQueryItem(name: "dropoff[longitude]", value: "\(testDropoffLocation.coordinate.longitude)")
+        let dropoffNicknameQueryItem = URLQueryItem(name: "dropoff[nickname]", value: testDropoffNickname)
+        let dropoffAddressQueryItem = URLQueryItem(name: "dropoff[formatted_address]", value: testDropoffAddress)
         
-        let productIdQueryItem = NSURLQueryItem(name: "product_id", value: testProductID)
-        let clientIdQueryItem = NSURLQueryItem(name: "client_id", value: "testClientID")
-        let userAgentQueryItem = NSURLQueryItem(name: "user-agent", value: expectedUserAgent)
-        let actionQueryItem = NSURLQueryItem(name: "action", value: "setPickup")
+        let productIdQueryItem = URLQueryItem(name: "product_id", value: testProductID)
+        let clientIdQueryItem = URLQueryItem(name: "client_id", value: "testClientID")
+        let userAgentQueryItem = URLQueryItem(name: "user-agent", value: expectedUserAgent)
+        let actionQueryItem = URLQueryItem(name: "action", value: "setPickup")
         
         let expectedQueryParameters = [pickupLatitudeQueryItem, pickupLongitudeQueryItem, pickupNicknameQueryItem, pickupAddressQueryItem,
                                        dropoffLatitudeQueryItem, dropoffLongitudeQueryItem, dropoffNicknameQueryItem, dropoffAddressQueryItem,
@@ -114,18 +114,18 @@ class RequestURLUtilTests: XCTestCase {
         let testSource = "test source"
         let expectedUserAgent = "\(baseUserAgent!)-\(testSource)"
         
-        let pickupLatitudeQueryItem = NSURLQueryItem(name: "pickup[latitude]", value: "\(testPickupLocation.coordinate.latitude)")
-        let pickupLongitudeQueryItem = NSURLQueryItem(name: "pickup[longitude]", value: "\(testPickupLocation.coordinate.longitude)")
-        let pickupAddressQueryItem = NSURLQueryItem(name: "pickup[formatted_address]", value: testPickupAddress)
+        let pickupLatitudeQueryItem = URLQueryItem(name: "pickup[latitude]", value: "\(testPickupLocation.coordinate.latitude)")
+        let pickupLongitudeQueryItem = URLQueryItem(name: "pickup[longitude]", value: "\(testPickupLocation.coordinate.longitude)")
+        let pickupAddressQueryItem = URLQueryItem(name: "pickup[formatted_address]", value: testPickupAddress)
         
-        let dropoffLatitudeQueryItem = NSURLQueryItem(name: "dropoff[latitude]", value: "\(testDropoffLocation.coordinate.latitude)")
-        let dropoffLongitudeQueryItem = NSURLQueryItem(name: "dropoff[longitude]", value: "\(testDropoffLocation.coordinate.longitude)")
-        let dropoffAddressQueryItem = NSURLQueryItem(name: "dropoff[formatted_address]", value: testDropoffAddress)
+        let dropoffLatitudeQueryItem = URLQueryItem(name: "dropoff[latitude]", value: "\(testDropoffLocation.coordinate.latitude)")
+        let dropoffLongitudeQueryItem = URLQueryItem(name: "dropoff[longitude]", value: "\(testDropoffLocation.coordinate.longitude)")
+        let dropoffAddressQueryItem = URLQueryItem(name: "dropoff[formatted_address]", value: testDropoffAddress)
         
-        let productIdQueryItem = NSURLQueryItem(name: "product_id", value: testProductID)
-        let clientIdQueryItem = NSURLQueryItem(name: "client_id", value: "testClientID")
-        let userAgentQueryItem = NSURLQueryItem(name: "user-agent", value: expectedUserAgent)
-        let actionQueryItem = NSURLQueryItem(name: "action", value: "setPickup")
+        let productIdQueryItem = URLQueryItem(name: "product_id", value: testProductID)
+        let clientIdQueryItem = URLQueryItem(name: "client_id", value: "testClientID")
+        let userAgentQueryItem = URLQueryItem(name: "user-agent", value: expectedUserAgent)
+        let actionQueryItem = URLQueryItem(name: "action", value: "setPickup")
         
         let expectedQueryParameters = [pickupLatitudeQueryItem, pickupLongitudeQueryItem, pickupAddressQueryItem,
                                        dropoffLatitudeQueryItem, dropoffLongitudeQueryItem, dropoffAddressQueryItem,
@@ -155,18 +155,18 @@ class RequestURLUtilTests: XCTestCase {
         let testSource = "test source"
         let expectedUserAgent = "\(baseUserAgent!)-\(testSource)"
         
-        let pickupLatitudeQueryItem = NSURLQueryItem(name: "pickup[latitude]", value: "\(testPickupLocation.coordinate.latitude)")
-        let pickupLongitudeQueryItem = NSURLQueryItem(name: "pickup[longitude]", value: "\(testPickupLocation.coordinate.longitude)")
-        let pickupNicknameQueryItem = NSURLQueryItem(name: "pickup[nickname]", value: testPickupNickname)
+        let pickupLatitudeQueryItem = URLQueryItem(name: "pickup[latitude]", value: "\(testPickupLocation.coordinate.latitude)")
+        let pickupLongitudeQueryItem = URLQueryItem(name: "pickup[longitude]", value: "\(testPickupLocation.coordinate.longitude)")
+        let pickupNicknameQueryItem = URLQueryItem(name: "pickup[nickname]", value: testPickupNickname)
         
-        let dropoffLatitudeQueryItem = NSURLQueryItem(name: "dropoff[latitude]", value: "\(testDropoffLocation.coordinate.latitude)")
-        let dropoffLongitudeQueryItem = NSURLQueryItem(name: "dropoff[longitude]", value: "\(testDropoffLocation.coordinate.longitude)")
-        let dropoffNicknameQueryItem = NSURLQueryItem(name: "dropoff[nickname]", value: testDropoffNickname)
+        let dropoffLatitudeQueryItem = URLQueryItem(name: "dropoff[latitude]", value: "\(testDropoffLocation.coordinate.latitude)")
+        let dropoffLongitudeQueryItem = URLQueryItem(name: "dropoff[longitude]", value: "\(testDropoffLocation.coordinate.longitude)")
+        let dropoffNicknameQueryItem = URLQueryItem(name: "dropoff[nickname]", value: testDropoffNickname)
         
-        let productIdQueryItem = NSURLQueryItem(name: "product_id", value: testProductID)
-        let clientIdQueryItem = NSURLQueryItem(name: "client_id", value: "testClientID")
-        let userAgentQueryItem = NSURLQueryItem(name: "user-agent", value: expectedUserAgent)
-        let actionQueryItem = NSURLQueryItem(name: "action", value: "setPickup")
+        let productIdQueryItem = URLQueryItem(name: "product_id", value: testProductID)
+        let clientIdQueryItem = URLQueryItem(name: "client_id", value: "testClientID")
+        let userAgentQueryItem = URLQueryItem(name: "user-agent", value: expectedUserAgent)
+        let actionQueryItem = URLQueryItem(name: "action", value: "setPickup")
         
         let expectedQueryParameters = [pickupLatitudeQueryItem, pickupLongitudeQueryItem, pickupNicknameQueryItem,
                                        dropoffLatitudeQueryItem, dropoffLongitudeQueryItem, dropoffNicknameQueryItem,
@@ -195,15 +195,15 @@ class RequestURLUtilTests: XCTestCase {
         let testSource = "test source"
         let expectedUserAgent = "\(baseUserAgent!)-\(testSource)"
         
-        let pickupLatitudeQueryItem = NSURLQueryItem(name: "pickup[latitude]", value: "\(testPickupLocation.coordinate.latitude)")
-        let pickupLongitudeQueryItem = NSURLQueryItem(name: "pickup[longitude]", value: "\(testPickupLocation.coordinate.longitude)")
-        let pickupNicknameQueryItem = NSURLQueryItem(name: "pickup[nickname]", value: testPickupNickname)
-        let pickupAddressQueryItem = NSURLQueryItem(name: "pickup[formatted_address]", value: testPickupAddress)
+        let pickupLatitudeQueryItem = URLQueryItem(name: "pickup[latitude]", value: "\(testPickupLocation.coordinate.latitude)")
+        let pickupLongitudeQueryItem = URLQueryItem(name: "pickup[longitude]", value: "\(testPickupLocation.coordinate.longitude)")
+        let pickupNicknameQueryItem = URLQueryItem(name: "pickup[nickname]", value: testPickupNickname)
+        let pickupAddressQueryItem = URLQueryItem(name: "pickup[formatted_address]", value: testPickupAddress)
         
-        let productIdQueryItem = NSURLQueryItem(name: "product_id", value: testProductID)
-        let clientIdQueryItem = NSURLQueryItem(name: "client_id", value: "testClientID")
-        let userAgentQueryItem = NSURLQueryItem(name: "user-agent", value: expectedUserAgent)
-        let actionQueryItem = NSURLQueryItem(name: "action", value: "setPickup")
+        let productIdQueryItem = URLQueryItem(name: "product_id", value: testProductID)
+        let clientIdQueryItem = URLQueryItem(name: "client_id", value: "testClientID")
+        let userAgentQueryItem = URLQueryItem(name: "user-agent", value: expectedUserAgent)
+        let actionQueryItem = URLQueryItem(name: "action", value: "setPickup")
         
         let expectedQueryParameters = [pickupLatitudeQueryItem, pickupLongitudeQueryItem, pickupNicknameQueryItem, pickupAddressQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
