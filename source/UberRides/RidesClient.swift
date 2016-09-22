@@ -44,7 +44,7 @@ import CoreLocation
     private var serverToken: String? = Configuration.getServerToken()
     
     /**
-     Initializer for the RidesClient. The RidesClient handles making reqeusts to the API
+     Initializer for the RidesClient. The RidesClient handles making requests to the API
      for you.
      
      - parameter accessTokenIdentifier: The accessTokenIdentifier to use. This identifier
@@ -64,11 +64,11 @@ import CoreLocation
     }
     
     /**
-     Initializer for the RidesClient. The RidesClient handles making reqeusts to the API
+     Initializer for the RidesClient. The RidesClient handles making requests to the API
      for you.
      By default, uses NSURLSessionConfiguration.defaultSessionConfiguration() for the URL requests
      
-     - parameter accessTokenIdentifier: Initializer for the RidesClient. The RidesClient handles making reqeusts to the API
+     - parameter accessTokenIdentifier: Initializer for the RidesClient. The RidesClient handles making requests to the API
      for you.
      By default, it is initialized using the keychainAccessGroup default from your Configuration object
      Also uses NSURLSessionConfiguration.defaultSessionConfiguration() for the URL requests
@@ -85,7 +85,7 @@ import CoreLocation
     }
     
     /**
-     Initializer for the RidesClient. The RidesClient handles making reqeusts to the API
+     Initializer for the RidesClient. The RidesClient handles making requests to the API
      for you.
      By default, it is initialized using the keychainAccessGroup default from your Configuration object
      
@@ -102,7 +102,7 @@ import CoreLocation
     }
     
     /**
-     Initializer for the RidesClient. The RidesClient handles making reqeusts to the API
+     Initializer for the RidesClient. The RidesClient handles making requests to the API
      for you.
      By default, it is initialized using the keychainAccessGroup default from your Configuration object
      Also uses NSURLSessionConfiguration.defaultSessionConfiguration() for the URL requests
@@ -119,7 +119,7 @@ import CoreLocation
     }
     
     /**
-     Initializer for the RidesClient. The RidesClient handles making reqeusts to the API
+     Initializer for the RidesClient. The RidesClient handles making requests to the API
      for you.
      By default, it is initialized using the accessTokenIdentifier & keychainAccessGroup
      defaults from your Configuration object
