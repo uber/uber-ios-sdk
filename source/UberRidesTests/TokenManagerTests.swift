@@ -26,10 +26,11 @@ import XCTest
 @testable import UberRides
 
 class TokenManagerTests: XCTestCase {
-    
+
     private var notificationFired = false
     private var keychain: KeychainWrapper?
-    
+    private let kCheckFirstRun = "com.uber.checkFirstRun"
+
     override func setUp() {
         super.setUp()
         Configuration.plistName = "testInfo"
@@ -37,94 +38,96 @@ class TokenManagerTests: XCTestCase {
         keychain = KeychainWrapper()
         notificationFired = false
     }
-    
+
     override func tearDown() {
         Configuration.restoreDefaults()
         keychain = nil
         super.tearDown()
     }
-    
-    
+
+
     func testSave() {
         let identifier = "testIdentifier"
         let accessGroup = "testAccessGroup"
-        
+
         let token = getTestToken()
-        
+
         XCTAssertTrue(TokenManager.saveToken(token, tokenIdentifier:identifier, accessGroup: accessGroup))
-        
+
         keychain?.setAccessGroup(accessGroup)
         guard let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken else {
             XCTAssert(false)
             return
         }
         XCTAssertEqual(actualToken.tokenString, token.tokenString)
-        
-        
+
+
         keychain?.deleteObjectForKey(identifier)
-        
+
     }
-    
+
     func testSave_firesNotification() {
         let identifier = "testIdentifier"
         let accessGroup = "testAccessGroup"
-        
+
         let token = getTestToken()
-        
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTokenManagerNotifications), name: TokenManager.TokenManagerDidSaveTokenNotification, object: nil)
-        
+
         XCTAssertTrue(TokenManager.saveToken(token, tokenIdentifier:identifier, accessGroup: accessGroup))
-        
+
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        
+
         keychain?.setAccessGroup(accessGroup)
         guard let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken else {
             XCTAssert(false)
             return
         }
         XCTAssertEqual(actualToken.tokenString, token.tokenString)
-        
+
         XCTAssertTrue(notificationFired)
-        
+
         keychain?.deleteObjectForKey(identifier)
-        
+
     }
-    
+
     func testGet() {
-        
+
         let identifier = "testIdentifier"
         let accessGroup = "testAccessGroup"
-        
+
         let token = getTestToken()
-        
+
         keychain?.setAccessGroup(accessGroup)
         keychain?.setObject(token, key: identifier)
-        
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: kCheckFirstRun)
+        NSUserDefaults.standardUserDefaults().synchronize()
+
         let actualToken = TokenManager.fetchToken(identifier, accessGroup: accessGroup)
         XCTAssertNotNil(actualToken)
-        
+
         XCTAssertEqual(actualToken?.tokenString, token.tokenString)
-        
+
         keychain?.deleteObjectForKey(identifier)
     }
-    
+
     func testGet_nonExistent() {
         let identifer = "there.is.no.token.named.this.123412wfdasd3o"
-        
+
         XCTAssertNil(TokenManager.fetchToken(identifer))
     }
-    
+
     func testDelete() {
         let identifier = "testIdentifier"
         let accessGroup = "testAccessGroup"
-        
+
         let token = getTestToken()
-        
+
         keychain?.setAccessGroup(accessGroup)
         keychain?.setObject(token, key: identifier)
-        
+
         XCTAssertTrue(TokenManager.deleteToken(identifier, accessGroup: accessGroup))
-        
+
         let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken
         guard actualToken == nil else {
             XCTAssert(false)
@@ -132,32 +135,32 @@ class TokenManagerTests: XCTestCase {
             return
         }
     }
-    
+
     func testDelete_nonExistent() {
         let identifier = "there.is.no.token.named.this.123412wfdasd3o"
-        
+
         XCTAssertFalse(TokenManager.deleteToken(identifier))
-        
+
     }
-    
+
     func testDelete_firesNotification() {
-        
+
         let identifier = "testIdentifier"
         let accessGroup = "testAccessGroup"
-        
+
         let token = getTestToken()
-        
+
         keychain?.setAccessGroup(accessGroup)
         keychain?.setObject(token, key: identifier)
-        
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTokenManagerNotifications), name: TokenManager.TokenManagerDidDeleteTokenNotification, object: nil)
-        
+
         XCTAssertTrue(TokenManager.deleteToken(identifier, accessGroup: accessGroup))
-        
+
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        
+
         XCTAssertTrue(notificationFired)
-        
+
         let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken
         guard actualToken == nil else {
             XCTAssert(false)
@@ -165,71 +168,94 @@ class TokenManagerTests: XCTestCase {
             return
         }
     }
-    
+
     func testDelete_nonExistent_doesNotFireNotification() {
         let identifier = "there.is.no.token.named.this.123412wfdasd3o"
-        
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTokenManagerNotifications), name: TokenManager.TokenManagerDidDeleteTokenNotification, object: nil)
-        
+
         XCTAssertFalse(TokenManager.deleteToken(identifier))
-        
+
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        
+
         XCTAssertFalse(notificationFired)
     }
-    
+
     func testCookiesCleared_whenTokenDeleted() {
         guard let usUrl = NSURL(string: "https://login.uber.com"), let chinaURL = NSURL(string: "https://login.uber.com.cn")  else {
             XCTAssertFalse(false)
             return
         }
-        
+
         let cookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
-        
+
         if let cookies = cookieStorage.cookies {
             for cookie in cookies {
                 cookieStorage.deleteCookie(cookie)
             }
         }
-        
-        
+
+
         cookieStorage.setCookies(createTestUSCookies(), forURL: usUrl, mainDocumentURL: nil)
         cookieStorage.setCookies(createTestChinaCookies(), forURL: chinaURL, mainDocumentURL: nil)
         NSUserDefaults.standardUserDefaults().synchronize()
         XCTAssertEqual(cookieStorage.cookies?.count, 4)
         XCTAssertEqual(cookieStorage.cookiesForURL(usUrl)?.count, 2)
         XCTAssertEqual(cookieStorage.cookiesForURL(chinaURL)?.count, 2)
-        
+
         let identifier = "testIdentifier"
         let accessGroup = "testAccessGroup"
-        
+
         let token = getTestToken()
-        
+
         keychain?.setAccessGroup(accessGroup)
         keychain?.setObject(token, key: identifier)
-        
+
         XCTAssertTrue(TokenManager.deleteToken(identifier, accessGroup: accessGroup))
-        
+
         let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken
         guard actualToken == nil else {
             XCTAssert(false)
             keychain?.deleteObjectForKey(identifier)
             return
         }
-        
+
         let testCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
         XCTAssertEqual(testCookieStorage.cookies?.count, 0)
-        
+
     }
-    
-    
+
+    func testAppDeleteFunctionality() {
+        let identifier = "testIdentifier"
+        let accessGroup = "testAccessGroup"
+
+        let token = getTestToken()
+
+        TokenManager.saveToken(token, tokenIdentifier:identifier, accessGroup: accessGroup)
+
+        let actualToken = TokenManager.fetchToken(identifier, accessGroup: accessGroup)
+        XCTAssertNotNil(actualToken)
+        XCTAssertEqual(actualToken?.tokenString, token.tokenString)
+
+        // When app deleted, cleared the user default
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(kCheckFirstRun)
+        NSUserDefaults.standardUserDefaults().synchronize()
+
+        let deletedToken = TokenManager.fetchToken(identifier, accessGroup: accessGroup)
+        XCTAssertNil(deletedToken)
+        XCTAssertNotEqual(deletedToken?.tokenString, token.tokenString)
+
+        TokenManager.deleteToken(identifier, accessGroup: accessGroup)
+    }
+
+
     //MARK: Helpers
-    
+
     func getTestToken() -> AccessToken! {
         let tokenData = ["access_token" : "testTokenString"]
         return AccessToken(JSON: tokenData)
     }
-            
+
     func createTestUSCookies() -> [NSHTTPCookie] {
         let secureUSCookie = NSHTTPCookie(properties: [NSHTTPCookieDomain: ".uber.com",
             NSHTTPCookiePath : "/",
@@ -246,7 +272,7 @@ class TokenManagerTests: XCTestCase {
         }
         return []
     }
-    
+
     func createTestChinaCookies() -> [NSHTTPCookie] {
         let secureChinaCookie = NSHTTPCookie(properties: [NSHTTPCookieDomain : ".uber.com.cn",
             NSHTTPCookiePath : "/",
@@ -263,7 +289,7 @@ class TokenManagerTests: XCTestCase {
         }
         return []
     }
-    
+
     func handleTokenManagerNotifications() {
         notificationFired = true
     }
