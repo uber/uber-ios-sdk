@@ -239,26 +239,26 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
 }
     
 @available(iOS 9, *)
-func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
-    
-    let handledURL = RidesAppDelegate.sharedInstance.application(app, openURL: url, sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as? String, annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
-    
+func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    let handledURL = RidesAppDelegate.sharedInstance.application(app, openURL: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as AnyObject?)
+
     if (!handledURL) {
-        // Other URL parsing logic 
+    // Other URL parsing logic
     }
-    
+
     return true
 }
-    
-func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
-    let handledURL = RidesAppDelegate.sharedInstance.application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
-    
+
+func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+    let handledURL = RidesAppDelegate.sharedInstance.application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation as AnyObject?)
+
     if (!handledURL) {
-        // Other URL parsing logic
+    // Other URL parsing logic
     }
-    
+
     return true
 }
+
 ```
 
 ```objective-c
