@@ -30,6 +30,9 @@ class RidesScopeFactoryTests: XCTestCase {
         RidesScopeType.HistoryLite : RidesScopeType.HistoryLite.toString(),
         RidesScopeType.Places : RidesScopeType.Places.toString(),
         RidesScopeType.RideWidgets : RidesScopeType.RideWidgets.toString(),
+        RidesScopeType.AllTrips : RidesScopeType.AllTrips.toString(),
+        RidesScopeType.Request : RidesScopeType.Request.toString(),
+        RidesScopeType.RequestReceipt : RidesScopeType.RequestReceipt.toString(),
     ]
     
     func testCreateRidesScopeByRidesScopeType() {
