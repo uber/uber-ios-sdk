@@ -126,6 +126,8 @@ Add the following code snippet, replacing the placeholders within the square bra
 ```
 <key>UberClientID</key>
 <string>[ClientID]</string>
+<key>UberServerToken<key>
+<string>[Server Token]</string>
 <key>UberDisplayName</key>
 <string>[App Name]</string>
 <key>UberCallbackURIs</key>
@@ -140,6 +142,8 @@ Add the following code snippet, replacing the placeholders within the square bra
 ```
 
 Make sure the value for UberCallbackURI exactly matches one of the Redirect URLs you have set on your developer dashboard. (You can use `localhost` for testing.)
+
+**Note:** Your `Server Token` is used to make [Price](https://developer.uber.com/docs/rides/api/v1-estimates-price) & [Time](https://developer.uber.com/docs/rides/api/v1-estimates-time) estimates when your user hasn't authenticated with Uber yet. We suggest adding it in your `Info.plist` only if you need to get estimates before your user logs in.
 
 You can also define specific callback URIs for different login types. For example, if you want to use Native login, but also support a fallback to Authorization Code Grant, you can define a callback to your app AND a callback for your server:
 
@@ -372,7 +376,8 @@ let button = RideRequestButton()
 let ridesClient = RidesClient()
 let pickupLocation = CLLocation(latitude: 37.787654, longitude: -122.402760)
 let dropoffLocation = CLLocation(latitude: 37.775200, longitude: -122.417587)
-let builder = RideParametersBuilder().setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation)
+let dropoffNickname = "Work"
+let builder = RideParametersBuilder().setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation, nickname: dropoffNickname)
 ridesClient.fetchCheapestProduct(pickupLocation: pickupLocation, completion: {
     product, response in
     if let productID = product?.productID {
@@ -389,9 +394,10 @@ UBSDKRideRequestButton *button = [[UBSDKRideRequestButton alloc] init];
 UBSDKRidesClient *ridesClient = [[UBSDKRidesClient alloc] init];
 CLLocation *pickupLocation = [[CLLocation alloc] initWithLatitude: 37.787654 longitude: -122.402760];
 CLLocation *dropoffLocation = [[CLLocation alloc] initWithLatitude: 37.775200 longitude: -122.417587];
+NSString *dropoffNickname = @"Work";
 __block UBSDKRideParametersBuilder *builder = [[UBSDKRideParametersBuilder alloc] init];
 builder = [builder setPickupLocation: pickupLocation];
-builder = [builder setDropoffLocation: dropoffLocation];
+builder = [builder setDropoffLocation: dropoffLocation nickname: dropoffNickname];
 [ridesClient fetchCheapestProductWithPickupLocation: pickupLocation completion:^(UBSDKUberProduct* _Nullable product, UBSDKResponse* _Nullable response) {
     if (product) {
         builder = [builder setProductID: product.productID];

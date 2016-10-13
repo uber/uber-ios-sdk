@@ -52,7 +52,7 @@ class RequestLayerTests: XCTestCase {
      */
     func test200Response() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getproductid.json", self.dynamicType)!, statusCode:200, headers:self.headers)
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProductID.json", self.dynamicType)!, statusCode:200, headers:self.headers)
         }
         
         let expectation = expectationWithDescription("200 success response")

@@ -91,7 +91,7 @@
      - returns: An initialized LoginManager
      */
     @objc public convenience init(loginType: LoginType) {
-        self.init(accessTokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(), keychainAccessGroup: Configuration.getDefaultAccessTokenIdentifier(), loginType: loginType)
+        self.init(accessTokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(), keychainAccessGroup: Configuration.getDefaultKeychainAccessGroup(), loginType: loginType)
     }
     
     /**
@@ -102,7 +102,7 @@
      - returns: An initialized LoginManager
      */
     @objc public convenience override init() {
-        self.init(accessTokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(), keychainAccessGroup: Configuration.getDefaultAccessTokenIdentifier(), loginType: LoginType.Native)
+        self.init(accessTokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(), keychainAccessGroup: Configuration.getDefaultKeychainAccessGroup(), loginType: LoginType.Native)
     }
     
     // Mark: LoginManaging

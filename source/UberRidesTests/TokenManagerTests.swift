@@ -47,65 +47,59 @@ class TokenManagerTests: XCTestCase {
     
     func testSave() {
         let identifier = "testIdentifier"
-        let accessGroup = "testAccessGroup"
         
         let token = getTestToken()
         
-        XCTAssertTrue(TokenManager.saveToken(token, tokenIdentifier:identifier, accessGroup: accessGroup))
-        
-        keychain?.setAccessGroup(accessGroup)
+        XCTAssertTrue(TokenManager.saveToken(token, tokenIdentifier:identifier))
+
         guard let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken else {
-            XCTAssert(false)
+            XCTFail("Unable to fetch token")
             return
         }
         XCTAssertEqual(actualToken.tokenString, token.tokenString)
         
         
-        keychain?.deleteObjectForKey(identifier)
+        XCTAssertTrue(keychain!.deleteObjectForKey(identifier))
         
     }
     
     func testSave_firesNotification() {
         let identifier = "testIdentifier"
-        let accessGroup = "testAccessGroup"
         
         let token = getTestToken()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTokenManagerNotifications), name: TokenManager.TokenManagerDidSaveTokenNotification, object: nil)
         
-        XCTAssertTrue(TokenManager.saveToken(token, tokenIdentifier:identifier, accessGroup: accessGroup))
+        XCTAssertTrue(TokenManager.saveToken(token, tokenIdentifier:identifier))
         
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        
-        keychain?.setAccessGroup(accessGroup)
+
         guard let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken else {
-            XCTAssert(false)
+            XCTFail("Unable to fetch token")
             return
         }
         XCTAssertEqual(actualToken.tokenString, token.tokenString)
         
         XCTAssertTrue(notificationFired)
         
-        keychain?.deleteObjectForKey(identifier)
+        XCTAssertTrue(keychain!.deleteObjectForKey(identifier))
         
     }
     
     func testGet() {
         
         let identifier = "testIdentifier"
-        let accessGroup = "testAccessGroup"
         
         let token = getTestToken()
+
+        XCTAssertTrue(keychain!.setObject(token, key: identifier))
         
-        keychain?.setAccessGroup(accessGroup)
-        keychain?.setObject(token, key: identifier)
-        
-        let actualToken = TokenManager.fetchToken(identifier, accessGroup: accessGroup)
+        let actualToken = TokenManager.fetchToken(identifier)
         XCTAssertNotNil(actualToken)
         
         XCTAssertEqual(actualToken?.tokenString, token.tokenString)
         
-        keychain?.deleteObjectForKey(identifier)
+        XCTAssertTrue(keychain!.deleteObjectForKey(identifier))
     }
     
     func testGet_nonExistent() {
@@ -116,19 +110,17 @@ class TokenManagerTests: XCTestCase {
     
     func testDelete() {
         let identifier = "testIdentifier"
-        let accessGroup = "testAccessGroup"
         
         let token = getTestToken()
+
+        XCTAssertTrue(keychain!.setObject(token, key: identifier))
         
-        keychain?.setAccessGroup(accessGroup)
-        keychain?.setObject(token, key: identifier)
-        
-        XCTAssertTrue(TokenManager.deleteToken(identifier, accessGroup: accessGroup))
+        XCTAssertTrue(TokenManager.deleteToken(identifier))
         
         let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken
         guard actualToken == nil else {
-            XCTAssert(false)
-            keychain?.deleteObjectForKey(identifier)
+            XCTFail("Token should have been deleted")
+            XCTAssertTrue(keychain!.deleteObjectForKey(identifier))
             return
         }
     }
@@ -143,16 +135,14 @@ class TokenManagerTests: XCTestCase {
     func testDelete_firesNotification() {
         
         let identifier = "testIdentifier"
-        let accessGroup = "testAccessGroup"
         
         let token = getTestToken()
-        
-        keychain?.setAccessGroup(accessGroup)
-        keychain?.setObject(token, key: identifier)
+
+        XCTAssertTrue(keychain!.setObject(token, key: identifier))
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTokenManagerNotifications), name: TokenManager.TokenManagerDidDeleteTokenNotification, object: nil)
         
-        XCTAssertTrue(TokenManager.deleteToken(identifier, accessGroup: accessGroup))
+        XCTAssertTrue(TokenManager.deleteToken(identifier))
         
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
@@ -160,8 +150,8 @@ class TokenManagerTests: XCTestCase {
         
         let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken
         guard actualToken == nil else {
-            XCTAssert(false)
-            keychain?.deleteObjectForKey(identifier)
+            XCTFail("Token should have been deleted")
+            XCTAssertTrue(keychain!.deleteObjectForKey(identifier))
             return
         }
     }
@@ -201,14 +191,12 @@ class TokenManagerTests: XCTestCase {
         XCTAssertEqual(cookieStorage.cookiesForURL(chinaURL)?.count, 2)
         
         let identifier = "testIdentifier"
-        let accessGroup = "testAccessGroup"
         
         let token = getTestToken()
-        
-        keychain?.setAccessGroup(accessGroup)
+
         keychain?.setObject(token, key: identifier)
         
-        XCTAssertTrue(TokenManager.deleteToken(identifier, accessGroup: accessGroup))
+        XCTAssertTrue(TokenManager.deleteToken(identifier))
         
         let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken
         guard actualToken == nil else {
