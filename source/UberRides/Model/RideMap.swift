@@ -29,20 +29,20 @@ import ObjectMapper
 /**
  *  Visual representation of a ride request, only available after a request is accepted.
  */
-@objc(UBSDKRideMap) public class RideMap: NSObject {
+@objc(UBSDKRideMap) open class RideMap: NSObject {
     
     /// URL to a map representing the requested trip.
-    public private(set) var path: String?
+    open fileprivate(set) var path: String?
     
     /// Unique identifier representing a ride request.
-    public private(set) var requestID: String?
+    open fileprivate(set) var requestID: String?
     
     public required init?(_ map: Map) {
     }
 }
 
 extension RideMap: UberModel {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         path      <- map["href"]
         requestID <- map["request_id"]
     }

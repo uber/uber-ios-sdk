@@ -30,7 +30,7 @@
  - UnableToOpen:        The application either is unable to open the URL or was unable to query for the provided deeplink scheme (iOS 9+ only). The latter requires you to add it to your application's plist file under LSQpplicationQueriesSchemes
  */
 @objc enum DeeplinkErrorType : Int {
-    case DeeplinkNotFollowed
-    case UnableToFollow
-    case UnableToOpen
+    case deeplinkNotFollowed
+    case unableToFollow
+    case unableToOpen
 }

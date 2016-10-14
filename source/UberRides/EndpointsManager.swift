@@ -28,16 +28,16 @@ import CoreLocation
  *  Protocol for all endpoints to conform to.
  */
 protocol UberAPI {
-    var body: NSData? { get }
+    var body: Data? { get }
     var headers: [String: String]? { get }
     var host: String { get}
     var method: Method { get }
     var path: String { get }
-    var query: [NSURLQueryItem] { get }
+    var query: [URLQueryItem] { get }
 }
 
 extension UberAPI {
-    var body: NSData? {
+    var body: Data? {
         return nil
     }
     
@@ -48,16 +48,16 @@ extension UberAPI {
     var host: String {
         if Configuration.getSandboxEnabled() {
             switch Configuration.getRegion() {
-            case .China:
+            case .china:
                 return "https://sandbox-api.uber.com.cn"
-            case .Default:
+            case .default:
                 return "https://sandbox-api.uber.com"
             }
         } else {
             switch Configuration.getRegion() {
-            case .China:
+            case .china:
                 return "https://api.uber.com.cn"
-            case .Default:
+            case .default:
                 return "https://api.uber.com"
             }
         }
@@ -82,7 +82,7 @@ private enum Resources: String {
     case Products = "products"
     case Request = "requests"
     
-    private var version: String {
+    fileprivate var version: String {
         switch self {
         case .Estimates: return "v1"
         case .History: return "v1.2"
@@ -94,7 +94,7 @@ private enum Resources: String {
         }
     }
     
-    private var basePath: String {
+    fileprivate var basePath: String {
         return "/\(version)/\(rawValue)"
     }
 }
@@ -116,13 +116,13 @@ enum Method: String {
  - parameter queries: tuples of key-value pairs
  - returns: an array of NSURLQueryItems
  */
-func queryBuilder(queries: (name: String, value: String)...) -> [NSURLQueryItem] {
-    var queryItems = [NSURLQueryItem]()
+func queryBuilder(_ queries: (name: String, value: String)...) -> [URLQueryItem] {
+    var queryItems = [URLQueryItem]()
     for query in queries {
         if query.name.isEmpty || query.value.isEmpty {
             continue
         }
-        queryItems.append(NSURLQueryItem(name: query.name, value: query.value))
+        queryItems.append(URLQueryItem(name: query.name, value: query.value))
     }
     return queryItems
 }
@@ -132,39 +132,40 @@ func queryBuilder(queries: (name: String, value: String)...) -> [NSURLQueryItem]
  - RideRequestWidget: Ride Request Widget endpoint.
  */
 enum Components: UberAPI {
-    case RideRequestWidget(rideParameters: RideParameters?)
+    case rideRequestWidget(rideParameters: RideParameters?)
     
     var method: Method {
         switch self {
-        case .RideRequestWidget:
+        case .rideRequestWidget:
             return .GET
         }
     }
     
     var host: String {
         switch Configuration.getRegion() {
-        case .China:
+        case .china:
             return "https://components.uber.com.cn"
-        case .Default:
+        case .default:
             return "https://components.uber.com"
         }
     }
     
     var path: String {
         switch self {
-        case .RideRequestWidget:
+        case .rideRequestWidget:
             return "/rides/"
         }
     }
     
-    var query: [NSURLQueryItem] {
+    var query: [URLQueryItem] {
         switch self {
-        case .RideRequestWidget(let rideParameters):
+        case .rideRequestWidget(let rideParameters):
             let environment = Configuration.getSandboxEnabled() ? "sandbox" : "production"
             var queryItems = queryBuilder( ("env", "\(environment)") )
             
             if let rideParameters = rideParameters {
-                queryItems.appendContentsOf(RequestURLUtil.buildRequestQueryParameters(rideParameters))
+                queryItems += (RequestURLUtil.buildRequestQueryParameters(rideParameters))
+                
             }
             
             return queryItems
@@ -180,17 +181,17 @@ enum Components: UberAPI {
  - Refresh: Used to refresh an access token that has been aquired via SSO
  */
 enum OAuth: UberAPI {
-    case ImplicitLogin(clientID: String, scopes: [RidesScope], redirect: String)
-    case AuthorizationCodeLogin(clientID: String, redirect: String, scopes: [RidesScope], state: String?)
-    case Refresh(clientID: String, refreshToken: String)
+    case implicitLogin(clientID: String, scopes: [RidesScope], redirect: String)
+    case authorizationCodeLogin(clientID: String, redirect: String, scopes: [RidesScope], state: String?)
+    case refresh(clientID: String, refreshToken: String)
     
     var method: Method {
         switch self {
-        case .ImplicitLogin:
+        case .implicitLogin:
             fallthrough
-        case .AuthorizationCodeLogin:
+        case .authorizationCodeLogin:
             return .GET
-        case .Refresh:
+        case .refresh:
             return .POST
         }
     }
@@ -199,61 +200,61 @@ enum OAuth: UberAPI {
         return OAuth.regionHostString()
     }
 
-    var body: NSData? {
+    var body: Data? {
         switch self {
-        case .Refresh(let clientID, let refreshToken):
+        case .refresh(let clientID, let refreshToken):
             let query = queryBuilder(
                 ("client_id", clientID),
                 ("refresh_token", refreshToken)
             )
-            let components = NSURLComponents()
+            var components = URLComponents()
             components.queryItems = query
-            return components.query?.dataUsingEncoding(NSUTF8StringEncoding)
+            return components.query?.data(using: String.Encoding.utf8)
         default:
             return nil
         }
     }
     
-    static func regionHostString(region: Region = Configuration.getRegion()) -> String {
+    static func regionHostString(_ region: Region = Configuration.getRegion()) -> String {
         switch region {
-        case .China:
+        case .china:
             return "https://login.uber.com.cn"
-        case .Default:
+        case .default:
             return "https://login.uber.com"
         }
     }
     
     var path: String {
         switch self {
-        case .ImplicitLogin:
+        case .implicitLogin:
             fallthrough
-        case .AuthorizationCodeLogin:
+        case .authorizationCodeLogin:
             return "/oauth/v2/authorize"
-        case .Refresh:
+        case .refresh:
             return "/oauth/v2/mobile/token"
         }
     }
     
-    var query: [NSURLQueryItem] {
+    var query: [URLQueryItem] {
         switch self {
-        case .ImplicitLogin(let clientID, let scopes, let redirect):
+        case .implicitLogin(let clientID, let scopes, let redirect):
             var loginQuery = baseLoginQuery(clientID, redirect: redirect, scopes: scopes)
             let additionalQueryItems = queryBuilder(("response_type", "token"))
             
-            loginQuery.appendContentsOf(additionalQueryItems)
+            loginQuery.append(contentsOf: additionalQueryItems)
             return loginQuery
-        case .AuthorizationCodeLogin(let clientID, let redirect, let scopes, let state):
+        case .authorizationCodeLogin(let clientID, let redirect, let scopes, let state):
             var loginQuery = baseLoginQuery(clientID, redirect: redirect, scopes: scopes)
             let additionalQueryItems = queryBuilder(("response_type", "code"),
                                           ("state", state ?? ""))
-            loginQuery.appendContentsOf(additionalQueryItems)
+            loginQuery.append(contentsOf: additionalQueryItems)
             return loginQuery
-        case .Refresh:
+        case .refresh:
             return queryBuilder()
         }
     }
     
-    func baseLoginQuery(clientID: String, redirect: String, scopes: [RidesScope]) -> [NSURLQueryItem] {
+    func baseLoginQuery(_ clientID: String, redirect: String, scopes: [RidesScope]) -> [URLQueryItem] {
         
         return queryBuilder(
             ("scope", scopes.toRidesScopeString()),
@@ -263,11 +264,11 @@ enum OAuth: UberAPI {
             ("signup_params", createSignupParameters()))
     }
     
-    private func createSignupParameters() -> String {
+    fileprivate func createSignupParameters() -> String {
         let signupParameters = [ "redirect_to_login" : true ]
         do {
-            let json = try NSJSONSerialization.dataWithJSONObject(signupParameters, options: NSJSONWritingOptions(rawValue: 0))
-            return json.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding76CharacterLineLength)
+            let json = try JSONSerialization.data(withJSONObject: signupParameters, options: JSONSerialization.WritingOptions(rawValue: 0))
+            return json.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength76Characters)
         } catch _ as NSError {
             return ""
         }
@@ -281,34 +282,34 @@ enum OAuth: UberAPI {
  - GetProduct: Returns information about the Uber product specified by product ID.
  */
 enum Products: UberAPI {
-    case GetAll(location: CLLocation)
-    case GetProduct(productID: String)
+    case getAll(location: CLLocation)
+    case getProduct(productID: String)
     
     var method: Method {
         switch self {
-        case .GetAll:
+        case .getAll:
             fallthrough
-        case .GetProduct:
+        case .getProduct:
             return .GET
         }
     }
     
     var path: String {
         switch self {
-        case .GetAll:
+        case .getAll:
             return Resources.Products.basePath
-        case .GetProduct(let productID):
+        case .getProduct(let productID):
             return "\(Resources.Products.basePath)/\(productID)"
         }
     }
     
-    var query: [NSURLQueryItem] {
+    var query: [URLQueryItem] {
         switch self {
-        case .GetAll(let location):
+        case .getAll(let location):
             return queryBuilder(
             ("latitude", "\(location.coordinate.latitude)"),
             ("longitude", "\(location.coordinate.longitude)"))
-        case .GetProduct:
+        case .getProduct:
             return queryBuilder()
         }
     }
@@ -321,36 +322,36 @@ enum Products: UberAPI {
  - Time:  Returns ETAs for all products offered at a given location (lat, long).
  */
 enum Estimates: UberAPI {
-    case Price(startLocation: CLLocation, endLocation: CLLocation)
-    case Time(location: CLLocation, productID: String?)
+    case price(startLocation: CLLocation, endLocation: CLLocation)
+    case time(location: CLLocation, productID: String?)
     
     var method: Method {
         switch self {
-        case .Price:
+        case .price:
             fallthrough
-        case .Time:
+        case .time:
             return .GET
         }
     }
     
     var path: String {
         switch self {
-        case .Price:
+        case .price:
             return "\(Resources.Estimates.basePath)/price"
-        case .Time:
+        case .time:
             return "\(Resources.Estimates.basePath)/time"
         }
     }
     
-    var query: [NSURLQueryItem] {
+    var query: [URLQueryItem] {
         switch self {
-        case .Price(let startLocation, let endLocation):
+        case .price(let startLocation, let endLocation):
             return queryBuilder(
             ("start_latitude", "\(startLocation.coordinate.latitude)"),
             ("start_longitude", "\(startLocation.coordinate.longitude)"),
             ("end_latitude", "\(endLocation.coordinate.latitude)"),
             ("end_longitude", "\(endLocation.coordinate.longitude)"))
-        case .Time(let location, let productID):
+        case .time(let location, let productID):
             return queryBuilder(
             ("start_latitude", "\(location.coordinate.latitude)"),
             ("start_longitude", "\(location.coordinate.longitude)"),
@@ -365,25 +366,25 @@ enum Estimates: UberAPI {
  - Get: Returns limited data about a user's lifetime activity with Uber.
  */
 enum History: UberAPI {
-    case Get(offset: Int?, limit: Int?)
+    case get(offset: Int?, limit: Int?)
     
     var method: Method {
         switch self {
-        case .Get:
+        case .get:
             return .GET
         }
     }
     
     var path: String {
         switch self {
-        case .Get:
+        case .get:
             return Resources.History.basePath
         }
     }
     
-    var query: [NSURLQueryItem] {
+    var query: [URLQueryItem] {
         switch self {
-        case .Get(let offset, let limit):
+        case .get(let offset, let limit):
             return queryBuilder(
             ("offset", offset == nil ? "" : "\(offset!)"),
             ("limit", limit == nil ? "" : "\(limit!)"))
@@ -397,25 +398,25 @@ enum History: UberAPI {
  - UserProfile: Returns information about the Uber user that has authorized the application.
  */
 enum Me: UberAPI {
-    case UserProfile
+    case userProfile
     
     var method: Method {
         switch self {
-        case .UserProfile:
+        case .userProfile:
             return .GET
         }
     }
     
     var path: String {
         switch self {
-        case .UserProfile:
+        case .userProfile:
             return Resources.Me.basePath
         }
     }
     
-    var query: [NSURLQueryItem] {
+    var query: [URLQueryItem] {
         switch self {
-        case .UserProfile:
+        case .userProfile:
             return queryBuilder()
         }
     }
@@ -430,38 +431,38 @@ enum Me: UberAPI {
  - Estimate:   Gets an estimate for a ride given the desired product, start, and end locations.
  */
 enum Requests: UberAPI {
-    case DeleteCurrent
-    case DeleteRequest(requestID: String)
-    case Estimate(rideParameters: RideParameters)
-    case GetCurrent
-    case GetRequest(requestID: String)
-    case Make(rideParameters: RideParameters)
-    case PatchCurrent(rideParameters: RideParameters)
-    case PatchRequest(requestID: String, rideParameters: RideParameters)
-    case RideMap(requestID: String)
-    case RideReceipt(requestID: String)
+    case deleteCurrent
+    case deleteRequest(requestID: String)
+    case estimate(rideParameters: RideParameters)
+    case getCurrent
+    case getRequest(requestID: String)
+    case make(rideParameters: RideParameters)
+    case patchCurrent(rideParameters: RideParameters)
+    case patchRequest(requestID: String, rideParameters: RideParameters)
+    case rideMap(requestID: String)
+    case rideReceipt(requestID: String)
     
-    var body: NSData? {
+    var body: Data? {
         switch self {
-        case DeleteCurrent:
+        case .deleteCurrent:
             fallthrough
-        case .DeleteRequest:
+        case .deleteRequest:
             return nil
-        case .Estimate(let rideParameters):
-            return RideRequestDataBuilder(rideParameters: rideParameters).build()
-        case .GetCurrent:
+        case .estimate(let rideParameters):
+            return RideRequestDataBuilder(rideParameters: rideParameters).build() as Data?
+        case .getCurrent:
             fallthrough
-        case .GetRequest:
+        case .getRequest:
             return nil
-        case .Make(let rideParameters):
-            return RideRequestDataBuilder(rideParameters: rideParameters).build()
-        case PatchCurrent(let rideParameters):
-            return RideRequestDataBuilder(rideParameters: rideParameters).build()
-        case .PatchRequest(_, let rideParameters):
-            return RideRequestDataBuilder(rideParameters: rideParameters).build()
-        case .RideMap:
+        case .make(let rideParameters):
+            return RideRequestDataBuilder(rideParameters: rideParameters).build() as Data?
+        case .patchCurrent(let rideParameters):
+            return RideRequestDataBuilder(rideParameters: rideParameters).build() as Data?
+        case .patchRequest(_, let rideParameters):
+            return RideRequestDataBuilder(rideParameters: rideParameters).build() as Data?
+        case .rideMap:
             return nil
-        case .RideReceipt:
+        case .rideReceipt:
             return nil
         }
     }
@@ -472,63 +473,63 @@ enum Requests: UberAPI {
     
     var method: Method {
         switch self {
-        case .DeleteCurrent:
+        case .deleteCurrent:
             fallthrough
-        case .DeleteRequest:
+        case .deleteRequest:
             return .DELETE
-        case .Estimate:
+        case .estimate:
             return .POST
-        case .GetCurrent:
+        case .getCurrent:
             fallthrough
-        case .GetRequest:
+        case .getRequest:
             return .GET
-        case .Make:
+        case .make:
             return .POST
-        case .PatchCurrent:
+        case .patchCurrent:
             fallthrough
-        case .PatchRequest:
+        case .patchRequest:
             return .PATCH
-        case .RideMap:
+        case .rideMap:
             return .GET
-        case .RideReceipt:
+        case .rideReceipt:
             return .GET
         }
     }
     
     var path: String {
         switch self {
-        case .DeleteCurrent:
+        case .deleteCurrent:
             return "\(Resources.Request.basePath)/current"
-        case .DeleteRequest(let requestID):
+        case .deleteRequest(let requestID):
             return "\(Resources.Request.basePath)/\(requestID)"
-        case .Estimate:
+        case .estimate:
             return "\(Resources.Request.basePath)/estimate"
-        case .GetCurrent:
+        case .getCurrent:
             return "\(Resources.Request.basePath)/current"
-        case .GetRequest(let requestID):
+        case .getRequest(let requestID):
             return "\(Resources.Request.basePath)/\(requestID)"
-        case .Make:
+        case .make:
             return Resources.Request.basePath
-        case .PatchCurrent:
+        case .patchCurrent:
             return "\(Resources.Request.basePath)/current"
-        case .PatchRequest(let requestID, _):
+        case .patchRequest(let requestID, _):
             return "\(Resources.Request.basePath)/\(requestID)"
-        case .RideMap(let requestID):
+        case .rideMap(let requestID):
             return "\(Resources.Request.basePath)/\(requestID)/map"
-        case .RideReceipt(let requestID):
+        case .rideReceipt(let requestID):
             return "\(Resources.Request.basePath)/\(requestID)/receipt"
         }
     }
     
-    var query: [NSURLQueryItem] {
+    var query: [URLQueryItem] {
         return []
     }
 }
 
 enum Payment: UberAPI {
-    case GetMethods
+    case getMethods
     
-    var body: NSData? {
+    var body: Data? {
         return nil
     }
     
@@ -540,22 +541,22 @@ enum Payment: UberAPI {
         return Resources.PaymentMethod.basePath
     }
     
-    var query: [NSURLQueryItem] {
+    var query: [URLQueryItem] {
         return []
     }
 }
 
 enum Places: UberAPI {
-    case GetPlace(placeID: String)
-    case PutPlace(placeID: String, address: String)
+    case getPlace(placeID: String)
+    case putPlace(placeID: String, address: String)
     
-    var body: NSData? {
+    var body: Data? {
         switch self {
-        case .GetPlace:
+        case .getPlace:
             return nil
-        case .PutPlace(_, let address):
+        case .putPlace(_, let address):
             do {
-                let data = try NSJSONSerialization.dataWithJSONObject(["address": address], options: .PrettyPrinted)
+                let data = try JSONSerialization.data(withJSONObject: ["address": address], options: .prettyPrinted)
                 return data
             } catch { }
             return nil
@@ -564,32 +565,32 @@ enum Places: UberAPI {
     
     var headers: [String : String]? {
         switch self {
-        case .GetPlace:
+        case .getPlace:
             return nil
-        case .PutPlace:
+        case .putPlace:
             return [Header.ContentType.rawValue: "application/json"]
         }
     }
     
     var method: Method {
         switch self {
-        case .GetPlace:
+        case .getPlace:
             return .GET
-        case .PutPlace:
+        case .putPlace:
             return .PUT
         }
     }
     
     var path: String {
         switch self {
-        case .GetPlace(let placeID):
+        case .getPlace(let placeID):
             return "\(Resources.Places.basePath)/\(placeID)"
-        case .PutPlace(let placeID, _):
+        case .putPlace(let placeID, _):
             return "\(Resources.Places.basePath)/\(placeID)"
         }
     }
     
-    var query: [NSURLQueryItem] {
+    var query: [URLQueryItem] {
         return []
     }
 }

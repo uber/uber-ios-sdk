@@ -25,19 +25,19 @@
 import ObjectMapper
 
 /// Stores information about an access token used for authorizing requests.
-@objc(UBSDKAccessToken) public class AccessToken: NSObject, NSCoding, UberModel {
+@objc(UBSDKAccessToken) open class AccessToken: NSObject, NSCoding, UberModel {
     
     /// String containing the bearer token.
-    public private(set) var tokenString: String?
+    open fileprivate(set) var tokenString: String?
     
     /// String containing the refresh token.
-    public private(set) var refreshToken: String?
+    open fileprivate(set) var refreshToken: String?
     
     /// The expiration date for this access token
-    public private(set) var expirationDate: NSDate?
+    open fileprivate(set) var expirationDate: Date?
     
     /// The scopes this token is valid for
-    public private(set) var grantedScopes: [RidesScope]?
+    open fileprivate(set) var grantedScopes: [RidesScope]?
     
     /**
      Initializes an AccessToken with the provided tokenString
@@ -61,13 +61,13 @@ import ObjectMapper
      */
     @objc public required init?(coder decoder: NSCoder) {
         super.init()
-        guard let token = decoder.decodeObjectForKey("tokenString") as? String else {
+        guard let token = decoder.decodeObject(forKey: "tokenString") as? String else {
             return nil
         }
         tokenString = token
-        refreshToken = decoder.decodeObjectForKey("refreshToken") as? String
-        expirationDate = decoder.decodeObjectForKey("expirationDate") as? NSDate
-        if let scopesString = decoder.decodeObjectForKey("grantedScopes") as? String {
+        refreshToken = decoder.decodeObject(forKey: "refreshToken") as? String
+        expirationDate = decoder.decodeObject(forKey: "expirationDate") as? Date
+        if let scopesString = decoder.decodeObject(forKey: "grantedScopes") as? String {
             grantedScopes = scopesString.toRidesScopesArray()
         }
     }
@@ -87,11 +87,11 @@ import ObjectMapper
      
      - parameter coder: The NSCoder to encode the access token on
      */
-    @objc public func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.tokenString, forKey: "tokenString")
-        coder.encodeObject(self.refreshToken, forKey:  "refreshToken")
-        coder.encodeObject(self.expirationDate, forKey: "expirationDate")
-        coder.encodeObject(self.grantedScopes?.toRidesScopeString(), forKey: "grantedScopes")
+    @objc open func encode(with coder: NSCoder) {
+        coder.encode(self.tokenString, forKey: "tokenString")
+        coder.encode(self.refreshToken, forKey:  "refreshToken")
+        coder.encode(self.expirationDate, forKey: "expirationDate")
+        coder.encode(self.grantedScopes?.toRidesScopeString(), forKey: "grantedScopes")
     }
     
     /**
@@ -100,7 +100,7 @@ import ObjectMapper
      
      - parameter map: The Map to use for populatng this AccessToken.
      */
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
         tokenString         <- map["access_token"]
         refreshToken        <- map["refresh_token"]
         expirationDate <- (map["expiration_date"], DateTransform())

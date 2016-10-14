@@ -43,60 +43,60 @@ class RideRequestDataBuilder {
     let productIDKey = "product_id"
     let surgeConfirmationKey = "surge_confirmation_id"
     
-    private var rideParameters: RideParameters
+    fileprivate var rideParameters: RideParameters
     
     init(rideParameters: RideParameters) {
         self.rideParameters = rideParameters
     }
     
-    func build() -> NSData? {
+    func build() -> Data? {
         var data = [String: AnyObject]()
         
         if let productID = rideParameters.productID {
-            data[productIDKey] = productID
+            data[productIDKey] = productID as AnyObject?
         }
         
         if let pickupLocation = rideParameters.pickupLocation {
-            data["\(pickupKey)_\(latitudeKey)"] = pickupLocation.coordinate.latitude
-            data["\(pickupKey)_\(longitudeKey)"] = pickupLocation.coordinate.longitude
+            data["\(pickupKey)_\(latitudeKey)"] = pickupLocation.coordinate.latitude as AnyObject?
+            data["\(pickupKey)_\(longitudeKey)"] = pickupLocation.coordinate.longitude as AnyObject?
         } else if let pickupPlace = rideParameters.pickupPlaceID {
-            data["\(pickupKey)_\(placeIDKey)"] = pickupPlace
+            data["\(pickupKey)_\(placeIDKey)"] = pickupPlace as AnyObject?
         }
         
         if let pickupNickname = rideParameters.pickupNickname {
-            data["\(pickupKey)_\(nicknameKey)"] = pickupNickname
+            data["\(pickupKey)_\(nicknameKey)"] = pickupNickname as AnyObject?
         }
         
         if let pickupAddress = rideParameters.pickupAddress {
-            data["\(pickupKey)_\(addressKey)"] = pickupAddress
+            data["\(pickupKey)_\(addressKey)"] = pickupAddress as AnyObject?
         }
         
         if let dropoffLocation = rideParameters.dropoffLocation {
-            data["\(dropoffKey)_\(latitudeKey)"] = dropoffLocation.coordinate.latitude
-            data["\(dropoffKey)_\(longitudeKey)"] = dropoffLocation.coordinate.longitude
+            data["\(dropoffKey)_\(latitudeKey)"] = dropoffLocation.coordinate.latitude as AnyObject?
+            data["\(dropoffKey)_\(longitudeKey)"] = dropoffLocation.coordinate.longitude as AnyObject?
         } else if let dropoffPlace = rideParameters.dropoffPlaceID {
-            data["\(dropoffKey)_\(placeIDKey)"] = dropoffPlace
+            data["\(dropoffKey)_\(placeIDKey)"] = dropoffPlace as AnyObject?
         }
         
         if let dropoffNickname = rideParameters.dropoffNickname {
-            data["\(dropoffKey)_\(nicknameKey)"] = dropoffNickname
+            data["\(dropoffKey)_\(nicknameKey)"] = dropoffNickname as AnyObject?
         }
         
         if let dropoffAddress = rideParameters.dropoffAddress {
-            data["\(dropoffKey)_\(addressKey)"] = dropoffAddress
+            data["\(dropoffKey)_\(addressKey)"] = dropoffAddress as AnyObject?
         }
         
         if let paymentMethod = rideParameters.paymentMethod {
-            data["\(paymentMethodKey)"] = paymentMethod
+            data["\(paymentMethodKey)"] = paymentMethod as AnyObject?
         }
         
         if let surgeConfirmation = rideParameters.surgeConfirmationID {
-            data["\(surgeConfirmationKey)"] = surgeConfirmation
+            data["\(surgeConfirmationKey)"] = surgeConfirmation as AnyObject?
         }
         
-        var bodyData: NSData?
+        var bodyData: Data?
         do {
-            bodyData = try NSJSONSerialization.dataWithJSONObject(data, options: .PrettyPrinted)
+            bodyData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
             return bodyData
         } catch { }
         return nil

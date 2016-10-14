@@ -34,7 +34,7 @@ import CoreLocation
      
      - parameter button: the RideRequestButton
      */
-    @objc func rideRequestButtonDidLoadRideInformation(button: RideRequestButton)
+    @objc func rideRequestButtonDidLoadRideInformation(_ button: RideRequestButton)
     
     /**
      The button encountered an error when refreshing its metadata content.
@@ -42,29 +42,29 @@ import CoreLocation
      - parameter button: the RideRequestButton
      - parameter error:  the error that it encountered
      */
-    @objc func rideRequestButton(button: RideRequestButton, didReceiveError error: RidesError)
+    @objc func rideRequestButton(_ button: RideRequestButton, didReceiveError error: RidesError)
 }
 
 /// RequestButton implements a button on the touch screen to request a ride.
-@objc(UBSDKRideRequestButton) public class RideRequestButton: UberButton {
+@objc(UBSDKRideRequestButton) open class RideRequestButton: UberButton {
     /// Delegate is informed of events that occur with request button.
-    public var delegate: RideRequestButtonDelegate?
+    open var delegate: RideRequestButtonDelegate?
     
     /// The RideParameters object this button will use to make a request
-    public var rideParameters: RideParameters
+    open var rideParameters: RideParameters
     
     /// The RideRequesting object the button will use to make a request
-    public var requestBehavior: RideRequesting
+    open var requestBehavior: RideRequesting
     
     /// The RidesClient used for retrieving metadata for the button.
-    public var client: RidesClient?
+    open var client: RidesClient?
     
     static let sourceString = "button"
     
     var metadata: ButtonMetadata = ButtonMetadata()
     var uberMetadataLabel: UILabel = UILabel()
     
-    private let opticalCorrection: CGFloat = 1.0
+    fileprivate let opticalCorrection: CGFloat = 1.0
     
     /**
      Initializer to use in storyboard. Must call setRidesClient for request button to show metadata.
@@ -89,7 +89,7 @@ import CoreLocation
     @objc public init(client: RidesClient, rideParameters: RideParameters, requestingBehavior: RideRequesting) {
         requestBehavior = requestingBehavior
         self.rideParameters = rideParameters
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
         self.client = client
     }
     
@@ -162,16 +162,16 @@ import CoreLocation
     /**
      Setup the RideRequestButton by adding  a target to the button and setting the login completion block
      */
-    override public func setup() {
+    override open func setup() {
         super.setup()
-        addTarget(self, action: #selector(uberButtonTapped(_:)), forControlEvents: .TouchUpInside)
+        addTarget(self, action: #selector(uberButtonTapped(_:)), for: .touchUpInside)
         sizeToFit()
     }
     
     /**
      Adds the Metadata Label to the button
      */
-    override public func addSubviews() {
+    override open func addSubviews() {
         super.addSubviews()
         addSubview(uberMetadataLabel)
     }
@@ -179,27 +179,27 @@ import CoreLocation
     /**
      Updates the content of the button. Sets the image icon and font, as well as the text
      */
-    override public func setContent() {
+    override open func setContent() {
         super.setContent()
         
         uberMetadataLabel.numberOfLines = 2
-        uberMetadataLabel.textColor = colorStyle == .Black ? ColorUtil.colorForUberButtonColor(.UberWhite) : ColorUtil.colorForUberButtonColor(.UberBlack)
-        uberMetadataLabel.textAlignment = .Right
+        uberMetadataLabel.textColor = colorStyle == .black ? ColorUtil.colorForUberButtonColor(.uberWhite) : ColorUtil.colorForUberButtonColor(.uberBlack)
+        uberMetadataLabel.textAlignment = .right
         
-        uberTitleLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 15) ?? UIFont.systemFontOfSize(16)
+        uberTitleLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 15) ?? UIFont.systemFont(ofSize: 16)
         
         let titleText = LocalizationUtil.localizedString(forKey: "Ride there with Uber", comment: "Request button description")
         uberTitleLabel.text = titleText
         
         let logo = getImage("Badge")
         uberImageView.image = logo
-        uberImageView.contentMode = .Center
+        uberImageView.contentMode = .center
     }
     
     /**
      Adds the layout constraints for the ride request button.
      */
-    override public func setConstraints() {
+    override open func setConstraints() {
         
         uberTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         uberImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -208,33 +208,33 @@ import CoreLocation
         let views = ["image": uberImageView, "titleLabel": uberTitleLabel, "metadataLabel": uberMetadataLabel]
         let metrics = ["edgePadding": horizontalEdgePadding, "verticalPadding": verticalPadding, "imageLabelPadding": imageLabelPadding, "middlePadding": horizontalEdgePadding*2]
         
-        uberImageView.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Horizontal)
-        uberTitleLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Horizontal)
-        uberTitleLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
-        uberMetadataLabel.setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis: .Horizontal)
+        uberImageView.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
+        uberTitleLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
+        uberTitleLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .vertical)
+        uberMetadataLabel.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
         
-        let horizontalConstraints: [NSLayoutConstraint] = NSLayoutConstraint.constraintsWithVisualFormat("H:|-edgePadding-[image]-imageLabelPadding-[titleLabel]-middlePadding-[metadataLabel]-edgePadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
-        let verticalConstraints: [NSLayoutConstraint] = NSLayoutConstraint.constraintsWithVisualFormat("V:|-verticalPadding-[image]-verticalPadding-|", options: .AlignAllLeading, metrics: metrics, views: views)
+        let horizontalConstraints: [NSLayoutConstraint] = NSLayoutConstraint.constraints(withVisualFormat: "H:|-edgePadding-[image]-imageLabelPadding-[titleLabel]-middlePadding-[metadataLabel]-edgePadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
+        let verticalConstraints: [NSLayoutConstraint] = NSLayoutConstraint.constraints(withVisualFormat: "V:|-verticalPadding-[image]-verticalPadding-|", options: .alignAllLeading, metrics: metrics, views: views)
         
         let titleLabelCenterConstraint = NSLayoutConstraint(item: self,
-                                                            attribute: .CenterY,
-                                                            relatedBy: .Equal,
+                                                            attribute: .centerY,
+                                                            relatedBy: .equal,
                                                             toItem: uberTitleLabel,
-                                                            attribute: .CenterY,
+                                                            attribute: .centerY,
                                                             multiplier: 1.0,
                                                             constant: opticalCorrection)
         let metadataLabelCenterConstraint = NSLayoutConstraint(item: self,
-                                                               attribute: .CenterY,
-                                                               relatedBy: .Equal,
+                                                               attribute: .centerY,
+                                                               relatedBy: .equal,
                                                                toItem: uberMetadataLabel,
-                                                               attribute: .CenterY,
+                                                               attribute: .centerY,
                                                                multiplier: 1.0,
                                                                constant: 0)
         let imageViewCenterConstraint = NSLayoutConstraint(item: self,
-                                                           attribute: .CenterY,
-                                                           relatedBy: .Equal,
+                                                           attribute: .centerY,
+                                                           relatedBy: .equal,
                                                            toItem: uberImageView,
-                                                           attribute: .CenterY,
+                                                           attribute: .centerY,
                                                            multiplier: 1.0,
                                                            constant: 0)
         
@@ -243,23 +243,23 @@ import CoreLocation
         addConstraints([titleLabelCenterConstraint, metadataLabelCenterConstraint, imageViewCenterConstraint])
     }
     
-    override func colorStyleDidUpdate(style: RequestButtonColorStyle) {
+    override func colorStyleDidUpdate(_ style: RequestButtonColorStyle) {
         super.colorStyleDidUpdate(style)
         
         switch style {
-        case .Black:
-            uberMetadataLabel.textColor = ColorUtil.colorForUberButtonColor(.UberWhite)
-        case .White :
-            uberMetadataLabel.textColor = ColorUtil.colorForUberButtonColor(.UberBlack)
+        case .black:
+            uberMetadataLabel.textColor = ColorUtil.colorForUberButtonColor(.uberWhite)
+        case .white :
+            uberMetadataLabel.textColor = ColorUtil.colorForUberButtonColor(.uberBlack)
         }
     }
     
     //Mark: UIView
     
-    override public func sizeThatFits(size: CGSize) -> CGSize {
-        let logoSize = uberImageView.image?.size ?? CGSizeZero
-        let titleSize = uberTitleLabel.intrinsicContentSize()
-        let metadataSize = uberMetadataLabel.intrinsicContentSize()
+    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+        let logoSize = uberImageView.image?.size ?? CGSize.zero
+        let titleSize = uberTitleLabel.intrinsicContentSize
+        let metadataSize = uberMetadataLabel.intrinsicContentSize
         var width: CGFloat = 4*horizontalEdgePadding + imageLabelPadding + logoSize.width + titleSize.width
         var height: CGFloat = 2*verticalPadding + max(logoSize.height, titleSize.height)
         
@@ -268,7 +268,7 @@ import CoreLocation
             height = max(height, metadataSize.height)
         }
         
-        return CGSizeMake(width, height)
+        return CGSize(width: width, height: height)
     }
     
     //Mark: Public Interface
@@ -276,7 +276,7 @@ import CoreLocation
     /**
      Manual refresh for the ride information on the button. The product ID must be set in order to show any metadata.
      */
-    public func loadRideInformation() {
+    open func loadRideInformation() {
         guard client != nil else {
             return
         }
@@ -293,7 +293,7 @@ import CoreLocation
     //Mark: Internal Interface
     
     // Initiate deeplink when button is tapped
-    func uberButtonTapped(sender: UIButton) {
+    func uberButtonTapped(_ sender: UIButton) {
         rideParameters.source = RideRequestButton.sourceString
         requestBehavior.requestRide(rideParameters)
     }
@@ -307,50 +307,50 @@ import CoreLocation
      - parameter subtitle: The subtitle of the label. (ex. "$6-8 for uberX")
      - parameter surge:    Whether the price estimate should include a surge image. Default false.
      */
-    private func setMultilineAttributedString(title: String, subtitle: String = "", surge: Bool = false) {
-        let metadataFont = UIFont(name: "HelveticaNeue-Regular", size: 12) ?? UIFont.systemFontOfSize(12)
+    fileprivate func setMultilineAttributedString(_ title: String, subtitle: String = "", surge: Bool = false) {
+        let metadataFont = UIFont(name: "HelveticaNeue-Regular", size: 12) ?? UIFont.systemFont(ofSize: 12)
         
         let attrString = NSMutableAttributedString(string: title)
         
         // If there is a price estimate to include, add a new line
         if !subtitle.isEmpty {
-            attrString.appendAttributedString(NSAttributedString(string: "\n"))
+            attrString.append(NSAttributedString(string: "\n"))
             
             // If the price estimate is higher due to a surge, add the surge icon
             if surge == true {
                 let attachment = getSurgeAttachment()
                 
                 // Adjust bounds to center the text attachment
-                attachment.bounds = CGRectMake(0, metadataFont.descender-opticalCorrection, attachment.image!.size.width, attachment.image!.size.height)
+                attachment.bounds = CGRect(x: 0, y: metadataFont.descender-opticalCorrection, width: attachment.image!.size.width, height: attachment.image!.size.height)
                 let surgeImage = NSAttributedString(attachment: attachment)
                 
-                attrString.appendAttributedString(surgeImage)
-                attrString.appendAttributedString(NSAttributedString(string: " "))
+                attrString.append(surgeImage)
+                attrString.append(NSAttributedString(string: " "))
                 
                 // Adding the text attachment increases the space between lines so set the max line height
                 let paragraphStyle = NSMutableParagraphStyle()
-                paragraphStyle.alignment = .Right
+                paragraphStyle.alignment = .right
                 paragraphStyle.maximumLineHeight = 16
                 attrString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
             }
             
-            attrString.appendAttributedString(NSAttributedString(string: "\(subtitle)"))
+            attrString.append(NSAttributedString(string: "\(subtitle)"))
         }
         
-        attrString.addAttribute(NSFontAttributeName, value: metadataFont, range: (attrString.string as NSString).rangeOfString(title))
-        attrString.addAttribute(NSFontAttributeName, value: metadataFont, range: (attrString.string as NSString).rangeOfString(subtitle))
+        attrString.addAttribute(NSFontAttributeName, value: metadataFont, range: (attrString.string as NSString).range(of: title))
+        attrString.addAttribute(NSFontAttributeName, value: metadataFont, range: (attrString.string as NSString).range(of: subtitle))
         
         uberTitleLabel.text = LocalizationUtil.localizedString(forKey: "Get a ride", comment: "Request button shorter description")
         uberMetadataLabel.attributedText = attrString
     }
     
-    private func getSurgeAttachment() -> NSTextAttachment {
+    fileprivate func getSurgeAttachment() -> NSTextAttachment {
         let attachment = NSTextAttachment()
         
         switch colorStyle {
-        case .Black:
+        case .black:
             attachment.image = getImage("Surge-WhiteOutline")
-        case .White:
+        case .white:
             attachment.image = getImage("Surge-BlackOutline")
         }
     
@@ -360,7 +360,7 @@ import CoreLocation
     /**
      Sets metadata on button by fetching all required information.
      */
-    private func setMetadata() {
+    fileprivate func setMetadata() {
         /**
         *  These are all required for the following requests.
         */
@@ -368,13 +368,13 @@ import CoreLocation
             return
         }
         
-        let downloadGroup = dispatch_group_create()
-        dispatch_group_enter(downloadGroup)
+        let downloadGroup = DispatchGroup()
+        downloadGroup.enter()
         var errors = [RidesError]()
         let pickupLocation = CLLocation(latitude: pickupLatitude, longitude: pickupLongitude)
         
         // Set the information on the button label once all information is retrieved.
-        dispatch_group_notify(downloadGroup, dispatch_get_main_queue(), {
+        downloadGroup.notify(queue: DispatchQueue.main, execute: {
             guard let estimate = self.metadata.timeEstimate?.estimate else {
                 for error in errors {
                     self.delegate?.rideRequestButton(self, didReceiveError: error)
@@ -385,9 +385,9 @@ import CoreLocation
             let mins = estimate/60
             var titleText: String
             if mins == 1 {
-                titleText = String(format: LocalizationUtil.localizedString(forKey: "%d min away", comment: "Estimate is for car one minute away"), mins).uppercaseStringWithLocale(NSLocale.currentLocale())
+                titleText = String(format: LocalizationUtil.localizedString(forKey: "%d min away", comment: "Estimate is for car one minute away"), mins).uppercased(with: Locale.current)
             } else {
-                titleText = String(format: LocalizationUtil.localizedString(forKey: "%d mins away", comment: "Estimate is for car multiple minutes away"), mins).uppercaseStringWithLocale(NSLocale.currentLocale())
+                titleText = String(format: LocalizationUtil.localizedString(forKey: "%d mins away", comment: "Estimate is for car multiple minutes away"), mins).uppercased(with: Locale.current)
             }
             var subtitleText = ""
             var surge = false
@@ -415,38 +415,38 @@ import CoreLocation
         let timeEstimatesCompletion: ([TimeEstimate], Response) -> () = { timeEstimates, response in
             if let error = response.error {
                 errors.append(error)
-                dispatch_group_leave(downloadGroup)
+                downloadGroup.leave()
                 return
             }
             
             if timeEstimates.count == 0 {
-                dispatch_group_leave(downloadGroup)
+                downloadGroup.leave()
                 return
             }
             
             self.metadata.timeEstimate = timeEstimates.first!
             self.metadata.productName = timeEstimates.first!.name
-            dispatch_group_leave(downloadGroup)
+            downloadGroup.leave()
         }
         
         // If dropoff location was set, get price estimates.
         if let dropoffLatitude = metadata.dropoffLatitude, let dropoffLongitude = metadata.dropoffLongitude {
-            dispatch_group_enter(downloadGroup)
+            downloadGroup.enter()
             let dropoffLocation = CLLocation(latitude: dropoffLatitude, longitude: dropoffLongitude)
             let priceEstimatesCompletion: ([PriceEstimate], Response) -> () = {priceEstimates, response in
                 if let error = response.error {
                     errors.append(error)
-                    dispatch_group_leave(downloadGroup)
+                    downloadGroup.leave()
                     return
                 }
                 
                 if priceEstimates.count == 0 {
-                    dispatch_group_leave(downloadGroup)
+                    downloadGroup.leave()
                     return
                 }
                 
                 self.metadata.priceEstimates = priceEstimates
-                dispatch_group_leave(downloadGroup)
+                downloadGroup.leave()
             }
             
             client.fetchPriceEstimates(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation, completion:priceEstimatesCompletion )
@@ -456,9 +456,9 @@ import CoreLocation
     }
     
     // get image from media directory
-    private func getImage(name: String) -> UIImage {
-        let bundle = NSBundle(forClass: RideRequestButton.self)
-        let image = UIImage(named: name, inBundle: bundle, compatibleWithTraitCollection: nil)
+    fileprivate func getImage(_ name: String) -> UIImage {
+        let bundle = Bundle(for: RideRequestButton.self)
+        let image = UIImage(named: name, in: bundle, compatibleWith: nil)
         return image!
     }
 }
@@ -466,8 +466,8 @@ import CoreLocation
 // MARK: RideRequestButton structures
 
 @objc public enum RequestButtonColorStyle: Int {
-    case Black
-    case White
+    case black
+    case white
 }
 
 /**
@@ -481,7 +481,7 @@ struct ButtonMetadata {
     var dropoffLatitude: Double?
     var dropoffLongitude: Double?
     var timeEstimate: TimeEstimate?
-    private var priceEstimateList: [PriceEstimate]?
+    fileprivate var priceEstimateList: [PriceEstimate]?
     var priceEstimates: [PriceEstimate]! {
         get {
             return priceEstimateList != nil ? priceEstimateList : []

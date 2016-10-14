@@ -27,23 +27,23 @@ import ObjectMapper
 /**
  *  Describes a pre-set place for an Uber account (home or work).
  */
-@objc(UBSDKPlace) public class Place: NSObject {
+@objc(UBSDKPlace) open class Place: NSObject {
     
     /// Convenience constant for "home" place ID
-    public static let Home = "home"
+    open static let Home = "home"
     
     /// Convenience constant for "work" place ID
-    public static let Work = "work"
+    open static let Work = "work"
     
     /// Fully qualified address of the location.
-    public private(set) var address: String?
+    open fileprivate(set) var address: String?
     
     public required init?(_ map: Map) {
     }
 }
 
 extension Place: UberModel {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         address <- map["address"]
     }
 }

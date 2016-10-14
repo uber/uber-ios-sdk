@@ -29,50 +29,50 @@ import ObjectMapper
 /**
  *  Get the receipt information of a completed request that was made with the request endpoint.
  */
-@objc(UBSDKRideReceipt) public class RideReceipt: NSObject {
+@objc(UBSDKRideReceipt) open class RideReceipt: NSObject {
     
     /// Adjustments made to the charges such as promotions, and fees.
-    public private(set) var chargeAdjustments: [RideCharge]?
+    open fileprivate(set) var chargeAdjustments: [RideCharge]?
     
     /// Describes the charges made against the rider.
-    public private(set) var charges: [RideCharge]?
+    open fileprivate(set) var charges: [RideCharge]?
     
     /// ISO 4217
-    public private(set) var currencyCode: String?
+    open fileprivate(set) var currencyCode: String?
     
     /// Distance of the trip charged.
-    public private(set) var distance: String?
+    open fileprivate(set) var distance: String?
     
     /// The localized unit of distance.
-    public private(set) var distanceLabel: String?
+    open fileprivate(set) var distanceLabel: String?
     
     /// Time duration of the trip in ISO 8601 HH:MM:SS format.
-    public private(set) var duration: String?
+    open fileprivate(set) var duration: String?
     
     /// The summation of the charges array.
-    public private(set) var normalFare: String?
+    open fileprivate(set) var normalFare: String?
     
     /// Unique identifier representing a Request.
-    public private(set) var requestID: String?
+    open fileprivate(set) var requestID: String?
     
     /// The summation of the normal fare and surge charge amount.
-    public private(set) var subtotal: String?
+    open fileprivate(set) var subtotal: String?
     
     /// Describes the surge charge. May be null if surge pricing was not in effect.
-    public private(set) var surgeCharge: RideCharge?
+    open fileprivate(set) var surgeCharge: RideCharge?
     
     /// The total amount charged to the users payment method. This is the the subtotal (split if applicable) with taxes included.
-    public private(set) var totalCharged: String?
+    open fileprivate(set) var totalCharged: String?
     
     /// The total amount still owed after attempting to charge the user. May be 0 if amount was paid in full.
-    public private(set) var totalOwed: Double = 0.0
+    open fileprivate(set) var totalOwed: Double = 0.0
     
     public required init?(_ map: Map) {
     }
 }
 
 extension RideReceipt: UberModel {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         chargeAdjustments <- map["charge_adjustments"]
         charges           <- map["charges"]
         currencyCode      <- map["currency_code"]

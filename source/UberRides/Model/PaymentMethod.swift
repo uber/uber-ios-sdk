@@ -38,7 +38,7 @@ struct PaymentMethods {
 }
 
 extension PaymentMethods: UberModel {
-    mutating func mapping(map: Map) {
+    mutating func mapping(_ map: Map) {
         lastUsed <- map["last_used"]
         list     <- map["payment_methods"]
     }
@@ -46,23 +46,23 @@ extension PaymentMethods: UberModel {
 
 // MARK: PaymentMethod
 
-@objc(UBSDKPaymentMethod) public class PaymentMethod: NSObject {
+@objc(UBSDKPaymentMethod) open class PaymentMethod: NSObject {
     
     /// The account identification or description associated with the payment method.
-    public private(set) var paymentDescription: String?
+    open fileprivate(set) var paymentDescription: String?
     
     /// Unique identifier of the payment method.
-    public private(set) var methodID: String?
+    open fileprivate(set) var methodID: String?
     
     /// The type of the payment method. See https://developer.uber.com/docs/v1-payment-methods.
-    public private(set) var type: String?
+    open fileprivate(set) var type: String?
     
     public required init?(_ map: Map) {
     }
 }
 
 extension PaymentMethod: UberModel {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         paymentDescription <- map["description"]
         methodID           <- map["payment_method_id"]
         type               <- map["type"]

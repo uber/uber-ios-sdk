@@ -29,23 +29,23 @@ import ObjectMapper
 /**
  *  Contains estimates for a desired ride request.
  */
-@objc(UBSDKRideEstimate) public class RideEstimate: NSObject {
+@objc(UBSDKRideEstimate) open class RideEstimate: NSObject {
     
     /// Details of the estimated fare. If end location omitted, only the minimum is returned.
-    public private(set) var priceEstimate: PriceEstimate?
+    open fileprivate(set) var priceEstimate: PriceEstimate?
     
     /// Details of the estimated distance. Nil if end location is omitted.
-    public private(set) var distanceEstimate: DistanceEstimate?
+    open fileprivate(set) var distanceEstimate: DistanceEstimate?
     
     /// The estimated time of vehicle arrival in minutes. -1 if there are no cars available.
-    public private(set) var pickupEstimate: Int = -1
+    open fileprivate(set) var pickupEstimate: Int = -1
     
     public required init?(_ map: Map) {
     }
 }
 
 extension RideEstimate: UberModel {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         priceEstimate    <- map["price"]
         distanceEstimate <- map["trip"]
         pickupEstimate   <- map["pickup_estimate"]

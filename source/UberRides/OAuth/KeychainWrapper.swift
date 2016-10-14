@@ -24,25 +24,25 @@
 
 /// Wraps saving and retrieving objects from keychain.
 class KeychainWrapper: NSObject {
-    private static let serviceName = "com.uber.rides-ios-sdk"
-    private var accessGroup = ""
+    fileprivate static let serviceName = "com.uber.rides-ios-sdk"
+    fileprivate var accessGroup = ""
     
-    private let Class = kSecClass as String
-    private let AttrAccount = kSecAttrAccount as String
-    private let AttrService = kSecAttrService as String
-    private let AttrAccessGroup = kSecAttrAccessGroup as String
-    private let AttrGeneric = kSecAttrGeneric as String
-    private let AttrAccessible = kSecAttrAccessible as String
-    private let ReturnData = kSecReturnData as String
-    private let ValueData = kSecValueData as String
-    private let MatchLimit = kSecMatchLimit as String
+    fileprivate let Class = kSecClass as String
+    fileprivate let AttrAccount = kSecAttrAccount as String
+    fileprivate let AttrService = kSecAttrService as String
+    fileprivate let AttrAccessGroup = kSecAttrAccessGroup as String
+    fileprivate let AttrGeneric = kSecAttrGeneric as String
+    fileprivate let AttrAccessible = kSecAttrAccessible as String
+    fileprivate let ReturnData = kSecReturnData as String
+    fileprivate let ValueData = kSecValueData as String
+    fileprivate let MatchLimit = kSecMatchLimit as String
     
     /**
      Set the access group for keychain to use.
      
      - parameter group: String representing name of keychain access group.
      */
-    func setAccessGroup(accessGroup: String) {
+    func setAccessGroup(_ accessGroup: String) {
         self.accessGroup = accessGroup
     }
     
@@ -54,17 +54,18 @@ class KeychainWrapper: NSObject {
      
      - returns: true if object was successfully added to keychain.
      */
-    func setObject(object: NSCoding, key: String) -> Bool {
+    func setObject(_ object: NSCoding, key: String) -> Bool {
         var keychainItemData = getKeychainItemData(key)
 
-        let value = NSKeyedArchiver.archivedDataWithRootObject(object)
+        let value = NSKeyedArchiver.archivedData(withRootObject: object)
         keychainItemData[AttrAccessible] = kSecAttrAccessibleWhenUnlocked
-        keychainItemData[ValueData] = value
+        keychainItemData[ValueData] = value as AnyObject?
         
-        var result: OSStatus = SecItemAdd(keychainItemData, nil)
+        var result: OSStatus = SecItemAdd(keychainItemData as CFDictionary, nil)
         
         if result == errSecDuplicateItem {
-            result = SecItemUpdate(keychainItemData, [ValueData: value])
+            
+            result = SecItemUpdate(keychainItemData as CFDictionary, [ValueData: value as AnyObject] as [String : AnyObject] as CFDictionary )
         }
         
         return result == errSecSuccess
@@ -77,21 +78,21 @@ class KeychainWrapper: NSObject {
      
      - returns: the object in keychain or nil if none exists for the given key.
      */
-    func getObjectForKey(key: String) -> NSCoding? {
+    func getObjectForKey(_ key: String) -> NSCoding? {
         var keychainItemData = getKeychainItemData(key)
         
         keychainItemData[MatchLimit] = kSecMatchLimitOne
         keychainItemData[ReturnData] = kCFBooleanTrue
         
         var data: AnyObject?
-        let result = withUnsafeMutablePointer(&data) {
-            SecItemCopyMatching(keychainItemData, UnsafeMutablePointer($0))
+        let result = withUnsafeMutablePointer(to: &data) {
+            SecItemCopyMatching(keychainItemData as CFDictionary, UnsafeMutablePointer($0))
         }
         
         var object: AnyObject?
         
-        if let data = data as? NSData {
-            object = NSKeyedUnarchiver.unarchiveObjectWithData(data)
+        if let data = data as? Data {
+            object = NSKeyedUnarchiver.unarchiveObject(with: data) as AnyObject?
         }
         
         return result == noErr ? object as? NSCoding : nil
@@ -104,10 +105,10 @@ class KeychainWrapper: NSObject {
      
      - returns: true if object was successfully deleted.
      */
-    func deleteObjectForKey(key: String) -> Bool {
+    func deleteObjectForKey(_ key: String) -> Bool {
         let keychainItemData = getKeychainItemData(key)
         
-        let result = SecItemDelete(keychainItemData)
+        let result = SecItemDelete(keychainItemData as CFDictionary)
         
         return result == noErr
     }
@@ -117,17 +118,17 @@ class KeychainWrapper: NSObject {
      
      - returns: dictionary of base attributes for keychain query.
      */
-    private func getKeychainItemData(key: String) -> [String: AnyObject] {
+    fileprivate func getKeychainItemData(_ key: String) -> [String: AnyObject] {
         var keychainItemData = [String: AnyObject]()
         
-        let identifier = key.dataUsingEncoding(NSUTF8StringEncoding)
-        keychainItemData[AttrGeneric] = identifier
-        keychainItemData[AttrAccount] = identifier
-        keychainItemData[AttrService] = self.dynamicType.serviceName
+        let identifier = key.data(using: String.Encoding.utf8)
+        keychainItemData[AttrGeneric] = identifier as AnyObject?
+        keychainItemData[AttrAccount] = identifier as AnyObject?
+        keychainItemData[AttrService] = type(of: self).serviceName as AnyObject?
         keychainItemData[Class] = kSecClassGenericPassword
         
         if !accessGroup.isEmpty {
-            keychainItemData[AttrAccount] = accessGroup
+            keychainItemData[AttrAccount] = accessGroup as AnyObject?
         }
         
         return keychainItemData

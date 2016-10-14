@@ -25,31 +25,31 @@
 import UIKit
 
 /// Base class for authorization flows that use the LoginView.
-@objc(UBSDKBaseAuthenticator) public class BaseAuthenticator: NSObject, UberAuthenticating {
+@objc(UBSDKBaseAuthenticator) open class BaseAuthenticator: NSObject, UberAuthenticating {
     
     /// Optional identifier for saving the access token in keychain
-    public var accessTokenIdentifier: String?
+    open var accessTokenIdentifier: String?
     
     /// Optional access group for saving the access token in keychain
-    public var keychainAccessGroup: String?
+    open var keychainAccessGroup: String?
     
     /// Completion block for when login has completed
-    public var loginCompletion: ((accessToken: AccessToken?, error: NSError?) -> Void)?
+    open var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
     
     /// Scopes to request during login
-    public var scopes: [RidesScope]
+    open var scopes: [RidesScope]
     
     /// The Callback URL Type to use for this authentication method
-    public var callbackURIType: CallbackURIType = .General
+    open var callbackURIType: CallbackURIType = .general
     
     init(scopes: [RidesScope]) {
         self.scopes = scopes
         super.init()
     }
     
-    func handleRedirectRequest(request: NSURLRequest) -> Bool {
+    func handleRedirectRequest(_ request: URLRequest) -> Bool {
         var didHandleRedirect = false
-        if let url = request.URL where AuthenticationURLUtility.shouldHandleRedirectURL(url, type: callbackURIType) {
+        if let url = request.url , AuthenticationURLUtility.shouldHandleRedirectURL(url, type: callbackURIType) {
             do {
                 let accessToken = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
                 
@@ -58,14 +58,14 @@ import UIKit
                 var error: NSError?
                 let success = TokenManager.saveToken(accessToken, tokenIdentifier: tokenIdentifier, accessGroup: accessGroup)
                 if !success {
-                    error = RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .UnableToSaveAccessToken)
+                    error = RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken)
                     print("Error: access token failed to save to keychain")
                 }
-                loginCompletion?(accessToken: accessToken, error: error)
+                loginCompletion?(accessToken, error)
             } catch let ridesError as NSError {
-                loginCompletion?(accessToken: nil, error: ridesError)
+                loginCompletion?(nil, ridesError)
             } catch {
-                loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .InvalidResponse))
+                loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse))
             }
             didHandleRedirect = true
         }

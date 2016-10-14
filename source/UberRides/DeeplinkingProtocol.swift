@@ -37,10 +37,10 @@
     var path: String? { get }
     
     /// The query parameter items for the deeplink, where a deeplink takes the form scheme://domain/path?query
-    var queryItems: [NSURLQueryItem]? { get }
+    var queryItems: [URLQueryItem]? { get }
     
     /// The deeplink URL that the deeplink will execute
-    var deeplinkURL: NSURL { get }
+    var deeplinkURL: URL { get }
     
     /**
      Execute a deeplink to launch into an external app
@@ -54,5 +54,5 @@
      - parameter completion: The completion block to execute once the deeplink has
      executed. Passes in True if the url was successfully opened, false otherwise.
      */
-    @objc func execute(completion: ((NSError?) -> ())?)
+    @objc func execute(_ completion: ((NSError?) -> ())?)
 }

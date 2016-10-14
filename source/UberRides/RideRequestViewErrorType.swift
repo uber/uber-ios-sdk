@@ -32,23 +32,23 @@ Possible errors that can occur in the RideRequestView.
 - Unknown:                    Unknown error occured.
 */
 @objc public enum RideRequestViewErrorType: Int {
-    case AccessTokenExpired
-    case AccessTokenMissing
-    case NetworkError
-    case NotSupported
-    case Unknown
+    case accessTokenExpired
+    case accessTokenMissing
+    case networkError
+    case notSupported
+    case unknown
     
     func toString() -> String {
         switch self {
-        case .AccessTokenExpired:
+        case .accessTokenExpired:
             return "unauthorized"
-        case .AccessTokenMissing:
+        case .accessTokenMissing:
             return "no_access_token"
-        case .NetworkError:
+        case .networkError:
             return "network_error"
-        case .NotSupported:
+        case .notSupported:
             return "not_supported"
-        case .Unknown:
+        case .unknown:
             return "unknown"
         }
     }

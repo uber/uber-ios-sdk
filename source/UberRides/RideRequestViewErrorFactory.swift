@@ -34,7 +34,7 @@ class RideRequestViewErrorFactory {
      
      - returns: An initialized NSError
      */
-    static func errorForType(rideRequestViewErrorType: RideRequestViewErrorType) -> NSError {
+    static func errorForType(_ rideRequestViewErrorType: RideRequestViewErrorType) -> NSError {
         return NSError(domain: errorDomain, code: rideRequestViewErrorType.rawValue, userInfo: nil)
     }
     
@@ -46,23 +46,23 @@ class RideRequestViewErrorFactory {
      
      - returns: An initialized RideRequestViewError
      */
-    static func errorForString(rawValue: String) -> NSError {
+    static func errorForString(_ rawValue: String) -> NSError {
         let errorType = rideRequestViewErrorType(rawValue)
         return RideRequestViewErrorFactory.errorForType(errorType)
     }
     
-    static func rideRequestViewErrorType(rawValue: String) -> RideRequestViewErrorType {
+    static func rideRequestViewErrorType(_ rawValue: String) -> RideRequestViewErrorType {
         switch rawValue {
         case "network_error":
-            return .NetworkError
+            return .networkError
         case "not_supported":
-            return .NotSupported
+            return .notSupported
         case "no_access_token":
-            return .AccessTokenMissing
+            return .accessTokenMissing
         case "unauthorized":
-            return .AccessTokenExpired
+            return .accessTokenExpired
         default:
-            return .Unknown
+            return .unknown
         }
     }
 }

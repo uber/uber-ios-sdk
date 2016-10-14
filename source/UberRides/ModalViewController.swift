@@ -29,9 +29,9 @@ Possible Styles for the ModalViewController
 - DoneButton:  Presents the view mdoally with a Done BarButtonItem in the top right corner
 */
 @objc public enum ModalViewControllerButtonStyle : Int {
-    case Empty
-    case DoneButton
-    case BackButton
+    case empty
+    case doneButton
+    case backButton
 }
 
 /**
@@ -41,8 +41,8 @@ Possible Styles for the ModalViewController
  - Light:   Light color style, light navigation bar with dark text
  */
 @objc public enum ModalViewControllerColorStyle : Int {
-    case Default
-    case Light
+    case `default`
+    case light
 }
 
 /**
@@ -54,22 +54,22 @@ Possible Styles for the ModalViewController
      
      - parameter modalViewController: The ModalViewController that will be dismissed
      */
-    @objc func modalViewControllerWillDismiss(modalViewController: ModalViewController)
+    @objc func modalViewControllerWillDismiss(_ modalViewController: ModalViewController)
     
     /**
      Called after the ModalViewController is dismissed.
      
      - parameter modalViewController: The ModalViewController that was dismissed
      */
-    @objc func modalViewControllerDidDismiss(modalViewController: ModalViewController)
+    @objc func modalViewControllerDidDismiss(_ modalViewController: ModalViewController)
 }
 
 /// Convenience to wrap a ViewController in a UINavigationController and add the appropriate buttons. Allows you to modally present a view controller w/ Uber branding.
-@objc(UBSDKModalViewController) public class ModalViewController : UIViewController {
+@objc(UBSDKModalViewController) open class ModalViewController : UIViewController {
     /// The ModalViewControllerDelegate
-    public var delegate: ModalViewControllerDelegate?
+    open var delegate: ModalViewControllerDelegate?
     
-    public var colorStyle: ModalViewControllerColorStyle = .Default {
+    open var colorStyle: ModalViewControllerColorStyle = .default {
         didSet {
             setupStyle()
         }
@@ -109,7 +109,7 @@ Possible Styles for the ModalViewController
      - returns: An initialized ModalViewController
      */
     @objc public convenience init(childViewController: UIViewController) {
-        self.init(childViewController: childViewController, buttonStyle: .DoneButton)
+        self.init(childViewController: childViewController, buttonStyle: .doneButton)
     }
 
     /**
@@ -124,16 +124,16 @@ Possible Styles for the ModalViewController
     
     //MARK: View Lifecycle
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
         self.addChildViewController(wrappedNavigationController)
         self.view.addSubview(self.wrappedNavigationController.view)
         
-        self.wrappedNavigationController.didMoveToParentViewController(self)
+        self.wrappedNavigationController.didMove(toParentViewController: self)
     }
     
-    public override func viewDidDisappear(animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.delegate?.modalViewControllerDidDismiss(self)
     }
@@ -143,62 +143,62 @@ Possible Styles for the ModalViewController
     /**
      Function to dimiss the modalViewController.
     */
-    public func dismiss() {
+    open func dismiss() {
         self.delegate?.modalViewControllerWillDismiss(self)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    public override func preferredStatusBarStyle() -> UIStatusBarStyle {
+    open override var preferredStatusBarStyle : UIStatusBarStyle {
         switch colorStyle {
-        case .Light:
-            return UIStatusBarStyle.Default
-        case .Default:
-            return UIStatusBarStyle.LightContent
+        case .light:
+            return UIStatusBarStyle.default
+        case .default:
+            return UIStatusBarStyle.lightContent
         }
         
     }
     
     //MARK: Button Actions
     
-    func doneButtonPressed(button: UIButton) {
+    func doneButtonPressed(_ button: UIButton) {
         dismiss()
     }
     
-    func backButtonPressed(button: UIButton) {
+    func backButtonPressed(_ button: UIButton) {
         dismiss()
     }
     
     //MARK: Private Helpers
     
-    private func setupStyle() {
-        let bundle = NSBundle(forClass: RideRequestButton.self)
+    fileprivate func setupStyle() {
+        let bundle = Bundle(for: RideRequestButton.self)
         self.wrappedViewController.navigationItem.leftBarButtonItem = nil
         self.wrappedViewController.navigationItem.rightBarButtonItem = nil
-        var iconTintColor = UIColor.whiteColor()
+        var iconTintColor = UIColor.white
         switch colorStyle {
-        case .Light:
-            iconTintColor = UIColor.blackColor()
-            wrappedViewController.navigationController?.navigationBar.barStyle = .Default
-        case .Default:
-            wrappedViewController.navigationController?.navigationBar.barStyle = .Black
+        case .light:
+            iconTintColor = UIColor.black
+            wrappedViewController.navigationController?.navigationBar.barStyle = .default
+        case .default:
+            wrappedViewController.navigationController?.navigationBar.barStyle = .black
             break
         }
         
         switch buttonStyle {
-        case .Empty:
+        case .empty:
             break
-        case .DoneButton:
-            let doneButton = UIBarButtonItem(barButtonSystemItem: .Done , target: self, action: #selector(doneButtonPressed(_:)))
+        case .doneButton:
+            let doneButton = UIBarButtonItem(barButtonSystemItem: .done , target: self, action: #selector(doneButtonPressed(_:)))
             doneButton.tintColor = iconTintColor
             self.wrappedViewController.navigationItem.rightBarButtonItem = doneButton
-        case .BackButton:
-            let backImage =  UIImage(named: "ic_back_arrow_white", inBundle: bundle, compatibleWithTraitCollection: nil)
-            let backButton = UIBarButtonItem(image: backImage, style: .Plain, target: self, action: #selector(backButtonPressed(_:)))
+        case .backButton:
+            let backImage =  UIImage(named: "ic_back_arrow_white", in: bundle, compatibleWith: nil)
+            let backButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backButtonPressed(_:)))
             backButton.tintColor = iconTintColor
             self.wrappedViewController.navigationItem.leftBarButtonItem = backButton
         }
         
-        let logoImage = UIImage(named: "ic_logo_white", inBundle: bundle, compatibleWithTraitCollection: nil)?.imageWithRenderingMode(.AlwaysTemplate)
+        let logoImage = UIImage(named: "ic_logo_white", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
         let logoImageView = UIImageView(image: logoImage)
         logoImageView.tintColor = iconTintColor
         

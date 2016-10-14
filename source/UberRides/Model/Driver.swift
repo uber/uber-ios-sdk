@@ -29,26 +29,26 @@ import ObjectMapper
 /**
  *  Contains information for an Uber driver dispatched for a ride request.
  */
-@objc(UBSDKDriver) public class Driver: NSObject {
+@objc(UBSDKDriver) open class Driver: NSObject {
     
     /// The first name of the driver.
-    public private(set) var name: String?
+    open fileprivate(set) var name: String?
     
     /// The URL to the photo of the driver.
-    public private(set) var pictureURL: String?
+    open fileprivate(set) var pictureURL: String?
     
     /// The formatted phone number for contacting the driver.
-    public private(set) var phoneNumber: String?
+    open fileprivate(set) var phoneNumber: String?
     
     /// The driver's star rating out of 5 stars.
-    public private(set) var rating: Double = 0.0
+    open fileprivate(set) var rating: Double = 0.0
     
     public required init?(_ map: Map) {
     }
 }
 
 extension Driver: UberModel {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         name        <- map["name"]
         pictureURL  <- map["picture_url"]
         phoneNumber <- map["phone_number"]
