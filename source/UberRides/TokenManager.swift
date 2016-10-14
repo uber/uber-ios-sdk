@@ -25,12 +25,12 @@
 import Foundation
 
 /// Manager class for saving and deleting AccessTokens. Allows you to manage tokens based on token identifier & keychain access group
-@objc(UBSDKTokenManager) public class TokenManager: NSObject {
+@objc(UBSDKTokenManager) open class TokenManager: NSObject {
 
-    public static let TokenManagerDidSaveTokenNotification = "TokenManagerDidSaveTokenNotification"
-    public static let TokenManagerDidDeleteTokenNotification = "TokenManagerDidDeleteTokenNotification"
+    open static let TokenManagerDidSaveTokenNotification = "TokenManagerDidSaveTokenNotification"
+    open static let TokenManagerDidDeleteTokenNotification = "TokenManagerDidDeleteTokenNotification"
     
-    private static let keychainWrapper = KeychainWrapper()
+    fileprivate static let keychainWrapper = KeychainWrapper()
 
     //MARK: Get
     
@@ -42,7 +42,7 @@ import Foundation
 
      - returns: An AccessToken, or nil if one wasn't found
      */
-    @objc public static func fetchToken(tokenIdentifier: String, accessGroup: String) -> AccessToken? {
+    @objc open static func fetchToken(_ tokenIdentifier: String, accessGroup: String) -> AccessToken? {
         keychainWrapper.setAccessGroup(accessGroup)
         guard let token = keychainWrapper.getObjectForKey(tokenIdentifier) as? AccessToken else {
             return nil
@@ -58,7 +58,7 @@ import Foundation
      
      - returns: An AccessToken, or nil if one wasn't found
      */
-    @objc public static func fetchToken(tokenIdentifier: String) -> AccessToken? {
+    @objc open static func fetchToken(_ tokenIdentifier: String) -> AccessToken? {
         return self.fetchToken(tokenIdentifier,
             accessGroup: Configuration.getDefaultKeychainAccessGroup())
     }
@@ -69,7 +69,7 @@ import Foundation
      
      - returns: An AccessToken, or nil if one wasn't found
      */
-    @objc public static func fetchToken() -> AccessToken? {
+    @objc open static func fetchToken() -> AccessToken? {
         return self.fetchToken(Configuration.getDefaultAccessTokenIdentifier(),
             accessGroup: Configuration.getDefaultKeychainAccessGroup())
     }
@@ -88,11 +88,11 @@ import Foundation
 
      - returns: true if the accessToken was saved successfully, false otherwise
      */
-    @objc public static func saveToken(accessToken: AccessToken, tokenIdentifier: String, accessGroup: String) -> Bool {
+    @objc open static func saveToken(_ accessToken: AccessToken, tokenIdentifier: String, accessGroup: String) -> Bool {
         keychainWrapper.setAccessGroup(accessGroup)
         let success = keychainWrapper.setObject(accessToken, key: tokenIdentifier)
         if success {
-            NSNotificationCenter.defaultCenter().postNotificationName(TokenManagerDidSaveTokenNotification, object: self)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TokenManagerDidSaveTokenNotification), object: self)
         }
         return success
     }
@@ -108,7 +108,7 @@ import Foundation
      
      - returns: true if the accessToken was saved successfully, false otherwise
      */
-    @objc public static func saveToken(accessToken: AccessToken, tokenIdentifier: String) -> Bool {
+    @objc open static func saveToken(_ accessToken: AccessToken, tokenIdentifier: String) -> Bool {
         return self.saveToken(accessToken, tokenIdentifier: tokenIdentifier, accessGroup: Configuration.getDefaultKeychainAccessGroup())
     }
     
@@ -123,7 +123,7 @@ import Foundation
      
      - returns: true if the accessToken was saved successfully, false otherwise
      */
-    @objc public static func saveToken(accessToken: AccessToken) -> Bool {
+    @objc open static func saveToken(_ accessToken: AccessToken) -> Bool {
         return self.saveToken(accessToken,  tokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(), accessGroup: Configuration.getDefaultKeychainAccessGroup())
     }
     
@@ -138,12 +138,12 @@ import Foundation
 
      - returns: true if the token was deleted, false otherwise
      */
-    @objc public static func deleteToken(tokenIdentifier: String, accessGroup: String) -> Bool {
+    @objc open static func deleteToken(_ tokenIdentifier: String, accessGroup: String) -> Bool {
         keychainWrapper.setAccessGroup(accessGroup)
         deleteCookies()
         let success = keychainWrapper.deleteObjectForKey(tokenIdentifier)
         if success {
-            NSNotificationCenter.defaultCenter().postNotificationName(TokenManagerDidDeleteTokenNotification, object: self)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TokenManagerDidDeleteTokenNotification), object: self)
         }
         return success
     }
@@ -156,7 +156,7 @@ import Foundation
      
      - returns: true if the token was deleted, false otherwise
      */
-    @objc public static func deleteToken(tokenIdentifier: String) -> Bool {
+    @objc open static func deleteToken(_ tokenIdentifier: String) -> Bool {
         return self.deleteToken(tokenIdentifier, accessGroup: Configuration.getDefaultKeychainAccessGroup())
     }
     
@@ -167,26 +167,26 @@ import Foundation
      
      - returns: true if the token was deleted, false otherwise
      */
-    @objc public static func deleteToken() -> Bool {
+    @objc open static func deleteToken() -> Bool {
         return self.deleteToken(Configuration.getDefaultAccessTokenIdentifier(), accessGroup: Configuration.getDefaultKeychainAccessGroup())
     }
     
     // MARK: Private Interface
     
-    private static func deleteCookies() {
+    fileprivate static func deleteCookies() {
         Configuration.resetProcessPool()
-        var urlsToClear = [NSURL]()
-        if let loginURL = NSURL(string: OAuth.regionHostString(.Default)) {
+        var urlsToClear = [URL]()
+        if let loginURL = URL(string: OAuth.regionHostString(.default)) {
             urlsToClear.append(loginURL)
         }
-        if let loginURL = NSURL(string: OAuth.regionHostString(.China)) {
+        if let loginURL = URL(string: OAuth.regionHostString(.china)) {
             urlsToClear.append(loginURL)
         }
         
-        let sharedCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
+        let sharedCookieStorage = HTTPCookieStorage.shared
         
         for url in urlsToClear {
-            if let cookies = sharedCookieStorage.cookiesForURL(url) {
+            if let cookies = sharedCookieStorage.cookies(for: url) {
                 for cookie in cookies {
                     sharedCookieStorage.deleteCookie(cookie)
                 }

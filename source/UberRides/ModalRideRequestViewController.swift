@@ -23,9 +23,9 @@
 //  THE SOFTWARE.
 
 /// Modal View Controller to use for presenting a RideRequestViewController. Handles errors & closing the modal for you
-@objc(UBSDKModalRideRequestViewController) public class ModalRideRequestViewController : ModalViewController {
+@objc(UBSDKModalRideRequestViewController) open class ModalRideRequestViewController : ModalViewController {
     /// The RideRequestViewController this modal is wrapping
-    public internal(set) var rideRequestViewController : RideRequestViewController
+    open internal(set) var rideRequestViewController : RideRequestViewController
     
     /**
      Initializer for the ModalRideRequestViewController. Wraps the provided RideRequestViewController
@@ -38,7 +38,7 @@
      */
     @objc public init(rideRequestViewController: RideRequestViewController) {
         self.rideRequestViewController = rideRequestViewController
-        super.init(childViewController: rideRequestViewController, buttonStyle: ModalViewControllerButtonStyle.BackButton)
+        super.init(childViewController: rideRequestViewController, buttonStyle: ModalViewControllerButtonStyle.backButton)
         self.rideRequestViewController.delegate = self
     }
     
@@ -48,8 +48,8 @@
 
     // MARK: UIViewController
 
-    public override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return [.Portrait, .PortraitUpsideDown]
+    open override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return [.portrait, .portraitUpsideDown]
     }
 }
 
@@ -60,16 +60,16 @@ extension ModalRideRequestViewController : RideRequestViewControllerDelegate {
      - parameter rideRequestViewController: The RideRequestViewController that experienced an error
      - parameter error:                     The RideRequestViewError that occured
      */
-    public func rideRequestViewController(rideRequestViewController: RideRequestViewController, didReceiveError error: NSError) {
-        let errorType = RideRequestViewErrorType(rawValue: error.code) ?? RideRequestViewErrorType.Unknown
+    public func rideRequestViewController(_ rideRequestViewController: RideRequestViewController, didReceiveError error: NSError) {
+        let errorType = RideRequestViewErrorType(rawValue: error.code) ?? RideRequestViewErrorType.unknown
         var errorString: String?
         navigationItem.title = LocalizationUtil.localizedString(forKey: "Sign in with Uber", comment: "Title of navigation bar during OAuth")
         switch errorType {
-        case .AccessTokenExpired:
+        case .accessTokenExpired:
             fallthrough
-        case .AccessTokenMissing:
+        case .accessTokenMissing:
             errorString = LocalizationUtil.localizedString(forKey: "There was a problem authenticating you. Please try again.", comment: "RideRequestView error text for authentication error")
-        case .NetworkError:
+        case .networkError:
             break
         default:
             errorString = LocalizationUtil.localizedString(forKey: "The Ride Request Widget encountered a problem. Please try again.", comment: "RideRequestView error text for a generic error")
@@ -77,12 +77,12 @@ extension ModalRideRequestViewController : RideRequestViewControllerDelegate {
         
         if let errorString = errorString {
             let actionString = LocalizationUtil.localizedString(forKey: "OK", comment: "OK button title")
-            let alert = UIAlertController(title: nil, message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
-            let okayAction = UIAlertAction(title: actionString, style: UIAlertActionStyle.Default, handler: { (_) -> Void in
+            let alert = UIAlertController(title: nil, message: errorString, preferredStyle: UIAlertControllerStyle.alert)
+            let okayAction = UIAlertAction(title: actionString, style: UIAlertActionStyle.default, handler: { (_) -> Void in
                 self.dismiss()
             })
             alert.addAction(okayAction)
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         } else {
             self.dismiss()
         }

@@ -27,7 +27,7 @@ import Foundation
 /**
  *  A Deeplinking object for authenticating a user via the native Uber app
  */
-@objc(UBSDKAuthenticationDeeplink) public class AuthenticationDeeplink: BaseDeeplink {
+@objc(UBSDKAuthenticationDeeplink) open class AuthenticationDeeplink: BaseDeeplink {
 
     /**
      Initializes an Authentication Deeplink to request the provided scopes

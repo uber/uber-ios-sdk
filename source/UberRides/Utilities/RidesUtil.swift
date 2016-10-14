@@ -27,18 +27,18 @@ import Foundation
 import CoreLocation
 
 @objc enum UberButtonColor: Int {
-    case UberBlack
-    case UberWhite
-    case BlackHighlighted
-    case WhiteHighlighted
+    case uberBlack
+    case uberWhite
+    case blackHighlighted
+    case whiteHighlighted
 }
 
 class ColorUtil {
-    static func colorForUberButtonColor(color: UberButtonColor) -> UIColor {
+    static func colorForUberButtonColor(_ color: UberButtonColor) -> UIColor {
         let hexCode = hexCodeFromColor(color)
-        let scanner = NSScanner(string: hexCode)
+        let scanner = Scanner(string: hexCode)
         var color: UInt32 = 0
-        scanner.scanHexInt(&color)
+        scanner.scanHexInt32(&color)
         
         let mask = 0x000000FF
         
@@ -49,33 +49,33 @@ class ColorUtil {
         return UIColor(red: redValue, green: greenValue, blue: blueValue, alpha: 1.0)
     }
     
-    private static func hexCodeFromColor(color: UberButtonColor) -> String {
+    fileprivate static func hexCodeFromColor(_ color: UberButtonColor) -> String {
         switch color {
-        case .UberBlack:
+        case .uberBlack:
             return "000000"
-        case .UberWhite:
+        case .uberWhite:
             return "FFFFFF"
-        case .BlackHighlighted:
+        case .blackHighlighted:
             return "282727"
-        case .WhiteHighlighted:
+        case .whiteHighlighted:
             return "E5E5E4"
         }
     }
 }
 
 class FontUtil {
-    static func loadFontWithName(name: String, familyName: String) -> Bool {
-        if let path = NSBundle(forClass: FontUtil.self).pathForResource(name, ofType: "otf") {
-            if let inData = NSData(contentsOfFile: path) {
+    static func loadFontWithName(_ name: String, familyName: String) -> Bool {
+        if let path = Bundle(for: FontUtil.self).path(forResource: name, ofType: "otf") {
+            if let inData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
                 var error: Unmanaged<CFError>?
-                let cfdata = CFDataCreate(nil, UnsafePointer<UInt8>(inData.bytes), inData.length)
-                if let provider = CGDataProviderCreateWithCFData(cfdata) {
-                    if let font = CGFontCreateWithDataProvider(provider) {
+                let cfdata = CFDataCreate(nil, (inData as NSData).bytes.bindMemory(to: UInt8.self, capacity: inData.count), inData.count)
+                if let provider = CGDataProvider(data: cfdata!) {
+                   let font = CGFont(provider)
                         if (CTFontManagerRegisterGraphicsFont(font, &error)) {
                             return true
                         }
                         print("Failed to load font with error: \(error)")
-                    }
+                    
                 }
             }
         }
@@ -85,8 +85,8 @@ class FontUtil {
 
 class LocalizationUtil {
     static func localizedString(forKey key: String, comment: String) -> String {
-        var localizationBundle = NSBundle(forClass: self)
-        if let frameworkPath = NSBundle.mainBundle().privateFrameworksPath, let frameworkBundle = NSBundle(path: "\(frameworkPath)/UberRides.framework") {
+        var localizationBundle = Bundle(for: self)
+        if let frameworkPath = Bundle.main.privateFrameworksPath, let frameworkBundle = Bundle(path: "\(frameworkPath)/UberRides.framework") {
             localizationBundle = frameworkBundle
         }
         return NSLocalizedString(key, bundle: localizationBundle, comment: comment)
@@ -104,23 +104,23 @@ class OAuthUtil {
      
      - returns: an NSError, who's code contains the RidesAuthenticationErrorType that occured. If none recognized, defaults to InvalidRequest.
      */
-    static func parseAuthenticationErrorFromURL(url: NSURL) -> NSError {
-        let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false)!
+    static func parseAuthenticationErrorFromURL(_ url: URL) -> NSError {
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
         if let params = components.allItems() {
             for param in params {
                 if param.name == "error" {
                     guard let rawValue = param.value, let error = RidesAuthenticationErrorFactory.createRidesAuthenticationError(rawValue: rawValue) else {
-                        return RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .InvalidRequest)
+                        return RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
                     }
                     return error
                 }
             }
         }
-        return RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .InvalidRequest)
+        return RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
     }
     
-    static func parseRideWidgetErrorFromURL(url: NSURL) -> NSError {
-        let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false)!
+    static func parseRideWidgetErrorFromURL(_ url: URL) -> NSError {
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
         if let fragment = components.fragment {
             components.fragment = nil
             components.query = fragment
@@ -131,13 +131,13 @@ class OAuthUtil {
             }
         }
         
-        return RideRequestViewErrorFactory.errorForType(.Unknown)
+        return RideRequestViewErrorFactory.errorForType(.unknown)
     }
 }
 
 class RequestURLUtil {
     
-    private enum LocationType: String {
+    fileprivate enum LocationType: String {
         case Pickup = "pickup"
         case Dropoff = "dropoff"
     }
@@ -153,44 +153,44 @@ class RequestURLUtil {
     static let formattedAddressKey = "[formatted_address]"
     static let userAgentKey = "user-agent"
     
-    static func buildRequestQueryParameters(rideParameters: RideParameters) -> [NSURLQueryItem] {
+    static func buildRequestQueryParameters(_ rideParameters: RideParameters) -> [URLQueryItem] {
         
-        var queryItems = [NSURLQueryItem]()
-        queryItems.append(NSURLQueryItem(name: RequestURLUtil.actionKey, value: RequestURLUtil.setPickupValue))
-        queryItems.append(NSURLQueryItem(name: RequestURLUtil.clientIDKey, value: Configuration.getClientID()))
+        var queryItems = [URLQueryItem]()
+        queryItems.append(URLQueryItem(name: RequestURLUtil.actionKey, value: RequestURLUtil.setPickupValue))
+        queryItems.append(URLQueryItem(name: RequestURLUtil.clientIDKey, value: Configuration.getClientID()))
         
         if let productID = rideParameters.productID {
-            queryItems.append(NSURLQueryItem(name: RequestURLUtil.productIDKey, value: productID))
+            queryItems.append(URLQueryItem(name: RequestURLUtil.productIDKey, value: productID))
         }
         
         if let location = rideParameters.pickupLocation {
-            queryItems.appendContentsOf(addLocation(LocationType.Pickup, location: location, nickname: rideParameters.pickupNickname, address: rideParameters.pickupAddress))
+            queryItems.append(contentsOf: addLocation(LocationType.Pickup, location: location, nickname: rideParameters.pickupNickname, address: rideParameters.pickupAddress))
         } else {
-            queryItems.append(NSURLQueryItem(name: LocationType.Pickup.rawValue, value: RequestURLUtil.currentLocationValue))
+            queryItems.append(URLQueryItem(name: LocationType.Pickup.rawValue, value: RequestURLUtil.currentLocationValue))
         }
         
         if let location = rideParameters.dropoffLocation {
-            queryItems.appendContentsOf(addLocation(LocationType.Dropoff, location: location, nickname: rideParameters.dropoffNickname, address: rideParameters.dropoffAddress))
+            queryItems.append(contentsOf: addLocation(LocationType.Dropoff, location: location, nickname: rideParameters.dropoffNickname, address: rideParameters.dropoffAddress))
         }
         
-        queryItems.append(NSURLQueryItem(name: RequestURLUtil.userAgentKey, value: rideParameters.userAgent))
+        queryItems.append(URLQueryItem(name: RequestURLUtil.userAgentKey, value: rideParameters.userAgent))
         
         return queryItems
     }
     
-    private static func addLocation(locationType: LocationType, location: CLLocation, nickname: String?, address: String?) -> [NSURLQueryItem] {
-        var queryItems = [NSURLQueryItem]()
+    fileprivate static func addLocation(_ locationType: LocationType, location: CLLocation, nickname: String?, address: String?) -> [URLQueryItem] {
+        var queryItems = [URLQueryItem]()
         
         let locationPrefix = locationType.rawValue
         let latitudeString = "\(location.coordinate.latitude)"
         let longitudeString = "\(location.coordinate.longitude)"
-        queryItems.append(NSURLQueryItem(name: locationPrefix + RequestURLUtil.latitudeKey, value: latitudeString))
-        queryItems.append(NSURLQueryItem(name: locationPrefix + RequestURLUtil.longitudeKey, value: longitudeString))
+        queryItems.append(URLQueryItem(name: locationPrefix + RequestURLUtil.latitudeKey, value: latitudeString))
+        queryItems.append(URLQueryItem(name: locationPrefix + RequestURLUtil.longitudeKey, value: longitudeString))
         if let nickname = nickname {
-            queryItems.append(NSURLQueryItem(name: locationPrefix + RequestURLUtil.nicknameKey, value: nickname))
+            queryItems.append(URLQueryItem(name: locationPrefix + RequestURLUtil.nicknameKey, value: nickname))
         }
         if let address = address {
-            queryItems.append(NSURLQueryItem(name: locationPrefix + RequestURLUtil.formattedAddressKey, value: address))
+            queryItems.append(URLQueryItem(name: locationPrefix + RequestURLUtil.formattedAddressKey, value: address))
         }
         
         return queryItems
@@ -203,7 +203,7 @@ class RequestURLUtil {
  Adds functionality to extract key value pairs (as NSURLQueryItem) from the fragment
  Adds functionality to extract key value pairs (as NSURLQueryItem) from both fragment and query
  */
-extension NSURLComponents
+extension URLComponents
 {
     /**
      Converts key value pairs in the fragment into NSURLQueryItems
@@ -211,7 +211,7 @@ extension NSURLComponents
      then restoring the original value of query
      - returns: An array of NSURLQueryItems, or nil if there was no fragment
      */
-    func fragmentItems() -> [NSURLQueryItem]?
+    mutating func fragmentItems() -> [URLQueryItem]?
     {
         objc_sync_enter(self)
         let holdQuery = self.query
@@ -227,14 +227,14 @@ extension NSURLComponents
      to the NSURLQuery items returned from .queryItems
      - returns: An array of NSURLQueryItems, or nil if there was no fragment and no query
      */
-    func allItems() -> [NSURLQueryItem]?
+    mutating func allItems() -> [URLQueryItem]?
     {
-        var finalItemArray = [NSURLQueryItem]()
+        var finalItemArray = [URLQueryItem]()
         if let queryItems = self.queryItems {
-            finalItemArray.appendContentsOf(queryItems)
+            finalItemArray.append(contentsOf: queryItems)
         }
         if let fragmentItems = self.fragmentItems() {
-            finalItemArray.appendContentsOf(fragmentItems)
+            finalItemArray.append(contentsOf: fragmentItems)
         }
         guard finalItemArray.count > 0 else {
             return nil

@@ -36,7 +36,7 @@ struct TimeEstimates {
 }
 
 extension TimeEstimates: UberModel {
-    mutating func mapping(map: Map) {
+    mutating func mapping(_ map: Map) {
         list <- map["times"]
     }
 }
@@ -46,22 +46,22 @@ extension TimeEstimates: UberModel {
 /**
 *  Contains information regarding the ETA of an Uber product.
 */
-@objc(UBSDKTimeEstimate) public class TimeEstimate: NSObject {
+@objc(UBSDKTimeEstimate) open class TimeEstimate: NSObject {
     /// Unique identifier representing a specific product for a given latitude & longitude.
-    public private(set) var productID: String?
+    open fileprivate(set) var productID: String?
     
     /// Display name of product. Ex: "UberBLACK".
-    public private(set) var name: String?
+    open fileprivate(set) var name: String?
     
     /// ETA for the product (in seconds).
-    public private(set) var estimate: Int = 0
+    open fileprivate(set) var estimate: Int = 0
     
     public required init?(_ map: Map) {
     }
 }
 
 extension TimeEstimate: UberModel {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         productID <- map["product_id"]
         name      <- map["display_name"]
         estimate  <- map["estimate"]

@@ -26,7 +26,7 @@ import CoreLocation
 
 class RequestURLBuilder {
     
-    private enum LocationType: String {
+    fileprivate enum LocationType: String {
         case Pickup = "pickup"
         case Dropoff = "dropoff"
     }
@@ -43,66 +43,66 @@ class RequestURLBuilder {
     static let deeplinkScheme = "uber"
     static let userAgentKey = "user-agent"
     
-    private let clientID: String
-    private var rideParameters: RideParameters?
+    fileprivate let clientID: String
+    fileprivate var rideParameters: RideParameters?
     
     init() {
         clientID = Configuration.getClientID()
     }
     
-    func setRideParameters(rideParameters: RideParameters) -> RequestURLBuilder {
+    func setRideParameters(_ rideParameters: RideParameters) -> RequestURLBuilder {
         self.rideParameters = rideParameters
         
         return self
     }
     
-    func build() -> NSURL? {
+    func build() -> URL? {
         guard let rideParameters = rideParameters else {
             return nil
         }
-        let urlComponents = NSURLComponents()
+        var urlComponents = URLComponents()
         
         urlComponents.scheme = RequestURLBuilder.deeplinkScheme
         urlComponents.host = ""
         
-        var queryItems = [NSURLQueryItem]()
-        queryItems.append(NSURLQueryItem(name: RequestURLBuilder.actionKey, value: RequestURLBuilder.setPickupValue))
-        queryItems.append(NSURLQueryItem(name: RequestURLBuilder.clientIDKey, value: clientID))
+        var queryItems = [URLQueryItem]()
+        queryItems.append(URLQueryItem(name: RequestURLBuilder.actionKey, value: RequestURLBuilder.setPickupValue))
+        queryItems.append(URLQueryItem(name: RequestURLBuilder.clientIDKey, value: clientID))
         
         if let productID = rideParameters.productID {
-            queryItems.append(NSURLQueryItem(name: RequestURLBuilder.productIDKey, value: productID))
+            queryItems.append(URLQueryItem(name: RequestURLBuilder.productIDKey, value: productID))
         }
         
         if let location = rideParameters.pickupLocation {
-            queryItems.appendContentsOf(addLocation(LocationType.Pickup, location: location, nickname: rideParameters.pickupNickname, address: rideParameters.pickupAddress))
+            queryItems.append(contentsOf: addLocation(LocationType.Pickup, location: location, nickname: rideParameters.pickupNickname, address: rideParameters.pickupAddress))
         } else {
-            queryItems.append(NSURLQueryItem(name: LocationType.Pickup.rawValue, value: RequestURLBuilder.currentLocationValue))
+            queryItems.append(URLQueryItem(name: LocationType.Pickup.rawValue, value: RequestURLBuilder.currentLocationValue))
         }
         
         if let location = rideParameters.dropoffLocation {
-            queryItems.appendContentsOf(addLocation(LocationType.Dropoff, location: location, nickname: rideParameters.dropoffNickname, address: rideParameters.dropoffAddress))
+            queryItems.append(contentsOf: addLocation(LocationType.Dropoff, location: location, nickname: rideParameters.dropoffNickname, address: rideParameters.dropoffAddress))
         }
         
-        queryItems.append(NSURLQueryItem(name: RequestURLBuilder.userAgentKey, value: rideParameters.userAgent))
+        queryItems.append(URLQueryItem(name: RequestURLBuilder.userAgentKey, value: rideParameters.userAgent))
         
         urlComponents.queryItems = queryItems
         
-        return urlComponents.URL
+        return urlComponents.url
     }
     
-    private func addLocation(locationType: LocationType, location: CLLocation, nickname: String?, address: String?) -> [NSURLQueryItem] {
-        var queryItems = [NSURLQueryItem]()
+    fileprivate func addLocation(_ locationType: LocationType, location: CLLocation, nickname: String?, address: String?) -> [URLQueryItem] {
+        var queryItems = [URLQueryItem]()
         
         let locationPrefix = locationType.rawValue
         let latitudeString = "\(location.coordinate.latitude)"
         let longitudeString = "\(location.coordinate.longitude)"
-        queryItems.append(NSURLQueryItem(name: locationPrefix + RequestURLBuilder.latitudeKey, value: latitudeString))
-        queryItems.append(NSURLQueryItem(name: locationPrefix + RequestURLBuilder.longitudeKey, value: longitudeString))
+        queryItems.append(URLQueryItem(name: locationPrefix + RequestURLBuilder.latitudeKey, value: latitudeString))
+        queryItems.append(URLQueryItem(name: locationPrefix + RequestURLBuilder.longitudeKey, value: longitudeString))
         if let nickname = nickname {
-            queryItems.append(NSURLQueryItem(name: locationPrefix + RequestURLBuilder.nicknameKey, value: nickname))
+            queryItems.append(URLQueryItem(name: locationPrefix + RequestURLBuilder.nicknameKey, value: nickname))
         }
         if let address = address {
-            queryItems.append(NSURLQueryItem(name: locationPrefix + RequestURLBuilder.formattedAddressKey, value: address))
+            queryItems.append(URLQueryItem(name: locationPrefix + RequestURLBuilder.formattedAddressKey, value: address))
         }
         
         return queryItems

@@ -27,14 +27,14 @@ import UIKit
 /**
  *  Defines the implicit grant authorization flow where access token is extracted from redirect fragment.
  */
-@objc(UBSDKImplicitGrantAuthenticator) public class ImplicitGrantAuthenticator: LoginViewAuthenticator {
+@objc(UBSDKImplicitGrantAuthenticator) open class ImplicitGrantAuthenticator: LoginViewAuthenticator {
     
     override var endpoint: UberAPI {
-        return OAuth.ImplicitLogin(clientID: Configuration.getClientID(), scopes: self.scopes, redirect: Configuration.getCallbackURIString(.Implicit))
+        return OAuth.implicitLogin(clientID: Configuration.getClientID(), scopes: self.scopes, redirect: Configuration.getCallbackURIString(.implicit))
     }
     
     override public init(presentingViewController: UIViewController, scopes: [RidesScope]) {
         super.init(presentingViewController: presentingViewController, scopes: scopes)
-        callbackURIType = .Implicit
+        callbackURIType = .implicit
     }
 }

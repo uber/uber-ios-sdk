@@ -29,25 +29,25 @@ import ObjectMapper
 /**
 *  User's lifetime trip activity with Uber.
 */
-@objc(UBSDKTripHistory) public class TripHistory: NSObject {
+@objc(UBSDKTripHistory) open class TripHistory: NSObject {
     /// Position in pagination.
-    public private(set) var offset: Int = 0
+    open fileprivate(set) var offset: Int = 0
     
     /// Number of items retrieved.
-    public private(set) var limit: Int = 0
+    open fileprivate(set) var limit: Int = 0
     
     /// Total number of items available.
-    public private(set) var count: Int = 0
+    open fileprivate(set) var count: Int = 0
     
     /// Array of trip information.
-    public private(set) var history: [UserActivity]?
+    open fileprivate(set) var history: [UserActivity]?
     
     public required init?(_ map: Map) {
     }
 }
 
 extension TripHistory: UberModel {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         offset  <- map["offset"]
         limit   <- map["limit"]
         count   <- map["count"]
@@ -60,37 +60,37 @@ extension TripHistory: UberModel {
 /**
 *  Information regarding an Uber trip in a user's activity history.
 */
-@objc(UBSDKUserActivity) public class UserActivity: NSObject {
+@objc(UBSDKUserActivity) open class UserActivity: NSObject {
     /// Status of the activity. Only returns completed for now.
-    public private(set) var status: RideStatus?
+    open fileprivate(set) var status: RideStatus?
     
     /// Length of activity in miles.
-    public private(set) var distance: Float = 0.0
+    open fileprivate(set) var distance: Float = 0.0
     
     /// Represents timestamp of activity request time in current locale.
-    public private(set) var requestTime: NSDate?
+    open fileprivate(set) var requestTime: Date?
     
     /// Represents timestamp of activity start time in current locale.
-    public private(set) var startTime: NSDate?
+    open fileprivate(set) var startTime: Date?
     
     /// Represents timestamp of activity end time in current locale.
-    public private(set) var endTime: NSDate?
+    open fileprivate(set) var endTime: Date?
     
     /// City that activity started in.
-    public private(set) var startCity: TripCity?
+    open fileprivate(set) var startCity: TripCity?
     
     /// Unique activity identifier.
-    public private(set) var requestID: String?
+    open fileprivate(set) var requestID: String?
     
     /// Unique identifier representing a specific product for a given latitude & longitude.
-    public private(set) var productID: String?
+    open fileprivate(set) var productID: String?
     
     public required init?(_ map: Map) {
     }
 }
 
 extension UserActivity: UberModel {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         distance    <- map["distance"]
         requestTime <- (map["request_time"], DateTransform())
         startTime   <- (map["start_time"], DateTransform())
@@ -99,7 +99,7 @@ extension UserActivity: UberModel {
         requestID   <- map["request_id"]
         productID   <- map["product_id"]
         
-        status = .Unknown
+        status = .unknown
         if let value = map["status"].currentValue as? String {
             status = RideStatusFactory.convertRideStatus(value)
         }
@@ -111,22 +111,22 @@ extension UserActivity: UberModel {
 /**
 *  Information relating to a city in a trip activity.
 */
-@objc(UBSDKTripCity) public class TripCity : NSObject {
+@objc(UBSDKTripCity) open class TripCity : NSObject {
     /// Latitude of city location.
-    public private(set) var latitude: Float = 0.0
+    open fileprivate(set) var latitude: Float = 0.0
     
     /// Longitude of city location.
-    public private(set) var longitude: Float = 0.0
+    open fileprivate(set) var longitude: Float = 0.0
     
     /// Display name of city.
-    public private(set) var name: String?
+    open fileprivate(set) var name: String?
     
     public required init?(_ map: Map) {
     }
 }
 
 extension TripCity: Mappable {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         latitude  <- map["latitude"]
         longitude <- map["longitude"]
         name      <- map["display_name"]

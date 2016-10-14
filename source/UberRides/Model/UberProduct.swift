@@ -37,7 +37,7 @@ struct UberProducts {
 }
 
 extension UberProducts: UberModel {
-    mutating func mapping(map: Map) {
+    mutating func mapping(_ map: Map) {
         list <- map["products"]
     }
 }
@@ -47,31 +47,31 @@ extension UberProducts: UberModel {
 /**
 *  Contains information for a single Uber product.
 */
-@objc(UBSDKUberProduct) public class UberProduct: NSObject {
+@objc(UBSDKUberProduct) open class UberProduct: NSObject {
     /// Unique identifier representing a specific product for a given latitude & longitude.
-    public private(set) var productID: String?
+    open fileprivate(set) var productID: String?
     
     /// Display name of product. Ex: "UberBLACK".
-    public private(set) var name: String?
+    open fileprivate(set) var name: String?
     
     /// Description of product. Ex: "The original Uber".
-    public private(set) var details: String?
+    open fileprivate(set) var details: String?
     
     /// Capacity of product. Ex: 4, for a product that fits 4.
-    public private(set) var capacity: Int = 0
+    open fileprivate(set) var capacity: Int = 0
     
     /// Path of image URL representing the product.
-    public private(set) var imagePath: String?
+    open fileprivate(set) var imagePath: String?
     
     /// The basic price details. See `PriceDetails` for structure.
-    public private(set) var priceDetails: PriceDetails?
+    open fileprivate(set) var priceDetails: PriceDetails?
     
     public required init?(_ map: Map) {
     }
 }
 
 extension UberProduct : UberModel {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         productID    <- map["product_id"]
         name         <- map["display_name"]
         details      <- map["description"]
@@ -86,37 +86,37 @@ extension UberProduct : UberModel {
 /**
 *  Contains basic price details for an Uber product.
 */
-@objc(UBSDKPriceDetails) public class PriceDetails : NSObject {
+@objc(UBSDKPriceDetails) open class PriceDetails : NSObject {
     /// Unit of distance used to calculate fare (mile or km).
-    public private(set) var distanceUnit: String?
+    open fileprivate(set) var distanceUnit: String?
     
     /// ISO 4217 currency code.
-    public private(set) var currencyCode: String?
+    open fileprivate(set) var currencyCode: String?
     
     /// The charge per minute (if applicable).
-    public private(set) var costPerMinute: Double = -1
+    open fileprivate(set) var costPerMinute: Double = -1
     
     /// The charge per distance unit (if applicable).
-    public private(set) var costPerDistance: Double = -1
+    open fileprivate(set) var costPerDistance: Double = -1
     
     /// The base price.
-    public private(set) var baseFee: Double = 0
+    open fileprivate(set) var baseFee: Double = 0
     
     /// The minimum price of a trip.
-    public private(set) var minimumFee: Double = 0
+    open fileprivate(set) var minimumFee: Double = 0
     
     /// The fee if a rider cancels the trip after a grace period.
-    public private(set) var cancellationFee: Double = 0
+    open fileprivate(set) var cancellationFee: Double = 0
     
     /// Array containing additional fees added to the price. See `ServiceFee`.
-    public private(set) var serviceFees: [ServiceFee]?
+    open fileprivate(set) var serviceFees: [ServiceFee]?
     
     public required init?(_ map: Map) {
     }
 }
 
 extension PriceDetails : Mappable {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         distanceUnit    <- map["distance_unit"]
         currencyCode    <- map["currency_code"]
         costPerMinute   <- map["cost_per_minute"]
@@ -133,19 +133,19 @@ extension PriceDetails : Mappable {
 /**
 *  Contains information for additional fees that can be added to the price of an Uber product.
 */
-public class ServiceFee : NSObject {
+open class ServiceFee : NSObject {
     /// The name of the service fee.
-    public private(set) var name: String?
+    open fileprivate(set) var name: String?
     
     /// The amount of the service fee.
-    public private(set) var fee: Double = 0.0
+    open fileprivate(set) var fee: Double = 0.0
     
     public required init?(_ map: Map) {
     }
 }
 
 extension ServiceFee: Mappable {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         name <- map["name"]
         fee  <- map["fee"]
     }

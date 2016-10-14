@@ -38,15 +38,15 @@
  - Unknown:            An unexpected status.
  */
 @objc(UBSDKRideStatus) public enum RideStatus: Int {
-    case Accepted
-    case Arriving
-    case Completed
-    case DriverCanceled
-    case InProgress
-    case NoDriversAvailable
-    case Processing
-    case RiderCanceled
-    case Unknown
+    case accepted
+    case arriving
+    case completed
+    case driverCanceled
+    case inProgress
+    case noDriversAvailable
+    case processing
+    case riderCanceled
+    case unknown
 }
 
 // MARK: Objective-C Compatibility
@@ -63,28 +63,28 @@ private enum RideStatusString: String {
 }
 
 class RideStatusFactory: NSObject {
-    static func convertRideStatus(stringValue: String) -> RideStatus {
+    static func convertRideStatus(_ stringValue: String) -> RideStatus {
         guard let status = RideStatusString(rawValue: stringValue) else {
-            return .Unknown
+            return .unknown
         }
         
         switch status {
         case .Accepted:
-            return .Accepted
+            return .accepted
         case .Arriving:
-            return .Arriving
+            return .arriving
         case .Completed:
-            return .Completed
+            return .completed
         case .DriverCanceled:
-            return .DriverCanceled
+            return .driverCanceled
         case .InProgress:
-            return .InProgress
+            return .inProgress
         case .NoDriversAvailable:
-            return .NoDriversAvailable
+            return .noDriversAvailable
         case .Processing:
-            return .Processing
+            return .processing
         case .RiderCanceled:
-            return .RiderCanceled
+            return .riderCanceled
         }
     }
 }

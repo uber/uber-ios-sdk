@@ -27,21 +27,21 @@ import ObjectMapper
 // MARK: RidesError
 
 /// Base class for errors that can be mapped from HTTP responses.
-@objc(UBSDKRidesError) public class RidesError : NSObject {
+@objc(UBSDKRidesError) open class RidesError : NSObject {
     /// HTTP status code for error.
-    public internal(set) var status: Int = -1
+    open internal(set) var status: Int = -1
     
     /// Human readable message which corresponds to the client error.
-    public internal(set) var title: String?
+    open internal(set) var title: String?
     
     /// Underscore delimited string.
-    public internal(set) var code: String?
+    open internal(set) var code: String?
     
     /// Additional information about errors. Can be "fields" or "meta" as the key.
-    public internal(set) var meta: [String: AnyObject]?
+    open internal(set) var meta: [String: AnyObject]?
     
     /// List of additional errors. This can be populated instead of status/code/title.
-    public internal(set) var errors: [RidesError]?
+    open internal(set) var errors: [RidesError]?
 
     override init() {
     }
@@ -51,7 +51,7 @@ import ObjectMapper
 }
 
 extension RidesError: UberModel {
-    public func mapping(map: Map) {
+    public func mapping(_ map: Map) {
         code    <- map["code"]
         status  <- map["status"]
         errors  <- map["errors"]
@@ -77,7 +77,7 @@ extension RidesError: UberModel {
 // MARK: RidesError subclasses
 
 /// Client error 4xx.
-@objc(UBSDKRidesClientError) public class RidesClientError: RidesError {
+@objc(UBSDKRidesClientError) open class RidesClientError: RidesError {
 
     public required init?(_ map: Map) {
         super.init(map)
@@ -85,7 +85,7 @@ extension RidesError: UberModel {
 }
 
 /// Server error 5xx.
-@objc(UBSDKRidesServerError) public class RidesServerError: RidesError {
+@objc(UBSDKRidesServerError) open class RidesServerError: RidesError {
     
     public required init?(_ map: Map) {
         super.init(map)
@@ -93,7 +93,7 @@ extension RidesError: UberModel {
 }
 
 /// Unknown error type.
-@objc(UBSDKRidesUnknownError) public class RidesUnknownError: RidesError {
+@objc(UBSDKRidesUnknownError) open class RidesUnknownError: RidesError {
     
     override init() {
         super.init()
@@ -137,143 +137,143 @@ extension RidesError: UberModel {
  - UserCancelled:           User cancelled the auth process
  */
 @objc public enum RidesAuthenticationErrorType: Int {
-    case AccessDenied
-    case ExpiredJWT
-    case GeneralError
-    case InternalServerError
-    case InvalidAppSignature
-    case InvalidAuthCode
-    case InvalidClientID
-    case InvalidFlowError
-    case InvalidJWT
-    case InvalidJWTSignature
-    case InvalidNonce
-    case InvalidRedirect
-    case InvalidRefreshToken
-    case InvalidRequest
-    case InvalidResponse
-    case InvalidScope
-    case InvalidSSOResponse
-    case InvalidUserID
-    case MalformedRequest
-    case MismatchingRedirect
-    case NetworkError
-    case ServerError
-    case UnableToPresentLogin
-    case UnableToSaveAccessToken
-    case Unavailable
-    case UserCancelled
+    case accessDenied
+    case expiredJWT
+    case generalError
+    case internalServerError
+    case invalidAppSignature
+    case invalidAuthCode
+    case invalidClientID
+    case invalidFlowError
+    case invalidJWT
+    case invalidJWTSignature
+    case invalidNonce
+    case invalidRedirect
+    case invalidRefreshToken
+    case invalidRequest
+    case invalidResponse
+    case invalidScope
+    case invalidSSOResponse
+    case invalidUserID
+    case malformedRequest
+    case mismatchingRedirect
+    case networkError
+    case serverError
+    case unableToPresentLogin
+    case unableToSaveAccessToken
+    case unavailable
+    case userCancelled
     
     func toString() -> String {
         switch self {
-        case .AccessDenied:
+        case .accessDenied:
             return "access_denied"
-        case .ExpiredJWT:
+        case .expiredJWT:
             return "expired_jwt"
-        case .GeneralError:
+        case .generalError:
             return "general_error"
-        case .InternalServerError:
+        case .internalServerError:
             return "internal_server_error"
-        case .InvalidAppSignature:
+        case .invalidAppSignature:
             return "invalid_app_signature"
-        case .InvalidAuthCode:
+        case .invalidAuthCode:
             return "invalid_auth_code"
-        case .InvalidClientID:
+        case .invalidClientID:
             return "invalid_client_id"
-        case .InvalidFlowError:
+        case .invalidFlowError:
             return "invalid_flow_error"
-        case .InvalidJWT:
+        case .invalidJWT:
             return "invalid_jwt"
-        case .InvalidJWTSignature:
+        case .invalidJWTSignature:
             return "invalid_jwt_signature"
-        case .InvalidNonce:
+        case .invalidNonce:
             return "invalid_nonce"
-        case .InvalidRedirect:
+        case .invalidRedirect:
             return "invalid_redirect_uri"
-        case .InvalidRefreshToken:
+        case .invalidRefreshToken:
             return "invalid_refresh_token"
-        case .InvalidRequest:
+        case .invalidRequest:
             return "invalid_parameters"
-        case .InvalidResponse:
+        case .invalidResponse:
             return "invalid_response"
-        case .InvalidScope:
+        case .invalidScope:
             return "invalid_scope"
-        case .InvalidSSOResponse:
+        case .invalidSSOResponse:
             return "invalid_sso_response"
-        case .InvalidUserID:
+        case .invalidUserID:
             return "invalid_user_id"
-        case .MalformedRequest:
+        case .malformedRequest:
             return "malformed_request"
-        case .MismatchingRedirect:
+        case .mismatchingRedirect:
             return "mismatching_redirect_uri"
-        case .NetworkError:
+        case .networkError:
             return "network_error"
-        case .ServerError:
+        case .serverError:
             return "server_error"
-        case .UnableToPresentLogin:
+        case .unableToPresentLogin:
             return "present_login_failed"
-        case .UnableToSaveAccessToken:
+        case .unableToSaveAccessToken:
             return "token_not_saved"
-        case .Unavailable:
+        case .unavailable:
             return "temporarily_unavailable"
-        case .UserCancelled:
+        case .userCancelled:
             return "cancelled"
         }
     }
     
     var localizedDescriptionKey: String {
         switch self {
-        case .AccessDenied:
+        case .accessDenied:
             return "The user denied the requested scopes."
-        case .ExpiredJWT:
+        case .expiredJWT:
             return "The scope accept session expired."
-        case .GeneralError:
+        case .generalError:
             return "A general error occured."
-        case .InternalServerError:
+        case .internalServerError:
             return "An internal server error occured."
-        case .InvalidAppSignature:
+        case .invalidAppSignature:
             return "The provided app signature did not match what was expected."
-        case .InvalidAuthCode:
+        case .invalidAuthCode:
             return "There was a problem authorizing you."
-        case .InvalidClientID:
+        case .invalidClientID:
             return "Invalid Client ID provided."
-        case .InvalidFlowError:
+        case .invalidFlowError:
             return "There was a problem displaying the authorize screen."
-        case .InvalidJWT:
+        case .invalidJWT:
             return "There was a problem authorizing you."
-        case .InvalidJWTSignature:
+        case .invalidJWTSignature:
             return "There was a problem authorizing you."
-        case .InvalidNonce:
+        case .invalidNonce:
             return "There was a problem authorizing you."
-        case .InvalidRedirect:
+        case .invalidRedirect:
             return "Invalid Redirect URI provided."
-        case .InvalidRefreshToken:
+        case .invalidRefreshToken:
             return "Invalid Refresh TOken provided."
-        case .InvalidRequest:
+        case .invalidRequest:
             return "The server was unable to understand your request."
-        case .InvalidResponse:
+        case .invalidResponse:
             return "Unable to interpret the response from the server."
-        case .InvalidScope:
+        case .invalidScope:
             return "Your app is not authorized for the requested scopes."
-        case .InvalidSSOResponse:
+        case .invalidSSOResponse:
             return "The server responded with an invalid response."
-        case .InvalidUserID:
+        case .invalidUserID:
             return "There was a problem with your user ID."
-        case .MalformedRequest:
+        case .malformedRequest:
             return "There was a problem loading the authorize screen."
-        case .MismatchingRedirect:
+        case .mismatchingRedirect:
             return "The Redirect URI provided did not match what was expected."
-        case .NetworkError:
+        case .networkError:
             return "A network error occured."
-        case .ServerError:
+        case .serverError:
             return "A server error occurred."
-        case .UnableToPresentLogin:
+        case .unableToPresentLogin:
             return "Unable to present the login view."
-        case .UnableToSaveAccessToken:
+        case .unableToSaveAccessToken:
             return "Unable to save the access token."
-        case .Unavailable:
+        case .unavailable:
             return "Login is temporarily unavailable."
-        case .UserCancelled:
+        case .userCancelled:
             return "User cancelled the login process."
         }
     }
@@ -294,71 +294,71 @@ class RidesAuthenticationErrorFactory : NSObject {
      
      - returns: An initialized RidesAuthenticationError
      */
-    static func errorForType(ridesAuthenticationErrorType ridesAuthenticationErrorType : RidesAuthenticationErrorType) -> NSError {
+    static func errorForType(ridesAuthenticationErrorType : RidesAuthenticationErrorType) -> NSError {
         return NSError(domain: errorDomain, code: ridesAuthenticationErrorType.rawValue, userInfo: [NSLocalizedDescriptionKey : ridesAuthenticationErrorType.toLocalizedDescription()])
     }
     
-    static func createRidesAuthenticationError(rawValue rawValue: String) -> NSError? {
+    static func createRidesAuthenticationError(rawValue: String) -> NSError? {
         guard let ridesAuthenticationErrorType = ridesAuthenticationErrorType(rawValue) else {
             return nil
         }
         return RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: ridesAuthenticationErrorType)
     }
     
-    static func ridesAuthenticationErrorType(rawValue: String) -> RidesAuthenticationErrorType? {
+    static func ridesAuthenticationErrorType(_ rawValue: String) -> RidesAuthenticationErrorType? {
         switch rawValue {
         case "access_denied":
-            return .AccessDenied
+            return .accessDenied
         case "cancelled":
-            return .UserCancelled
+            return .userCancelled
         case "expired_jwt":
-            return .ExpiredJWT
+            return .expiredJWT
         case "general_error":
-            return .GeneralError
+            return .generalError
         case "internal_server_error":
-            return .InternalServerError
+            return .internalServerError
         case "invalid_app_signature":
-            return .InvalidAppSignature
+            return .invalidAppSignature
         case "invalid_auth_code":
-            return .InvalidAuthCode
+            return .invalidAuthCode
         case "invalid_client_id":
-            return .InvalidClientID
+            return .invalidClientID
         case "invalid_flow_error":
-            return .InvalidFlowError
+            return .invalidFlowError
         case "invalid_jwt":
-            return .InvalidJWT
+            return .invalidJWT
         case "invalid_jwt_signature":
-            return .InvalidJWTSignature
+            return .invalidJWTSignature
         case "invalid_nonce":
-            return .InvalidNonce
+            return .invalidNonce
         case "invalid_parameters":
-            return .InvalidRequest
+            return .invalidRequest
         case "invalid_redirect_uri":
-            return .InvalidRedirect
+            return .invalidRedirect
         case "invalid_refresh_token":
-            return .InvalidRefreshToken
+            return .invalidRefreshToken
         case "invalid_response":
-            return .InvalidResponse
+            return .invalidResponse
         case "invalid_scope":
-            return .InvalidScope
+            return .invalidScope
         case "invalid_sso_response":
-            return .InvalidSSOResponse
+            return .invalidSSOResponse
         case "invalid_user_id":
-            return .InvalidUserID
+            return .invalidUserID
         case "malformed_request":
-            return .MalformedRequest
+            return .malformedRequest
         case "mismatching_redirect_uri":
-            return .MismatchingRedirect
+            return .mismatchingRedirect
         case "network_error":
-            return .NetworkError
+            return .networkError
         case "present_login_failed":
-            return .UnableToPresentLogin
+            return .unableToPresentLogin
         case "server_error":
-            return .ServerError
+            return .serverError
         case "temporarily_unavailable":
-            return .Unavailable
+            return .unavailable
         case "token_not_saved":
-            return .UnableToSaveAccessToken
+            return .unableToSaveAccessToken
         default:
             return nil
         }

@@ -27,7 +27,7 @@ import Foundation
 /**
  *  A Deeplinking object for authenticating a user via the native Uber app
  */
-@objc(UBSDKAppStoreDeeplink) public class AppStoreDeeplink: BaseDeeplink {
+@objc(UBSDKAppStoreDeeplink) open class AppStoreDeeplink: BaseDeeplink {
     
     /**
      Initializes an App Store Deeplink to bring the user to the appstore
@@ -39,11 +39,11 @@ import Foundation
         let domain = "m.uber.com"
         let path = "/sign-up"
         
-        let clientIDQueryItem = NSURLQueryItem(name: "client_id", value: Configuration.getClientID())
+        let clientIDQueryItem = URLQueryItem(name: "client_id", value: Configuration.getClientID())
         
         let userAgent = userAgent ?? "rides-ios-v\(Configuration.sdkVersion)"
         
-        let userAgentQueryItem = NSURLQueryItem(name: "user-agent", value: userAgent)
+        let userAgentQueryItem = URLQueryItem(name: "user-agent", value: userAgent)
         
         let queryItems = [clientIDQueryItem, userAgentQueryItem]
         

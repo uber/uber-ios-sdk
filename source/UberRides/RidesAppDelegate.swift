@@ -27,26 +27,26 @@
  Designed to mimic methods from your application's AppDelegate and should
  be called inside their corresponding methods
  */
-@objc(UBSDKRidesAppDelegate) public class RidesAppDelegate : NSObject {
+@objc(UBSDKRidesAppDelegate) open class RidesAppDelegate : NSObject {
     
     //MARK: Class variables
     
-    public static let sharedInstance = RidesAppDelegate()
+    open static let sharedInstance = RidesAppDelegate()
     
     //MARK: Public variables
     
-    public var loginManager : LoginManaging?
+    open var loginManager : LoginManaging?
     
     //Mark: NSObject
     
     public override init() {
         super.init()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     //MARK: Public Methods
@@ -67,7 +67,7 @@
      communicate information to the receiving app As passed to the corresponding AppDelegate method
      - returns: true if the URL was intended for the Rides SDK, false otherwise
      */
-    public func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    open func application(_ application: UIApplication, openURL url: URL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
         guard let manager = loginManager else {
             return false
         }
@@ -79,22 +79,22 @@
         return urlHandled
     }
     
-    public func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        guard let options = launchOptions, let launchURL = options[UIApplicationLaunchOptionsURLKey] as? NSURL else {
+    open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [AnyHashable: Any]?) -> Bool {
+        guard let options = launchOptions, let launchURL = options[UIApplicationLaunchOptionsKey.url] as? URL else {
             return false
         }
         
         let manager = loginManager ?? LoginManager()
-        let sourceApplication = options[UIApplicationLaunchOptionsSourceApplicationKey] as? String
-        let annotation = options[UIApplicationLaunchOptionsAnnotationKey]
-        let urlHandled = manager.application(application, openURL: launchURL, sourceApplication: sourceApplication, annotation: annotation)
+        let sourceApplication = options[UIApplicationLaunchOptionsKey.sourceApplication] as? String
+        let annotation = options[UIApplicationLaunchOptionsKey.annotation]
+        let urlHandled = manager.application(application, openURL: launchURL, sourceApplication: sourceApplication, annotation: annotation as AnyObject?)
         loginManager = nil
         return urlHandled
     }
     
     //MARK: Private Methods
     
-    @objc private func didBecomeActive(notification: NSNotification) {
+    @objc fileprivate func didBecomeActive(_ notification: Notification) {
         if let manager = loginManager {
             manager.applicationDidBecomeActive()
             loginManager = nil
