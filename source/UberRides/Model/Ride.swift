@@ -50,7 +50,7 @@ import ObjectMapper
     public private(set) var requestID: String?
     
     /// The status of the Request indicating state.
-    public private(set) var status: RideStatus?
+    public private(set) var status: RideStatus = .Unknown
     
     /// The surge pricing multiplier used to calculate the increased price of a Request.
     public private(set) var surgeMultiplier: Double = 1.0

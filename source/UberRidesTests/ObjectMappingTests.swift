@@ -44,7 +44,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetProduct() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getproductid", ofType: "json") {
+        if let path = bundle.pathForResource("getProductID", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
                 let product = ModelMapper<UberProduct>().mapFromJSON(JSONString)
@@ -79,7 +79,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetProductBadJSON() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getproductid", ofType: "json") {
+        if let path = bundle.pathForResource("getProductID", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 var JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
                 
@@ -97,7 +97,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetAllProducts() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getproducts", ofType: "json") {
+        if let path = bundle.pathForResource("getProducts", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
                 let products = ModelMapper<UberProducts>().mapFromJSON(JSONString)
@@ -118,7 +118,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetAllProductsBadJSON() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getproducts", ofType: "json") {
+        if let path = bundle.pathForResource("getProducts", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 var JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
                 
@@ -136,7 +136,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetTimeEstimates() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("gettimeestimates", ofType: "json") {
+        if let path = bundle.pathForResource("getTimeEstimates", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
                 let timeEstimates = ModelMapper<TimeEstimates>().mapFromJSON(JSONString)
@@ -160,7 +160,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetTimeEstimatesBadJSON() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("gettimeestimates", ofType: "json") {
+        if let path = bundle.pathForResource("getTimeEstimates", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 var JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
                 
@@ -178,7 +178,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetPriceEstimates() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getpriceestimates", ofType: "json") {
+        if let path = bundle.pathForResource("getPriceEstimates", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
                 let priceEstimates = ModelMapper<PriceEstimates>().mapFromJSON(JSONString)
@@ -205,7 +205,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetPriceEstimatesBadJSON() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getpriceestimates", ofType: "json") {
+        if let path = bundle.pathForResource("getPriceEstimates", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 var JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
                 
@@ -223,7 +223,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetTripHistory() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("gethistory", ofType: "json") {
+        if let path = bundle.pathForResource("getHistory", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
                 let userActivity = ModelMapper<TripHistory>().mapFromJSON(JSONString)
@@ -258,7 +258,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetHistoryBadJSON() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("gethistory", ofType: "json") {
+        if let path = bundle.pathForResource("getHistory", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 var JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
                 
@@ -276,7 +276,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetUserProfile() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getme", ofType: "json") {
+        if let path = bundle.pathForResource("getMe", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
                 let userProfile = ModelMapper<UserProfile>().mapFromJSON(JSONString)
@@ -296,7 +296,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetUserProfileBadJSON() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getme", ofType: "json") {
+        if let path = bundle.pathForResource("getMe", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 var JSONString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)!
                 JSONString = JSONString.stringByReplacingOccurrencesOfString("{", withString: "")
@@ -312,7 +312,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testPostRequest() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("postrequests", ofType: "json") {
+        if let path = bundle.pathForResource("postRequests", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
                 guard let trip = ModelMapper<Ride>().mapFromJSON(JSONString) else {
@@ -337,7 +337,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetRequest() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getrequest", ofType: "json") {
+        if let path = bundle.pathForResource("getRequest", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
                 guard let trip = ModelMapper<Ride>().mapFromJSON(JSONString) else {
@@ -385,7 +385,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetRequestEstimate() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("requestestimate", ofType: "json") {
+        if let path = bundle.pathForResource("requestEstimate", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
                 let estimate = ModelMapper<RideEstimate>().mapFromJSON(JSONString)
@@ -406,7 +406,7 @@ class ObjectMappingTests: XCTestCase {
     
     func testGetRequestEstimateNoCars() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("RequestEstimateNoCars", ofType: "json") {
+        if let path = bundle.pathForResource("requestEstimateNoCars", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
                 let estimate = ModelMapper<RideEstimate>().mapFromJSON(JSONString)
@@ -451,7 +451,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetPaymentMethods() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("getpaymentmethods", ofType: "json") {
+        if let path = bundle.pathForResource("getPaymentMethods", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
                 guard let paymentMethods = ModelMapper<PaymentMethods>().mapFromJSON(JSONString) else {
@@ -494,7 +494,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetRideReceipt() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("ridereceipt", ofType: "json") {
+        if let path = bundle.pathForResource("rideReceipt", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
                 guard let receipt = ModelMapper<RideReceipt>().mapFromJSON(JSONString) else {
@@ -563,7 +563,7 @@ class ObjectMappingTests: XCTestCase {
     
     func testGetRideReceipt_withNullSurge_withTotalOwed() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("RideReceiptNullSurgeTotalOwed", ofType: "json") {
+        if let path = bundle.pathForResource("rideReceiptNullSurgeTotalOwed", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
                 guard let receipt = ModelMapper<RideReceipt>().mapFromJSON(JSONString) else {
@@ -628,7 +628,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetRideReceiptBadJSON() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("ridereceipt", ofType: "json") {
+        if let path = bundle.pathForResource("rideReceipt", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 var JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
                 JSONString = JSONString.stringByReplacingOccurrencesOfString("[", withString: "")
@@ -646,7 +646,7 @@ class ObjectMappingTests: XCTestCase {
      */
     func testGetRideMap() {
         let bundle = NSBundle(forClass: ObjectMappingTests.self)
-        if let path = bundle.pathForResource("ridemap", ofType: "json") {
+        if let path = bundle.pathForResource("rideMap", ofType: "json") {
             if let jsonData = NSData(contentsOfFile: path) {
                 let JSONString = NSString(data: jsonData, encoding:  NSUTF8StringEncoding)!
                 guard let map = ModelMapper<RideMap>().mapFromJSON(JSONString) else {

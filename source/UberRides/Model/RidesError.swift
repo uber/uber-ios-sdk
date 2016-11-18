@@ -45,6 +45,18 @@ import ObjectMapper
 
     override init() {
     }
+
+    /// Convenience initializer.
+    ///
+    /// - parameter status: The Status code to use for this error
+    /// - parameter code:   The underscore delimited code string to use for this error
+    /// - parameter title:  Human readable message which corresponds to this error
+    public convenience init(status: Int, code: String?, title: String?) {
+        self.init()
+        self.status = status
+        self.code = code
+        self.title = title
+    }
     
     public required init?(_ map: Map) {
     }

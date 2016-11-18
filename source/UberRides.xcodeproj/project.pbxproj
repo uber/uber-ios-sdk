@@ -16,7 +16,7 @@
 		AC04049A1BFACE5400AC1501 /* RequestDeeplinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404991BFACE5400AC1501 /* RequestDeeplinkTests.swift */; };
 		D80D4A521CD01894000EE8A9 /* AuthorizationCodeGrantAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80D4A511CD01894000EE8A9 /* AuthorizationCodeGrantAuthenticator.swift */; };
 		D81A8B161C658A2800339C13 /* TimeEstimate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81A8B151C658A2800339C13 /* TimeEstimate.swift */; };
-		D81A8B181C658A4F00339C13 /* gettimeestimates.json in Resources */ = {isa = PBXBuildFile; fileRef = D81A8B171C658A4F00339C13 /* gettimeestimates.json */; };
+		D81A8B181C658A4F00339C13 /* getTimeEstimates.json in Resources */ = {isa = PBXBuildFile; fileRef = D81A8B171C658A4F00339C13 /* getTimeEstimates.json */; };
 		D81A8B1A1C69186B00339C13 /* RequestLayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81A8B191C69186B00339C13 /* RequestLayerTests.swift */; };
 		D81A9EC91C6A6C3A000F33F9 /* RidesError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81A9EC81C6A6C3A000F33F9 /* RidesError.swift */; };
 		D81C85261CC74F0200DC82EE /* LoginViewAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C85251CC74F0200DC82EE /* LoginViewAuthenticator.swift */; };
@@ -27,29 +27,29 @@
 		D81C85321CC819C500DC82EE /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C85311CC819C500DC82EE /* Place.swift */; };
 		D81C85341CC830F800DC82EE /* DistanceEstimate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C85331CC830F800DC82EE /* DistanceEstimate.swift */; };
 		D81C85361CC8315200DC82EE /* RideEstimate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C85351CC8315200DC82EE /* RideEstimate.swift */; };
-		D81C85381CC831F900DC82EE /* requestestimate.json in Resources */ = {isa = PBXBuildFile; fileRef = D81C85371CC831F900DC82EE /* requestestimate.json */; };
+		D81C85381CC831F900DC82EE /* requestEstimate.json in Resources */ = {isa = PBXBuildFile; fileRef = D81C85371CC831F900DC82EE /* requestEstimate.json */; };
 		D81C853A1CC836F300DC82EE /* place.json in Resources */ = {isa = PBXBuildFile; fileRef = D81C85391CC836F300DC82EE /* place.json */; };
 		D81C853C1CC848F800DC82EE /* PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C853B1CC848F800DC82EE /* PaymentMethod.swift */; };
-		D81C853E1CC84DE200DC82EE /* getpaymentmethods.json in Resources */ = {isa = PBXBuildFile; fileRef = D81C853D1CC84DE200DC82EE /* getpaymentmethods.json */; };
+		D81C853E1CC84DE200DC82EE /* getPaymentMethods.json in Resources */ = {isa = PBXBuildFile; fileRef = D81C853D1CC84DE200DC82EE /* getPaymentMethods.json */; };
 		D81C85501CCEE14900DC82EE /* UberAuthenticatingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C854F1CCEE14900DC82EE /* UberAuthenticatingProtocol.swift */; };
 		D82706FD1CCF2D1F00D9297E /* RideReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82706FC1CCF2D1F00D9297E /* RideReceipt.swift */; };
 		D82706FF1CCF2D6700D9297E /* RideCharge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82706FE1CCF2D6700D9297E /* RideCharge.swift */; };
-		D82707011CCF327E00D9297E /* ridereceipt.json in Resources */ = {isa = PBXBuildFile; fileRef = D82707001CCF327E00D9297E /* ridereceipt.json */; };
+		D82707011CCF327E00D9297E /* rideReceipt.json in Resources */ = {isa = PBXBuildFile; fileRef = D82707001CCF327E00D9297E /* rideReceipt.json */; };
 		D82707051CCF37BD00D9297E /* RideMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82707041CCF37BD00D9297E /* RideMap.swift */; };
-		D82707071CCF39B000D9297E /* ridemap.json in Resources */ = {isa = PBXBuildFile; fileRef = D82707061CCF39B000D9297E /* ridemap.json */; };
+		D82707071CCF39B000D9297E /* rideMap.json in Resources */ = {isa = PBXBuildFile; fileRef = D82707061CCF39B000D9297E /* rideMap.json */; };
 		D829FD531C98A09F00AC6578 /* UserActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D829FD521C98A09F00AC6578 /* UserActivity.swift */; };
-		D829FD551C98A0B200AC6578 /* gethistory.json in Resources */ = {isa = PBXBuildFile; fileRef = D829FD541C98A0B200AC6578 /* gethistory.json */; };
+		D829FD551C98A0B200AC6578 /* getHistory.json in Resources */ = {isa = PBXBuildFile; fileRef = D829FD541C98A0B200AC6578 /* getHistory.json */; };
 		D829FD9C1C9A3E5200AC6578 /* RideRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D829FD9B1C9A3E5200AC6578 /* RideRequestView.swift */; };
 		D829FD9E1C9A3E5800AC6578 /* EndpointsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D829FD9D1C9A3E5800AC6578 /* EndpointsManager.swift */; };
 		D844751B1C5B01FB00B03456 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = D844751A1C5B01FB00B03456 /* Request.swift */; };
 		D8505CF91C598FE1007DC576 /* APIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8505CF81C598FE1007DC576 /* APIManagerTests.swift */; };
-		D8582C0D1C5ACB8D00E55231 /* getproducts.json in Resources */ = {isa = PBXBuildFile; fileRef = D8582C0C1C5ACB8D00E55231 /* getproducts.json */; };
+		D8582C0D1C5ACB8D00E55231 /* getProducts.json in Resources */ = {isa = PBXBuildFile; fileRef = D8582C0C1C5ACB8D00E55231 /* getProducts.json */; };
 		D885CD3C1CADEF1E0055976D /* UberButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D885CD3B1CADEF1E0055976D /* UberButton.swift */; };
 		D8874F291C5ABB9E0098DF99 /* UberProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8874F281C5ABB9E0098DF99 /* UberProduct.swift */; };
 		D8874F2B1C5AC4DB0098DF99 /* ObjectMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8874F2A1C5AC4DB0098DF99 /* ObjectMappingTests.swift */; };
-		D8874F2E1C5AC5470098DF99 /* getproductid.json in Resources */ = {isa = PBXBuildFile; fileRef = D8874F2D1C5AC5470098DF99 /* getproductid.json */; };
+		D8874F2E1C5AC5470098DF99 /* getProductID.json in Resources */ = {isa = PBXBuildFile; fileRef = D8874F2D1C5AC5470098DF99 /* getProductID.json */; };
 		D89338F11C77CAE0005B5486 /* OAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89338F01C77CAE0005B5486 /* OAuthTests.swift */; };
-		D8A0D7191C72798400707DC6 /* gettimeestimateproduct.json in Resources */ = {isa = PBXBuildFile; fileRef = D8A0D7181C72798400707DC6 /* gettimeestimateproduct.json */; };
+		D8A0D7191C72798400707DC6 /* getTimeEstimateProduct.json in Resources */ = {isa = PBXBuildFile; fileRef = D8A0D7181C72798400707DC6 /* getTimeEstimateProduct.json */; };
 		D8A0D71D1C72E3C400707DC6 /* RidesClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A0D71C1C72E3C400707DC6 /* RidesClientTests.swift */; };
 		D8A0D7231C73A74700707DC6 /* RidesScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A0D7221C73A74700707DC6 /* RidesScope.swift */; };
 		D8A196BC1C56FC250050A264 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8A196B81C56FC250050A264 /* Media.xcassets */; };
@@ -65,18 +65,20 @@
 		D8D18E7F1CBF417600055B76 /* Ride.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D18E7E1CBF417600055B76 /* Ride.swift */; };
 		D8D18E811CBF419700055B76 /* RideStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D18E801CBF419700055B76 /* RideStatus.swift */; };
 		D8D18E831CBF41F200055B76 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D18E821CBF41F200055B76 /* Driver.swift */; };
-		D8D18E851CBF429C00055B76 /* getrequest.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D18E841CBF429C00055B76 /* getrequest.json */; };
-		D8D18E871CBF42AD00055B76 /* postrequests.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D18E861CBF42AD00055B76 /* postrequests.json */; };
+		D8D18E851CBF429C00055B76 /* getRequest.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D18E841CBF429C00055B76 /* getRequest.json */; };
+		D8D18E871CBF42AD00055B76 /* postRequests.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D18E861CBF42AD00055B76 /* postRequests.json */; };
 		D8D2DC091C90E54700A65FF0 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D2DC081C90E54700A65FF0 /* UserProfile.swift */; };
-		D8D2DC0B1C90E55900A65FF0 /* getme.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D2DC0A1C90E55900A65FF0 /* getme.json */; };
+		D8D2DC0B1C90E55900A65FF0 /* getMe.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D2DC0A1C90E55900A65FF0 /* getMe.json */; };
 		D8DAB6371C60240B007DE82C /* ModelMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DAB6361C60240B007DE82C /* ModelMapper.swift */; };
 		D8E2C96C1C62B3B2006091BA /* PriceEstimate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E2C96B1C62B3B2006091BA /* PriceEstimate.swift */; };
-		D8E2C96E1C62B3C7006091BA /* getpriceestimates.json in Resources */ = {isa = PBXBuildFile; fileRef = D8E2C96D1C62B3C7006091BA /* getpriceestimates.json */; };
+		D8E2C96E1C62B3C7006091BA /* getPriceEstimates.json in Resources */ = {isa = PBXBuildFile; fileRef = D8E2C96D1C62B3C7006091BA /* getPriceEstimates.json */; };
 		DC1039731C96B1CE004854E3 /* RidesScopeExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1039721C96B1CE004854E3 /* RidesScopeExtensionsTests.swift */; };
 		DC1AE1B91CF6BF3900B8CFCB /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1AE1B81CF6BF3900B8CFCB /* LoginButton.swift */; };
 		DC1AE1BB1CF775F800B8CFCB /* LoginButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1AE1BA1CF775F800B8CFCB /* LoginButtonTests.swift */; };
 		DC1AE1BD1CF78A3300B8CFCB /* refresh.json in Resources */ = {isa = PBXBuildFile; fileRef = DC1AE1BC1CF78A3300B8CFCB /* refresh.json */; };
 		DC1AE1BF1CF78ADF00B8CFCB /* RefreshEndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1AE1BE1CF78ADF00B8CFCB /* RefreshEndpointTests.swift */; };
+		DC1D80321DA34CA400712178 /* getTimeEstimatesEmpty.json in Resources */ = {isa = PBXBuildFile; fileRef = DC1D80311DA34CA400712178 /* getTimeEstimatesEmpty.json */; };
+		DC1D80341DA34CD600712178 /* getPriceEstimatesEmpty.json in Resources */ = {isa = PBXBuildFile; fileRef = DC1D80331DA34CD600712178 /* getPriceEstimatesEmpty.json */; };
 		DC2730EF1CBC46520044AB04 /* RidesMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2730EE1CBC46520044AB04 /* RidesMocks.swift */; };
 		DC2C77911CACDDD000A052BA /* ModalRideRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C77901CACDDD000A052BA /* ModalRideRequestViewController.swift */; };
 		DC3F740B1CF63D6700A713AA /* DeeplinkErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3F740A1CF63D6700A713AA /* DeeplinkErrorType.swift */; };
@@ -123,8 +125,8 @@
 		DCAEA9941CEE91D000E6F239 /* AuthenticationURLUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAEA9931CEE91D000E6F239 /* AuthenticationURLUtility.swift */; };
 		DCB0D38E1CAD9D5800194DD5 /* RideRequestViewRequestingBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB0D38D1CAD9D5800194DD5 /* RideRequestViewRequestingBehavior.swift */; };
 		DCB0D3901CADAA6300194DD5 /* RideRequestViewRequestingBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB0D38F1CADAA6300194DD5 /* RideRequestViewRequestingBehaviorTests.swift */; };
-		DCD8060C1CFE50F300EF6EB1 /* RequestEstimateNoCars.json in Resources */ = {isa = PBXBuildFile; fileRef = DCD8060B1CFE50F300EF6EB1 /* RequestEstimateNoCars.json */; };
-		DCD8060E1CFE533F00EF6EB1 /* RideReceiptNullSurgeTotalOwed.json in Resources */ = {isa = PBXBuildFile; fileRef = DCD8060D1CFE533F00EF6EB1 /* RideReceiptNullSurgeTotalOwed.json */; };
+		DCD8060C1CFE50F300EF6EB1 /* requestEstimateNoCars.json in Resources */ = {isa = PBXBuildFile; fileRef = DCD8060B1CFE50F300EF6EB1 /* requestEstimateNoCars.json */; };
+		DCD8060E1CFE533F00EF6EB1 /* rideReceiptNullSurgeTotalOwed.json in Resources */ = {isa = PBXBuildFile; fileRef = DCD8060D1CFE533F00EF6EB1 /* rideReceiptNullSurgeTotalOwed.json */; };
 		DCE7A0011CF5238A003AC3BD /* BaseDeeplinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE7A0001CF5238A003AC3BD /* BaseDeeplinkTests.swift */; };
 		DCED60F21C9724D4001A65E0 /* AccessTokenFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCED60F11C9724D4001A65E0 /* AccessTokenFactory.swift */; };
 		DCED60F61C9770D9001A65E0 /* AccessTokenFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCED60F51C9770D9001A65E0 /* AccessTokenFactoryTests.swift */; };
@@ -161,7 +163,7 @@
 		C1C60712D3DA8E230F9B36D2 /* Pods-UberRidesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberRidesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UberRidesTests/Pods-UberRidesTests.release.xcconfig"; sourceTree = "<group>"; };
 		D80D4A511CD01894000EE8A9 /* AuthorizationCodeGrantAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthorizationCodeGrantAuthenticator.swift; path = OAuth/AuthorizationCodeGrantAuthenticator.swift; sourceTree = "<group>"; };
 		D81A8B151C658A2800339C13 /* TimeEstimate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeEstimate.swift; path = Model/TimeEstimate.swift; sourceTree = "<group>"; };
-		D81A8B171C658A4F00339C13 /* gettimeestimates.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = gettimeestimates.json; sourceTree = "<group>"; };
+		D81A8B171C658A4F00339C13 /* getTimeEstimates.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getTimeEstimates.json; sourceTree = "<group>"; };
 		D81A8B191C69186B00339C13 /* RequestLayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestLayerTests.swift; sourceTree = "<group>"; };
 		D81A9EC81C6A6C3A000F33F9 /* RidesError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RidesError.swift; path = Model/RidesError.swift; sourceTree = "<group>"; };
 		D81C85251CC74F0200DC82EE /* LoginViewAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewAuthenticator.swift; path = OAuth/LoginViewAuthenticator.swift; sourceTree = "<group>"; };
@@ -172,29 +174,29 @@
 		D81C85311CC819C500DC82EE /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Place.swift; path = Model/Place.swift; sourceTree = "<group>"; };
 		D81C85331CC830F800DC82EE /* DistanceEstimate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DistanceEstimate.swift; path = Model/DistanceEstimate.swift; sourceTree = "<group>"; };
 		D81C85351CC8315200DC82EE /* RideEstimate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RideEstimate.swift; path = Model/RideEstimate.swift; sourceTree = "<group>"; };
-		D81C85371CC831F900DC82EE /* requestestimate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = requestestimate.json; sourceTree = "<group>"; };
+		D81C85371CC831F900DC82EE /* requestEstimate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = requestEstimate.json; sourceTree = "<group>"; };
 		D81C85391CC836F300DC82EE /* place.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = place.json; sourceTree = "<group>"; };
 		D81C853B1CC848F800DC82EE /* PaymentMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentMethod.swift; path = Model/PaymentMethod.swift; sourceTree = "<group>"; };
-		D81C853D1CC84DE200DC82EE /* getpaymentmethods.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getpaymentmethods.json; sourceTree = "<group>"; };
+		D81C853D1CC84DE200DC82EE /* getPaymentMethods.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getPaymentMethods.json; sourceTree = "<group>"; };
 		D81C854F1CCEE14900DC82EE /* UberAuthenticatingProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UberAuthenticatingProtocol.swift; path = OAuth/UberAuthenticatingProtocol.swift; sourceTree = "<group>"; };
 		D82706FC1CCF2D1F00D9297E /* RideReceipt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RideReceipt.swift; path = Model/RideReceipt.swift; sourceTree = "<group>"; };
 		D82706FE1CCF2D6700D9297E /* RideCharge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RideCharge.swift; path = Model/RideCharge.swift; sourceTree = "<group>"; };
-		D82707001CCF327E00D9297E /* ridereceipt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ridereceipt.json; sourceTree = "<group>"; };
+		D82707001CCF327E00D9297E /* rideReceipt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rideReceipt.json; sourceTree = "<group>"; };
 		D82707041CCF37BD00D9297E /* RideMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RideMap.swift; path = Model/RideMap.swift; sourceTree = "<group>"; };
-		D82707061CCF39B000D9297E /* ridemap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ridemap.json; sourceTree = "<group>"; };
+		D82707061CCF39B000D9297E /* rideMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rideMap.json; sourceTree = "<group>"; };
 		D829FD521C98A09F00AC6578 /* UserActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserActivity.swift; path = Model/UserActivity.swift; sourceTree = "<group>"; };
-		D829FD541C98A0B200AC6578 /* gethistory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = gethistory.json; sourceTree = "<group>"; };
+		D829FD541C98A0B200AC6578 /* getHistory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getHistory.json; sourceTree = "<group>"; };
 		D829FD9B1C9A3E5200AC6578 /* RideRequestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestView.swift; sourceTree = "<group>"; };
 		D829FD9D1C9A3E5800AC6578 /* EndpointsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointsManager.swift; sourceTree = "<group>"; };
 		D844751A1C5B01FB00B03456 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		D8505CF81C598FE1007DC576 /* APIManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
-		D8582C0C1C5ACB8D00E55231 /* getproducts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getproducts.json; sourceTree = "<group>"; };
+		D8582C0C1C5ACB8D00E55231 /* getProducts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getProducts.json; sourceTree = "<group>"; };
 		D885CD3B1CADEF1E0055976D /* UberButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberButton.swift; sourceTree = "<group>"; };
 		D8874F281C5ABB9E0098DF99 /* UberProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UberProduct.swift; path = Model/UberProduct.swift; sourceTree = "<group>"; };
 		D8874F2A1C5AC4DB0098DF99 /* ObjectMappingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectMappingTests.swift; sourceTree = "<group>"; };
-		D8874F2D1C5AC5470098DF99 /* getproductid.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getproductid.json; sourceTree = "<group>"; };
+		D8874F2D1C5AC5470098DF99 /* getProductID.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getProductID.json; sourceTree = "<group>"; };
 		D89338F01C77CAE0005B5486 /* OAuthTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthTests.swift; sourceTree = "<group>"; };
-		D8A0D7181C72798400707DC6 /* gettimeestimateproduct.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = gettimeestimateproduct.json; sourceTree = "<group>"; };
+		D8A0D7181C72798400707DC6 /* getTimeEstimateProduct.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getTimeEstimateProduct.json; sourceTree = "<group>"; };
 		D8A0D71C1C72E3C400707DC6 /* RidesClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesClientTests.swift; sourceTree = "<group>"; };
 		D8A0D7221C73A74700707DC6 /* RidesScope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RidesScope.swift; path = Model/RidesScope.swift; sourceTree = "<group>"; };
 		D8A196B81C56FC250050A264 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = Resources/Media.xcassets; sourceTree = "<group>"; };
@@ -210,18 +212,20 @@
 		D8D18E7E1CBF417600055B76 /* Ride.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Ride.swift; path = Model/Ride.swift; sourceTree = "<group>"; };
 		D8D18E801CBF419700055B76 /* RideStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RideStatus.swift; path = Model/RideStatus.swift; sourceTree = "<group>"; };
 		D8D18E821CBF41F200055B76 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Driver.swift; path = Model/Driver.swift; sourceTree = "<group>"; };
-		D8D18E841CBF429C00055B76 /* getrequest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getrequest.json; sourceTree = "<group>"; };
-		D8D18E861CBF42AD00055B76 /* postrequests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = postrequests.json; sourceTree = "<group>"; };
+		D8D18E841CBF429C00055B76 /* getRequest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getRequest.json; sourceTree = "<group>"; };
+		D8D18E861CBF42AD00055B76 /* postRequests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = postRequests.json; sourceTree = "<group>"; };
 		D8D2DC081C90E54700A65FF0 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserProfile.swift; path = Model/UserProfile.swift; sourceTree = "<group>"; };
-		D8D2DC0A1C90E55900A65FF0 /* getme.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getme.json; sourceTree = "<group>"; };
+		D8D2DC0A1C90E55900A65FF0 /* getMe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getMe.json; sourceTree = "<group>"; };
 		D8DAB6361C60240B007DE82C /* ModelMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelMapper.swift; sourceTree = "<group>"; };
 		D8E2C96B1C62B3B2006091BA /* PriceEstimate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PriceEstimate.swift; path = Model/PriceEstimate.swift; sourceTree = "<group>"; };
-		D8E2C96D1C62B3C7006091BA /* getpriceestimates.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getpriceestimates.json; sourceTree = "<group>"; };
+		D8E2C96D1C62B3C7006091BA /* getPriceEstimates.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getPriceEstimates.json; sourceTree = "<group>"; };
 		DC1039721C96B1CE004854E3 /* RidesScopeExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesScopeExtensionsTests.swift; sourceTree = "<group>"; };
 		DC1AE1B81CF6BF3900B8CFCB /* LoginButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		DC1AE1BA1CF775F800B8CFCB /* LoginButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginButtonTests.swift; sourceTree = "<group>"; };
 		DC1AE1BC1CF78A3300B8CFCB /* refresh.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = refresh.json; sourceTree = "<group>"; };
 		DC1AE1BE1CF78ADF00B8CFCB /* RefreshEndpointTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshEndpointTests.swift; sourceTree = "<group>"; };
+		DC1D80311DA34CA400712178 /* getTimeEstimatesEmpty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getTimeEstimatesEmpty.json; sourceTree = "<group>"; };
+		DC1D80331DA34CD600712178 /* getPriceEstimatesEmpty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getPriceEstimatesEmpty.json; sourceTree = "<group>"; };
 		DC2730EE1CBC46520044AB04 /* RidesMocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesMocks.swift; sourceTree = "<group>"; };
 		DC2C77901CACDDD000A052BA /* ModalRideRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalRideRequestViewController.swift; sourceTree = "<group>"; };
 		DC3F740A1CF63D6700A713AA /* DeeplinkErrorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkErrorType.swift; sourceTree = "<group>"; };
@@ -235,7 +239,7 @@
 		DC676EBA1CEEA0E4009F7209 /* AuthenticationURLUtilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationURLUtilityTests.swift; sourceTree = "<group>"; };
 		DC676EBC1CEEAA5E009F7209 /* AuthenticationDeeplinkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationDeeplinkTests.swift; sourceTree = "<group>"; };
 		DC6852C71CED17B100DCAA3E /* DeeplinkingProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkingProtocol.swift; sourceTree = "<group>"; };
-		DC75DFE51CA4FB5400071417 /* testInfoNoServerToken.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testInfoNoServerToken.plist; sourceTree = "<group>"; };
+		DC75DFE51CA4FB5400071417 /* testInfoNoServerToken.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = testInfoNoServerToken.plist; sourceTree = "<group>"; };
 		DC75DFE71CA51DB000071417 /* RideRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestViewController.swift; sourceTree = "<group>"; };
 		DC75DFEB1CA5EC1200071417 /* RideParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RideParameters.swift; path = Model/RideParameters.swift; sourceTree = "<group>"; };
 		DC75DFED1CA5F5EB00071417 /* RideParametersTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideParametersTest.swift; sourceTree = "<group>"; };
@@ -253,7 +257,7 @@
 		DC8D42A81CF4C95000C16D16 /* RidesAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesAppDelegate.swift; sourceTree = "<group>"; };
 		DC8E2ACF1C9AA17400EDD74B /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		DC8E2AD11C9B19ED00EDD74B /* ConfigurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationTests.swift; sourceTree = "<group>"; };
-		DC8E2AD31C9B268600EDD74B /* testInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testInfo.plist; sourceTree = "<group>"; };
+		DC8E2AD31C9B268600EDD74B /* testInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = testInfo.plist; sourceTree = "<group>"; };
 		DC8FC3621CBDF4D000D58839 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DC8FC3641CBDF4E800D58839 /* hi-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-IN"; path = "Resources/hi-IN.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		DC8FC3651CBDF52200D58839 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Resources/zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -272,12 +276,12 @@
 		DCAEA9931CEE91D000E6F239 /* AuthenticationURLUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthenticationURLUtility.swift; path = Utilities/AuthenticationURLUtility.swift; sourceTree = "<group>"; };
 		DCB0D38D1CAD9D5800194DD5 /* RideRequestViewRequestingBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestViewRequestingBehavior.swift; sourceTree = "<group>"; };
 		DCB0D38F1CADAA6300194DD5 /* RideRequestViewRequestingBehaviorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestViewRequestingBehaviorTests.swift; sourceTree = "<group>"; };
-		DCD8060B1CFE50F300EF6EB1 /* RequestEstimateNoCars.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RequestEstimateNoCars.json; sourceTree = "<group>"; };
-		DCD8060D1CFE533F00EF6EB1 /* RideReceiptNullSurgeTotalOwed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RideReceiptNullSurgeTotalOwed.json; sourceTree = "<group>"; };
+		DCD8060B1CFE50F300EF6EB1 /* requestEstimateNoCars.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = requestEstimateNoCars.json; sourceTree = "<group>"; };
+		DCD8060D1CFE533F00EF6EB1 /* rideReceiptNullSurgeTotalOwed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rideReceiptNullSurgeTotalOwed.json; sourceTree = "<group>"; };
 		DCE7A0001CF5238A003AC3BD /* BaseDeeplinkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseDeeplinkTests.swift; sourceTree = "<group>"; };
 		DCED60F11C9724D4001A65E0 /* AccessTokenFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccessTokenFactory.swift; path = OAuth/AccessTokenFactory.swift; sourceTree = "<group>"; };
 		DCED60F51C9770D9001A65E0 /* AccessTokenFactoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenFactoryTests.swift; sourceTree = "<group>"; };
-		DCF87E781CF2F7AF0081894C /* testInfoMissingCallbacks.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testInfoMissingCallbacks.plist; sourceTree = "<group>"; };
+		DCF87E781CF2F7AF0081894C /* testInfoMissingCallbacks.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = testInfoMissingCallbacks.plist; sourceTree = "<group>"; };
 		DCF87E7A1CF3995C0081894C /* BaseAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseAuthenticator.swift; path = OAuth/BaseAuthenticator.swift; sourceTree = "<group>"; };
 		DCF87E7C1CF3A9D40081894C /* BaseAuthenticatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseAuthenticatorTests.swift; sourceTree = "<group>"; };
 		DCF87E7E1CF3DD010081894C /* NativeAuthenticatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeAuthenticatorTests.swift; sourceTree = "<group>"; };
@@ -442,28 +446,31 @@
 		D8874F2C1C5AC52B0098DF99 /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
-				D81A8B171C658A4F00339C13 /* gettimeestimates.json */,
-				D8E2C96D1C62B3C7006091BA /* getpriceestimates.json */,
-				D8874F2D1C5AC5470098DF99 /* getproductid.json */,
-				D8582C0C1C5ACB8D00E55231 /* getproducts.json */,
-				D8A0D7181C72798400707DC6 /* gettimeestimateproduct.json */,
-				D8D2DC0A1C90E55900A65FF0 /* getme.json */,
-				D829FD541C98A0B200AC6578 /* gethistory.json */,
+				D81A8B171C658A4F00339C13 /* getTimeEstimates.json */,
+				D8E2C96D1C62B3C7006091BA /* getPriceEstimates.json */,
+				D8874F2D1C5AC5470098DF99 /* getProductID.json */,
+				D8582C0C1C5ACB8D00E55231 /* getProducts.json */,
+				D8A0D7181C72798400707DC6 /* getTimeEstimateProduct.json */,
+				D8D2DC0A1C90E55900A65FF0 /* getMe.json */,
+				D829FD541C98A0B200AC6578 /* getHistory.json */,
+				D8D18E841CBF429C00055B76 /* getRequest.json */,
+				D8D18E861CBF42AD00055B76 /* postRequests.json */,
+				D81C85371CC831F900DC82EE /* requestEstimate.json */,
+				D81C85391CC836F300DC82EE /* place.json */,
+				D81C853D1CC84DE200DC82EE /* getPaymentMethods.json */,
+				D82707001CCF327E00D9297E /* rideReceipt.json */,
+				D82707061CCF39B000D9297E /* rideMap.json */,
+				DC1AE1BC1CF78A3300B8CFCB /* refresh.json */,
+				DCD8060B1CFE50F300EF6EB1 /* requestEstimateNoCars.json */,
+				DCD8060D1CFE533F00EF6EB1 /* rideReceiptNullSurgeTotalOwed.json */,
 				DC8E2AD31C9B268600EDD74B /* testInfo.plist */,
 				DC75DFE51CA4FB5400071417 /* testInfoNoServerToken.plist */,
 				DCF87E781CF2F7AF0081894C /* testInfoMissingCallbacks.plist */,
-				D8D18E841CBF429C00055B76 /* getrequest.json */,
-				D8D18E861CBF42AD00055B76 /* postrequests.json */,
-				D81C85371CC831F900DC82EE /* requestestimate.json */,
-				D81C85391CC836F300DC82EE /* place.json */,
-				D81C853D1CC84DE200DC82EE /* getpaymentmethods.json */,
-				D82707001CCF327E00D9297E /* ridereceipt.json */,
-				D82707061CCF39B000D9297E /* ridemap.json */,
-				DC1AE1BC1CF78A3300B8CFCB /* refresh.json */,
-				DCD8060B1CFE50F300EF6EB1 /* RequestEstimateNoCars.json */,
-				DCD8060D1CFE533F00EF6EB1 /* RideReceiptNullSurgeTotalOwed.json */,
+				DC1D80311DA34CA400712178 /* getTimeEstimatesEmpty.json */,
+				DC1D80331DA34CD600712178 /* getPriceEstimatesEmpty.json */,
 			);
 			name = "Test Data";
+			path = TestData;
 			sourceTree = "<group>";
 		};
 		D8A196B61C56FC1A0050A264 /* Resources */ = {
@@ -631,26 +638,28 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8D18E871CBF42AD00055B76 /* postrequests.json in Resources */,
+				D8D18E871CBF42AD00055B76 /* postRequests.json in Resources */,
 				DC1AE1BD1CF78A3300B8CFCB /* refresh.json in Resources */,
-				D81C853E1CC84DE200DC82EE /* getpaymentmethods.json in Resources */,
-				D829FD551C98A0B200AC6578 /* gethistory.json in Resources */,
+				D81C853E1CC84DE200DC82EE /* getPaymentMethods.json in Resources */,
+				D829FD551C98A0B200AC6578 /* getHistory.json in Resources */,
 				D81C853A1CC836F300DC82EE /* place.json in Resources */,
 				DCF87E791CF2F7AF0081894C /* testInfoMissingCallbacks.plist in Resources */,
-				DCD8060E1CFE533F00EF6EB1 /* RideReceiptNullSurgeTotalOwed.json in Resources */,
-				D8D2DC0B1C90E55900A65FF0 /* getme.json in Resources */,
-				D82707011CCF327E00D9297E /* ridereceipt.json in Resources */,
-				D8582C0D1C5ACB8D00E55231 /* getproducts.json in Resources */,
-				D8874F2E1C5AC5470098DF99 /* getproductid.json in Resources */,
+				DCD8060E1CFE533F00EF6EB1 /* rideReceiptNullSurgeTotalOwed.json in Resources */,
+				D8D2DC0B1C90E55900A65FF0 /* getMe.json in Resources */,
+				D82707011CCF327E00D9297E /* rideReceipt.json in Resources */,
+				D8582C0D1C5ACB8D00E55231 /* getProducts.json in Resources */,
+				D8874F2E1C5AC5470098DF99 /* getProductID.json in Resources */,
 				DC8E2AD41C9B268600EDD74B /* testInfo.plist in Resources */,
-				D8A0D7191C72798400707DC6 /* gettimeestimateproduct.json in Resources */,
+				DC1D80341DA34CD600712178 /* getPriceEstimatesEmpty.json in Resources */,
+				D8A0D7191C72798400707DC6 /* getTimeEstimateProduct.json in Resources */,
 				DC75DFE61CA4FB5400071417 /* testInfoNoServerToken.plist in Resources */,
-				D8E2C96E1C62B3C7006091BA /* getpriceestimates.json in Resources */,
-				D82707071CCF39B000D9297E /* ridemap.json in Resources */,
-				DCD8060C1CFE50F300EF6EB1 /* RequestEstimateNoCars.json in Resources */,
-				D81C85381CC831F900DC82EE /* requestestimate.json in Resources */,
-				D8D18E851CBF429C00055B76 /* getrequest.json in Resources */,
-				D81A8B181C658A4F00339C13 /* gettimeestimates.json in Resources */,
+				DC1D80321DA34CA400712178 /* getTimeEstimatesEmpty.json in Resources */,
+				D8E2C96E1C62B3C7006091BA /* getPriceEstimates.json in Resources */,
+				D82707071CCF39B000D9297E /* rideMap.json in Resources */,
+				DCD8060C1CFE50F300EF6EB1 /* requestEstimateNoCars.json in Resources */,
+				D81C85381CC831F900DC82EE /* requestEstimate.json in Resources */,
+				D8D18E851CBF429C00055B76 /* getRequest.json in Resources */,
+				D81A8B181C658A4F00339C13 /* getTimeEstimates.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

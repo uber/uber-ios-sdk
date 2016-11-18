@@ -64,7 +64,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetCheapestProduct() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getproducts.json", self.dynamicType)!, statusCode:200, headers:nil)
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProducts.json", self.dynamicType)!, statusCode:200, headers:nil)
         }
         
         let expectation = expectationWithDescription("get cheapest product")
@@ -88,7 +88,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetProducts() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getproducts.json", self.dynamicType)!, statusCode:200, headers:nil)
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProducts.json", self.dynamicType)!, statusCode:200, headers:nil)
         }
         
         let expectation = expectationWithDescription("get all products")
@@ -117,7 +117,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetProductByID() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getproductid.json", self.dynamicType)!, statusCode:200, headers:nil)
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProductID.json", self.dynamicType)!, statusCode:200, headers:nil)
         }
         
         let expectation = expectationWithDescription("get product by id")
@@ -143,7 +143,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetTimeEstimates() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("gettimeestimates.json", self.dynamicType)!, statusCode:200, headers:nil)
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimates.json", self.dynamicType)!, statusCode:200, headers:nil)
         }
         
         let expectation = expectationWithDescription("get time estimates")
@@ -171,7 +171,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetPriceEstimates() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getpriceestimates.json", self.dynamicType)!, statusCode:200, headers:nil)
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimates.json", self.dynamicType)!, statusCode:200, headers:nil)
         }
         
         let expectation = expectationWithDescription("get price estimates")
@@ -200,7 +200,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetHistory() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("gethistory.json", self.dynamicType)!, statusCode:200, headers:nil)
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getHistory.json", self.dynamicType)!, statusCode:200, headers:nil)
         }
         
         let expectation = expectationWithDescription("get user history")
@@ -226,7 +226,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetUserProfile() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getme.json", self.dynamicType)!, statusCode: 200, headers: nil)
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getMe.json", self.dynamicType)!, statusCode: 200, headers: nil)
         }
         
         let expectation = expectationWithDescription("get user profile")
@@ -251,7 +251,7 @@ class RidesClientTests: XCTestCase {
      */
     func testMakeRideRequest() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("postrequests.json", self.dynamicType)!, statusCode: 200, headers: nil)
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("postRequests.json", self.dynamicType)!, statusCode: 200, headers: nil)
         }
         
         let expectation = expectationWithDescription("make ride request")
@@ -259,7 +259,7 @@ class RidesClientTests: XCTestCase {
         let rideParameters = RideParametersBuilder().setPickupPlaceID("home").build()
         client.requestRide(rideParameters, completion: { ride, response in
             XCTAssertNotNil(ride)
-            XCTAssertEqual(ride!.status, .Processing)
+            XCTAssertEqual(ride!.status, RideStatus.Processing)
             XCTAssertEqual(ride!.requestID, "852b8fdd-4369-4659-9628-e122662ad257")
             XCTAssertEqual(ride!.eta, 5)
             
@@ -278,7 +278,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetCurrentRide() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getrequest.json", self.dynamicType)!, statusCode: 200, headers: nil)
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getRequest.json", self.dynamicType)!, statusCode: 200, headers: nil)
         }
         
         let expectation = expectationWithDescription("get current ride")
@@ -286,7 +286,7 @@ class RidesClientTests: XCTestCase {
         client.fetchCurrentRide({ ride, response in
             XCTAssertNotNil(ride)
             XCTAssertEqual(ride!.requestID, "17cb78a7-b672-4d34-a288-a6c6e44d5315")
-            XCTAssertEqual(ride!.status, .Accepted)
+            XCTAssertEqual(ride!.status, RideStatus.Accepted)
             
             expectation.fulfill()
         })
@@ -303,7 +303,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetRideByID() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getrequest.json", self.dynamicType)!, statusCode: 200, headers: nil)
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getRequest.json", self.dynamicType)!, statusCode: 200, headers: nil)
         }
         
         let expectation = expectationWithDescription("get ride by ID")
@@ -311,7 +311,7 @@ class RidesClientTests: XCTestCase {
         client.fetchRideDetails("someID", completion: { ride, response in
             XCTAssertNotNil(ride)
             XCTAssertEqual(ride!.requestID, "17cb78a7-b672-4d34-a288-a6c6e44d5315")
-            XCTAssertEqual(ride!.status, .Accepted)
+            XCTAssertEqual(ride!.status, RideStatus.Accepted)
             
             expectation.fulfill()
         })
@@ -328,7 +328,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetRequestEstimate() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("requestestimate.json", self.dynamicType)!, statusCode: 200, headers: nil)
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("requestEstimate.json", self.dynamicType)!, statusCode: 200, headers: nil)
         }
         
         let expectation = expectationWithDescription("get request estimate")
@@ -753,7 +753,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetPaymentMethods() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getpaymentmethods.json", self.dynamicType)!, statusCode: 200, headers: nil)
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getPaymentMethods.json", self.dynamicType)!, statusCode: 200, headers: nil)
         }
         
         let expectation = expectationWithDescription("get payment methods")
@@ -778,7 +778,7 @@ class RidesClientTests: XCTestCase {
     
     func testGetRideReceipt() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("ridereceipt.json", self.dynamicType)!, statusCode: 200, headers: nil)
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("rideReceipt.json", self.dynamicType)!, statusCode: 200, headers: nil)
         }
         
         let expectation = expectationWithDescription("ride receipt")
@@ -801,7 +801,7 @@ class RidesClientTests: XCTestCase {
     
     func testGetRideMap() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("ridemap.json", self.dynamicType)!, statusCode: 200, headers: nil)
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("rideMap.json", self.dynamicType)!, statusCode: 200, headers: nil)
         }
         
         let expectation = expectationWithDescription("ride map")
@@ -922,14 +922,14 @@ class RidesClientTests: XCTestCase {
         let tokenGroup = Configuration.getDefaultKeychainAccessGroup()
         
         keychainHelper.setAccessGroup(tokenGroup)
-        keychainHelper.setObject(token, key: tokenKey)
+        XCTAssertTrue(keychainHelper.setObject(token, key: tokenKey))
         defer {
-            keychainHelper.deleteObjectForKey(tokenKey)
+            XCTAssertTrue(keychainHelper.deleteObjectForKey(tokenKey))
         }
         
         let ridesClient = RidesClient()
         guard let accessToken = ridesClient.fetchAccessToken() else {
-            XCTAssert(false)
+            XCTFail("Unable to fetch Access Token")
             return
         }
         XCTAssertEqual(accessToken.tokenString, token.tokenString)
@@ -961,126 +961,16 @@ class RidesClientTests: XCTestCase {
         let tokenGroup = Configuration.getDefaultKeychainAccessGroup()
         
         keychainHelper.setAccessGroup(tokenGroup)
-        keychainHelper.setObject(token, key: tokenKey)
+        XCTAssertTrue(keychainHelper.setObject(token, key: tokenKey))
         defer {
-            keychainHelper.deleteObjectForKey(tokenKey)
+            XCTAssertTrue(keychainHelper.deleteObjectForKey(tokenKey))
         }
         
         let ridesClient = RidesClient(accessTokenIdentifier: tokenKey)
         guard let accessToken = ridesClient.fetchAccessToken() else {
-            XCTAssert(false)
+            XCTFail("Unable to fetch Access Token")
             return
         }
         XCTAssertEqual(accessToken.tokenString, token.tokenString)
-    }
-    
-    /**
-     Test to check getting the access token when using the default ID and cusom group
-     and the token exists
-     */
-    func testGetAccessTokenSuccess_defaultId_customGroup() {
-        let tokenData = [ "access_token" : "testAccessToken" ]
-        guard let token = AccessToken(JSON: tokenData) else {
-            XCTAssert(false)
-            return
-        }
-        let keychainHelper = KeychainWrapper()
-        
-        let tokenKey = Configuration.getDefaultAccessTokenIdentifier()
-        let tokenGroup =  "newTokenGroup"
-        
-        keychainHelper.setAccessGroup(tokenGroup)
-        keychainHelper.setObject(token, key: tokenKey)
-        defer {
-            keychainHelper.deleteObjectForKey(tokenKey)
-        }
-        
-        let ridesClient = RidesClient(accessTokenIdentifier: tokenKey, keychainAccessGroup:tokenGroup)
-        guard let accessToken = ridesClient.fetchAccessToken() else {
-            XCTAssert(false)
-            return
-        }
-        XCTAssertEqual(accessToken.tokenString, token.tokenString)
-    }
-    
-    /**
-     Test to check getting the access token when using custom settings
-     and the token exists
-     */
-    func testGetAccessTokenSuccess_customId_customGroup() {
-        let tokenData = [ "access_token" : "testAccessToken" ]
-        guard let token = AccessToken(JSON: tokenData) else {
-            XCTAssert(false)
-            return
-        }
-        let keychainHelper = KeychainWrapper()
-        
-        let tokenKey = "newTokenID"
-        let tokenGroup =  "newTokenGroup"
-        
-        keychainHelper.setAccessGroup(tokenGroup)
-        keychainHelper.setObject(token, key: tokenKey)
-        defer {
-            keychainHelper.deleteObjectForKey(tokenKey)
-        }
-        
-        let ridesClient = RidesClient(accessTokenIdentifier: tokenKey, keychainAccessGroup:tokenGroup)
-        guard let accessToken = ridesClient.fetchAccessToken() else {
-            XCTAssert(false)
-            return
-        }
-        XCTAssertEqual(accessToken.tokenString, token.tokenString)
-    }
-    
-    /**
-     Test to check getting the access token when using custom settings
-     and the token doesn't exist
-     */
-    func testGetAccessTokenFailure_customId_customGroup() {
-        let tokenData = [ "access_token" : "testAccessToken" ]
-        guard let token = AccessToken(JSON: tokenData) else {
-            XCTAssert(false)
-            return
-        }
-        let keychainHelper = KeychainWrapper()
-        
-        let tokenKey = "newTokenID"
-        let tokenGroup =  "newTokenGroup"
-        
-        keychainHelper.setAccessGroup(tokenGroup)
-        keychainHelper.setObject(token, key: tokenKey)
-        defer {
-            keychainHelper.deleteObjectForKey(tokenKey)
-        }
-        
-        let ridesClient = RidesClient()
-        let accessToken = ridesClient.fetchAccessToken()
-        XCTAssertNil(accessToken)
-    }
-    
-    /**
-     Test to check getting the access token fails when using a matching ID but different
-     group
-     */
-    func testGetAccessTokenFailure_groupMismatch() {
-        let tokenData = [ "access_token" : "testAccessToken" ]
-        guard let token = AccessToken(JSON: tokenData) else {
-            XCTAssert(false)
-            return
-        }
-        let keychainHelper = KeychainWrapper()
-        
-        let tokenKey = "newTokenID"
-        let tokenGroup =  "newTokenGroup"
-        
-        keychainHelper.setAccessGroup(tokenGroup)
-        keychainHelper.setObject(token, key: tokenKey)
-        defer {
-            keychainHelper.deleteObjectForKey(tokenKey)
-        }
-        
-        let ridesClient = RidesClient(accessTokenIdentifier: tokenKey)
-        let accessToken = ridesClient.fetchAccessToken()
-        XCTAssertNil(accessToken)
     }
 }

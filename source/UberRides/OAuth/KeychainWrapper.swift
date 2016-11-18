@@ -66,7 +66,7 @@ class KeychainWrapper: NSObject {
         if result == errSecDuplicateItem {
             result = SecItemUpdate(keychainItemData, [ValueData: value])
         }
-        
+
         return result == errSecSuccess
     }
     
@@ -127,7 +127,7 @@ class KeychainWrapper: NSObject {
         keychainItemData[Class] = kSecClassGenericPassword
         
         if !accessGroup.isEmpty {
-            keychainItemData[AttrAccount] = accessGroup
+            keychainItemData[AttrAccessGroup] = accessGroup
         }
         
         return keychainItemData

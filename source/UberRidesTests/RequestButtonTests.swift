@@ -183,7 +183,7 @@ class RequestButtonTests: XCTestCase {
      */
     func testGetMetadataSimple() {
         stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("gettimeestimateproduct.json", self.dynamicType)!, statusCode:200, headers:nil)
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimateProduct.json", self.dynamicType)!, statusCode:200, headers:nil)
         }
         
         expectation = expectationWithDescription("information loaded")
@@ -207,9 +207,9 @@ class RequestButtonTests: XCTestCase {
     func testGetMetadataDetailed() {
         stub(isHost("sandbox-api.uber.com")) { urlRequest in
             if isPath("/v1/estimates/price")(urlRequest) {
-                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getpriceestimates.json", self.dynamicType)!, statusCode:200, headers:nil)
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimates.json", self.dynamicType)!, statusCode:200, headers:nil)
             } else if isPath("/v1/estimates/time")(urlRequest) {
-                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("gettimeestimateproduct.json", self.dynamicType)!, statusCode:200, headers:nil)
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimateProduct.json", self.dynamicType)!, statusCode:200, headers:nil)
             } else {
                 XCTAssert(false)
                 return OHHTTPStubsResponse()
@@ -234,7 +234,7 @@ class RequestButtonTests: XCTestCase {
     func testErrorGettingPriceEstimates() {
         stub(isHost("sandbox-api.uber.com")) { urlRequest in
             if isPath("/v1/estimates/time")(urlRequest) {
-                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("gettimeestimateproduct.json", self.dynamicType)!, statusCode:200, headers: [ "Authorization" : "Bearer token" ])
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimateProduct.json", self.dynamicType)!, statusCode:200, headers: [ "Authorization" : "Bearer token" ])
             } else if isPath("/v1/estimates/price")(urlRequest) {
                 let obj = ["code":"price_estimate_error"]
                 return OHHTTPStubsResponse(JSONObject: obj, statusCode: 404, headers: nil)
@@ -263,7 +263,7 @@ class RequestButtonTests: XCTestCase {
     func testErrorGettingTimeEstimates() {
         stub(isHost("sandbox-api.uber.com")) { urlRequest in
             if isPath("/v1/estimates/price")(urlRequest) {
-                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getpriceestimates.json", self.dynamicType)!, statusCode:200, headers:nil)
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimates.json", self.dynamicType)!, statusCode:200, headers:nil)
             } else if isPath("/v1/estimates/time")(urlRequest) {
                 let obj = ["code":"time_estimate_error"]
                 return OHHTTPStubsResponse(JSONObject: obj, statusCode: 404, headers: nil)
@@ -283,11 +283,154 @@ class RequestButtonTests: XCTestCase {
         
         waitForExpectationsWithTimeout(timeout, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(self.button.uberTitleLabel.text!, "Ride there with Uber")
+            XCTAssertEqual(self.button.uberTitleLabel.text!, "Get a ride")
+            XCTAssertEqual(self.button.uberMetadataLabel.text!, "$15 for uberX")
             XCTAssertEqual(self.rideButtonError.code, "time_estimate_error")
         })
     }
-    
+
+    func testEmptyTimeEstimatesCallsDelegateValidPriceEstimates() {
+        stub(isHost("sandbox-api.uber.com")) { urlRequest in
+
+            if isPath("/v1/estimates/price")(urlRequest) {
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimates.json", self.dynamicType)!, statusCode:200, headers:nil)
+            } else if isPath("/v1/estimates/time")(urlRequest) {
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimatesEmpty.json", self.dynamicType)!, statusCode:200, headers:nil)
+            } else {
+                XCTAssert(false)
+                return OHHTTPStubsResponse()
+            }
+        }
+
+        expectation = expectationWithDescription("information loaded")
+
+        let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
+        let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.delegate = self
+        button.loadRideInformation()
+
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(self.button.uberTitleLabel.text!, "Get a ride")
+            XCTAssertEqual(self.button.uberMetadataLabel.text!, "$15 for uberX")
+        })
+    }
+
+    func testEmptyPriceEstimatesValidTimeEstimates() {
+        stub(isHost("sandbox-api.uber.com")) { urlRequest in
+            if isPath("/v1/estimates/price")(urlRequest) {
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimatesEmpty.json", self.dynamicType)!, statusCode:200, headers:nil)
+            } else if isPath("/v1/estimates/time")(urlRequest) {
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimateProduct.json", self.dynamicType)!, statusCode:200, headers:nil)
+            } else {
+                XCTAssert(false)
+                return OHHTTPStubsResponse()
+            }
+        }
+
+        expectation = expectationWithDescription("information loaded")
+        let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
+        let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.delegate = self
+        button.loadRideInformation()
+
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(self.button.uberTitleLabel.text!, "Get a ride")
+            XCTAssertEqual(self.button.uberMetadataLabel.text!, "4 MINS AWAY")
+        })
+    }
+
+    func testEmptyPriceEstimatesEmptyTimeEstimates() {
+        stub(isHost("sandbox-api.uber.com")) { urlRequest in
+            if isPath("/v1/estimates/price")(urlRequest) {
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimatesEmpty.json", self.dynamicType)!, statusCode:200, headers:nil)
+            } else if isPath("/v1/estimates/time")(urlRequest) {
+                return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimatesEmpty.json", self.dynamicType)!, statusCode:200, headers:nil)
+            } else {
+                XCTAssert(false)
+                return OHHTTPStubsResponse()
+            }
+        }
+
+        expectation = expectationWithDescription("information loaded")
+        let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
+        let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.delegate = self
+        button.loadRideInformation()
+
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(self.button.uberTitleLabel.text!, "Ride there with Uber")
+            XCTAssertNil(self.button.uberMetadataLabel.text)
+        })
+    }
+
+    func testMissingClientTriggersErrorDelegate() {
+        errorExpectation = expectationWithDescription("Expected to receive 422 error")
+        let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
+        let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.delegate = self
+        button.client = nil
+        button.loadRideInformation()
+
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            guard let ridesError = self.rideButtonError else {
+                XCTFail("Expected to receive 422 error")
+                return
+            }
+            XCTAssertEqual(ridesError.status, 422)
+            XCTAssertEqual(ridesError.code, "validation_failed")
+            XCTAssertEqual(ridesError.title, "Invalid Request")
+        })
+    }
+
+    func testMissingPickupTriggersErrorDelegate() {
+        errorExpectation = expectationWithDescription("Expected to receive 422 error")
+        let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setProductID(productID).setDropoffLocation(dropoffLocation).build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.delegate = self
+        button.loadRideInformation()
+
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            guard let ridesError = self.rideButtonError else {
+                XCTFail("Expected to receive 422 error")
+                return
+            }
+            XCTAssertEqual(ridesError.status, 422)
+            XCTAssertEqual(ridesError.code, "validation_failed")
+            XCTAssertEqual(ridesError.title, "Invalid Request")
+        })
+    }
+
+    func testUseCurrentLocationTriggersErrorDelegate() {
+        errorExpectation = expectationWithDescription("Expected to receive 422 error")
+        let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
+        let rideParams = RideParametersBuilder().setProductID(productID).setDropoffLocation(dropoffLocation).setPickupToCurrentLocation().build()
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button.delegate = self
+        button.loadRideInformation()
+
+        waitForExpectationsWithTimeout(timeout, handler: { error in
+            guard let ridesError = self.rideButtonError else {
+                XCTFail("Expected to receive 422 error")
+                return
+            }
+            XCTAssertEqual(ridesError.status, 422)
+            XCTAssertEqual(ridesError.code, "validation_failed")
+            XCTAssertEqual(ridesError.title, "Invalid Request")
+        })
+    }
+
     /**
      Test that button defaults to "Get a Ride" when no productID is set.
      */

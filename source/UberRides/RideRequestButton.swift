@@ -278,6 +278,7 @@ import CoreLocation
      */
     public func loadRideInformation() {
         guard client != nil else {
+            delegate?.rideRequestButton(self, didReceiveError: createValidationFailedError())
             return
         }
         
@@ -339,8 +340,13 @@ import CoreLocation
         
         attrString.addAttribute(NSFontAttributeName, value: metadataFont, range: (attrString.string as NSString).rangeOfString(title))
         attrString.addAttribute(NSFontAttributeName, value: metadataFont, range: (attrString.string as NSString).rangeOfString(subtitle))
-        
-        uberTitleLabel.text = LocalizationUtil.localizedString(forKey: "Get a ride", comment: "Request button shorter description")
+
+        if attrString.string.isEmpty {
+            uberTitleLabel.text = LocalizationUtil.localizedString(forKey: "Ride there with Uber", comment: "Request button description")
+        } else {
+            uberTitleLabel.text = LocalizationUtil.localizedString(forKey: "Get a ride", comment: "Request button shorter description")
+        }
+
         uberMetadataLabel.attributedText = attrString
     }
     
@@ -356,7 +362,11 @@ import CoreLocation
     
         return attachment
     }
-    
+
+    private func createValidationFailedError() -> RidesError {
+        return RidesError(status: 422, code: "validation_failed", title: "Invalid Request")
+    }
+
     /**
      Sets metadata on button by fetching all required information.
      */
@@ -365,6 +375,7 @@ import CoreLocation
         *  These are all required for the following requests.
         */
         guard let client = client, let pickupLatitude = metadata.pickupLatitude, let pickupLongitude = metadata.pickupLongitude, let productID = metadata.productID else {
+            delegate?.rideRequestButton(self, didReceiveError: createValidationFailedError())
             return
         }
         
@@ -375,40 +386,44 @@ import CoreLocation
         
         // Set the information on the button label once all information is retrieved.
         dispatch_group_notify(downloadGroup, dispatch_get_main_queue(), {
-            guard let estimate = self.metadata.timeEstimate?.estimate else {
-                for error in errors {
-                    self.delegate?.rideRequestButton(self, didReceiveError: error)
-                }
-                return
-            }
-            
-            let mins = estimate/60
-            var titleText: String
-            if mins == 1 {
-                titleText = String(format: LocalizationUtil.localizedString(forKey: "%d min away", comment: "Estimate is for car one minute away"), mins).uppercaseStringWithLocale(NSLocale.currentLocale())
-            } else {
-                titleText = String(format: LocalizationUtil.localizedString(forKey: "%d mins away", comment: "Estimate is for car multiple minutes away"), mins).uppercaseStringWithLocale(NSLocale.currentLocale())
-            }
+
+            var titleText = ""
             var subtitleText = ""
-            var surge = false
-            
-            if let productName = self.metadata.productName {
-                for estimate in self.metadata.priceEstimates {
-                    if estimate.productID == productID, let price = estimate.estimate {
-                        if estimate.surgeMultiplier > 1.0 {
-                            surge = true
-                        }
-                        subtitleText = String(format: LocalizationUtil.localizedString(forKey: "%1$@ for %2$@", comment: "Price estimate string for an Uber product"), price, productName)
-                    }
+
+            if let timeEstimate = self.metadata.timeEstimate?.estimate {
+                let mins = timeEstimate / 60
+                if mins == 1 {
+                    titleText = String(format: LocalizationUtil.localizedString(forKey: "%d min away", comment: "Estimate is for car one minute away"), mins).uppercaseStringWithLocale(NSLocale.currentLocale())
+                } else {
+                    titleText = String(format: LocalizationUtil.localizedString(forKey: "%d mins away", comment: "Estimate is for car multiple minutes away"), mins).uppercaseStringWithLocale(NSLocale.currentLocale())
                 }
             }
-            
-            self.setMultilineAttributedString(titleText, subtitle: subtitleText, surge: surge)
-            self.delegate?.rideRequestButtonDidLoadRideInformation(self)
+
+            var surge = false
+            for estimate in self.metadata.priceEstimates {
+                if let price = estimate.estimate, productName = estimate.name where estimate.productID == productID {
+                    if estimate.surgeMultiplier > 1.0 {
+                        surge = true
+                    }
+                    let priceEstimateString = String(format: LocalizationUtil.localizedString(forKey: "%1$@ for %2$@", comment: "Price estimate string for an Uber product"), price, productName)
+                    if titleText.isEmpty {
+                        titleText = priceEstimateString
+                    } else {
+                        subtitleText = priceEstimateString
+                    }
+                    break
+                }
+            }
+
+            if !titleText.isEmpty {
+                self.setMultilineAttributedString(titleText, subtitle: subtitleText, surge: surge)
+            }
             
             for error in errors {
                 self.delegate?.rideRequestButton(self, didReceiveError: error)
             }
+
+            self.delegate?.rideRequestButtonDidLoadRideInformation(self)
         })
         
         // Get time estimate for productID
@@ -418,14 +433,9 @@ import CoreLocation
                 dispatch_group_leave(downloadGroup)
                 return
             }
-            
-            if timeEstimates.count == 0 {
-                dispatch_group_leave(downloadGroup)
-                return
-            }
-            
-            self.metadata.timeEstimate = timeEstimates.first!
-            self.metadata.productName = timeEstimates.first!.name
+
+            self.metadata.timeEstimate = timeEstimates.first
+            self.metadata.productName = timeEstimates.first?.name
             dispatch_group_leave(downloadGroup)
         }
         
@@ -439,12 +449,7 @@ import CoreLocation
                     dispatch_group_leave(downloadGroup)
                     return
                 }
-                
-                if priceEstimates.count == 0 {
-                    dispatch_group_leave(downloadGroup)
-                    return
-                }
-                
+
                 self.metadata.priceEstimates = priceEstimates
                 dispatch_group_leave(downloadGroup)
             }
@@ -482,9 +487,9 @@ struct ButtonMetadata {
     var dropoffLongitude: Double?
     var timeEstimate: TimeEstimate?
     private var priceEstimateList: [PriceEstimate]?
-    var priceEstimates: [PriceEstimate]! {
+    var priceEstimates: [PriceEstimate] {
         get {
-            return priceEstimateList != nil ? priceEstimateList : []
+            return priceEstimateList ?? []
         }
         set {
             priceEstimateList = newValue

@@ -173,6 +173,12 @@ class RidesScopeFactory : NSObject {
             return .Profile
         case RidesScopeType.RideWidgets.toString():
             return .RideWidgets
+        case RidesScopeType.AllTrips.toString():
+            return .AllTrips
+        case RidesScopeType.Request.toString():
+            return .Request
+        case RidesScopeType.RequestReceipt.toString():
+            return .RequestReceipt
         default:
             return nil
         }
