@@ -126,7 +126,7 @@ Add the following code snippet, replacing the placeholders within the square bra
 ```
 <key>UberClientID</key>
 <string>[ClientID]</string>
-<key>UberServerToken<key>
+<key>UberServerToken</key>
 <string>[Server Token]</string>
 <key>UberDisplayName</key>
 <string>[App Name]</string>
