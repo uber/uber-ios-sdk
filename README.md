@@ -9,7 +9,11 @@ Please keep in mind that this SDK is in a Pre-1.0 release state and is still act
 ## Requirements
 
 - iOS 8.0+
-- Xcode 7.3+
+- Xcode 8.0+
+- Swift 2.3
+
+**Looking for Swift 2.2?** For Swift 2.2 support, please use version [0.5.3](https://github.com/uber/rides-ios-sdk/releases/tag/v0.5.3)
+
 
 ## Getting Started
 

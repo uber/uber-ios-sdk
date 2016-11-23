@@ -1,6 +1,10 @@
 # Change Log
+## [0.6.0] 2016-11-22
 
-## [0.5.3]
+### Added
+Added Swift 2.3 support
+
+## [0.5.3] 2016-11-18
 
 This will be the final release using Swift 2.2
 

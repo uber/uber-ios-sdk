@@ -127,6 +127,11 @@
 		DCB0D3901CADAA6300194DD5 /* RideRequestViewRequestingBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB0D38F1CADAA6300194DD5 /* RideRequestViewRequestingBehaviorTests.swift */; };
 		DCD8060C1CFE50F300EF6EB1 /* requestEstimateNoCars.json in Resources */ = {isa = PBXBuildFile; fileRef = DCD8060B1CFE50F300EF6EB1 /* requestEstimateNoCars.json */; };
 		DCD8060E1CFE533F00EF6EB1 /* rideReceiptNullSurgeTotalOwed.json in Resources */ = {isa = PBXBuildFile; fileRef = DCD8060D1CFE533F00EF6EB1 /* rideReceiptNullSurgeTotalOwed.json */; };
+		DCDD153E1D99A7F20053BC8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDD153D1D99A7F20053BC8F /* AppDelegate.swift */; };
+		DCDD15401D99A7F20053BC8F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDD153F1D99A7F20053BC8F /* ViewController.swift */; };
+		DCDD15431D99A7F20053BC8F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCDD15411D99A7F20053BC8F /* Main.storyboard */; };
+		DCDD15451D99A7F20053BC8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCDD15441D99A7F20053BC8F /* Assets.xcassets */; };
+		DCDD15481D99A7F20053BC8F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCDD15461D99A7F20053BC8F /* LaunchScreen.storyboard */; };
 		DCE7A0011CF5238A003AC3BD /* BaseDeeplinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE7A0001CF5238A003AC3BD /* BaseDeeplinkTests.swift */; };
 		DCED60F21C9724D4001A65E0 /* AccessTokenFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCED60F11C9724D4001A65E0 /* AccessTokenFactory.swift */; };
 		DCED60F61C9770D9001A65E0 /* AccessTokenFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCED60F51C9770D9001A65E0 /* AccessTokenFactoryTests.swift */; };
@@ -143,6 +148,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = AC0404741BFACD1D00AC1501;
 			remoteInfo = UberRides;
+		};
+		DCDD154E1D99A8410053BC8F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC04046C1BFACD1D00AC1501 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DCDD153A1D99A7F20053BC8F;
+			remoteInfo = TestAppShim;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -278,6 +290,14 @@
 		DCB0D38F1CADAA6300194DD5 /* RideRequestViewRequestingBehaviorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestViewRequestingBehaviorTests.swift; sourceTree = "<group>"; };
 		DCD8060B1CFE50F300EF6EB1 /* requestEstimateNoCars.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = requestEstimateNoCars.json; sourceTree = "<group>"; };
 		DCD8060D1CFE533F00EF6EB1 /* rideReceiptNullSurgeTotalOwed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rideReceiptNullSurgeTotalOwed.json; sourceTree = "<group>"; };
+		DCDD153B1D99A7F20053BC8F /* TestAppShim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestAppShim.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCDD153D1D99A7F20053BC8F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DCDD153F1D99A7F20053BC8F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DCDD15421D99A7F20053BC8F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DCDD15441D99A7F20053BC8F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DCDD15471D99A7F20053BC8F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		DCDD15491D99A7F20053BC8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCDD154D1D99A82D0053BC8F /* TestAppShim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestAppShim.entitlements; sourceTree = "<group>"; };
 		DCE7A0001CF5238A003AC3BD /* BaseDeeplinkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseDeeplinkTests.swift; sourceTree = "<group>"; };
 		DCED60F11C9724D4001A65E0 /* AccessTokenFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccessTokenFactory.swift; path = OAuth/AccessTokenFactory.swift; sourceTree = "<group>"; };
 		DCED60F51C9770D9001A65E0 /* AccessTokenFactoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenFactoryTests.swift; sourceTree = "<group>"; };
@@ -307,6 +327,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DCDD15381D99A7F20053BC8F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -315,6 +342,7 @@
 			children = (
 				AC0404771BFACD1D00AC1501 /* UberRides */,
 				AC0404831BFACD1D00AC1501 /* UberRidesTests */,
+				DCDD153C1D99A7F20053BC8F /* TestAppShim */,
 				AC0404761BFACD1D00AC1501 /* Products */,
 				E0C87DA8C44B500B36E07963 /* Pods */,
 				F036511333B3B5067F8B6DC8 /* Frameworks */,
@@ -326,6 +354,7 @@
 			children = (
 				AC0404751BFACD1D00AC1501 /* UberRides.framework */,
 				AC04047F1BFACD1D00AC1501 /* UberRidesTests.xctest */,
+				DCDD153B1D99A7F20053BC8F /* TestAppShim.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -511,6 +540,20 @@
 			name = Utilities;
 			sourceTree = "<group>";
 		};
+		DCDD153C1D99A7F20053BC8F /* TestAppShim */ = {
+			isa = PBXGroup;
+			children = (
+				DCDD154D1D99A82D0053BC8F /* TestAppShim.entitlements */,
+				DCDD153D1D99A7F20053BC8F /* AppDelegate.swift */,
+				DCDD153F1D99A7F20053BC8F /* ViewController.swift */,
+				DCDD15411D99A7F20053BC8F /* Main.storyboard */,
+				DCDD15441D99A7F20053BC8F /* Assets.xcassets */,
+				DCDD15461D99A7F20053BC8F /* LaunchScreen.storyboard */,
+				DCDD15491D99A7F20053BC8F /* Info.plist */,
+			);
+			path = TestAppShim;
+			sourceTree = "<group>";
+		};
 		E0C87DA8C44B500B36E07963 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -578,11 +621,29 @@
 			);
 			dependencies = (
 				AC0404821BFACD1D00AC1501 /* PBXTargetDependency */,
+				DCDD154F1D99A8410053BC8F /* PBXTargetDependency */,
 			);
 			name = UberRidesTests;
 			productName = UberRidesTests;
 			productReference = AC04047F1BFACD1D00AC1501 /* UberRidesTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		DCDD153A1D99A7F20053BC8F /* TestAppShim */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCDD154C1D99A7F20053BC8F /* Build configuration list for PBXNativeTarget "TestAppShim" */;
+			buildPhases = (
+				DCDD15371D99A7F20053BC8F /* Sources */,
+				DCDD15381D99A7F20053BC8F /* Frameworks */,
+				DCDD15391D99A7F20053BC8F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TestAppShim;
+			productName = TestAppShim;
+			productReference = DCDD153B1D99A7F20053BC8F /* TestAppShim.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -590,16 +651,27 @@
 		AC04046C1BFACD1D00AC1501 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0800;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Uber;
 				TargetAttributes = {
 					AC0404741BFACD1D00AC1501 = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 					};
 					AC04047E1BFACD1D00AC1501 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = 36UPBWHAQE;
+						LastSwiftMigration = 0800;
+						TestTargetID = DCDD153A1D99A7F20053BC8F;
+					};
+					DCDD153A1D99A7F20053BC8F = {
+						CreatedOnToolsVersion = 8.0;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -612,12 +684,14 @@
 				"hi-IN",
 				"zh-Hans",
 				"zh-Hant",
+				Base,
 			);
 			mainGroup = AC04046B1BFACD1D00AC1501;
 			productRefGroup = AC0404761BFACD1D00AC1501 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				DCDD153A1D99A7F20053BC8F /* TestAppShim */,
 				AC0404741BFACD1D00AC1501 /* UberRides */,
 				AC04047E1BFACD1D00AC1501 /* UberRidesTests */,
 			);
@@ -660,6 +734,16 @@
 				D81C85381CC831F900DC82EE /* requestEstimate.json in Resources */,
 				D8D18E851CBF429C00055B76 /* getRequest.json in Resources */,
 				D81A8B181C658A4F00339C13 /* getTimeEstimates.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCDD15391D99A7F20053BC8F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCDD15481D99A7F20053BC8F /* LaunchScreen.storyboard in Resources */,
+				DCDD15451D99A7F20053BC8F /* Assets.xcassets in Resources */,
+				DCDD15431D99A7F20053BC8F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -797,6 +881,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DCDD15371D99A7F20053BC8F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCDD15401D99A7F20053BC8F /* ViewController.swift in Sources */,
+				DCDD153E1D99A7F20053BC8F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -804,6 +897,11 @@
 			isa = PBXTargetDependency;
 			target = AC0404741BFACD1D00AC1501 /* UberRides */;
 			targetProxy = AC0404811BFACD1D00AC1501 /* PBXContainerItemProxy */;
+		};
+		DCDD154F1D99A8410053BC8F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DCDD153A1D99A7F20053BC8F /* TestAppShim */;
+			targetProxy = DCDD154E1D99A8410053BC8F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -817,6 +915,22 @@
 				DC8FC3661CBDF52C00D58839 /* zh-Hant */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		DCDD15411D99A7F20053BC8F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DCDD15421D99A7F20053BC8F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		DCDD15461D99A7F20053BC8F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DCDD15471D99A7F20053BC8F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -928,6 +1042,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -947,28 +1062,73 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.uber.sdk.UberRides;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
 		AC04048D1BFACD1D00AC1501 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../Carthage/Build/iOS/**";
 				INFOPLIST_FILE = UberRidesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.uber.sdk.UberRidesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestAppShim.app/TestAppShim";
 			};
 			name = Debug;
 		};
 		AC04048E1BFACD1D00AC1501 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../Carthage/Build/iOS/**";
 				INFOPLIST_FILE = UberRidesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.uber.sdk.UberRidesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestAppShim.app/TestAppShim";
+			};
+			name = Release;
+		};
+		DCDD154A1D99A7F20053BC8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_ENTITLEMENTS = TestAppShim/TestAppShim.entitlements;
+				INFOPLIST_FILE = TestAppShim/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.uber.sdk.UberRides.TestAppShim;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 2.3;
+			};
+			name = Debug;
+		};
+		DCDD154B1D99A7F20053BC8F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_ENTITLEMENTS = TestAppShim/TestAppShim.entitlements;
+				INFOPLIST_FILE = TestAppShim/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.uber.sdk.UberRides.TestAppShim;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -998,6 +1158,15 @@
 			buildConfigurations = (
 				AC04048D1BFACD1D00AC1501 /* Debug */,
 				AC04048E1BFACD1D00AC1501 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCDD154C1D99A7F20053BC8F /* Build configuration list for PBXNativeTarget "TestAppShim" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCDD154A1D99A7F20053BC8F /* Debug */,
+				DCDD154B1D99A7F20053BC8F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

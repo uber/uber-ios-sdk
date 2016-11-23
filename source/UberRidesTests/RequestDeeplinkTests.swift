@@ -86,7 +86,7 @@ class UberRidesDeeplinkTests: XCTestCase {
      */
     func testBuildDeeplinkWithClientIDHasDefaultParameters() {
         let deeplink = RequestDeeplink()
-        let uri = deeplink.deeplinkURL.absoluteString
+        let uri = deeplink.deeplinkURL.absoluteString!
         
         XCTAssertTrue(uri.containsString(ExpectedDeeplink.uberScheme))
         
