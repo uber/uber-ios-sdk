@@ -16,7 +16,7 @@
 "Unable to present the login view." = "Невозможно отобразить окно входа.";
 "Unable to save the access token." = "Невозможно сохранить токен доступа.";
 "Login is temporarily unavailable." = "Вход временно невозможен.";
-"User cancelled the login process." = "Пользователь отменил процесс входа.";
+"User cancelled the login process." = "Пользователь отменил процесс авторизации.";
 "Try Again" = "Попробовать еще раз";
 "Cancel" = "Отмена";
 "The operation you are attempting is not supported on the current device." = "Запрашиваемое действие не поддерживается данным устройством.";
