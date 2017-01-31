@@ -51,16 +51,16 @@ class OAuthViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.edgesForExtendedLayout = UIRectEdge.None
+        self.edgesForExtendedLayout = UIRectEdge()
         self.view.addSubview(loginView)
         self.setupLoginView()
         // Set up navigation item
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(cancel))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.title = LocalizationUtil.localizedString(forKey: "Sign in with Uber", comment: "Title of navigation bar during OAuth")
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if !hasLoaded {
@@ -69,8 +69,8 @@ class OAuthViewController: UIViewController {
     }
     
     func cancel() {
-        self.loginView.loginAuthenticator.loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .UserCancelled))
-        dismissViewControllerAnimated(true, completion: nil)
+        self.loginView.loginAuthenticator.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .userCancelled))
+        dismiss(animated: true, completion: nil)
     }
     
     //MARK: View Setup
@@ -79,8 +79,8 @@ class OAuthViewController: UIViewController {
         self.loginView.translatesAutoresizingMaskIntoConstraints = false
         
         let views = ["loginView": self.loginView]
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[loginView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[loginView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[loginView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[loginView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
         
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)

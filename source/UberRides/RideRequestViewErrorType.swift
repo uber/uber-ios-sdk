@@ -25,30 +25,34 @@
 /**
 Possible errors that can occur in the RideRequestView.
 
-- AccessTokenMissing:         There is no access token to make the request with
-- AccessTokenExpired:         Access token has expired.
-- NetworkError:               A network error occured
-- NotSupported:               The functionality attempted is not supported on the current device
-- Unknown:                    Unknown error occured.
+- accessTokenMissing:         There is no access token to make the request with
+- accessTokenExpired:         Access token has expired.
+- invalidRequest:             The requested endpoint was invalid
+- networkError:               A network error occured
+- notSupported:               The functionality attempted is not supported on the current device
+- unknown:                    Unknown error occured.
 */
 @objc public enum RideRequestViewErrorType: Int {
-    case AccessTokenExpired
-    case AccessTokenMissing
-    case NetworkError
-    case NotSupported
-    case Unknown
+    case accessTokenExpired
+    case accessTokenMissing
+    case invalidRequest
+    case networkError
+    case notSupported
+    case unknown
     
     func toString() -> String {
         switch self {
-        case .AccessTokenExpired:
+        case .accessTokenExpired:
             return "unauthorized"
-        case .AccessTokenMissing:
+        case .accessTokenMissing:
             return "no_access_token"
-        case .NetworkError:
+        case .invalidRequest:
+            return "invalid_request"
+        case .networkError:
             return "network_error"
-        case .NotSupported:
+        case .notSupported:
             return "not_supported"
-        case .Unknown:
+        case .unknown:
             return "unknown"
         }
     }

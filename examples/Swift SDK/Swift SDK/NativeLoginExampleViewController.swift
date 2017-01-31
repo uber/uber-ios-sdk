@@ -27,20 +27,20 @@ import UberRides
 import CoreLocation
 
 /// This class provides an example for using the LoginButton to do Native Login (SSO with the Uber App)
-public class NativeLoginExampleViewController: ButtonExampleViewController, LoginButtonDelegate {
+open class NativeLoginExampleViewController: ButtonExampleViewController, LoginButtonDelegate {
     
     let scopes: [RidesScope]
     let loginManager: LoginManager
     let blackLoginButton: LoginButton
     let whiteLoginButton: LoginButton
     
-    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         scopes = [.Profile, .Places, .Request]
-        loginManager = LoginManager(loginType: .Native)
-        blackLoginButton = LoginButton(frame: CGRectZero, scopes: scopes, loginManager: loginManager)
-        whiteLoginButton = LoginButton(frame: CGRectZero, scopes: scopes, loginManager: loginManager)
+        loginManager = LoginManager(loginType: .native)
+        blackLoginButton = LoginButton(frame: CGRect.zero, scopes: scopes, loginManager: loginManager)
+        whiteLoginButton = LoginButton(frame: CGRect.zero, scopes: scopes, loginManager: loginManager)
         
-        whiteLoginButton.colorStyle = .White
+        whiteLoginButton.colorStyle = .white
         
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
@@ -55,7 +55,7 @@ public class NativeLoginExampleViewController: ButtonExampleViewController, Logi
         fatalError("init?(coder aDecoder: NSCoder) is not supported")
     }
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationItem.title = "SSO"
@@ -69,42 +69,42 @@ public class NativeLoginExampleViewController: ButtonExampleViewController, Logi
     
     // Mark: Private Interface
     
-    private func addBlackLoginButtonConstraints() {
+    fileprivate func addBlackLoginButtonConstraints() {
         blackLoginButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let centerYConstraint = NSLayoutConstraint(item: blackLoginButton, attribute: .CenterY, relatedBy: .Equal, toItem: topView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
-        let centerXConstraint = NSLayoutConstraint(item: blackLoginButton, attribute: .CenterX, relatedBy: .Equal, toItem: topView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
-        let widthConstraint = NSLayoutConstraint(item: blackLoginButton, attribute: .Width, relatedBy: .Equal, toItem: topView, attribute: .Width, multiplier: 1.0, constant: -20.0)
+        let centerYConstraint = NSLayoutConstraint(item: blackLoginButton, attribute: .centerY, relatedBy: .equal, toItem: topView, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+        let centerXConstraint = NSLayoutConstraint(item: blackLoginButton, attribute: .centerX, relatedBy: .equal, toItem: topView, attribute: .centerX, multiplier: 1.0, constant: 0.0)
+        let widthConstraint = NSLayoutConstraint(item: blackLoginButton, attribute: .width, relatedBy: .equal, toItem: topView, attribute: .width, multiplier: 1.0, constant: -20.0)
         
         topView.addConstraints([centerYConstraint, centerXConstraint, widthConstraint])
     }
     
-    private func addWhiteLoginButtonConstraints() {
+    fileprivate func addWhiteLoginButtonConstraints() {
         whiteLoginButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let centerYConstraint = NSLayoutConstraint(item: whiteLoginButton, attribute: .CenterY, relatedBy: .Equal, toItem: bottomView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
-        let centerXConstraint = NSLayoutConstraint(item: whiteLoginButton, attribute: .CenterX, relatedBy: .Equal, toItem: bottomView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
-        let widthConstraint = NSLayoutConstraint(item: whiteLoginButton, attribute: .Width, relatedBy: .Equal, toItem: bottomView, attribute: .Width, multiplier: 1.0, constant: -20.0)
+        let centerYConstraint = NSLayoutConstraint(item: whiteLoginButton, attribute: .centerY, relatedBy: .equal, toItem: bottomView, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+        let centerXConstraint = NSLayoutConstraint(item: whiteLoginButton, attribute: .centerX, relatedBy: .equal, toItem: bottomView, attribute: .centerX, multiplier: 1.0, constant: 0.0)
+        let widthConstraint = NSLayoutConstraint(item: whiteLoginButton, attribute: .width, relatedBy: .equal, toItem: bottomView, attribute: .width, multiplier: 1.0, constant: -20.0)
         
         bottomView.addConstraints([centerYConstraint, centerXConstraint, widthConstraint])
     }
     
-    private func showMessage(message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil)
+    fileprivate func showMessage(_ message: String) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(okayAction)
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     // Mark: LoginButtonDelegate
     
-    public func loginButton(button: LoginButton, didLogoutWithSuccess success: Bool) {
+    open func loginButton(_ button: LoginButton, didLogoutWithSuccess success: Bool) {
         if success {
             showMessage("Logout")
         }
     }
     
-    public func loginButton(button: LoginButton, didCompleteLoginWithToken accessToken: AccessToken?, error: NSError?) {
+    open func loginButton(_ button: LoginButton, didCompleteLoginWithToken accessToken: AccessToken?, error: NSError?) {
         if let _ = accessToken {
             showMessage("Saved access token!")
         } else if let error = error {

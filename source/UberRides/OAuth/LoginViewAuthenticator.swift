@@ -25,10 +25,10 @@
 import UIKit
 
 /// Base class for authorization flows that use the LoginView.
-@objc public class LoginViewAuthenticator: BaseAuthenticator {
+@objc open class LoginViewAuthenticator: BaseAuthenticator {
     
     /// View controller that will present the login
-    public var presentingViewController: UIViewController
+    open var presentingViewController: UIViewController
     
     /// Endpoint to hit for authorization request.
     var endpoint: UberAPI {
@@ -44,6 +44,6 @@ import UIKit
     override func login() {
         let oauthViewController = OAuthViewController(loginAuthenticator: self)
         let navController = UINavigationController(rootViewController: oauthViewController)
-        presentingViewController.presentViewController(navController, animated: true, completion: nil)
+        presentingViewController.present(navController, animated: true, completion: nil)
     }
 }

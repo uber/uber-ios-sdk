@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "UberRides"
-  s.version      = "0.6.0"
+  s.version      = "0.7.0"
   s.summary      = "The Official Uber Rides iOS SDK."
   s.description  = <<-DESC
     This Swift library allows you to integrate Uber into your iOS app. It is designed to make it quick and easy to add a 'Request a Ride' button in your application, seamlessly connecting your users with Uber.
@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
   s.source_files = ["source/UberRides/*.swift", "source/UberRides/Model/*.swift", "source/UberRides/OAuth/*.swift", "source/UberRides/Utilities/*.swift"]
   s.resource     = "source/UberRides/Resources/**"
   s.requires_arc = true
-  s.dependency 'ObjectMapper', '~> 1.0'
+  s.dependency 'ObjectMapper', '~> 2.0'
 
 end

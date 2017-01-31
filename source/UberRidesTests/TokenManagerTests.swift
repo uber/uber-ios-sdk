@@ -29,13 +29,16 @@ class TokenManagerTests: XCTestCase {
     
     private var notificationFired = false
     private var keychain: KeychainWrapper?
+    private var token: AccessToken!
     
     override func setUp() {
         super.setUp()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(for: type(of: self))
         keychain = KeychainWrapper()
         notificationFired = false
+        let tokenData = ["access_token" : "testTokenString"]
+        token = AccessToken(JSON: tokenData)
     }
     
     override func tearDown() {
@@ -47,16 +50,14 @@ class TokenManagerTests: XCTestCase {
     
     func testSave() {
         let identifier = "testIdentifier"
-        
-        let token = getTestToken()
-        
-        XCTAssertTrue(TokenManager.saveToken(token, tokenIdentifier:identifier))
+
+        XCTAssertTrue(TokenManager.saveToken(token!, tokenIdentifier:identifier))
 
         guard let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken else {
             XCTFail("Unable to fetch token")
             return
         }
-        XCTAssertEqual(actualToken.tokenString, token.tokenString)
+        XCTAssertEqual(actualToken.tokenString, token?.tokenString)
         
         
         XCTAssertTrue(keychain!.deleteObjectForKey(identifier))
@@ -66,19 +67,17 @@ class TokenManagerTests: XCTestCase {
     func testSave_firesNotification() {
         let identifier = "testIdentifier"
         
-        let token = getTestToken()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTokenManagerNotifications), name: NSNotification.Name(rawValue: TokenManager.TokenManagerDidSaveTokenNotification), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTokenManagerNotifications), name: TokenManager.TokenManagerDidSaveTokenNotification, object: nil)
+        XCTAssertTrue(TokenManager.saveToken(token!, tokenIdentifier:identifier))
         
-        XCTAssertTrue(TokenManager.saveToken(token, tokenIdentifier:identifier))
-        
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
 
         guard let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken else {
             XCTFail("Unable to fetch token")
             return
         }
-        XCTAssertEqual(actualToken.tokenString, token.tokenString)
+        XCTAssertEqual(actualToken.tokenString, token?.tokenString)
         
         XCTAssertTrue(notificationFired)
         
@@ -89,15 +88,13 @@ class TokenManagerTests: XCTestCase {
     func testGet() {
         
         let identifier = "testIdentifier"
-        
-        let token = getTestToken()
 
-        XCTAssertTrue(keychain!.setObject(token, key: identifier))
+        XCTAssertTrue(keychain!.setObject(token!, key: identifier))
         
         let actualToken = TokenManager.fetchToken(identifier)
         XCTAssertNotNil(actualToken)
         
-        XCTAssertEqual(actualToken?.tokenString, token.tokenString)
+        XCTAssertEqual(actualToken?.tokenString, token?.tokenString)
         
         XCTAssertTrue(keychain!.deleteObjectForKey(identifier))
     }
@@ -110,10 +107,8 @@ class TokenManagerTests: XCTestCase {
     
     func testDelete() {
         let identifier = "testIdentifier"
-        
-        let token = getTestToken()
 
-        XCTAssertTrue(keychain!.setObject(token, key: identifier))
+        XCTAssertTrue(keychain!.setObject(token!, key: identifier))
         
         XCTAssertTrue(TokenManager.deleteToken(identifier))
         
@@ -135,16 +130,14 @@ class TokenManagerTests: XCTestCase {
     func testDelete_firesNotification() {
         
         let identifier = "testIdentifier"
-        
-        let token = getTestToken()
 
-        XCTAssertTrue(keychain!.setObject(token, key: identifier))
+        XCTAssertTrue(keychain!.setObject(token!, key: identifier))
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTokenManagerNotifications), name: TokenManager.TokenManagerDidDeleteTokenNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTokenManagerNotifications), name: NSNotification.Name(rawValue: TokenManager.TokenManagerDidDeleteTokenNotification), object: nil)
         
         XCTAssertTrue(TokenManager.deleteToken(identifier))
         
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
         
         XCTAssertTrue(notificationFired)
         
@@ -159,22 +152,22 @@ class TokenManagerTests: XCTestCase {
     func testDelete_nonExistent_doesNotFireNotification() {
         let identifier = "there.is.no.token.named.this.123412wfdasd3o"
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTokenManagerNotifications), name: TokenManager.TokenManagerDidDeleteTokenNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTokenManagerNotifications), name: NSNotification.Name(rawValue: TokenManager.TokenManagerDidDeleteTokenNotification), object: nil)
         
         XCTAssertFalse(TokenManager.deleteToken(identifier))
         
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
         
         XCTAssertFalse(notificationFired)
     }
     
     func testCookiesCleared_whenTokenDeleted() {
-        guard let usUrl = NSURL(string: "https://login.uber.com"), let chinaURL = NSURL(string: "https://login.uber.com.cn")  else {
+        guard let usUrl = URL(string: "https://login.uber.com"), let chinaURL = URL(string: "https://login.uber.com.cn")  else {
             XCTAssertFalse(false)
             return
         }
         
-        let cookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
+        let cookieStorage = HTTPCookieStorage.shared
         
         if let cookies = cookieStorage.cookies {
             for cookie in cookies {
@@ -183,69 +176,62 @@ class TokenManagerTests: XCTestCase {
         }
         
         
-        cookieStorage.setCookies(createTestUSCookies(), forURL: usUrl, mainDocumentURL: nil)
-        cookieStorage.setCookies(createTestChinaCookies(), forURL: chinaURL, mainDocumentURL: nil)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        cookieStorage.setCookies(createTestUSCookies(), for: usUrl, mainDocumentURL: nil)
+        cookieStorage.setCookies(createTestChinaCookies(), for: chinaURL, mainDocumentURL: nil)
+        UserDefaults.standard.synchronize()
         XCTAssertEqual(cookieStorage.cookies?.count, 4)
-        XCTAssertEqual(cookieStorage.cookiesForURL(usUrl)?.count, 2)
-        XCTAssertEqual(cookieStorage.cookiesForURL(chinaURL)?.count, 2)
+        XCTAssertEqual(cookieStorage.cookies(for: usUrl)?.count, 2)
+        XCTAssertEqual(cookieStorage.cookies(for: chinaURL)?.count, 2)
         
         let identifier = "testIdentifier"
-        
-        let token = getTestToken()
 
-        keychain?.setObject(token, key: identifier)
+        _ = keychain?.setObject(token!, key: identifier)
         
         XCTAssertTrue(TokenManager.deleteToken(identifier))
         
         let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken
         guard actualToken == nil else {
             XCTAssert(false)
-            keychain?.deleteObjectForKey(identifier)
+            _ = keychain?.deleteObjectForKey(identifier)
             return
         }
         
-        let testCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
+        let testCookieStorage = HTTPCookieStorage.shared
         XCTAssertEqual(testCookieStorage.cookies?.count, 0)
         
     }
     
     
     //MARK: Helpers
-    
-    func getTestToken() -> AccessToken! {
-        let tokenData = ["access_token" : "testTokenString"]
-        return AccessToken(JSON: tokenData)
-    }
             
-    func createTestUSCookies() -> [NSHTTPCookie] {
-        let secureUSCookie = NSHTTPCookie(properties: [NSHTTPCookieDomain: ".uber.com",
-            NSHTTPCookiePath : "/",
-            NSHTTPCookieName : "us_login_secure",
-            NSHTTPCookieValue : "some_value",
-            NSHTTPCookieSecure : true])
-        let unsecureUSCookie = NSHTTPCookie(properties: [NSHTTPCookieDomain: ".uber.com",
-            NSHTTPCookiePath : "/",
-            NSHTTPCookieName : "us_login_unecure",
-            NSHTTPCookieValue : "some_value",
-            NSHTTPCookieSecure : false])
+    func createTestUSCookies() -> [HTTPCookie] {
+        let secureUSCookie = HTTPCookie(properties: [HTTPCookiePropertyKey.domain: ".uber.com",
+            HTTPCookiePropertyKey.path : "/",
+            HTTPCookiePropertyKey.name : "us_login_secure",
+            HTTPCookiePropertyKey.value : "some_value",
+            HTTPCookiePropertyKey.secure : true])
+        let unsecureUSCookie = HTTPCookie(properties: [HTTPCookiePropertyKey.domain: ".uber.com",
+            HTTPCookiePropertyKey.path : "/",
+            HTTPCookiePropertyKey.name : "us_login_unecure",
+            HTTPCookiePropertyKey.value : "some_value",
+            HTTPCookiePropertyKey.secure : false])
         if let secureUSCookie = secureUSCookie, let unsecureUSCookie = unsecureUSCookie {
             return [secureUSCookie, unsecureUSCookie]
         }
         return []
     }
     
-    func createTestChinaCookies() -> [NSHTTPCookie] {
-        let secureChinaCookie = NSHTTPCookie(properties: [NSHTTPCookieDomain : ".uber.com.cn",
-            NSHTTPCookiePath : "/",
-            NSHTTPCookieName : "cn_login_secure",
-            NSHTTPCookieValue : "some_value",
-            NSHTTPCookieSecure : true])
-        let unsecureChinaCookie  = NSHTTPCookie(properties: [NSHTTPCookieDomain : ".uber.com.cn",
-            NSHTTPCookiePath : "/",
-            NSHTTPCookieName : "cn_login_unsecure",
-            NSHTTPCookieValue : "some_value",
-            NSHTTPCookieSecure : false])
+    func createTestChinaCookies() -> [HTTPCookie] {
+        let secureChinaCookie = HTTPCookie(properties: [HTTPCookiePropertyKey.domain : ".uber.com.cn",
+            HTTPCookiePropertyKey.path : "/",
+            HTTPCookiePropertyKey.name : "cn_login_secure",
+            HTTPCookiePropertyKey.value : "some_value",
+            HTTPCookiePropertyKey.secure : true])
+        let unsecureChinaCookie  = HTTPCookie(properties: [HTTPCookiePropertyKey.domain : ".uber.com.cn",
+            HTTPCookiePropertyKey.path : "/",
+            HTTPCookiePropertyKey.name : "cn_login_unsecure",
+            HTTPCookiePropertyKey.value : "some_value",
+            HTTPCookiePropertyKey.secure : false])
         if let secureChinaCookie = secureChinaCookie, let unsecureChinaCookie = unsecureChinaCookie {
             return [secureChinaCookie, unsecureChinaCookie]
         }

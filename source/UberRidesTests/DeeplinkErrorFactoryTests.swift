@@ -25,9 +25,9 @@ import XCTest
 
 class DeeplinkErrorFactoryTests: XCTestCase {
     let expectedErrorToValueMapping = [
-        DeeplinkErrorType.DeeplinkNotFollowed : DeeplinkErrorType.DeeplinkNotFollowed.rawValue,
-        DeeplinkErrorType.UnableToFollow : DeeplinkErrorType.UnableToFollow.rawValue,
-        DeeplinkErrorType.UnableToOpen : DeeplinkErrorType.UnableToOpen.rawValue,
+        DeeplinkErrorType.deeplinkNotFollowed : DeeplinkErrorType.deeplinkNotFollowed.rawValue,
+        DeeplinkErrorType.unableToFollow : DeeplinkErrorType.unableToFollow.rawValue,
+        DeeplinkErrorType.unableToOpen : DeeplinkErrorType.unableToOpen.rawValue,
     ]
     
     func testCreateErrorsByErrorType() {

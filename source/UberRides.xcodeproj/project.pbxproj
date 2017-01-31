@@ -86,6 +86,7 @@
 		DC3F740F1CF6424A00A713AA /* DeeplinkErrorFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3F740E1CF6424A00A713AA /* DeeplinkErrorFactoryTests.swift */; };
 		DC3F74111CF6669000A713AA /* DeeplinkRequestingBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3F74101CF6669000A713AA /* DeeplinkRequestingBehaviorTests.swift */; };
 		DC3F74131CF6767B00A713AA /* RidesAppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3F74121CF6767B00A713AA /* RidesAppDelegateTests.swift */; };
+		DC459C2F1E3ABF1000D90343 /* URLComponentsExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC459C2E1E3ABF1000D90343 /* URLComponentsExtensionsTests.swift */; };
 		DC6410841CED0B3A009C4C8A /* NativeAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6410831CED0B3A009C4C8A /* NativeAuthenticator.swift */; };
 		DC673D101CF5084000F36E2B /* BaseDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC673D0F1CF5084000F36E2B /* BaseDeeplink.swift */; };
 		DC673D121CF5184D00F36E2B /* AppStoreDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC673D111CF5184D00F36E2B /* AppStoreDeeplink.swift */; };
@@ -245,6 +246,7 @@
 		DC3F740E1CF6424A00A713AA /* DeeplinkErrorFactoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkErrorFactoryTests.swift; sourceTree = "<group>"; };
 		DC3F74101CF6669000A713AA /* DeeplinkRequestingBehaviorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkRequestingBehaviorTests.swift; sourceTree = "<group>"; };
 		DC3F74121CF6767B00A713AA /* RidesAppDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesAppDelegateTests.swift; sourceTree = "<group>"; };
+		DC459C2E1E3ABF1000D90343 /* URLComponentsExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLComponentsExtensionsTests.swift; sourceTree = "<group>"; };
 		DC6410831CED0B3A009C4C8A /* NativeAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NativeAuthenticator.swift; path = OAuth/NativeAuthenticator.swift; sourceTree = "<group>"; };
 		DC673D0F1CF5084000F36E2B /* BaseDeeplink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseDeeplink.swift; sourceTree = "<group>"; };
 		DC673D111CF5184D00F36E2B /* AppStoreDeeplink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppStoreDeeplink.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 				DC3F74101CF6669000A713AA /* DeeplinkRequestingBehaviorTests.swift */,
 				DC3F74121CF6767B00A713AA /* RidesAppDelegateTests.swift */,
 				DC1AE1BA1CF775F800B8CFCB /* LoginButtonTests.swift */,
+				DC459C2E1E3ABF1000D90343 /* URLComponentsExtensionsTests.swift */,
 			);
 			path = UberRidesTests;
 			sourceTree = "<group>";
@@ -657,15 +660,16 @@
 				TargetAttributes = {
 					AC0404741BFACD1D00AC1501 = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 					};
 					AC04047E1BFACD1D00AC1501 = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 						TestTargetID = DCDD153A1D99A7F20053BC8F;
 					};
 					DCDD153A1D99A7F20053BC8F = {
 						CreatedOnToolsVersion = 8.0;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -878,6 +882,7 @@
 				DC92DC061CA3AC59001A0DCC /* OauthEndpointTests.swift in Sources */,
 				D81A8B1A1C69186B00339C13 /* RequestLayerTests.swift in Sources */,
 				DCAEA98F1CEE4C9C00E6F239 /* RequestURLUtilTests.swift in Sources */,
+				DC459C2F1E3ABF1000D90343 /* URLComponentsExtensionsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1042,7 +1047,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0.1;
 			};
 			name = Debug;
 		};
@@ -1062,7 +1067,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.uber.sdk.UberRides;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0.1;
 			};
 			name = Release;
 		};
@@ -1075,7 +1080,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.uber.sdk.UberRidesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0.1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestAppShim.app/TestAppShim";
 			};
 			name = Debug;
@@ -1089,7 +1094,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.uber.sdk.UberRidesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0.1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestAppShim.app/TestAppShim";
 			};
 			name = Release;
@@ -1109,7 +1114,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.uber.sdk.UberRides.TestAppShim;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0.1;
 			};
 			name = Debug;
 		};
@@ -1128,7 +1133,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.uber.sdk.UberRides.TestAppShim;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0.1;
 			};
 			name = Release;
 		};

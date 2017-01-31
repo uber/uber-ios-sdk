@@ -46,15 +46,15 @@ class AccessTokenFactoryTests: XCTestCase {
     }
 
     func testParseTokenFromURL_withSuccess() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)&expires_in=\(expirationTime)&scope=\(allowedScopesString)"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
         do {
-            let expectedExpirationInterval = NSDate().timeIntervalSince1970 + expirationTime
+            let expectedExpirationInterval = Date().timeIntervalSince1970 + expirationTime
             
             let token : AccessToken = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
             XCTAssertNotNil(token)
@@ -78,17 +78,18 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withError() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)&expires_in=\(expirationTime)&scope=\(allowedScopesString)&error=\(errorString)"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
         do {
-            try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            _ = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            XCTFail("Didn't parse out error")
         } catch let error as NSError {
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.InvalidRequest.rawValue)
+            XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
             XCTAssertEqual(error.domain, RidesAuthenticationErrorFactory.errorDomain)
         } catch {
             XCTAssert(false)
@@ -96,17 +97,18 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withOnlyError() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "error=\(errorString)"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
         do {
-            try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            _ = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            XCTFail("Didn't parse out error")
         } catch let error as NSError {
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.InvalidRequest.rawValue)
+            XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
             XCTAssertEqual(error.domain, RidesAuthenticationErrorFactory.errorDomain)
         } catch  {
             XCTAssert(false)
@@ -114,10 +116,10 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withPartialParameters() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "access_token=\(tokenString)"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
@@ -136,18 +138,19 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withFragmentAndQuery_withError() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "access_token=\(tokenString)"
         components.query = "error=\(errorString)"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
         do {
-            try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            _ = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            XCTFail("Didn't parse out error")
         } catch let error as NSError {
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.InvalidRequest.rawValue)
+            XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
             XCTAssertEqual(error.domain, RidesAuthenticationErrorFactory.errorDomain)
         } catch {
             XCTAssert(false)
@@ -155,16 +158,16 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withFragmentAndQuery_withSuccess() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)"
         components.query = "expires_in=\(expirationTime)&scope=\(allowedScopesString)"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
         do {
-            let expectedExpirationInterval = NSDate().timeIntervalSince1970 + expirationTime
+            let expectedExpirationInterval = Date().timeIntervalSince1970 + expirationTime
             
             let token : AccessToken = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
             XCTAssertNotNil(token)
@@ -188,10 +191,10 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withInvalidFragment() {
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.fragment = "access_token=\(tokenString)&refresh_token"
         components.host = redirectURI
-        guard let url = components.URL else {
+        guard let url = components.url else {
             XCTAssert(false)
             return
         }
@@ -212,7 +215,7 @@ class AccessTokenFactoryTests: XCTestCase {
     func testParseValidJsonStringToAccessToken() {
         let tokenString = "tokenString1234"
         let jsonString = "{\"access_token\": \"\(tokenString)\"}"
-        let accessToken = AccessTokenFactory.createAccessTokenFromJSONString(jsonString)
+        let accessToken = AccessTokenFactory.createAccessTokenFromJSONString(string: jsonString)
         
         XCTAssertNotNil(accessToken)
         XCTAssertEqual(accessToken?.tokenString, tokenString)
@@ -221,7 +224,7 @@ class AccessTokenFactoryTests: XCTestCase {
     func testParseInvalidJsonStringToAccessToken() {
         let tokenString = "tokenString1234"
         let jsonString = "{\"access_token\": \"\(tokenString)\""
-        let accessToken = AccessTokenFactory.createAccessTokenFromJSONString(jsonString)
+        let accessToken = AccessTokenFactory.createAccessTokenFromJSONString(string: jsonString)
         
         XCTAssertNil(accessToken)
     }

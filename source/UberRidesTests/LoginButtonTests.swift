@@ -26,15 +26,18 @@ import CoreLocation
 
 class LoginButtonTests : XCTestCase {
     
-    private var keychain: KeychainWrapper?
-    
+    private var keychain: KeychainWrapper!
+    private var testToken: AccessToken!
+
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.setSandboxEnabled(true)
         keychain = KeychainWrapper()
+        let tokenData = ["access_token" : "testTokenString"]
+        testToken = AccessToken(JSON: tokenData)
     }
     
     override func tearDown() {
@@ -46,86 +49,79 @@ class LoginButtonTests : XCTestCase {
     func testButtonState_whenSignedOut() {
         let identifier = "testIdentifier"
 
-        keychain!.deleteObjectForKey(identifier)
+        _ = keychain.deleteObjectForKey(identifier)
         
         let token = TokenManager.fetchToken(identifier)
         XCTAssertNil(token)
         
-        let loginManager = LoginManager(accessTokenIdentifier: identifier, keychainAccessGroup: nil, loginType: .Implicit)
-        let loginButton = LoginButton(frame: CGRectZero, scopes: [], loginManager: loginManager)
+        let loginManager = LoginManager(accessTokenIdentifier: identifier, keychainAccessGroup: nil, loginType: .implicit)
+        let loginButton = LoginButton(frame: CGRect.zero, scopes: [], loginManager: loginManager)
         
-        XCTAssertEqual(loginButton.buttonState, LoginButtonState.SignedOut)
+        XCTAssertEqual(loginButton.buttonState, LoginButtonState.signedOut)
         
-        keychain!.deleteObjectForKey(identifier)
+        _ = keychain.deleteObjectForKey(identifier)
     }
     
     func testLabelText_whenSignedIn() {
         let identifier = "testIdentifier"
         
-        let token = getTestToken()
+        let token: AccessToken = testToken
 
-        XCTAssertTrue(keychain!.setObject(token, key: identifier))
+        XCTAssertTrue(keychain.setObject(token, key: identifier))
         
-        let loginManager = LoginManager(accessTokenIdentifier: identifier, keychainAccessGroup: nil, loginType: .Implicit)
-        let loginButton = LoginButton(frame: CGRectZero, scopes: [], loginManager: loginManager)
+        let loginManager = LoginManager(accessTokenIdentifier: identifier, keychainAccessGroup: nil, loginType: .implicit)
+        let loginButton = LoginButton(frame: CGRect.zero, scopes: [], loginManager: loginManager)
         
-        XCTAssertEqual(loginButton.buttonState, LoginButtonState.SignedIn)
+        XCTAssertEqual(loginButton.buttonState, LoginButtonState.signedIn)
         
-        XCTAssertTrue(keychain!.deleteObjectForKey(identifier))
+        XCTAssertTrue(keychain.deleteObjectForKey(identifier))
     }
     
     func testLoginCalled_whenSignedOut() {
         let identifier = "testIdentifier"
 
-        keychain!.deleteObjectForKey(identifier)
+        _ = keychain.deleteObjectForKey(identifier)
         
         let token = TokenManager.fetchToken(identifier)
         XCTAssertNil(token)
         
-        let expectation = expectationWithDescription("Expected executeLogin() called")
+        let expectation = self.expectation(description: "Expected executeLogin() called")
         
-        let loginManager = LoginManagerPartialMock(accessTokenIdentifier: identifier, keychainAccessGroup: nil, loginType: .Implicit)
+        let loginManager = LoginManagerPartialMock(accessTokenIdentifier: identifier, keychainAccessGroup: nil, loginType: .implicit)
         loginManager.executeLoginClosure = {
             expectation.fulfill()
         }
-        let loginButton = LoginButton(frame: CGRectZero, scopes: [.Profile], loginManager: loginManager)
+        let loginButton = LoginButton(frame: CGRect.zero, scopes: [.Profile], loginManager: loginManager)
         
         loginButton.presentingViewController = UIViewController()
         XCTAssertNotNil(loginButton)
-        XCTAssertEqual(loginButton.buttonState, LoginButtonState.SignedOut)
+        XCTAssertEqual(loginButton.buttonState, LoginButtonState.signedOut)
         loginButton.uberButtonTapped(loginButton)
         
-        waitForExpectationsWithTimeout(0.2) { _ in
-            self.keychain!.deleteObjectForKey(identifier)
+        waitForExpectations(timeout: 0.2) { _ in
+            _ = self.keychain.deleteObjectForKey(identifier)
         }
     }
     
     func testLogOut_whenSignedIn() {
         let identifier = "testIdentifier"
 
-        keychain!.deleteObjectForKey(identifier)
+        _ = keychain.deleteObjectForKey(identifier)
         
-        let token = getTestToken()
+        let token: AccessToken = testToken
 
-        XCTAssertTrue(keychain!.setObject(token, key: identifier))
+        XCTAssertTrue(keychain.setObject(token, key: identifier))
         
-        let loginManager = LoginManager(accessTokenIdentifier: identifier, keychainAccessGroup: nil, loginType: .Implicit)
-        let loginButton = LoginButton(frame: CGRectZero, scopes: [.Profile], loginManager: loginManager)
+        let loginManager = LoginManager(accessTokenIdentifier: identifier, keychainAccessGroup: nil, loginType: .implicit)
+        let loginButton = LoginButton(frame: CGRect.zero, scopes: [.Profile], loginManager: loginManager)
         
         loginButton.presentingViewController = UIViewController()
         XCTAssertNotNil(loginButton)
-        XCTAssertEqual(loginButton.buttonState, LoginButtonState.SignedIn)
+        XCTAssertEqual(loginButton.buttonState, LoginButtonState.signedIn)
         loginButton.uberButtonTapped(loginButton)
         
         XCTAssertNil(TokenManager.fetchToken(identifier))
         
-        keychain!.deleteObjectForKey(identifier)
-    }
-    
-    //Mark: Helpers
-    
-    func getTestToken() -> AccessToken! {
-        let tokenData = ["access_token" : "testTokenString"]
-        return AccessToken(JSON: tokenData)
+        _ = keychain.deleteObjectForKey(identifier)
     }
 }

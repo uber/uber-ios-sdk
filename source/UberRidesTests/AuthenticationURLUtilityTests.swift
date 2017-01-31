@@ -32,8 +32,8 @@ class AuthenticationURLUtilityTests: XCTestCase {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
-        versionNumber = NSBundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
+        Configuration.bundle = Bundle(for: type(of: self))
+        versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
     }
     
     override func tearDown() {
@@ -53,13 +53,13 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let expectedSDK = "ios"
         let expectedSDKVersion = versionNumber
         
-        let scopeQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.scopesKey, value: expectedScopes)
-        let clientIDQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
-        let appNameQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
-        let callbackURIQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
-        let loginTypeQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.loginTypeKey, value: expectedLoginType)
-        let sdkQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
-        let sdkVersionQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)
+        let scopeQueryItem = URLQueryItem(name: AuthenticationURLUtility.scopesKey, value: expectedScopes)
+        let clientIDQueryItem = URLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
+        let appNameQueryItem = URLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
+        let callbackURIQueryItem = URLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
+        let loginTypeQueryItem = URLQueryItem(name: AuthenticationURLUtility.loginTypeKey, value: expectedLoginType)
+        let sdkQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
+        let sdkVersionQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)
         
         let expectedQueryItems = [scopeQueryItem, clientIDQueryItem, appNameQueryItem, callbackURIQueryItem, loginTypeQueryItem, sdkQueryItem, sdkVersionQueryItem]
         let comparisonSet = NSSet(array: expectedQueryItems)
@@ -82,13 +82,13 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let expectedSDK = "ios"
         let expectedSDKVersion = versionNumber
         
-        let scopeQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.scopesKey, value: expectedScopes)
-        let clientIDQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
-        let appNameQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
-        let callbackURIQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
-        let loginTypeQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.loginTypeKey, value: expectedLoginType)
-        let sdkQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
-        let sdkVersionQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)
+        let scopeQueryItem = URLQueryItem(name: AuthenticationURLUtility.scopesKey, value: expectedScopes)
+        let clientIDQueryItem = URLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
+        let appNameQueryItem = URLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
+        let callbackURIQueryItem = URLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
+        let loginTypeQueryItem = URLQueryItem(name: AuthenticationURLUtility.loginTypeKey, value: expectedLoginType)
+        let sdkQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
+        let sdkVersionQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)
         
         let expectedQueryItems = [scopeQueryItem, clientIDQueryItem, appNameQueryItem, callbackURIQueryItem, loginTypeQueryItem, sdkQueryItem, sdkVersionQueryItem]
         let comparisonSet = NSSet(array: expectedQueryItems)
@@ -101,7 +101,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
     
     func testBuildQueryParameters_withChinaRegion_withSingleScope() {
         
-        Configuration.setRegion(.China)
+        Configuration.setRegion(.china)
         
         let scopes = [RidesScope.RideWidgets]
         
@@ -113,13 +113,13 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let expectedSDK = "ios"
         let expectedSDKVersion = versionNumber
         
-        let scopeQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.scopesKey, value: expectedScopes)
-        let clientIDQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
-        let appNameQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
-        let callbackURIQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
-        let loginTypeQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.loginTypeKey, value: expectedLoginType)
-        let sdkQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
-        let sdkVersionQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)
+        let scopeQueryItem = URLQueryItem(name: AuthenticationURLUtility.scopesKey, value: expectedScopes)
+        let clientIDQueryItem = URLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
+        let appNameQueryItem = URLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
+        let callbackURIQueryItem = URLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
+        let loginTypeQueryItem = URLQueryItem(name: AuthenticationURLUtility.loginTypeKey, value: expectedLoginType)
+        let sdkQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
+        let sdkVersionQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)
         
         let expectedQueryItems = [scopeQueryItem, clientIDQueryItem, appNameQueryItem, callbackURIQueryItem, loginTypeQueryItem, sdkQueryItem, sdkVersionQueryItem]
         let comparisonSet = NSSet(array: expectedQueryItems)
@@ -132,7 +132,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
     
     func testBuildQueryParameters_withChinaRegion_withMultipleScopes() {
         
-        Configuration.setRegion(.China)
+        Configuration.setRegion(.china)
         
         let scopes = [RidesScope.RideWidgets, RidesScope.AllTrips, RidesScope.History]
         
@@ -144,13 +144,13 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let expectedSDK = "ios"
         let expectedSDKVersion = versionNumber
         
-        let scopeQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.scopesKey, value: expectedScopes)
-        let clientIDQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
-        let appNameQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
-        let callbackURIQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
-        let loginTypeQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.loginTypeKey, value: expectedLoginType)
-        let sdkQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
-        let sdkVersionQueryItem = NSURLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)
+        let scopeQueryItem = URLQueryItem(name: AuthenticationURLUtility.scopesKey, value: expectedScopes)
+        let clientIDQueryItem = URLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
+        let appNameQueryItem = URLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
+        let callbackURIQueryItem = URLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
+        let loginTypeQueryItem = URLQueryItem(name: AuthenticationURLUtility.loginTypeKey, value: expectedLoginType)
+        let sdkQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
+        let sdkVersionQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)
         
         let expectedQueryItems = [scopeQueryItem, clientIDQueryItem, appNameQueryItem, callbackURIQueryItem, loginTypeQueryItem, sdkQueryItem, sdkVersionQueryItem]
         let comparisonSet = NSSet(array: expectedQueryItems)
@@ -163,19 +163,19 @@ class AuthenticationURLUtilityTests: XCTestCase {
     
     func testShouldHandleRedirectURL() {
         let testRedirectURLString = "test://handleThis"
-        guard let testRedirectURL = NSURL(string: testRedirectURLString) else {
+        guard let testRedirectURL = URL(string: testRedirectURLString) else {
             XCTFail()
             return
         }
-        Configuration.setCallbackURIString(testRedirectURLString, type: .Implicit)
-        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .General))
-        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .Native))
-        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .AuthorizationCode))
+        Configuration.setCallbackURIString(testRedirectURLString, type: .implicit)
+        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .general))
+        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .native))
+        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .authorizationCode))
         
-        XCTAssertTrue(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .Implicit))
+        XCTAssertTrue(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .implicit))
         
-        Configuration.setCallbackURIString(nil, type: .Implicit)
+        Configuration.setCallbackURIString(nil, type: .implicit)
         
-        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .Implicit))
+        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .implicit))
     }
 }

@@ -74,21 +74,22 @@ class APIManagerTests: XCTestCase {
      
      - parameter endpoint: Endpoint that conforms to UberAPI.
      
-     - returns: NSURLRequest with URL and HTTPMethod set.
+     - returns: URLRequest with URL and HTTPMethod set.
      */
-    func buildRequestForEndpoint(endpoint: UberAPI) -> NSURLRequest {
+    func buildRequestForEndpoint(_ endpoint: UberAPI) -> URLRequest {
         let request = Request(session: nil, endpoint: endpoint)
-        request.prepare()
-        return request.urlRequest
+        XCTAssertNotNil(request, "Unable to create request")
+        request?.prepare()
+        return request!.urlRequest
     }
     
     /**
      Tests the GET /v1/products endpoint.
      */
     func testGetAllProducts() {
-        let request = buildRequestForEndpoint(Products.GetAll(location: CLLocation(latitude: pickupLat, longitude: pickupLong)))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Products.getAll(location: CLLocation(latitude: pickupLat, longitude: pickupLong)))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetProducts)
         } else {
             XCTAssert(false)
@@ -99,9 +100,9 @@ class APIManagerTests: XCTestCase {
      Tests the GET /v1/products/{product_id} endpoint.
      */
     func testGetProduct() {
-        let request = buildRequestForEndpoint(Products.GetProduct(productID: productID))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Products.getProduct(productID: productID))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetProduct)
         } else {
             XCTAssert(false)
@@ -112,9 +113,9 @@ class APIManagerTests: XCTestCase {
      Tests the GET /v1/estimates/price endpoint.
      */
     func testGetPriceEstimates() {
-        let request = buildRequestForEndpoint(Estimates.Price(startLocation: CLLocation(latitude: pickupLat, longitude: pickupLong), endLocation: CLLocation(latitude: dropoffLat, longitude: dropoffLong)))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Estimates.price(startLocation: CLLocation(latitude: pickupLat, longitude: pickupLong), endLocation: CLLocation(latitude: dropoffLat, longitude: dropoffLong)))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetPriceEstimates)
         } else {
             XCTAssert(false)
@@ -125,9 +126,9 @@ class APIManagerTests: XCTestCase {
      Tests the GET /v1/estimates/time endpoint with only latitude and longitude.
      */
     func testGetTimeEstimates() {
-        let request = buildRequestForEndpoint(Estimates.Time(location: CLLocation(latitude: pickupLat, longitude: pickupLong), productID: nil))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Estimates.time(location: CLLocation(latitude: pickupLat, longitude: pickupLong), productID: nil))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetTimeEstimates)
         } else {
             XCTAssert(false)
@@ -138,9 +139,9 @@ class APIManagerTests: XCTestCase {
      Tests the GET /v1/estimates/time endpoint with optional parameters.
      */
     func testGetTimeEstimatesWithOptionalParameters() {
-        let request = buildRequestForEndpoint(Estimates.Time(location: CLLocation(latitude: pickupLat, longitude: pickupLong), productID: productID))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Estimates.time(location: CLLocation(latitude: pickupLat, longitude: pickupLong), productID: productID))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetTimeEstimatesAllParams)
         } else {
             XCTAssert(false)
@@ -151,9 +152,9 @@ class APIManagerTests: XCTestCase {
      Tests the GET /v1.2/history endpoint without optional parameters.
      */
     func testGetHistory() {
-        let request = buildRequestForEndpoint(History.Get(offset: nil, limit: nil))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(History.get(offset: nil, limit: nil))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetHistory)
         } else {
             XCTAssert(false)
@@ -164,9 +165,9 @@ class APIManagerTests: XCTestCase {
      Tests the GET /v1.2/history endpoint with optional offset and limit parameters.
      */
     func testGetHistoryWithAllParameters() {
-        let request = buildRequestForEndpoint(History.Get(offset: offset, limit: limit))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(History.get(offset: offset, limit: limit))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetHistoryWithAllParameters)
         } else {
             XCTAssert(false)
@@ -177,9 +178,9 @@ class APIManagerTests: XCTestCase {
      Tests the GET /v1.2/history endpoint with offset parameter and no limit parameter.
      */
     func testGetHistoryWithOffsetParameter() {
-        let request = buildRequestForEndpoint(History.Get(offset: offset, limit: nil))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(History.get(offset: offset, limit: nil))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetHistoryWithOffset)
         } else {
             XCTAssert(false)
@@ -190,9 +191,9 @@ class APIManagerTests: XCTestCase {
      Tests the GET /v1.2/history endpoint with limit parameter and no offset parameter.
      */
     func testGetHistoryWithLimitParameter() {
-        let request = buildRequestForEndpoint(History.Get(offset: nil, limit: limit))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(History.get(offset: nil, limit: limit))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetHistoryWithLimit)
         } else {
             XCTAssert(false)
@@ -203,9 +204,9 @@ class APIManagerTests: XCTestCase {
      Tests the GET /v1/me endpoint.
      */
     func testGetUserProfile() {
-        let request = buildRequestForEndpoint(Me.UserProfile)
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Me.userProfile)
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetUserProfile)
         } else {
             XCTAssert(false)
@@ -231,9 +232,9 @@ class APIManagerTests: XCTestCase {
             return
         }
         
-        var dict: NSDictionary?
+        var dict: Dictionary<String, Any>?
         do {
-            dict = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
+            dict = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? Dictionary<String, Any>
         } catch {
             XCTAssert(false)
         }
@@ -260,14 +261,14 @@ class APIManagerTests: XCTestCase {
      */
     func testPostRequest() {
         let rideParameters = RideParametersBuilder().setPickupPlaceID("home").setProductID(productID).build()
-        let request = buildRequestForEndpoint(Requests.Make(rideParameters: rideParameters))
-        XCTAssertEqual(request.HTTPMethod, Method.POST.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Requests.make(rideParameters: rideParameters))
+        XCTAssertEqual(request.httpMethod, Method.post.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.PostRequest)
         } else {
             XCTAssert(false)
         }
-        XCTAssertNotNil(request.HTTPBody)
+        XCTAssertNotNil(request.httpBody)
         XCTAssertEqual(request.allHTTPHeaderFields![Header.ContentType.rawValue], "application/json")
     }
     
@@ -275,9 +276,9 @@ class APIManagerTests: XCTestCase {
      Test the GET /v1/requests/current endpoint.
      */
     func testGetCurrentRequest() {
-        let request = buildRequestForEndpoint(Requests.GetCurrent)
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Requests.getCurrent)
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetCurrentRequest)
         } else {
             XCTAssert(false)
@@ -288,9 +289,9 @@ class APIManagerTests: XCTestCase {
      Tests the GET /v1/requests/{request_id} endpoint.
      */
     func testGetRequestByID() {
-        let request = buildRequestForEndpoint(Requests.GetRequest(requestID: requestID))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Requests.getRequest(requestID: requestID))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetRequestByID)
         } else {
             XCTAssert(false)
@@ -302,26 +303,26 @@ class APIManagerTests: XCTestCase {
      */
     func testPostRequestEstimate() {
         let rideParams = RideParametersBuilder().setPickupPlaceID("home").build()
-        let request = buildRequestForEndpoint(Requests.Estimate(rideParameters: rideParams))
-        XCTAssertEqual(request.HTTPMethod, "POST")
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Requests.estimate(rideParameters: rideParams))
+        XCTAssertEqual(request.httpMethod, "POST")
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.PostRequestEstimate)
         }
-        XCTAssertNotNil(request.HTTPBody)
+        XCTAssertNotNil(request.httpBody)
     }
     
     /**
      Tests the GET /v1/payment-methods endpoint.
      */
     func testGetPaymentMethods() {
-        let request = buildRequestForEndpoint(Payment.GetMethods)
-        XCTAssertEqual(request.HTTPMethod, "GET")
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Payment.getMethods)
+        XCTAssertEqual(request.httpMethod, "GET")
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetPaymentMethods)
         } else {
             XCTAssert(false)
         }
-        XCTAssertNil(request.HTTPBody)
+        XCTAssertNil(request.httpBody)
     }
     
     /**
@@ -329,14 +330,14 @@ class APIManagerTests: XCTestCase {
      */
     func testGetPlace() {
         let placeID = Place.Home
-        let request = buildRequestForEndpoint(Places.GetPlace(placeID: placeID))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Places.getPlace(placeID: placeID))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetPlace)
         } else {
             XCTAssert(false)
         }
-        XCTAssertNil(request.HTTPBody)
+        XCTAssertNil(request.httpBody)
     }
     
     /**
@@ -345,9 +346,9 @@ class APIManagerTests: XCTestCase {
     func testPutPlace() {
         let testAddress = "testAddress"
         let placeID = Place.Home
-        let request = buildRequestForEndpoint(Places.PutPlace(placeID: placeID, address: testAddress))
-        XCTAssertEqual(request.HTTPMethod, Method.PUT.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Places.putPlace(placeID: placeID, address: testAddress))
+        XCTAssertEqual(request.httpMethod, Method.put.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.PutPlace)
         } else {
             XCTAssert(false)
@@ -357,11 +358,11 @@ class APIManagerTests: XCTestCase {
         } else {
             XCTAssert(false)
         }
-        XCTAssertNotNil(request.HTTPBody)
+        XCTAssertNotNil(request.httpBody)
         
         var dictionary: NSDictionary?
         do {
-            dictionary = try NSJSONSerialization.JSONObjectWithData(request.HTTPBody!, options: .MutableContainers) as? NSDictionary
+            dictionary = try JSONSerialization.jsonObject(with: request.httpBody!, options: .mutableContainers) as? NSDictionary
         } catch {
             XCTAssert(false)
         }
@@ -379,9 +380,9 @@ class APIManagerTests: XCTestCase {
      */
     func testPatchCurrentRequest() {
         let rideParams = RideParametersBuilder().setPickupPlaceID(Place.Home).build()
-        let request = buildRequestForEndpoint(Requests.PatchCurrent(rideParameters: rideParams))
-        XCTAssertEqual(request.HTTPMethod, "PATCH")
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Requests.patchCurrent(rideParameters: rideParams))
+        XCTAssertEqual(request.httpMethod, "PATCH")
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.PatchCurrentRequest)
         } else {
             XCTAssert(false)
@@ -393,14 +394,14 @@ class APIManagerTests: XCTestCase {
             XCTAssert(false)
         }
         
-        guard let data = request.HTTPBody else {
+        guard let data = request.httpBody else {
             XCTAssert(false)
             return
         }
         
         var dict: NSDictionary?
         do {
-            dict = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
+            dict = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? NSDictionary
         } catch {
             XCTAssert(false)
         }
@@ -418,9 +419,9 @@ class APIManagerTests: XCTestCase {
      */
     func testPatchRequestByID() {
         let rideParams = RideParametersBuilder().setPickupPlaceID(Place.Home).build()
-        let request = buildRequestForEndpoint(Requests.PatchRequest(requestID: requestID, rideParameters: rideParams))
-        XCTAssertEqual(request.HTTPMethod, "PATCH")
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Requests.patchRequest(requestID: requestID, rideParameters: rideParams))
+        XCTAssertEqual(request.httpMethod, "PATCH")
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.PatchRequestByID)
         } else {
             XCTAssert(false)
@@ -432,14 +433,14 @@ class APIManagerTests: XCTestCase {
             XCTAssert(false)
         }
         
-        guard let data = request.HTTPBody else {
+        guard let data = request.httpBody else {
             XCTAssert(false)
             return
         }
         
         var dict: NSDictionary?
         do {
-            dict = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
+            dict = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? NSDictionary
         } catch {
             XCTAssert(false)
         }
@@ -456,42 +457,42 @@ class APIManagerTests: XCTestCase {
      Tests the DELETE /v1/requests/current endpoint.
      */
     func testDeleteCurrent() {
-        let request = buildRequestForEndpoint(Requests.DeleteCurrent)
-        XCTAssertEqual(request.HTTPMethod, "DELETE")
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Requests.deleteCurrent)
+        XCTAssertEqual(request.httpMethod, "DELETE")
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.DeleteCurrentRequest)
         } else {
             XCTAssert(false)
         }
-        XCTAssertNil(request.HTTPBody)
+        XCTAssertNil(request.httpBody)
     }
     
     /**
      Tests the DELETE /v1/requests/{request_id} endpoint.
      */
     func testDeleteRequestByID() {
-        let request = buildRequestForEndpoint(Requests.DeleteRequest(requestID: requestID))
-        XCTAssertEqual(request.HTTPMethod, "DELETE")
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Requests.deleteRequest(requestID: requestID))
+        XCTAssertEqual(request.httpMethod, "DELETE")
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.DeleteRequestByID)
         } else {
             XCTAssert(false)
         }
-        XCTAssertNil(request.HTTPBody)
+        XCTAssertNil(request.httpBody)
     }
     
     /**
      Tests the GET /v1/requests/{request_id}/receipt endpoint.
      */
     func testGetRideReceipt() {
-        let request = buildRequestForEndpoint(Requests.RideReceipt(requestID: requestID))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Requests.rideReceipt(requestID: requestID))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetRideReceipt)
         } else {
             XCTAssert(false)
         }
-        XCTAssertNil(request.HTTPBody)
+        XCTAssertNil(request.httpBody)
         if let headers = request.allHTTPHeaderFields {
             XCTAssertEqual(headers[Header.ContentType.rawValue], "application/json")
         } else {
@@ -503,14 +504,14 @@ class APIManagerTests: XCTestCase {
      Tests the GET /v1/request/{request_id}/map endpoint.
      */
     func testGetRideMap() {
-        let request = buildRequestForEndpoint(Requests.RideMap(requestID: requestID))
-        XCTAssertEqual(request.HTTPMethod, Method.GET.rawValue)
-        if let url = request.URL {
+        let request = buildRequestForEndpoint(Requests.rideMap(requestID: requestID))
+        XCTAssertEqual(request.httpMethod, Method.get.rawValue)
+        if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetRideMap)
         } else {
             XCTAssert(false)
         }
-        XCTAssertNil(request.HTTPBody)
+        XCTAssertNil(request.httpBody)
         if let headers = request.allHTTPHeaderFields {
             XCTAssertEqual(headers[Header.ContentType.rawValue], "application/json")
         } else {

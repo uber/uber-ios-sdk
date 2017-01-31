@@ -25,14 +25,14 @@ import XCTest
 
 class RidesScopeFactoryTests: XCTestCase {
     let expectedRidesScopeToStringMapping = [
-        RidesScopeType.Profile : RidesScopeType.Profile.toString(),
-        RidesScopeType.History : RidesScopeType.History.toString(),
-        RidesScopeType.HistoryLite : RidesScopeType.HistoryLite.toString(),
-        RidesScopeType.Places : RidesScopeType.Places.toString(),
-        RidesScopeType.RideWidgets : RidesScopeType.RideWidgets.toString(),
-        RidesScopeType.AllTrips : RidesScopeType.AllTrips.toString(),
-        RidesScopeType.Request : RidesScopeType.Request.toString(),
-        RidesScopeType.RequestReceipt : RidesScopeType.RequestReceipt.toString(),
+        RidesScopeType.profile : RidesScopeType.profile.toString(),
+        RidesScopeType.history : RidesScopeType.history.toString(),
+        RidesScopeType.historyLite : RidesScopeType.historyLite.toString(),
+        RidesScopeType.places : RidesScopeType.places.toString(),
+        RidesScopeType.rideWidgets : RidesScopeType.rideWidgets.toString(),
+        RidesScopeType.allTrips : RidesScopeType.allTrips.toString(),
+        RidesScopeType.request : RidesScopeType.request.toString(),
+        RidesScopeType.requestReceipt : RidesScopeType.requestReceipt.toString(),
     ]
     
     func testCreateRidesScopeByRidesScopeType() {

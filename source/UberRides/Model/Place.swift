@@ -36,9 +36,9 @@ import ObjectMapper
     public static let Work = "work"
     
     /// Fully qualified address of the location.
-    public private(set) var address: String?
+    public fileprivate(set) var address: String?
     
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 }
 
