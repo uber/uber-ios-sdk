@@ -1,6 +1,6 @@
 # Uber Rides iOS SDK (beta)
 
-This [Swift library] (https://developer.apple.com/library/ios/documentation/General/Reference/SwiftStandardLibraryReference/) allows you to integrate Uber into your iOS app.
+This [Swift library](https://developer.apple.com/library/ios/documentation/General/Reference/SwiftStandardLibraryReference/) allows you to integrate Uber into your iOS app.
 
 ## Beta
 
