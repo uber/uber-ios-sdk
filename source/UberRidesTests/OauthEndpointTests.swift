@@ -34,7 +34,7 @@ class OauthEndpointTests: XCTestCase {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(for: type(of: self))
     }
     
     override func tearDown() {
@@ -44,7 +44,7 @@ class OauthEndpointTests: XCTestCase {
     
     func testLogin_withRegionDefault_withSandboxEnabled() {
         Configuration.setSandboxEnabled(true)
-        Configuration.setRegion(Region.Default)
+        Configuration.setRegion(Region.default)
         
         let scopes = [ RidesScope.Profile, RidesScope.History ]
         let expectedHost = "https://login.uber.com"
@@ -53,17 +53,15 @@ class OauthEndpointTests: XCTestCase {
         let expectedClientID = Configuration.getClientID()
         let expectedRedirect = Configuration.getCallbackURIString()
         let expectedTokenType = "token"
-        let expectedShowFB = "false"
         
         let expectedQueryItems = queryBuilder(
             ("scope", expectedScopes),
             ("client_id", expectedClientID),
             ("redirect_uri", expectedRedirect),
-            ("show_fb", expectedShowFB),
             ("signup_params", base64EncodedSignup),
             ("response_type", expectedTokenType))
         
-        let login = OAuth.ImplicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
+        let login = OAuth.implicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
         
         XCTAssertEqual(login.host, expectedHost)
         XCTAssertEqual(login.path, expectedPath)
@@ -72,7 +70,7 @@ class OauthEndpointTests: XCTestCase {
     
     func testLogin_withRegionChina_withSandboxEnabled() {
         Configuration.setSandboxEnabled(true)
-        Configuration.setRegion(Region.China)
+        Configuration.setRegion(Region.china)
         
         let scopes = [ RidesScope.Profile, RidesScope.History ]
         let expectedHost = "https://login.uber.com.cn"
@@ -81,17 +79,15 @@ class OauthEndpointTests: XCTestCase {
         let expectedClientID = Configuration.getClientID()
         let expectedRedirect = Configuration.getCallbackURIString()
         let expectedTokenType = "token"
-        let expectedShowFB = "false"
         
         let expectedQueryItems = queryBuilder(
             ("scope", expectedScopes),
             ("client_id", expectedClientID),
             ("redirect_uri", expectedRedirect),
-            ("show_fb", expectedShowFB),
             ("signup_params", base64EncodedSignup),
             ("response_type", expectedTokenType))
         
-        let login = OAuth.ImplicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
+        let login = OAuth.implicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
         
         XCTAssertEqual(login.host, expectedHost)
         XCTAssertEqual(login.path, expectedPath)
@@ -100,7 +96,7 @@ class OauthEndpointTests: XCTestCase {
     
     func testLogin_withRegionDefault_withSandboxDisabled() {
         Configuration.setSandboxEnabled(false)
-        Configuration.setRegion(Region.Default)
+        Configuration.setRegion(Region.default)
         
         let scopes = [ RidesScope.Profile, RidesScope.History ]
         let expectedHost = "https://login.uber.com"
@@ -109,17 +105,15 @@ class OauthEndpointTests: XCTestCase {
         let expectedClientID = Configuration.getClientID()
         let expectedRedirect = Configuration.getCallbackURIString()
         let expectedTokenType = "token"
-        let expectedShowFB = "false"
         
         let expectedQueryItems = queryBuilder(
             ("scope", expectedScopes),
             ("client_id", expectedClientID),
             ("redirect_uri", expectedRedirect),
-            ("show_fb", expectedShowFB),
             ("signup_params", base64EncodedSignup),
             ("response_type", expectedTokenType))
         
-        let login = OAuth.ImplicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
+        let login = OAuth.implicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
         
         XCTAssertEqual(login.host, expectedHost)
         XCTAssertEqual(login.path, expectedPath)
@@ -128,7 +122,7 @@ class OauthEndpointTests: XCTestCase {
     
     func testLogin_withRegionChina_withSandboxDisabled() {
         Configuration.setSandboxEnabled(false)
-        Configuration.setRegion(Region.China)
+        Configuration.setRegion(Region.china)
         
         let scopes = [ RidesScope.Profile, RidesScope.History ]
         let expectedHost = "https://login.uber.com.cn"
@@ -137,17 +131,15 @@ class OauthEndpointTests: XCTestCase {
         let expectedClientID = Configuration.getClientID()
         let expectedRedirect = Configuration.getCallbackURIString()
         let expectedTokenType = "token"
-        let expectedShowFB = "false"
         
         let expectedQueryItems = queryBuilder(
             ("scope", expectedScopes),
             ("client_id", expectedClientID),
             ("redirect_uri", expectedRedirect),
-            ("show_fb", expectedShowFB),
             ("signup_params", base64EncodedSignup),
             ("response_type", expectedTokenType))
         
-        let login = OAuth.ImplicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
+        let login = OAuth.implicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
         
         XCTAssertEqual(login.host, expectedHost)
         XCTAssertEqual(login.path, expectedPath)
@@ -163,18 +155,16 @@ class OauthEndpointTests: XCTestCase {
         let expectedRedirect = Configuration.getCallbackURIString()
         let expectedTokenType = "code"
         let expectedState = "state123423"
-        let expectedShowFB = "false"
         
         let expectedQueryItems = queryBuilder(
             ("scope", expectedScopes),
             ("client_id", expectedClientID),
             ("redirect_uri", expectedRedirect),
-            ("show_fb", expectedShowFB),
             ("signup_params", base64EncodedSignup),
             ("response_type", expectedTokenType),
             ("state", expectedState))
         
-        let login = OAuth.AuthorizationCodeLogin(clientID: expectedClientID, redirect: expectedRedirect, scopes: scopes, state: expectedState)
+        let login = OAuth.authorizationCodeLogin(clientID: expectedClientID, redirect: expectedRedirect, scopes: scopes, state: expectedState)
         
         XCTAssertEqual(login.host, expectedHost)
         XCTAssertEqual(login.path, expectedPath)
@@ -182,7 +172,7 @@ class OauthEndpointTests: XCTestCase {
     }
     
     func testLogin_forAuthorizationCodeGrant_china() {
-        Configuration.setRegion(.China)
+        Configuration.setRegion(.china)
         let scopes = [ RidesScope.AllTrips, RidesScope.History ]
         let expectedHost = "https://login.uber.com.cn"
         let expectedPath = "/oauth/v2/authorize"
@@ -191,18 +181,16 @@ class OauthEndpointTests: XCTestCase {
         let expectedRedirect = Configuration.getCallbackURIString()
         let expectedTokenType = "code"
         let expectedState = "state123423"
-        let expectedShowFB = "false"
         
         let expectedQueryItems = queryBuilder(
             ("scope", expectedScopes),
             ("client_id", expectedClientID),
             ("redirect_uri", expectedRedirect),
-            ("show_fb", expectedShowFB),
             ("signup_params", base64EncodedSignup),
             ("response_type", expectedTokenType),
             ("state", expectedState))
         
-        let login = OAuth.AuthorizationCodeLogin(clientID: expectedClientID, redirect: expectedRedirect, scopes: scopes, state: expectedState)
+        let login = OAuth.authorizationCodeLogin(clientID: expectedClientID, redirect: expectedRedirect, scopes: scopes, state: expectedState)
         
         XCTAssertEqual(login.host, expectedHost)
         XCTAssertEqual(login.path, expectedPath)

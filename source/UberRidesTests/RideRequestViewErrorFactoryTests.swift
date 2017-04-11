@@ -25,11 +25,12 @@ import XCTest
 
 class RideRequestViewErrorFactoryTests: XCTestCase {
     let expectedErrorToStringMapping = [
-        RideRequestViewErrorType.AccessTokenExpired : RideRequestViewErrorType.AccessTokenExpired.toString(),
-        RideRequestViewErrorType.AccessTokenMissing : RideRequestViewErrorType.AccessTokenMissing.toString(),
-        RideRequestViewErrorType.NetworkError : RideRequestViewErrorType.NetworkError.toString(),
-        RideRequestViewErrorType.NotSupported : RideRequestViewErrorType.NotSupported.toString(),
-        RideRequestViewErrorType.Unknown : RideRequestViewErrorType.Unknown.toString()
+        RideRequestViewErrorType.accessTokenExpired : RideRequestViewErrorType.accessTokenExpired.toString(),
+        RideRequestViewErrorType.accessTokenMissing : RideRequestViewErrorType.accessTokenMissing.toString(),
+        RideRequestViewErrorType.invalidRequest : RideRequestViewErrorType.invalidRequest.toString(),
+        RideRequestViewErrorType.networkError : RideRequestViewErrorType.networkError.toString(),
+        RideRequestViewErrorType.notSupported : RideRequestViewErrorType.notSupported.toString(),
+        RideRequestViewErrorType.unknown : RideRequestViewErrorType.unknown.toString()
     ]
     
     func testCreateErrorsByErrorType() {
@@ -56,6 +57,6 @@ class RideRequestViewErrorFactoryTests: XCTestCase {
     func testCreateErrorByRawValue_withUnknownValue() {
         let rideRequestViewError = RideRequestViewErrorFactory.errorForString("not.real.error")
         
-        XCTAssertEqual(rideRequestViewError.code, RideRequestViewErrorType.Unknown.rawValue)
+        XCTAssertEqual(rideRequestViewError.code, RideRequestViewErrorType.unknown.rawValue)
     }
 }

@@ -28,14 +28,14 @@ import OHHTTPStubs
 
 class RefreshEndpointTests: XCTestCase {
     var client: RidesClient!
-    var headers: [NSObject: AnyObject]!
+    var headers: [AnyHashable: Any]!
     let timeout: Double = 1
     
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.setSandboxEnabled(true)
         headers = ["Content-Type": "application/json"]
         client = RidesClient()
@@ -51,14 +51,17 @@ class RefreshEndpointTests: XCTestCase {
      Test 200 success response
      */
     func test200Response() {
-        stub(isHost("login.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("refresh.json", self.dynamicType)!, statusCode:200, headers:self.headers)
+        stub(condition: isHost("login.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("refresh.json", type(of: self))!, statusCode:200, headers:self.headers)
         }
         let refreshToken = "ThisIsRefresh"
         let clientID = Configuration.getClientID()
-        let expectation = expectationWithDescription("200 success response")
-        let endpoint = OAuth.Refresh(clientID: clientID, refreshToken: refreshToken)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "200 success response")
+        let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("unable to create request")
+            return
+        }
 
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 200)
@@ -67,17 +70,17 @@ class RefreshEndpointTests: XCTestCase {
             expectation.fulfill()
         })
 
-        XCTAssertEqual(request.urlRequest.HTTPMethod, "POST")
+        XCTAssertEqual(request.urlRequest.httpMethod, "POST")
 
-        guard let bodyData = request.urlRequest.HTTPBody, dataString = String(data: bodyData, encoding: NSUTF8StringEncoding) else {
+        guard let bodyData = request.urlRequest.httpBody, let dataString = String(data: bodyData, encoding: String.Encoding.utf8) else {
             XCTFail("Missing HTTP Body!")
             return
         }
-        let components = NSURLComponents()
+        var components = URLComponents()
         components.query = dataString
 
-        let expectedClientID = NSURLQueryItem(name: "client_id", value: clientID)
-        let expectedRefreshToken = NSURLQueryItem(name: "refresh_token", value: refreshToken)
+        let expectedClientID = URLQueryItem(name: "client_id", value: clientID)
+        let expectedRefreshToken = URLQueryItem(name: "refresh_token", value: refreshToken)
 
         guard let queryItems = components.queryItems else {
             XCTFail("Invalid HTTP Body!")
@@ -89,7 +92,7 @@ class RefreshEndpointTests: XCTestCase {
 
 
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -103,15 +106,18 @@ class RefreshEndpointTests: XCTestCase {
     func test400Error() {
         let error = "invalid_refresh_token"
         
-        stub(isHost("login.uber.com")) { _ in
+        stub(condition: isHost("login.uber.com")) { _ in
             let json = ["error": error]
-            return OHHTTPStubsResponse(JSONObject: json, statusCode: 400, headers: self.headers)
+            return OHHTTPStubsResponse(jsonObject: json, statusCode: 400, headers: self.headers)
         }
         
         let refreshToken = "ThisIsRefresh"
-        let expectation = expectationWithDescription("400 error response")
-        let endpoint = OAuth.Refresh(clientID: clientID, refreshToken: refreshToken)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "400 error response")
+        let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("unable to create request")
+            return
+        }
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 400)
             XCTAssertNotNil(response.error)
@@ -119,7 +125,7 @@ class RefreshEndpointTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -131,14 +137,17 @@ class RefreshEndpointTests: XCTestCase {
      Test 200 success response
      */
     func test200Response_inChina() {
-        Configuration.setRegion(.China)
-        stub(isHost("login.uber.com.cn")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("refresh.json", self.dynamicType)!, statusCode:200, headers:self.headers)
+        Configuration.setRegion(.china)
+        stub(condition: isHost("login.uber.com.cn")) { _ in
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("refresh.json", type(of: self))!, statusCode:200, headers:self.headers)
         }
         let refreshToken = "ThisIsRefresh"
-        let expectation = expectationWithDescription("200 success response")
-        let endpoint = OAuth.Refresh(clientID: clientID, refreshToken: refreshToken)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "200 success response")
+        let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("unable to create request")
+            return
+        }
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 200)
             XCTAssertNil(response.error)
@@ -146,7 +155,7 @@ class RefreshEndpointTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -158,18 +167,21 @@ class RefreshEndpointTests: XCTestCase {
      Test 400 authorization error response.
      */
     func test400Error_inChina() {
-        Configuration.setRegion(.China)
+        Configuration.setRegion(.china)
         let error = "invalid_refresh_token"
         
-        stub(isHost("login.uber.com.cn")) { _ in
+        stub(condition: isHost("login.uber.com.cn")) { _ in
             let json = ["error": error]
-            return OHHTTPStubsResponse(JSONObject: json, statusCode: 400, headers: self.headers)
+            return OHHTTPStubsResponse(jsonObject: json, statusCode: 400, headers: self.headers)
         }
         
         let refreshToken = "ThisIsRefresh"
-        let expectation = expectationWithDescription("400 error response")
-        let endpoint = OAuth.Refresh(clientID: clientID, refreshToken: refreshToken)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "400 error response")
+        let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("unable to create request")
+            return
+        }
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 400)
             XCTAssertNotNil(response.error)
@@ -177,7 +189,7 @@ class RefreshEndpointTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }

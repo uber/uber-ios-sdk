@@ -30,33 +30,33 @@ import CoreLocation
 /// and how to use the user profile, trip history, and places endpoints.
 class ImplicitGrantExampleViewController: AuthorizationBaseViewController {
     /// The LoginManager to use for login
-    let loginManager = LoginManager(loginType: .Implicit)
+    let loginManager = LoginManager(loginType: .implicit)
     
     /// The RidesClient to use for endpoints
     let ridesClient = RidesClient()
     
     /// Variables to store retrieved information
-    private var profile: UserProfile?
-    private var places = [Place?](count: 2, repeatedValue: nil)
-    private var history = [UserActivity]()
+    fileprivate var profile: UserProfile?
+    fileprivate var places = [Place?](repeating: nil, count: 2)
+    fileprivate var history = [UserActivity]()
     
     /// Constants representing each section
-    private let ProfileSection = 0
-    private let PlacesSection = 1
-    private let HistorySection = 2
+    fileprivate let ProfileSection = 0
+    fileprivate let PlacesSection = 1
+    fileprivate let HistorySection = 2
     
     /// Reuse identifiers for the table view cells
-    private let ProfileCell = "ProfileCell"
-    private let PlacesCell = "PlacesCell"
-    private let HistoryCell = "HistoryCell"
+    fileprivate let ProfileCell = "ProfileCell"
+    fileprivate let PlacesCell = "PlacesCell"
+    fileprivate let HistoryCell = "HistoryCell"
     
     /// Rows in the "Places" section
-    private let homePlaceRow = 0
-    private let workPlaceRow = 1
+    fileprivate let homePlaceRow = 0
+    fileprivate let workPlaceRow = 1
 
     /// Custom views in the "Profile" section
-    private let profileImageTag = 1
-    private let profileLabelTag = 2
+    fileprivate let profileImageTag = 1
+    fileprivate let profileLabelTag = 2
     
     /// Outlets
     @IBOutlet weak var loginButton: UIBarButtonItem!
@@ -64,13 +64,13 @@ class ImplicitGrantExampleViewController: AuthorizationBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.whiteColor()
-        loginButton.enabled = true
+        self.view.backgroundColor = UIColor.white
+        loginButton.isEnabled = true
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         if let _ = TokenManager.fetchToken() {
-            loginButton.enabled = false
+            loginButton.isEnabled = false
             getData()
         }
     }
@@ -78,10 +78,10 @@ class ImplicitGrantExampleViewController: AuthorizationBaseViewController {
     override func reset() {
         profile = nil
         self.tableView.reloadData()
-        loginButton.enabled = true
+        loginButton.isEnabled = true
     }
     
-    @IBAction func login(sender: AnyObject) {
+    @IBAction func login(_ sender: AnyObject) {
         // Define which scopes we're requesting
         // Need to be authorized on your developer dashboard at developer.uber.com
         let requestedScopes = [RidesScope.RideWidgets, RidesScope.Profile, RidesScope.Places, RidesScope.History, RidesScope.Places]
@@ -101,56 +101,56 @@ class ImplicitGrantExampleViewController: AuthorizationBaseViewController {
         }
     }
     
-    private func getData() {
+    fileprivate func getData() {
         // Examples of various data that can be retrieved
         
         // Retrieves UserProfile for the current logged in user
-        ridesClient.fetchUserProfile({ profile, response in
+        ridesClient.fetchUserProfile() { profile, response in
             self.checkError(response)
             if let profile = profile {
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async {
                     self.profile = profile
                     self.tableView.reloadData()
-                })
+                }
             }
-        })
+        }
         
         // Gets the address assigned as the "home" address for current user
-        ridesClient.fetchPlace(Place.Home, completion: { place, response in
+        ridesClient.fetchPlace(Place.Home) { place, response in
             self.checkError(response)
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async {
                 self.places[self.homePlaceRow] = place
                 self.tableView.reloadData()
-            })
-        })
+            }
+        }
         
         // Gets the address assigned as the "work" address for current user
-        ridesClient.fetchPlace(Place.Work, completion: { place, response in
+        ridesClient.fetchPlace(Place.Work) { place, response in
             self.checkError(response)
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async {
                 self.places[self.workPlaceRow] = place
                 self.tableView.reloadData()
-            })
-        })
+            }
+        }
         
         // Gets the last 25 trips that the current user has taken
-        ridesClient.fetchTripHistory(limit: 25, completion: { tripHistory, response in
+        ridesClient.fetchTripHistory(limit: 25) { tripHistory, response in
             self.checkError(response)
             guard let history = tripHistory?.history else {
                 return
             }
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async {
                 self.history = history
                 self.tableView.reloadData()
-            })
-        })
+            }
+        }
     }
 }
 
 extension ImplicitGrantExampleViewController: UITableViewDataSource {
     // Only show rows in section if we have a profile
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let _ = profile else {
             return 0
         }
@@ -167,7 +167,7 @@ extension ImplicitGrantExampleViewController: UITableViewDataSource {
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case ProfileSection:
             guard let profile = profile,
@@ -178,17 +178,17 @@ extension ImplicitGrantExampleViewController: UITableViewDataSource {
                 fallthrough
             }
             
-            let cell = tableView.dequeueReusableCellWithIdentifier(ProfileCell) ?? UITableViewCell(style: .Default, reuseIdentifier: ProfileCell)
+            let cell = tableView.dequeueReusableCell(withIdentifier: ProfileCell) ?? UITableViewCell(style: .default, reuseIdentifier: ProfileCell)
             
             let profileLabel = cell.viewWithTag(profileLabelTag) as? UILabel
             profileLabel?.text = "\(firstName) \(lastName)\n\(email)"
             
-            if let url = NSURL(string: profilePicture) {
-                NSURLSession.sharedSession().dataTaskWithURL(url, completionHandler: {
+            if let url = URL(string: profilePicture) {
+                URLSession.shared.dataTask(with: url, completionHandler: {
                     (data, response, error) in
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         let imageView = cell.viewWithTag(self.profileImageTag) as? UIImageView
-                        if let imageView = imageView, data = data {
+                        if let imageView = imageView, let data = data {
                             imageView.image = UIImage(data: data)
                         }
                     })
@@ -197,8 +197,8 @@ extension ImplicitGrantExampleViewController: UITableViewDataSource {
             
             return cell
         case PlacesSection:
-            let cell = tableView.dequeueReusableCellWithIdentifier(PlacesCell) ??
-                UITableViewCell(style: .Default, reuseIdentifier: PlacesCell)
+            let cell = tableView.dequeueReusableCell(withIdentifier: PlacesCell) ??
+                UITableViewCell(style: .default, reuseIdentifier: PlacesCell)
             let placeText = indexPath.row == homePlaceRow ? "Home" : "Work"
             let place = self.places[indexPath.row]
             var addressText = "None"
@@ -215,14 +215,14 @@ extension ImplicitGrantExampleViewController: UITableViewDataSource {
                 fallthrough
             }
             
-            let cell = tableView.dequeueReusableCellWithIdentifier(HistoryCell) ??
-                UITableViewCell(style: .Default, reuseIdentifier: HistoryCell)
+            let cell = tableView.dequeueReusableCell(withIdentifier: HistoryCell) ??
+                UITableViewCell(style: .default, reuseIdentifier: HistoryCell)
             cell.textLabel?.text = startCity
             
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateStyle = .ShortStyle
-            dateFormatter.timeStyle = .ShortStyle
-            cell.detailTextLabel?.text = "\(dateFormatter.stringFromDate(startTime)) to \(dateFormatter.stringFromDate(endTime))"
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .short
+            dateFormatter.timeStyle = .short
+            cell.detailTextLabel?.text = "\(dateFormatter.string(from: startTime)) to \(dateFormatter.string(from: endTime))"
             
             return cell
         default:
@@ -230,29 +230,29 @@ extension ImplicitGrantExampleViewController: UITableViewDataSource {
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
 }
 
 extension ImplicitGrantExampleViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
         
         guard indexPath.section == PlacesSection else {
             return
         }
         
-        let alertController = UIAlertController(title: "Update Place Address", message: nil, preferredStyle: .Alert)
-        alertController.addTextFieldWithConfigurationHandler({ (textField) in
+        let alertController = UIAlertController(title: "Update Place Address", message: nil, preferredStyle: .alert)
+        alertController.addTextField(configurationHandler: { (textField) in
             if let place = self.places[indexPath.row],
                 let address = place.address {
                 textField.placeholder = address
             }
         })
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (_) in }
-        let updateAction = UIAlertAction(title: "Update", style: .Default) { (_) in
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        let updateAction = UIAlertAction(title: "Update", style: .default) { (_) in
             let addressTextField = alertController.textFields![0] as UITextField
             
             guard let address = addressTextField.text else {
@@ -260,21 +260,20 @@ extension ImplicitGrantExampleViewController: UITableViewDelegate {
             }
             
             let placeID = indexPath.row == self.homePlaceRow ? Place.Home : Place.Work
-            self.ridesClient.updatePlace(placeID, withAddress: address, completion: {
-                place, response in
+            self.ridesClient.updatePlace(placeID, withAddress: address) { place, response in
                 if response.error == nil, let place = place {
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async {
                         self.places[indexPath.row] = place
                         self.tableView.reloadData()
-                    })
+                    }
                 }
-            })
+            }
         }
         
         alertController.addAction(updateAction)
         alertController.addAction(cancelAction)
         
         self.view.setNeedsLayout()
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 }

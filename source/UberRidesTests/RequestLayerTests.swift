@@ -28,14 +28,14 @@ import OHHTTPStubs
 
 class RequestLayerTests: XCTestCase {
     var client: RidesClient!
-    var headers: [NSObject: AnyObject]!
+    var headers: [AnyHashable: Any]!
     let timeout: Double = 10
     
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.setSandboxEnabled(true)
         headers = ["Content-Type": "application/json"]
         client = RidesClient()
@@ -51,13 +51,16 @@ class RequestLayerTests: XCTestCase {
      Test 200 success response
      */
     func test200Response() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProductID.json", self.dynamicType)!, statusCode:200, headers:self.headers)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProductID.json", type(of: self))!, statusCode:200, headers:self.headers)
         }
         
-        let expectation = expectationWithDescription("200 success response")
-        let endpoint = Products.GetProduct(productID: productID)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "200 success response")
+        let endpoint = Products.getProduct(productID: productID)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("Unable to create request")
+            return
+        }
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 200)
             XCTAssertNil(response.error)
@@ -65,7 +68,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -80,14 +83,17 @@ class RequestLayerTests: XCTestCase {
         let message = "Invalid OAuth 2.0 credentials provided."
         let code = "unauthorized"
         
-        stub(isHost("sandbox-api.uber.com")) { _ in
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let json = ["message": message, "code": code]
-            return OHHTTPStubsResponse(JSONObject: json, statusCode: 401, headers: self.headers)
+            return OHHTTPStubsResponse(jsonObject: json, statusCode: 401, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("401 error response")
-        let endpoint = Products.GetProduct(productID: productID)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "401 error response")
+        let endpoint = Products.getProduct(productID: productID)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("Unable to create request")
+            return
+        }
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 401)
             XCTAssertNotNil(response.error)
@@ -99,7 +105,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -111,14 +117,17 @@ class RequestLayerTests: XCTestCase {
      Test 409 surge error response.
      */
     func test409Error() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let json = ["meta": ["surge_confirmation": ["href": "api.uber.com/v1/surge-confirmations/abc", "surge_confirmation_id": "abc"]]]
-            return OHHTTPStubsResponse(JSONObject: json, statusCode: 409, headers: self.headers)
+            return OHHTTPStubsResponse(jsonObject: json, statusCode: 409, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("409 error response")
-        let endpoint = Products.GetProduct(productID: productID)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "409 error response")
+        let endpoint = Products.getProduct(productID: productID)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("Unable to create request")
+            return
+        }
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 409)
             XCTAssertNotNil(response.error)
@@ -132,7 +141,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -148,14 +157,17 @@ class RequestLayerTests: XCTestCase {
         let code = "validation_failed"
         let fields = ["latitude": ["Must be between -90.0 and 90.0"], "longitude": ["Must be between -90.0 and 90.0"]]
         
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            let json = ["message": message, "code": code, "fields": fields]
-            return OHHTTPStubsResponse(JSONObject: json, statusCode: 422, headers: self.headers)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            let json = ["message": message, "code": code, "fields": fields] as [String : Any]
+            return OHHTTPStubsResponse(jsonObject: json, statusCode: 422, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("422 error response")
-        let endpoint = Products.GetProduct(productID: productID)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "422 error response")
+        let endpoint = Products.getProduct(productID: productID)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("Unable to create request")
+            return
+        }
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 422)
             XCTAssertNotNil(response.error)
@@ -171,7 +183,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -187,14 +199,17 @@ class RequestLayerTests: XCTestCase {
         let code = "distance_exceeded"
         let fields = ["start_latitude": [message], "end_latitude": [message], "start_longitude": [message], "end_longitude": [message]]
         
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            let json = ["message": message, "code": code, "fields": fields]
-            return OHHTTPStubsResponse(JSONObject: json, statusCode: 422, headers: self.headers)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            let json = ["message": message, "code": code, "fields": fields] as [String : Any]
+            return OHHTTPStubsResponse(jsonObject: json, statusCode: 422, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("422 error response")
-        let endpoint = Products.GetProduct(productID: productID)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "422 error response")
+        let endpoint = Products.getProduct(productID: productID)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("Unable to create request")
+            return
+        }
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 422)
             XCTAssertNotNil(response.error)
@@ -212,7 +227,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -227,14 +242,17 @@ class RequestLayerTests: XCTestCase {
         let code = "same_pickup_dropoff"
         let message = "Pickup and Dropoff can't be the same."
         
-        stub(isHost("sandbox-api.uber.com")) { _ in
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let json = ["meta": [], "errors": [["status": 422, "code": code, "title": message]]]
-            return OHHTTPStubsResponse(JSONObject: json, statusCode: 409, headers: self.headers)
+            return OHHTTPStubsResponse(jsonObject: json, statusCode: 409, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("422 error response")
-        let endpoint = Products.GetProduct(productID: productID)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "422 error response")
+        let endpoint = Products.getProduct(productID: productID)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("Unable to create request")
+            return
+        }
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 409)
             XCTAssertNotNil(response.error)
@@ -250,7 +268,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -265,14 +283,17 @@ class RequestLayerTests: XCTestCase {
         let message = "Unexpected internal server error occurred."
         let code = "internal_server_error"
         
-        stub(isHost("sandbox-api.uber.com")) { _ in
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let json = ["message": message, "code": code]
-            return OHHTTPStubsResponse(JSONObject: json, statusCode: 500, headers: self.headers)
+            return OHHTTPStubsResponse(jsonObject: json, statusCode: 500, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("500 error response")
-        let endpoint = Products.GetProduct(productID: productID)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "500 error response")
+        let endpoint = Products.getProduct(productID: productID)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("Unable to create request")
+            return
+        }
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 500)
             XCTAssertNotNil(response.error)
@@ -284,7 +305,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -299,14 +320,17 @@ class RequestLayerTests: XCTestCase {
         let message = "Service temporarily unavailable."
         let code = "service_unavailable"
         
-        stub(isHost("sandbox-api.uber.com")) { _ in
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let json = ["message": message, "code": code]
-            return OHHTTPStubsResponse(JSONObject: json, statusCode: 503, headers: self.headers)
+            return OHHTTPStubsResponse(jsonObject: json, statusCode: 503, headers: self.headers)
         }
         
-        let expectation = expectationWithDescription("503 error response")
-        let endpoint = Products.GetProduct(productID: productID)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "503 error response")
+        let endpoint = Products.getProduct(productID: productID)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("Unable to create request")
+            return
+        }
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 503)
             XCTAssertNotNil(response.error)
@@ -318,7 +342,7 @@ class RequestLayerTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -330,26 +354,29 @@ class RequestLayerTests: XCTestCase {
     *  Test no network error response - unknown error.
     */
     func testNoNetworkError() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            let notConnectedError = NSError(domain: NSURLErrorDomain, code: Int(CFNetworkErrors.CFURLErrorNotConnectedToInternet.rawValue), userInfo: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            let notConnectedError = NSError(domain: NSURLErrorDomain, code: Int(CFNetworkErrors.cfurlErrorNotConnectedToInternet.rawValue), userInfo: nil)
             return OHHTTPStubsResponse(error:notConnectedError)
         }
         
-        let expectation = expectationWithDescription("No network error response")
-        let endpoint = Products.GetProduct(productID: productID)
-        let request = Request(session: client.session, endpoint: endpoint)
+        let expectation = self.expectation(description: "No network error response")
+        let endpoint = Products.getProduct(productID: productID)
+        guard let request = Request(session: client.session, endpoint: endpoint) else {
+            XCTFail("Unable to create request")
+            return
+        }
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 0)
             XCTAssertNotNil(response.error)
             XCTAssertTrue(response.error is RidesUnknownError)
             XCTAssertEqual(response.error!.title, NSURLErrorDomain)
-            XCTAssertEqual(response.error!.status, Int(CFNetworkErrors.CFURLErrorNotConnectedToInternet.rawValue))
+            XCTAssertEqual(response.error!.status, Int(CFNetworkErrors.cfurlErrorNotConnectedToInternet.rawValue))
             XCTAssertNil(response.error!.meta)
             
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }

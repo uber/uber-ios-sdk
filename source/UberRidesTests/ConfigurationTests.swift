@@ -36,14 +36,14 @@ class ConfigurationTests: XCTestCase {
     private let defaultNativeCallbackString = "testURI://uberConnectNative"
     private let defaultServerToken = "testServerToken"
     private let defaultAccessTokenIdentifier = "RidesAccessTokenKey"
-    private let defaultRegion = Region.Default
+    private let defaultRegion = Region.default
     private let defaultSandbox = false
     
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(for: type(of: self))
     }
     
     override func tearDown() {
@@ -61,7 +61,7 @@ class ConfigurationTests: XCTestCase {
         let newServerToken = "newserver"
         let newGroup = "new group"
         let newTokenId = "newTokenID"
-        let newRegion = Region.China
+        let newRegion = Region.china
         let newSandbox = true
         
         Configuration.setClientID(newClientID)
@@ -84,10 +84,10 @@ class ConfigurationTests: XCTestCase {
         Configuration.restoreDefaults()
         
         XCTAssertEqual(Configuration.plistName, "Info")
-        XCTAssertEqual(Configuration.bundle, NSBundle.mainBundle())
+        XCTAssertEqual(Configuration.bundle, Bundle.main)
         
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(for: type(of: self))
         
         XCTAssertEqual(Configuration.getClientID(), defaultClientID)
         XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString())
@@ -141,10 +141,10 @@ class ConfigurationTests: XCTestCase {
     }
     
     func testCallbackURIString_getDefault_getTypes() {
-        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString(.General))
-        XCTAssertEqual(defaultAuthorizationCodeCallbackString, Configuration.getCallbackURIString(.AuthorizationCode))
-        XCTAssertEqual(defaultImplicitCallbackString, Configuration.getCallbackURIString(.Implicit))
-        XCTAssertEqual(defaultNativeCallbackString, Configuration.getCallbackURIString(.Native))
+        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString(.general))
+        XCTAssertEqual(defaultAuthorizationCodeCallbackString, Configuration.getCallbackURIString(.authorizationCode))
+        XCTAssertEqual(defaultImplicitCallbackString, Configuration.getCallbackURIString(.implicit))
+        XCTAssertEqual(defaultNativeCallbackString, Configuration.getCallbackURIString(.native))
     }
     
     func testCallbackURIString_overwriteDefault_allTypes() {
@@ -153,15 +153,15 @@ class ConfigurationTests: XCTestCase {
         let implicitCallbackString = "testURI://uberConnectImplicitNew"
         let nativeCallbackString = "testURI://uberConnectNativeNew"
         
-        Configuration.setCallbackURIString(generalCallbackString, type: .General)
-        Configuration.setCallbackURIString(authorizationCodeCallbackString, type: .AuthorizationCode)
-        Configuration.setCallbackURIString(implicitCallbackString, type: .Implicit)
-        Configuration.setCallbackURIString(nativeCallbackString, type: .Native)
+        Configuration.setCallbackURIString(generalCallbackString, type: .general)
+        Configuration.setCallbackURIString(authorizationCodeCallbackString, type: .authorizationCode)
+        Configuration.setCallbackURIString(implicitCallbackString, type: .implicit)
+        Configuration.setCallbackURIString(nativeCallbackString, type: .native)
         
-        XCTAssertEqual(generalCallbackString, Configuration.getCallbackURIString(.General))
-        XCTAssertEqual(authorizationCodeCallbackString, Configuration.getCallbackURIString(.AuthorizationCode))
-        XCTAssertEqual(implicitCallbackString, Configuration.getCallbackURIString(.Implicit))
-        XCTAssertEqual(nativeCallbackString, Configuration.getCallbackURIString(.Native))
+        XCTAssertEqual(generalCallbackString, Configuration.getCallbackURIString(.general))
+        XCTAssertEqual(authorizationCodeCallbackString, Configuration.getCallbackURIString(.authorizationCode))
+        XCTAssertEqual(implicitCallbackString, Configuration.getCallbackURIString(.implicit))
+        XCTAssertEqual(nativeCallbackString, Configuration.getCallbackURIString(.native))
     }
     
     func testCallbackURIString_resetDefault_allTypes() {
@@ -170,20 +170,20 @@ class ConfigurationTests: XCTestCase {
         let implicitCallbackString = "testURI://uberConnectImplicitNew"
         let nativeCallbackString = "testURI://uberConnectNativeNew"
         
-        Configuration.setCallbackURIString(generalCallbackString, type: .General)
-        Configuration.setCallbackURIString(authorizationCodeCallbackString, type: .AuthorizationCode)
-        Configuration.setCallbackURIString(implicitCallbackString, type: .Implicit)
-        Configuration.setCallbackURIString(nativeCallbackString, type: .Native)
+        Configuration.setCallbackURIString(generalCallbackString, type: .general)
+        Configuration.setCallbackURIString(authorizationCodeCallbackString, type: .authorizationCode)
+        Configuration.setCallbackURIString(implicitCallbackString, type: .implicit)
+        Configuration.setCallbackURIString(nativeCallbackString, type: .native)
         
-        Configuration.setCallbackURIString(nil, type: .General)
-        Configuration.setCallbackURIString(nil, type: .AuthorizationCode)
-        Configuration.setCallbackURIString(nil, type: .Implicit)
-        Configuration.setCallbackURIString(nil, type: .Native)
+        Configuration.setCallbackURIString(nil, type: .general)
+        Configuration.setCallbackURIString(nil, type: .authorizationCode)
+        Configuration.setCallbackURIString(nil, type: .implicit)
+        Configuration.setCallbackURIString(nil, type: .native)
         
-        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString(.General))
-        XCTAssertEqual(defaultAuthorizationCodeCallbackString, Configuration.getCallbackURIString(.AuthorizationCode))
-        XCTAssertEqual(defaultImplicitCallbackString, Configuration.getCallbackURIString(.Implicit))
-        XCTAssertEqual(defaultNativeCallbackString, Configuration.getCallbackURIString(.Native))
+        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString(.general))
+        XCTAssertEqual(defaultAuthorizationCodeCallbackString, Configuration.getCallbackURIString(.authorizationCode))
+        XCTAssertEqual(defaultImplicitCallbackString, Configuration.getCallbackURIString(.implicit))
+        XCTAssertEqual(defaultNativeCallbackString, Configuration.getCallbackURIString(.native))
     }
     
     func testCallbackURIString_resetDefault_oneType() {
@@ -192,35 +192,35 @@ class ConfigurationTests: XCTestCase {
         let implicitCallbackString = "testURI://uberConnectImplicitNew"
         let nativeCallbackString = "testURI://uberConnectNativeNew"
         
-        Configuration.setCallbackURIString(generalCallbackString, type: .General)
-        Configuration.setCallbackURIString(authorizationCodeCallbackString, type: .AuthorizationCode)
-        Configuration.setCallbackURIString(implicitCallbackString, type: .Implicit)
-        Configuration.setCallbackURIString(nativeCallbackString, type: .Native)
+        Configuration.setCallbackURIString(generalCallbackString, type: .general)
+        Configuration.setCallbackURIString(authorizationCodeCallbackString, type: .authorizationCode)
+        Configuration.setCallbackURIString(implicitCallbackString, type: .implicit)
+        Configuration.setCallbackURIString(nativeCallbackString, type: .native)
 
-        Configuration.setCallbackURIString(nil, type: .Native)
+        Configuration.setCallbackURIString(nil, type: .native)
         
-        XCTAssertEqual(generalCallbackString, Configuration.getCallbackURIString(.General))
-        XCTAssertEqual(authorizationCodeCallbackString, Configuration.getCallbackURIString(.AuthorizationCode))
-        XCTAssertEqual(implicitCallbackString, Configuration.getCallbackURIString(.Implicit))
-        XCTAssertEqual(defaultNativeCallbackString, Configuration.getCallbackURIString(.Native))
+        XCTAssertEqual(generalCallbackString, Configuration.getCallbackURIString(.general))
+        XCTAssertEqual(authorizationCodeCallbackString, Configuration.getCallbackURIString(.authorizationCode))
+        XCTAssertEqual(implicitCallbackString, Configuration.getCallbackURIString(.implicit))
+        XCTAssertEqual(defaultNativeCallbackString, Configuration.getCallbackURIString(.native))
     }
     
     func testCallbackURIStringFallback_whenCallbackURIsMissing() {
         Configuration.plistName = "testInfoMissingCallbacks"
-        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.General))
-        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.AuthorizationCode))
-        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.Implicit))
-        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.Native))
+        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.general))
+        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.authorizationCode))
+        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.implicit))
+        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.native))
     }
     
     func testCallbackURIStringFallbackUsesGeneralOverride_whenCallbackURIsMissing() {
         Configuration.plistName = "testInfoMissingCallbacks"
         let override = "testURI://override"
-        Configuration.setCallbackURIString(override, type: .General)
-        XCTAssertEqual(override, Configuration.getCallbackURIString(.General))
-        XCTAssertEqual(override, Configuration.getCallbackURIString(.AuthorizationCode))
-        XCTAssertEqual(override, Configuration.getCallbackURIString(.Implicit))
-        XCTAssertEqual(override, Configuration.getCallbackURIString(.Native))
+        Configuration.setCallbackURIString(override, type: .general)
+        XCTAssertEqual(override, Configuration.getCallbackURIString(.general))
+        XCTAssertEqual(override, Configuration.getCallbackURIString(.authorizationCode))
+        XCTAssertEqual(override, Configuration.getCallbackURIString(.implicit))
+        XCTAssertEqual(override, Configuration.getCallbackURIString(.native))
     }
     
     //MARK: App Display Name Tests
@@ -314,7 +314,7 @@ class ConfigurationTests: XCTestCase {
     }
     
     func testRegion_overwriteDefault() {
-        let newRegion = Region.China
+        let newRegion = Region.china
         Configuration.setRegion(newRegion)
         
         XCTAssertEqual(newRegion, Configuration.getRegion())

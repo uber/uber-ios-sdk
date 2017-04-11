@@ -38,14 +38,14 @@ class RideRequestWidgetExampleViewController: ButtonExampleViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.white
         
         self.navigationItem.title = "Ride Request Widget"
         
-        blackRideRequestButton = buildRideRequestWidgetButton(.Native)
-        whiteRideRequestButton = buildRideRequestWidgetButton(.Implicit)
+        blackRideRequestButton = buildRideRequestWidgetButton(.native)
+        whiteRideRequestButton = buildRideRequestWidgetButton(.implicit)
         
-        whiteRideRequestButton.colorStyle = .White
+        whiteRideRequestButton.colorStyle = .white
         
         topView.addSubview(blackRideRequestButton)
         bottomView.addSubview(whiteRideRequestButton)
@@ -62,7 +62,7 @@ class RideRequestWidgetExampleViewController: ButtonExampleViewController {
     
     // Mark: Private Interface
     
-    private func buildRideRequestWidgetButton(loginType: LoginType) -> RideRequestButton {
+    fileprivate func buildRideRequestWidgetButton(_ loginType: LoginType) -> RideRequestButton {
         let loginManager = LoginManager(loginType: loginType)
         let requestBehavior = RideRequestViewRequestingBehavior(presentingViewController: self, loginManager: loginManager)
         requestBehavior.modalRideRequestViewController.delegate = self
@@ -72,37 +72,37 @@ class RideRequestWidgetExampleViewController: ButtonExampleViewController {
         return RideRequestButton(rideParameters: rideParameters, requestingBehavior: requestBehavior)
     }
     
-    private func addBlackRequestButtonConstraints() {
+    fileprivate func addBlackRequestButtonConstraints() {
         blackRideRequestButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let centerYConstraint = NSLayoutConstraint(item: blackRideRequestButton, attribute: .CenterY, relatedBy: .Equal, toItem: topView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
-        let centerXConstraint = NSLayoutConstraint(item: blackRideRequestButton, attribute: .CenterX, relatedBy: .Equal, toItem: topView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
+        let centerYConstraint = NSLayoutConstraint(item: blackRideRequestButton, attribute: .centerY, relatedBy: .equal, toItem: topView, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+        let centerXConstraint = NSLayoutConstraint(item: blackRideRequestButton, attribute: .centerX, relatedBy: .equal, toItem: topView, attribute: .centerX, multiplier: 1.0, constant: 0.0)
         
         topView.addConstraints([centerYConstraint, centerXConstraint])
     }
     
-    private func addWhiteRequestButtonConstraints() {
+    fileprivate func addWhiteRequestButtonConstraints() {
         whiteRideRequestButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let centerYConstraint = NSLayoutConstraint(item: whiteRideRequestButton, attribute: .CenterY, relatedBy: .Equal, toItem: bottomView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
-        let centerXConstraint = NSLayoutConstraint(item: whiteRideRequestButton, attribute: .CenterX, relatedBy: .Equal, toItem: bottomView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
+        let centerYConstraint = NSLayoutConstraint(item: whiteRideRequestButton, attribute: .centerY, relatedBy: .equal, toItem: bottomView, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+        let centerXConstraint = NSLayoutConstraint(item: whiteRideRequestButton, attribute: .centerX, relatedBy: .equal, toItem: bottomView, attribute: .centerX, multiplier: 1.0, constant: 0.0)
         
         bottomView.addConstraints([centerYConstraint, centerXConstraint])
     }
     
-    private func checkLocationServices() -> Bool {
+    fileprivate func checkLocationServices() -> Bool {
         let locationEnabled = CLLocationManager.locationServicesEnabled()
         let locationAuthorization = CLLocationManager.authorizationStatus()
-        let locationAuthorized = locationAuthorization == .AuthorizedWhenInUse || locationAuthorization == .AuthorizedAlways
+        let locationAuthorized = locationAuthorization == .authorizedWhenInUse || locationAuthorization == .authorizedAlways
         
         return locationEnabled && locationAuthorized
     }
     
-    private func showMessage(message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil)
+    fileprivate func showMessage(_ message: String) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(okayAction)
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
 }
@@ -110,11 +110,11 @@ class RideRequestWidgetExampleViewController: ButtonExampleViewController {
 //MARK: ModalViewControllerDelegate
 
 extension RideRequestWidgetExampleViewController : ModalViewControllerDelegate {
-    func modalViewControllerDidDismiss(modalViewController: ModalViewController) {
+    func modalViewControllerDidDismiss(_ modalViewController: ModalViewController) {
         print("did dismiss")
     }
     
-    func modalViewControllerWillDismiss(modalViewController: ModalViewController) {
+    func modalViewControllerWillDismiss(_ modalViewController: ModalViewController) {
         print("will dismiss")
     }
 }
@@ -123,17 +123,17 @@ extension RideRequestWidgetExampleViewController : ModalViewControllerDelegate {
 
 extension RideRequestWidgetExampleViewController : CLLocationManagerDelegate {
     
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == .Denied || status == .Restricted {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .denied || status == .restricted {
             showMessage("Location Services disabled.")
         }
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         locationManger.stopUpdatingLocation()
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         locationManger.stopUpdatingLocation()
         showMessage("There was an error locating you.")
     }

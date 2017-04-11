@@ -27,12 +27,12 @@ import UberRides
 import CoreLocation
 
 /// This class is a base class for all the button examples (two tone background ViewController)
-public class ButtonExampleViewController : UIViewController {
+open class ButtonExampleViewController : UIViewController {
     
-    public let topView = UIView()
-    public let bottomView = UIView()
+    open let topView = UIView()
+    open let bottomView = UIView()
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(topView)
@@ -45,29 +45,29 @@ public class ButtonExampleViewController : UIViewController {
     
     // Mark: Private Interface
     
-    private func initialSetup() {
-        topView.backgroundColor = UIColor.whiteColor()
-        bottomView.backgroundColor = UIColor.blackColor()
+    fileprivate func initialSetup() {
+        topView.backgroundColor = UIColor.white
+        bottomView.backgroundColor = UIColor.black
     }
     
-    private func addTopViewConstraints() {
+    fileprivate func addTopViewConstraints() {
         topView.translatesAutoresizingMaskIntoConstraints = false
         
-        let topConstriant = NSLayoutConstraint(item: topView, attribute: .Top, relatedBy: .Equal, toItem: topLayoutGuide, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
-        let bottomConstraint = NSLayoutConstraint(item: topView, attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
-        let leftConstraint = NSLayoutConstraint(item: topView, attribute: .Left, relatedBy: .Equal, toItem: view, attribute: .Left, multiplier: 1.0, constant: 0.0)
-        let rightConstraint = NSLayoutConstraint(item: topView, attribute: .Right, relatedBy: .Equal, toItem: view, attribute: .Right, multiplier: 1.0, constant: 0.0)
+        let topConstriant = NSLayoutConstraint(item: topView, attribute: .top, relatedBy: .equal, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+        let bottomConstraint = NSLayoutConstraint(item: topView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+        let leftConstraint = NSLayoutConstraint(item: topView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0.0)
+        let rightConstraint = NSLayoutConstraint(item: topView, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0.0)
         
         view.addConstraints([topConstriant, bottomConstraint, leftConstraint, rightConstraint])
     }
     
-    private func addBottomViewConstraints() {
+    fileprivate func addBottomViewConstraints() {
         bottomView.translatesAutoresizingMaskIntoConstraints = false
         
-        let topConstriant = NSLayoutConstraint(item: bottomView, attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
-        let bottomConstraint = NSLayoutConstraint(item: bottomView, attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
-        let leftConstraint = NSLayoutConstraint(item: bottomView, attribute: .Left, relatedBy: .Equal, toItem: view, attribute: .Left, multiplier: 1.0, constant: 0.0)
-        let rightConstraint = NSLayoutConstraint(item: bottomView, attribute: .Right, relatedBy: .Equal, toItem: view, attribute: .Right, multiplier: 1.0, constant: 0.0)
+        let topConstriant = NSLayoutConstraint(item: bottomView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+        let bottomConstraint = NSLayoutConstraint(item: bottomView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+        let leftConstraint = NSLayoutConstraint(item: bottomView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0.0)
+        let rightConstraint = NSLayoutConstraint(item: bottomView, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0.0)
         
         view.addConstraints([topConstriant, bottomConstraint, leftConstraint, rightConstraint])
     }

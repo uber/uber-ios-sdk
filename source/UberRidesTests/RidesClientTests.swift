@@ -35,7 +35,7 @@ class RidesClientTests: XCTestCase {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfoNoServerToken"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.setClientID(clientID)
         Configuration.setServerToken(nil)
         Configuration.setSandboxEnabled(true)
@@ -63,11 +63,11 @@ class RidesClientTests: XCTestCase {
      Test convenience function for getting cheapest product.
      */
     func testGetCheapestProduct() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProducts.json", self.dynamicType)!, statusCode:200, headers:nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProducts.json", type(of: self))!, statusCode:200, headers:nil)
         }
         
-        let expectation = expectationWithDescription("get cheapest product")
+        let expectation = self.expectation(description: "get cheapest product")
         let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
         client.fetchCheapestProduct(pickupLocation: location, completion: { ridesProduct, response in
             XCTAssertNotNil(ridesProduct)
@@ -76,7 +76,7 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -87,11 +87,11 @@ class RidesClientTests: XCTestCase {
      Test getting all products.
      */
     func testGetProducts() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProducts.json", self.dynamicType)!, statusCode:200, headers:nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProducts.json", type(of: self))!, statusCode:200, headers:nil)
         }
         
-        let expectation = expectationWithDescription("get all products")
+        let expectation = self.expectation(description: "get all products")
         let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
         client.fetchProducts(pickupLocation: location, completion: { products, response in
             
@@ -105,7 +105,7 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -116,11 +116,11 @@ class RidesClientTests: XCTestCase {
      Test get product by ID.
      */
     func testGetProductByID() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProductID.json", self.dynamicType)!, statusCode:200, headers:nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProductID.json", type(of: self))!, statusCode:200, headers:nil)
         }
         
-        let expectation = expectationWithDescription("get product by id")
+        let expectation = self.expectation(description: "get product by id")
         
         client.fetchProduct(productID, completion: { product, response in
             
@@ -131,7 +131,7 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -142,11 +142,11 @@ class RidesClientTests: XCTestCase {
      Test get time estimates.
      */
     func testGetTimeEstimates() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimates.json", self.dynamicType)!, statusCode:200, headers:nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimates.json", type(of: self))!, statusCode:200, headers:nil)
         }
         
-        let expectation = expectationWithDescription("get time estimates")
+        let expectation = self.expectation(description: "get time estimates")
         let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
         client.fetchTimeEstimates(pickupLocation: location, completion:{ timeEstimates, response in
             
@@ -159,7 +159,7 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -170,11 +170,11 @@ class RidesClientTests: XCTestCase {
      Test get price estimates.
      */
     func testGetPriceEstimates() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimates.json", self.dynamicType)!, statusCode:200, headers:nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimates.json", type(of: self))!, statusCode:200, headers:nil)
         }
         
-        let expectation = expectationWithDescription("get price estimates")
+        let expectation = self.expectation(description: "get price estimates")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
         client.fetchPriceEstimates(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation, completion:{ priceEstimates, response in
@@ -188,7 +188,7 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -199,22 +199,22 @@ class RidesClientTests: XCTestCase {
      Test get trip history.
      */
     func testGetHistory() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getHistory.json", self.dynamicType)!, statusCode:200, headers:nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getHistory.json", type(of: self))!, statusCode:200, headers:nil)
         }
         
-        let expectation = expectationWithDescription("get user history")
+        let expectation = self.expectation(description: "get user history")
     
         client.fetchTripHistory(completion: { userActivity, response in
             XCTAssertNotNil(userActivity)
             XCTAssertNotNil(userActivity!.history)
             XCTAssertEqual(userActivity!.history!.count, 1)
-            XCTAssertEqual(userActivity!.history![0].status, RideStatus.Completed)
+            XCTAssertEqual(userActivity!.history![0].status, RideStatus.completed)
             
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -225,11 +225,11 @@ class RidesClientTests: XCTestCase {
      Test get user profile.
      */
     func testGetUserProfile() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getMe.json", self.dynamicType)!, statusCode: 200, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getMe.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
-        let expectation = expectationWithDescription("get user profile")
+        let expectation = self.expectation(description: "get user profile")
         
         client.fetchUserProfile({ profile, error in
             XCTAssertNotNil(profile)
@@ -239,7 +239,7 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -250,23 +250,23 @@ class RidesClientTests: XCTestCase {
      Test post ride request.
      */
     func testMakeRideRequest() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("postRequests.json", self.dynamicType)!, statusCode: 200, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("postRequests.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
-        let expectation = expectationWithDescription("make ride request")
+        let expectation = self.expectation(description: "make ride request")
         
         let rideParameters = RideParametersBuilder().setPickupPlaceID("home").build()
         client.requestRide(rideParameters, completion: { ride, response in
             XCTAssertNotNil(ride)
-            XCTAssertEqual(ride!.status, RideStatus.Processing)
+            XCTAssertEqual(ride!.status, RideStatus.processing)
             XCTAssertEqual(ride!.requestID, "852b8fdd-4369-4659-9628-e122662ad257")
             XCTAssertEqual(ride!.eta, 5)
             
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -277,21 +277,21 @@ class RidesClientTests: XCTestCase {
      Test get current trip.
      */
     func testGetCurrentRide() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getRequest.json", self.dynamicType)!, statusCode: 200, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getRequest.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
-        let expectation = expectationWithDescription("get current ride")
+        let expectation = self.expectation(description: "get current ride")
         
         client.fetchCurrentRide({ ride, response in
             XCTAssertNotNil(ride)
             XCTAssertEqual(ride!.requestID, "17cb78a7-b672-4d34-a288-a6c6e44d5315")
-            XCTAssertEqual(ride!.status, RideStatus.Accepted)
+            XCTAssertEqual(ride!.status, RideStatus.accepted)
             
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -302,21 +302,21 @@ class RidesClientTests: XCTestCase {
      Test get ride by ID.
      */
     func testGetRideByID() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getRequest.json", self.dynamicType)!, statusCode: 200, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getRequest.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
-        let expectation = expectationWithDescription("get ride by ID")
+        let expectation = self.expectation(description: "get ride by ID")
         
         client.fetchRideDetails("someID", completion: { ride, response in
             XCTAssertNotNil(ride)
             XCTAssertEqual(ride!.requestID, "17cb78a7-b672-4d34-a288-a6c6e44d5315")
-            XCTAssertEqual(ride!.status, RideStatus.Accepted)
+            XCTAssertEqual(ride!.status, RideStatus.accepted)
             
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -327,11 +327,11 @@ class RidesClientTests: XCTestCase {
      Test get request estimate.
      */
     func testGetRequestEstimate() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("requestEstimate.json", self.dynamicType)!, statusCode: 200, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("requestEstimate.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
-        let expectation = expectationWithDescription("get request estimate")
+        let expectation = self.expectation(description: "get request estimate")
         let rideParams = RideParametersBuilder().setPickupPlaceID("home").build()
         
         client.fetchRideRequestEstimate(rideParams, completion:{ estimate, error in
@@ -341,7 +341,7 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -349,11 +349,11 @@ class RidesClientTests: XCTestCase {
     }
     
     func testGetPlace() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("place.json", self.dynamicType)!, statusCode: 200, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("place.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
-        let expectation = expectationWithDescription("get place")
+        let expectation = self.expectation(description: "get place")
         let testPlace = Place.Home
         
         client.fetchPlace(testPlace, completion: { place, response in
@@ -366,23 +366,23 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
         })
     }
-    
+
     /**
      Test getting a 404 response when getting place.
      */
     func testGetPlace404Response() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let obj = ["code":"unknown_place_id", "title": "The given place id does not exist"]
-            return OHHTTPStubsResponse(JSONObject: obj, statusCode: 404, headers: nil)
+            return OHHTTPStubsResponse(jsonObject: obj, statusCode: 404, headers: nil)
         }
         
-        let expectation = expectationWithDescription("get place not found error")
+        let expectation = self.expectation(description: "get place not found error")
         let testPlace = "gym"
         
         client.fetchPlace(testPlace, completion: { place, response in
@@ -400,7 +400,7 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -411,12 +411,12 @@ class RidesClientTests: XCTestCase {
      Test getting a 401 response when getting place
      */
     func testGetPlace401Response() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let obj = ["code":"unauthorized", "title": "The supplied bearer token is invalid."]
-            return OHHTTPStubsResponse(JSONObject: obj, statusCode: 401, headers: nil)
+            return OHHTTPStubsResponse(jsonObject: obj, statusCode: 401, headers: nil)
         }
         
-        let expectation = expectationWithDescription("get place not found error")
+        let expectation = self.expectation(description: "get place not found error")
         let testPlace = Place.Home
         
         client.fetchPlace(testPlace, completion: { place, response in
@@ -434,7 +434,7 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -442,11 +442,11 @@ class RidesClientTests: XCTestCase {
     }
     
     func testUpdateRideDetailsSuccess() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: [], statusCode: 204, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: [], statusCode: 204, headers: nil)
         }
         
-        let expectation = expectationWithDescription("update ride")
+        let expectation = self.expectation(description: "update ride")
         let params = RideParametersBuilder().setDropoffPlaceID(Place.Work).build()
         client.updateRideDetails("requestID1234", rideParameters: params, completion: { response in
             XCTAssertNil(response.error)
@@ -454,17 +454,17 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testUpdateRideDetailsUnauthorized() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: ["code":"unauthorized", "title":"Invalid OAuth 2.0 credentials provided."], statusCode: 401, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: ["code":"unauthorized", "title":"Invalid OAuth 2.0 credentials provided."], statusCode: 401, headers: nil)
         }
         
-        let expectation = expectationWithDescription("update ride")
+        let expectation = self.expectation(description: "update ride")
         let params = RideParametersBuilder().setDropoffPlaceID(Place.Work).build()
         client.updateRideDetails("requestID1234", rideParameters: params, completion: { response in
             guard let error = response.error else {
@@ -478,17 +478,17 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testUpdateRideDetailsNotFound() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: ["code":"not_found", "title":"The provided request ID doesn't exist."], statusCode: 404, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: ["code":"not_found", "title":"The provided request ID doesn't exist."], statusCode: 404, headers: nil)
         }
         
-        let expectation = expectationWithDescription("update ride")
+        let expectation = self.expectation(description: "update ride")
         let params = RideParametersBuilder().setDropoffPlaceID(Place.Work).build()
         client.updateRideDetails("requestID1234", rideParameters: params, completion: { response in
             guard let error = response.error else {
@@ -502,17 +502,17 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testUpdateRideDetailsValidationFailed() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: ["code":"validation_failed", "title": "The input failed invalidation."], statusCode: 422, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: ["code":"validation_failed", "title": "The input failed invalidation."], statusCode: 422, headers: nil)
         }
         
-        let expectation = expectationWithDescription("update ride")
+        let expectation = self.expectation(description: "update ride")
         let params = RideParametersBuilder().setDropoffPlaceID(Place.Work).build()
         client.updateRideDetails("requestID1234", rideParameters: params, completion: { response in
             guard let error = response.error else {
@@ -526,17 +526,17 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testUpdateCurrentRide() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: [], statusCode: 204, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: [], statusCode: 204, headers: nil)
         }
         
-        let expectation = expectationWithDescription("update ride")
+        let expectation = self.expectation(description: "update ride")
         let params = RideParametersBuilder().setDropoffPlaceID(Place.Work).build()
         client.updateCurrentRide(params, completion: { response in
             XCTAssertNil(response.error)
@@ -544,17 +544,17 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testUpdateCurrentRideUnauthorized() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: ["code":"unauthorized", "title":"Invalid OAuth 2.0 credentials provided."], statusCode: 401, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: ["code":"unauthorized", "title":"Invalid OAuth 2.0 credentials provided."], statusCode: 401, headers: nil)
         }
         
-        let expectation = expectationWithDescription("update ride")
+        let expectation = self.expectation(description: "update ride")
         let params = RideParametersBuilder().setDropoffPlaceID(Place.Work).build()
         client.updateCurrentRide(params, completion: { response in
             guard let error = response.error else {
@@ -568,17 +568,17 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testUpdateCurrentRideForbidden() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: ["code":"forbidden", "title":"Forbidden."], statusCode: 403, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: ["code":"forbidden", "title":"Forbidden."], statusCode: 403, headers: nil)
         }
         
-        let expectation = expectationWithDescription("update ride")
+        let expectation = self.expectation(description: "update ride")
         let params = RideParametersBuilder().setDropoffPlaceID(Place.Work).build()
         client.updateCurrentRide(params, completion: { response in
             guard let error = response.error else {
@@ -592,17 +592,17 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testUpdateCurrentRideNoCurrentTrip() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: ["code":"no_current_trip", "title":"User is not currently on a trip."], statusCode: 404, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: ["code":"no_current_trip", "title":"User is not currently on a trip."], statusCode: 404, headers: nil)
         }
         
-        let expectation = expectationWithDescription("update ride")
+        let expectation = self.expectation(description: "update ride")
         let params = RideParametersBuilder().setDropoffPlaceID(Place.Work).build()
         client.updateCurrentRide(params, completion: { response in
             guard let error = response.error else {
@@ -616,17 +616,17 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testUpdateCurrentRideValidationFailed() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: ["code":"validation_failed", "title":"The input failed invalidation."], statusCode: 422, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: ["code":"validation_failed", "title":"The input failed invalidation."], statusCode: 422, headers: nil)
         }
         
-        let expectation = expectationWithDescription("update ride")
+        let expectation = self.expectation(description: "update ride")
         let params = RideParametersBuilder().setDropoffPlaceID(Place.Work).build()
         client.updateCurrentRide(params, completion: { response in
             guard let error = response.error else {
@@ -640,51 +640,51 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testCancelRideByID() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: [], statusCode: 204, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: [], statusCode: 204, headers: nil)
         }
         
-        let expectation = expectationWithDescription("delete ride")
+        let expectation = self.expectation(description: "delete ride")
         client.cancelRide("requestID1234", completion: { response in
             XCTAssertNil(response.error)
             XCTAssertEqual(response.statusCode, 204)
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testCancelCurrentRide() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: [], statusCode: 204, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: [], statusCode: 204, headers: nil)
         }
         
-        let expectation = expectationWithDescription("delete ride")
+        let expectation = self.expectation(description: "delete ride")
         client.cancelCurrentRide({ response in
             XCTAssertNil(response.error)
             XCTAssertEqual(response.statusCode, 204)
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testCancelCurrentRideUnauthorized() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: ["code":"unauthorized", "title":"Invalid OAuth 2.0 Credentials provided."], statusCode: 401, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: ["code":"unauthorized", "title":"Invalid OAuth 2.0 Credentials provided."], statusCode: 401, headers: nil)
         }
         
-        let expectation = expectationWithDescription("update ride")
+        let expectation = self.expectation(description: "update ride")
         client.cancelCurrentRide({ response in
             guard let error = response.error else {
                 XCTAssert(false)
@@ -697,17 +697,17 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testCancelCurrentRideForbidden() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: ["code":"forbidden", "title":"Forbidden"], statusCode: 403, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: ["code":"forbidden", "title":"Forbidden"], statusCode: 403, headers: nil)
         }
         
-        let expectation = expectationWithDescription("update ride")
+        let expectation = self.expectation(description: "update ride")
         client.cancelCurrentRide({ response in
             guard let error = response.error else {
                 XCTAssert(false)
@@ -720,17 +720,17 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testCancelCurrentRideNoCurrentTrip() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: ["code":"no_current_trip", "title":"User is not currently on a trip."], statusCode: 404, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: ["code":"no_current_trip", "title":"User is not currently on a trip."], statusCode: 404, headers: nil)
         }
         
-        let expectation = expectationWithDescription("update ride")
+        let expectation = self.expectation(description: "update ride")
         client.cancelCurrentRide({ response in
             guard let error = response.error else {
                 XCTAssert(false)
@@ -743,7 +743,7 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
@@ -752,11 +752,11 @@ class RidesClientTests: XCTestCase {
      Test get payment methods (including last used).
      */
     func testGetPaymentMethods() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getPaymentMethods.json", self.dynamicType)!, statusCode: 200, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getPaymentMethods.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
-        let expectation = expectationWithDescription("get payment methods")
+        let expectation = self.expectation(description: "get payment methods")
         client.fetchPaymentMethods({ methods, lastUsed, response in
             guard let lastUsed = lastUsed else {
                 XCTAssert(false)
@@ -769,7 +769,7 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler:{ error in
+        waitForExpectations(timeout: timeout, handler:{ error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -777,11 +777,11 @@ class RidesClientTests: XCTestCase {
     }
     
     func testGetRideReceipt() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("rideReceipt.json", self.dynamicType)!, statusCode: 200, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("rideReceipt.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
-        let expectation = expectationWithDescription("ride receipt")
+        let expectation = self.expectation(description: "ride receipt")
         client.fetchRideReceipt("requestID1234", completion: { receipt, response in
             guard let receipt = receipt else {
                 XCTAssert(false)
@@ -794,17 +794,17 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testGetRideMap() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("rideMap.json", self.dynamicType)!, statusCode: 200, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("rideMap.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
-        let expectation = expectationWithDescription("ride map")
+        let expectation = self.expectation(description: "ride map")
         client.fetchRideMap("requestID1234", completion: { map, response in
             guard let map = map else {
                 XCTAssert(false)
@@ -818,17 +818,17 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testGetRideMapNotFound() {
-        stub(isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: ["code":"no_current_trip", "title":"User is not currently on a trip."], statusCode: 404, headers: nil)
+        stub(condition: isHost("sandbox-api.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: ["code":"no_current_trip", "title":"User is not currently on a trip."], statusCode: 404, headers: nil)
         }
         
-        let expectation = expectationWithDescription("ride map")
+        let expectation = self.expectation(description: "ride map")
         client.fetchRideMap("requestID1234", completion: { map, response in
             XCTAssertNil(map)
             
@@ -844,21 +844,21 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testRefreshToken() {
-        stub(isHost("login.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("refresh.json", self.dynamicType)!, statusCode: 200, headers: nil)
+        stub(condition: isHost("login.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("refresh.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         let refreshToken = "thisIsRefresh"
         let expectedScopeString = "request all_trips profile ride_widgets history places history_lite"
         let expectedScopes = expectedScopeString.toRidesScopesArray()
         let expectedScopeSet = Set(expectedScopes)
         
-        let expectation = expectationWithDescription("Refresh token completion")
+        let expectation = self.expectation(description: "Refresh token completion")
         client.refreshAccessToken(refreshToken, completion: { accessToken, response in
             guard let accessToken = accessToken, let scopes = accessToken.grantedScopes else {
                 XCTAssert(false)
@@ -875,18 +875,18 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }
     
     func testRefreshTokenInvalid() {
-        stub(isHost("login.uber.com")) { _ in
-            return OHHTTPStubsResponse(JSONObject: ["error":"invalid_refresh_token"], statusCode: 400, headers: nil)
+        stub(condition: isHost("login.uber.com")) { _ in
+            return OHHTTPStubsResponse(jsonObject: ["error":"invalid_refresh_token"], statusCode: 400, headers: nil)
         }
         let refreshToken = "thisIsRefresh"
 
-        let expectation = expectationWithDescription("Refresh token completion")
+        let expectation = self.expectation(description: "Refresh token completion")
         client.refreshAccessToken(refreshToken, completion: { accessToken, response in
             XCTAssertNil(accessToken)
             
@@ -900,7 +900,7 @@ class RidesClientTests: XCTestCase {
             expectation.fulfill()
         })
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }

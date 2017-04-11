@@ -26,10 +26,10 @@ import XCTest
 @testable import UberRides
 
 class NativeAuthenticatorTests: XCTestCase {
-    private var expectation: XCTestExpectation!
+    private var testExpectation: XCTestExpectation!
     private var accessToken: AccessToken?
     private var error: NSError?
-    private let timeout: NSTimeInterval = 2
+    private let timeout: TimeInterval = 2
     private let tokenString = "accessToken1234"
     private var redirectURI: String = ""
     
@@ -37,26 +37,26 @@ class NativeAuthenticatorTests: XCTestCase {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.setSandboxEnabled(true)
-        redirectURI = Configuration.getCallbackURIString(.Native)
+        redirectURI = Configuration.getCallbackURIString(.native)
     }
     
     override func tearDown() {
-        TokenManager.deleteToken()
+        _ = TokenManager.deleteToken()
         Configuration.restoreDefaults()
         super.tearDown()
     }
     
     func testNativeAuthenticator_usesNativeCallback() {
         let nativeAuthenticator = NativeAuthenticator(scopes: [])
-        XCTAssertEqual(nativeAuthenticator.callbackURIType, CallbackURIType.Native)
+        XCTAssertEqual(nativeAuthenticator.callbackURIType, CallbackURIType.native)
     }
     
     func testNativeAuthenticator_deeplinkExecutedOnLogin() {
-        let expectation = self.expectationWithDescription("Execute should be called")
-        let executeClosure:((NSError?) -> ())? -> () = { _ in
-            expectation.fulfill()
+        testExpectation =  self.expectation(description: "Execute should be called")
+        let executeClosure:(((NSError?) -> ())?) -> () = { _ in
+            self.testExpectation.fulfill()
         }
         let nativeAuthenticator = NativeAuthenticator(scopes: [])
         XCTAssertNotNil(nativeAuthenticator.deeplink)
@@ -66,24 +66,24 @@ class NativeAuthenticatorTests: XCTestCase {
         
         nativeAuthenticator.login()
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testNativeAuthenticator_loginCompletionCalled_whenExecuteFails() {
-        let expectation = self.expectationWithDescription("Execute should be called")
-        let loginCompletion: ((accessToken: AccessToken?, error: NSError?) -> Void) = { (_,_) in
-            expectation.fulfill()
+        testExpectation =  expectation(description: "Execute should be called")
+        let loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void) = { (_,_) in
+            self.testExpectation.fulfill()
         }
         let nativeAuthenticator = NativeAuthenticator(scopes: [])
         nativeAuthenticator.loginCompletion = loginCompletion
         XCTAssertNotNil(nativeAuthenticator.deeplink)
         let deeplinkMock = DeeplinkingProtocolMock(deeplinkingObject: nativeAuthenticator.deeplink)
         deeplinkMock.overrideExecute = true
-        deeplinkMock.overrideExecuteValue = DeeplinkErrorFactory.errorForType(.UnableToFollow)
+        deeplinkMock.overrideExecuteValue = DeeplinkErrorFactory.errorForType(.unableToFollow)
         nativeAuthenticator.deeplink = deeplinkMock
         
         nativeAuthenticator.login()
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 }

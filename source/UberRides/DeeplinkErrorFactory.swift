@@ -34,7 +34,7 @@ class DeeplinkErrorFactory {
      
      - returns: An initialized NSError
      */
-    static func errorForType(deeplinkErrorType: DeeplinkErrorType) -> NSError {
+    static func errorForType(_ deeplinkErrorType: DeeplinkErrorType) -> NSError {
         return NSError(domain: errorDomain, code: deeplinkErrorType.rawValue, userInfo: nil)
     }
 }

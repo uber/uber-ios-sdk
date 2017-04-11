@@ -28,12 +28,12 @@ import CoreLocation
 
 /// This class provides an example for using the RideRequestButton to initiate a deeplink
 /// into the Uber app
-public class DeeplinkExampleViewController: ButtonExampleViewController {
+open class DeeplinkExampleViewController: ButtonExampleViewController {
 
     let blackRequestButton = RideRequestButton()
     let whiteRequestButton = RideRequestButton()
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationItem.title = "Deeplink Buttons"
@@ -46,42 +46,42 @@ public class DeeplinkExampleViewController: ButtonExampleViewController {
         addWhiteRequestButtonConstraints()
     }
     
-    override public func viewDidAppear(animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         whiteRequestButton.loadRideInformation()
     }
     
     // Mark: Private Interface
     
-    private func initialSetup() {
+    fileprivate func initialSetup() {
         let deeplinkBehavior = DeeplinkRequestingBehavior()
         whiteRequestButton.requestBehavior = deeplinkBehavior
         
-        whiteRequestButton.colorStyle = .White
-        let parameterBuilder = RideParametersBuilder()
-        parameterBuilder.setProductID("a1111c8c-c720-46c3-8534-2fcdd730040d")
+        whiteRequestButton.colorStyle = .white
+        var parameterBuilder = RideParametersBuilder()
+        parameterBuilder = parameterBuilder.setProductID("a1111c8c-c720-46c3-8534-2fcdd730040d")
         let pickupLocation = CLLocation(latitude: 37.770, longitude: -122.466)
-        parameterBuilder.setPickupLocation(pickupLocation, nickname: "California Academy of Sciences")
+        parameterBuilder = parameterBuilder.setPickupLocation(pickupLocation, nickname: "California Academy of Sciences")
         let dropoffLocation = CLLocation(latitude: 37.791, longitude: -122.405)
-        parameterBuilder.setDropoffLocation(dropoffLocation, nickname: "Pier 39")
+        parameterBuilder = parameterBuilder.setDropoffLocation(dropoffLocation, nickname: "Pier 39")
         
         whiteRequestButton.rideParameters = parameterBuilder.build()
     }
     
-    private func addBlackRequestButtonConstraints() {
+    fileprivate func addBlackRequestButtonConstraints() {
         blackRequestButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let centerYConstraint = NSLayoutConstraint(item: blackRequestButton, attribute: .CenterY, relatedBy: .Equal, toItem: topView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
-        let centerXConstraint = NSLayoutConstraint(item: blackRequestButton, attribute: .CenterX, relatedBy: .Equal, toItem: topView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
+        let centerYConstraint = NSLayoutConstraint(item: blackRequestButton, attribute: .centerY, relatedBy: .equal, toItem: topView, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+        let centerXConstraint = NSLayoutConstraint(item: blackRequestButton, attribute: .centerX, relatedBy: .equal, toItem: topView, attribute: .centerX, multiplier: 1.0, constant: 0.0)
         
         topView.addConstraints([centerYConstraint, centerXConstraint])
     }
     
-    private func addWhiteRequestButtonConstraints() {
+    fileprivate func addWhiteRequestButtonConstraints() {
         whiteRequestButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let centerYConstraint = NSLayoutConstraint(item: whiteRequestButton, attribute: .CenterY, relatedBy: .Equal, toItem: bottomView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
-        let centerXConstraint = NSLayoutConstraint(item: whiteRequestButton, attribute: .CenterX, relatedBy: .Equal, toItem: bottomView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
+        let centerYConstraint = NSLayoutConstraint(item: whiteRequestButton, attribute: .centerY, relatedBy: .equal, toItem: bottomView, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+        let centerXConstraint = NSLayoutConstraint(item: whiteRequestButton, attribute: .centerX, relatedBy: .equal, toItem: bottomView, attribute: .centerX, multiplier: 1.0, constant: 0.0)
         
         bottomView.addConstraints([centerYConstraint, centerXConstraint])
     }

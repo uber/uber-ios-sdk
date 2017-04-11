@@ -1,1 +1,1 @@
-github "https://github.com/AliSoftware/OHHTTPStubs.git" ~> 5.2
+github "https://github.com/AliSoftware/OHHTTPStubs.git" "swift-3.0"
