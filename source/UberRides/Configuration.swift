@@ -159,7 +159,7 @@ import WebKit
      Gets the client ID of this app. Defaults to the value stored in your Application's
      plist if not set (UberClientID)
     
-     - returns: The string to use for the Client ID
+     - returns: The string to sduse for the Client ID
     */
     open static func getClientID() -> String {
         if clientID == nil {
