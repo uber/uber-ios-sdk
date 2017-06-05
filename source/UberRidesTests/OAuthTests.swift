@@ -63,7 +63,7 @@ class OAuthTests: XCTestCase {
         
         waitForExpectations(timeout: timeout, handler: { error in
             if error != nil {
-                print("Error: \(error)")
+                print("Error: \(String(describing: error))")
             }
             
             XCTAssertNotNil(self.accessToken)
@@ -86,7 +86,7 @@ class OAuthTests: XCTestCase {
         
         waitForExpectations(timeout: timeout, handler: { error in
             if error != nil {
-                print("Error: \(error)")
+                print("Error: \(String(describing: error))")
                 return
             }
             
@@ -110,7 +110,7 @@ class OAuthTests: XCTestCase {
         
         waitForExpectations(timeout: timeout, handler: { error in
             if error != nil {
-                print("Error: \(error)")
+                print("Error: \(String(describing: error))")
                 return
             }
             
@@ -135,7 +135,7 @@ class OAuthTests: XCTestCase {
         
         waitForExpectations(timeout: timeout, handler: { error in
             if error != nil {
-                print("Error: \(error)")
+                print("Error: \(String(describing: error))")
                 return
             }
             
@@ -160,7 +160,7 @@ class OAuthTests: XCTestCase {
         
         waitForExpectations(timeout: timeout, handler: { error in
             if error != nil {
-                print("Error: \(error)")
+                print("Error: \(String(describing: error))")
                 return
             }
             
@@ -185,7 +185,7 @@ class OAuthTests: XCTestCase {
         
         waitForExpectations(timeout: timeout, handler: { error in
             if error != nil {
-                print("Error: \(error)")
+                print("Error: \(String(describing: error))")
                 return
             }
             
@@ -210,7 +210,7 @@ class OAuthTests: XCTestCase {
         
         waitForExpectations(timeout: timeout, handler: { error in
             if error != nil {
-                print("Error: \(error)")
+                print("Error: \(String(describing: error))")
                 return
             }
             
@@ -235,7 +235,7 @@ class OAuthTests: XCTestCase {
         
         waitForExpectations(timeout: timeout, handler: { error in
             if error != nil {
-                print("Error: \(error)")
+                print("Error: \(String(describing: error))")
                 return
             }
             
