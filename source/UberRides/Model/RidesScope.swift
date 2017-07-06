@@ -163,6 +163,8 @@ class RidesScopeFactory : NSObject {
     
     static func ridesScopeTypeForRawValue(rawValue: String) -> RidesScopeType? {
         switch rawValue.lowercaseString {
+        case RidesScopeType.AllTrips.toString():
+            return .AllTrips
         case RidesScopeType.History.toString():
             return .History
         case RidesScopeType.HistoryLite.toString():
@@ -171,6 +173,10 @@ class RidesScopeFactory : NSObject {
             return .Places
         case RidesScopeType.Profile.toString():
             return .Profile
+        case RidesScopeType.Request.toString():
+            return .Request
+        case RidesScopeType.RequestReceipt.toString():
+            return .RequestReceipt
         case RidesScopeType.RideWidgets.toString():
             return .RideWidgets
         case RidesScopeType.AllTrips.toString():
