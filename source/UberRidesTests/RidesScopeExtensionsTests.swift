@@ -54,7 +54,7 @@ class RidesScopeExtensionsTests: XCTestCase {
         let scopeString = scopes.toRidesScopeString()
         
         var testSet : Set<RidesScope> = Set<RidesScope>()
-        for scopeString in scopeString.componentsSeparatedByString(" ") {
+        for scopeString in scopeString.components(separatedBy: " ") {
             guard let scope = RidesScopeFactory.ridesScopeForString(scopeString) else {
                 continue
             }

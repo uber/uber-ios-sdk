@@ -32,37 +32,37 @@ class ExampleTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.tableFooterView = UIView(frame: CGRectZero)
+        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "basicCell")
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "basicCell")
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("basicCell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "basicCell", for: indexPath)
         
         switch indexPath.section {
         case 0:
             switch indexPath.row {
             case 0:
                 cell.textLabel?.text = "Deeplink Request Buttons"
-                cell.textLabel?.textColor = UIColor.blackColor()
-                cell.accessoryType = .DisclosureIndicator
+                cell.textLabel?.textColor = UIColor.black
+                cell.accessoryType = .disclosureIndicator
             case 1:
                 cell.textLabel?.text = "Ride Request Widget Button"
-                cell.textLabel?.textColor = UIColor.blackColor()
-                cell.accessoryType = .DisclosureIndicator
+                cell.textLabel?.textColor = UIColor.black
+                cell.accessoryType = .disclosureIndicator
             case 2:
                 cell.textLabel?.text = "Implicit Grant / Login Manager"
-                cell.textLabel?.textColor = UIColor.blackColor()
-                cell.accessoryType = .DisclosureIndicator
+                cell.textLabel?.textColor = UIColor.black
+                cell.accessoryType = .disclosureIndicator
             case 3:
                 cell.textLabel?.text = "Authorization Code Grant / Login Manager"
-                cell.textLabel?.textColor = UIColor.blackColor()
-                cell.accessoryType = .DisclosureIndicator
+                cell.textLabel?.textColor = UIColor.black
+                cell.accessoryType = .disclosureIndicator
             case 4:
                 cell.textLabel?.text = "Native Login"
-                cell.textLabel?.textColor = UIColor.blackColor()
-                cell.accessoryType = .DisclosureIndicator
+                cell.textLabel?.textColor = UIColor.black
+                cell.accessoryType = .disclosureIndicator
             default:
                 break
             }
@@ -70,8 +70,8 @@ class ExampleTableViewController: UITableViewController {
             fallthrough
         default:
             cell.textLabel?.text = "Logout"
-            cell.textLabel?.textColor = UIColor.redColor()
-            cell.accessoryType = .None
+            cell.textLabel?.textColor = UIColor.red
+            cell.accessoryType = .none
         }
         
         
@@ -80,9 +80,9 @@ class ExampleTableViewController: UITableViewController {
     
     //MARK: UITableViewDelegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
         
         var viewControllerToPush: UIViewController?
         
@@ -94,10 +94,10 @@ class ExampleTableViewController: UITableViewController {
             case 1:
                 viewControllerToPush = RideRequestWidgetExampleViewController()
             case 2:
-                performSegueWithIdentifier(implicitGrantSegueIdentifier, sender: self)
+                performSegue(withIdentifier: implicitGrantSegueIdentifier, sender: self)
                 return
             case 3:
-                performSegueWithIdentifier(authorizationCodeGrantSegueIdentifier, sender: self)
+                performSegue(withIdentifier: authorizationCodeGrantSegueIdentifier, sender: self)
                 return
             case 4:
                 viewControllerToPush = NativeLoginExampleViewController()
@@ -119,11 +119,11 @@ class ExampleTableViewController: UITableViewController {
     
     //MARK: UITableViewDataSource Methods
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
             return 5

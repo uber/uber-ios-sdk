@@ -1,4 +1,26 @@
 # Change Log
+## [0.6.0] 2016-11-22
+
+### Added
+Added Swift 2.3 support
+
+## [0.5.3] 2016-11-18
+
+This will be the final release using Swift 2.2
+
+### Fixed
+
+- [Issue #51](https://github.com/uber/rides-ios-sdk/issues/51) Added Information about Server Token in README
+- [Issue #58](https://github.com/uber/rides-ios-sdk/issues/58) Updated README examples to correctly use pickup & dropoff
+- [Issue #76](https://github.com/uber/rides-ios-sdk/issues/76) Update Ride Request Button Delegate to always fire. The RideRequestButtonDelegate will now always fire `didLoadRideInformation` once information has been loaded. Including if it encounters an error. Any errors that are encountered will still fire `didReceiveError`. `didReceiveError` will always be called before `didLoadRideInformation`
+- [Issue #86](https://github.com/uber/rides-ios-sdk/issues/86) via [Pull #114](https://github.com/uber/rides-ios-sdk/pull/114) Fix RideScope not mapping for all cases
+- [Issue #94](https://github.com/uber/rides-ios-sdk/issues/94) Make ride status available in Objective-C
+- [Issue #127](https://github.com/uber/rides-ios-sdk/issues/127) Shared Credentials across iOS app and extension
+
+- [Pull #105](https://github.com/uber/rides-ios-sdk/pull/105) Fixing typos
+- [Pull #72](https://github.com/uber/rides-ios-sdk/pull/72) Updates to make README more clear
+- [Pull #73](https://github.com/uber/rides-ios-sdk/pull/73) Updates to README about info.plist
+- [Pull #65](https://github.com/uber/rides-ios-sdk/pull/65) Example of how to run samples without Carthage
 
 ## [0.5.2] 2016-08-2
 ### Added

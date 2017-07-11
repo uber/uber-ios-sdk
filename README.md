@@ -9,7 +9,11 @@ Please keep in mind that this SDK is in a Pre-1.0 release state and is still act
 ## Requirements
 
 - iOS 8.0+
-- Xcode 7.3+
+- Xcode 8.0+
+- Swift 2.3
+
+**Looking for Swift 2.2?** For Swift 2.2 support, please use version [0.5.3](https://github.com/uber/rides-ios-sdk/releases/tag/v0.5.3)
+
 
 ## Getting Started
 
@@ -102,7 +106,7 @@ Now build your project and everything should be good to go!
 
 ### Configuring iOS 9.0
 
-If you are compiling on iOS SDK 9.0, you will need to modify your application’s `plist` to handle Apple’s [new security changes](https://developer.apple.com/videos/wwdc/2015/?id=703) to the `canOpenURL` function.
+If you are compiling on iOS SDK 9.0, you will need to modify your application’s `plist` to handle Apple’s [new security changes](https://developer.apple.com/videos/wwdc/2015/?id=703) to the `canOpenURL` function.  Locate the **Info.plist** file for your application. Usually found in the **Supporting Files** folder. Right-click this file and select **Open As > Source Code**
 
 ```
 <key>LSApplicationQueriesSchemes</key>
@@ -121,11 +125,13 @@ This will allow the Uber iOS integration to properly identify and switch to the 
 ## SDK Configuration
 In order for the SDK to function correctly, you need to add some information about your app. Locate the **Info.plist** file for your application. Usually found in the **Supporting Files** folder. Right-click this file and select **Open As > Source Code**
 
-Add the following code snippet, replacing the placeholders with your app’s information from the developer dashboard.
+Add the following code snippet, replacing the placeholders within the square brackets (`[]`) with your app’s information from the developer dashboard. (Note: Do not include the square brackets)
 
 ```
 <key>UberClientID</key>
 <string>[ClientID]</string>
+<key>UberServerToken<key>
+<string>[Server Token]</string>
 <key>UberDisplayName</key>
 <string>[App Name]</string>
 <key>UberCallbackURIs</key>
@@ -134,12 +140,14 @@ Add the following code snippet, replacing the placeholders with your app’s inf
         <key>UberCallbackURIType</key>
         <string>General</string>
         <key>URIString</key>
-        <string>callback://your_callback_uri</string>
+        <string>[callback://your_callback_uri]</string>
     </dict>
 </array>
 ```
 
 Make sure the value for UberCallbackURI exactly matches one of the Redirect URLs you have set on your developer dashboard. (You can use `localhost` for testing.)
+
+**Note:** Your `Server Token` is used to make [Price](https://developer.uber.com/docs/rides/api/v1-estimates-price) & [Time](https://developer.uber.com/docs/rides/api/v1-estimates-time) estimates when your user hasn't authenticated with Uber yet. We suggest adding it in your `Info.plist` only if you need to get estimates before your user logs in.
 
 You can also define specific callback URIs for different login types. For example, if you want to use Native login, but also support a fallback to Authorization Code Grant, you can define a callback to your app AND a callback for your server:
 
@@ -150,19 +158,19 @@ You can also define specific callback URIs for different login types. For exampl
         <key>UberCallbackURIType</key>
         <string>General</string>
         <key>URIString</key>
-        <string>callback://your_callback_uri</string>
+        <string>[callback://your_callback_uri]</string>
     </dict>
     <dict>
         <key>UberCallbackURIType</key>
         <string>AuthorizationCode</string>
         <key>URIString</key>
-        <string>callback://authorization_code_uri</string>
+        <string>[callback://authorization_code_uri]</string>
     </dict>
     <dict>
         <key>UberCallbackURIType</key>
         <string>Native</string>
         <key>URIString</key>
-        <string>myApp://native_deeplink_callback</string>
+        <string>[myApp://native_deeplink_callback]</string>
     </dict>    
 </array>
 ```
@@ -172,6 +180,9 @@ Additionally, the SDK provides a static Configuration class to further customize
 
 ```swift
 // Don’t forget to import UberRides
+import UberRides
+// ...
+
 // Swift
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // China based apps should specify the region
@@ -186,6 +197,10 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
 ```
 
 ```objective-c
+// Don’t forget to import UberRides
+#import <UberRides/UberRides-Swift.h>
+// ...
+
 // Objective-C
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // China based apps should specify the region
@@ -298,7 +313,7 @@ You can optionally set a `LoginButtonDelegate` to handle logging in / logging ou
 
 ```swift
 // Swift
-let scopes = [.Profile, .Places, .Request]
+let scopes: [RidesScope] = [.Profile, .Places, .Request]
 let loginManager = LoginManager(loginType: .Native)
 let loginButton = LoginButton(frame: CGRectZero, scopes: scopes, loginManager: loginManager)
 loginButton.presentingViewController = self
@@ -365,7 +380,8 @@ let button = RideRequestButton()
 let ridesClient = RidesClient()
 let pickupLocation = CLLocation(latitude: 37.787654, longitude: -122.402760)
 let dropoffLocation = CLLocation(latitude: 37.775200, longitude: -122.417587)
-let builder = RideParametersBuilder().setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation)
+let dropoffNickname = "Work"
+let builder = RideParametersBuilder().setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation, nickname: dropoffNickname)
 ridesClient.fetchCheapestProduct(pickupLocation: pickupLocation, completion: {
     product, response in
     if let productID = product?.productID {
@@ -382,9 +398,10 @@ UBSDKRideRequestButton *button = [[UBSDKRideRequestButton alloc] init];
 UBSDKRidesClient *ridesClient = [[UBSDKRidesClient alloc] init];
 CLLocation *pickupLocation = [[CLLocation alloc] initWithLatitude: 37.787654 longitude: -122.402760];
 CLLocation *dropoffLocation = [[CLLocation alloc] initWithLatitude: 37.775200 longitude: -122.417587];
+NSString *dropoffNickname = @"Work";
 __block UBSDKRideParametersBuilder *builder = [[UBSDKRideParametersBuilder alloc] init];
 builder = [builder setPickupLocation: pickupLocation];
-builder = [builder setDropoffLocation: dropoffLocation];
+builder = [builder setDropoffLocation: dropoffLocation nickname: dropoffNickname];
 [ridesClient fetchCheapestProductWithPickupLocation: pickupLocation completion:^(UBSDKUberProduct* _Nullable product, UBSDKResponse* _Nullable response) {
     if (product) {
         builder = [builder setProductID: product.productID];
@@ -919,12 +936,40 @@ extension your_class : RideRequestViewControllerDelegate {
 
 ## Example Apps
 
-Example apps can be found in the `examples` folder. To run build them, you need to use Carthage. (A quick overview of installing Carthage can be found in the **Getting Started** section.) From inside the `examples/Swift SDK` or `examples/Obj-C SDK` folder, run:
+Example apps can be found in the `examples` folder. To run build them, you can use Carthage or Cocoapods. 
+
+### Carthage
+(A quick overview of installing Carthage can be found in the **Getting Started** section.) From inside the `examples/Swift SDK` or `examples/Obj-C SDK` folder, run:
 
 ```
 carthage update --platform iOS
 ``` 
 This will build the required dependencies. Once you do that, open `Swift SDK.xcodeproj` or `Obj-C SDK.xcodeproj` in Xcode and run it.
+
+### CocoaPods
+First, you will have to remove Carthage dependencies. Navigate to `examples/Swift SDK` or `examples/Obj-C SDK` and remove `Cartfile` and `Cartfile.resolved`. If you see a `Carthage` folder, remove that as well. Open .xcworkspace and navigate to  **General** tab, scroll to **Embedded Binaries** select `ObjectMapper.framework` and click the `-` button, do the same for `UberRides.framework`. Now go to  **Build Settings** tab and scroll to **Search Paths**, click on **Framework Search Paths** and remove the line $(PROJECT_DIR)/Carthage/Build/iOS.
+Now go to **Build Phases** find the **Copy Carthage Frameworks** and remove it.
+
+Now, still inside either `examples/Swift SDK` or `examples/Obj-C SDK`, create a new **Podfile** by running `pod init`, then add `pod 'UberRides'` to your main target. If you are using the Swift SDK, make sure to add the line `use_frameworks!`. Your **Podfile** should look something like this:
+
+
+```ruby
+use_frameworks!
+
+target 'Your Project Name' do
+pod 'UberRides'
+end
+```
+
+Then, run the following command to install the dependency:
+
+```bash
+$ pod install
+```
+
+For Objective-C projects, set the **Embedded Content Contains Swift Code** flag in your project to **Yes** (found under **Build Options** in the **Build Settings** tab).
+
+Now you can build the project.
 
 Don’t forget to set `UberClientID`, `UberDisplayName`, and `UberCallbackURIs` in your `Info.plist` file.
 

@@ -32,7 +32,7 @@ import ObjectMapper
 */
 struct UberProducts {
     var list: [UberProduct]?
-    init?(_ map: Map){
+    init?(map: Map){
     }
 }
 
@@ -49,24 +49,24 @@ extension UberProducts: UberModel {
 */
 @objc(UBSDKUberProduct) public class UberProduct: NSObject {
     /// Unique identifier representing a specific product for a given latitude & longitude.
-    public private(set) var productID: String?
+    public fileprivate(set) var productID: String?
     
     /// Display name of product. Ex: "UberBLACK".
-    public private(set) var name: String?
+    public fileprivate(set) var name: String?
     
     /// Description of product. Ex: "The original Uber".
-    public private(set) var details: String?
+    public fileprivate(set) var details: String?
     
     /// Capacity of product. Ex: 4, for a product that fits 4.
-    public private(set) var capacity: Int = 0
+    public fileprivate(set) var capacity: Int = 0
     
     /// Path of image URL representing the product.
-    public private(set) var imagePath: String?
+    public fileprivate(set) var imagePath: String?
     
     /// The basic price details. See `PriceDetails` for structure.
-    public private(set) var priceDetails: PriceDetails?
+    public fileprivate(set) var priceDetails: PriceDetails?
     
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 }
 
@@ -88,30 +88,30 @@ extension UberProduct : UberModel {
 */
 @objc(UBSDKPriceDetails) public class PriceDetails : NSObject {
     /// Unit of distance used to calculate fare (mile or km).
-    public private(set) var distanceUnit: String?
+    public fileprivate(set) var distanceUnit: String?
     
     /// ISO 4217 currency code.
-    public private(set) var currencyCode: String?
+    public fileprivate(set) var currencyCode: String?
     
     /// The charge per minute (if applicable).
-    public private(set) var costPerMinute: Double = -1
+    public fileprivate(set) var costPerMinute: Double = -1
     
     /// The charge per distance unit (if applicable).
-    public private(set) var costPerDistance: Double = -1
+    public fileprivate(set) var costPerDistance: Double = -1
     
     /// The base price.
-    public private(set) var baseFee: Double = 0
+    public fileprivate(set) var baseFee: Double = 0
     
     /// The minimum price of a trip.
-    public private(set) var minimumFee: Double = 0
+    public fileprivate(set) var minimumFee: Double = 0
     
     /// The fee if a rider cancels the trip after a grace period.
-    public private(set) var cancellationFee: Double = 0
+    public fileprivate(set) var cancellationFee: Double = 0
     
     /// Array containing additional fees added to the price. See `ServiceFee`.
-    public private(set) var serviceFees: [ServiceFee]?
+    public fileprivate(set) var serviceFees: [ServiceFee]?
     
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 }
 
@@ -135,12 +135,12 @@ extension PriceDetails : Mappable {
 */
 public class ServiceFee : NSObject {
     /// The name of the service fee.
-    public private(set) var name: String?
+    public fileprivate(set) var name: String?
     
     /// The amount of the service fee.
-    public private(set) var fee: Double = 0.0
+    public fileprivate(set) var fee: Double = 0.0
     
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 }
 

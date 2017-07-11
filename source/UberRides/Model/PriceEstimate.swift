@@ -31,7 +31,7 @@ import ObjectMapper
 */
 struct PriceEstimates {
     var list: [PriceEstimate]?
-    init?(_ map: Map) {
+    init?(map: Map) {
     }
 }
 
@@ -49,39 +49,39 @@ extension PriceEstimates: UberModel {
 @objc(UBSDKPriceEstimate) public class PriceEstimate: NSObject {
     
     /// ISO 4217 currency code.
-    public private(set) var currencyCode: String?
+    public fileprivate(set) var currencyCode: String?
     
     /// Expected activity distance (in miles).
-    public private(set) var distance: Double = 0.0
+    public fileprivate(set) var distance: Double = 0.0
     
     /// Expected activity duration (in seconds).
-    public private(set) var duration: Int = 0
+    public fileprivate(set) var duration: Int = 0
     
     /// A formatted string representing the estimate in local currency. Could be range, single number, or "Metered" for TAXI.
-    public private(set) var estimate: String?
+    public fileprivate(set) var estimate: String?
     
     /// Upper bound of the estimated price.
-    public private(set) var highEstimate: Int = 0
+    public fileprivate(set) var highEstimate: Int = 0
     
     /// Lower bound of the estimated price.
-    public private(set) var lowEstimate: Int = 0
+    public fileprivate(set) var lowEstimate: Int = 0
     
     /// Display name of product. Ex: "UberBLACK".
-    public private(set) var name: String?
+    public fileprivate(set) var name: String?
     
     /// Unique identifier representing a specific product for a given latitude & longitude.
-    public private(set) var productID: String?
+    public fileprivate(set) var productID: String?
     
     /// The unique identifier of the surge session for a user. Nil for no surge.
-    public private(set) var surgeConfirmationID: String?
+    public fileprivate(set) var surgeConfirmationID: String?
     
     /// The URL a user must visit to accept surge pricing.
-    public private(set) var surgeConfirmationURL: String?
+    public fileprivate(set) var surgeConfirmationURL: String?
     
     /// Expected surge multiplier (active if surge is greater than 1).
-    public private(set) var surgeMultiplier: Double = 1.0
+    public fileprivate(set) var surgeMultiplier: Double = 1.0
     
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 }
 

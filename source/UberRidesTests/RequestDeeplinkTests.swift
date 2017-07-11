@@ -68,10 +68,10 @@ class UberRidesDeeplinkTests: XCTestCase {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.setClientID(clientID)
         Configuration.setSandboxEnabled(true)
-        versionNumber = NSBundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
+        versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         expectedDeeplinkUserAgent = "rides-ios-v\(versionNumber!)-deeplink"
         expectedButtonUserAgent = "rides-ios-v\(versionNumber!)-button"
     }
@@ -88,16 +88,16 @@ class UberRidesDeeplinkTests: XCTestCase {
         let deeplink = RequestDeeplink()
         let uri = deeplink.deeplinkURL.absoluteString
         
-        XCTAssertTrue(uri.containsString(ExpectedDeeplink.uberScheme))
+        XCTAssertTrue(uri.contains(ExpectedDeeplink.uberScheme))
         
-        let components = NSURLComponents(string: uri)
+        let components = URLComponents(string: uri)
         XCTAssertEqual(components?.queryItems?.count, 4)
         
         let query = components?.query
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.clientIDQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.setPickupAction))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.defaultPickupQuery))
-        XCTAssertTrue(query!.containsString(expectedDeeplinkUserAgent!))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.clientIDQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.setPickupAction))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.defaultPickupQuery))
+        XCTAssertTrue(query!.contains(expectedDeeplinkUserAgent!))
     }
     
     /**
@@ -108,15 +108,15 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = RideParametersBuilder().setPickupLocation(location).build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = NSURLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(url: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 5)
         
         let query = components?.query
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.clientIDQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.setPickupAction))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupLatQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupLongQuery))
-        XCTAssertTrue(query!.containsString(expectedDeeplinkUserAgent!))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.clientIDQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.setPickupAction))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.pickupLatQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.pickupLongQuery))
+        XCTAssertTrue(query!.contains(expectedDeeplinkUserAgent!))
     }
     
     /**
@@ -127,17 +127,17 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = RideParametersBuilder().setPickupLocation(location, nickname: pickupNickname, address: pickupAddress).build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = NSURLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(url: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 7)
         
         let query = components?.query
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.clientIDQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.setPickupAction))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupLatQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupLongQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupNicknameQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupAddressQuery))
-        XCTAssertTrue(query!.containsString(expectedDeeplinkUserAgent!))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.clientIDQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.setPickupAction))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.pickupLatQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.pickupLongQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.pickupNicknameQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.pickupAddressQuery))
+        XCTAssertTrue(query!.contains(expectedDeeplinkUserAgent!))
     }
     
     /**
@@ -148,16 +148,16 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = RideParametersBuilder().setDropoffLocation(location).build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = NSURLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(url: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 6)
         
         let query = components?.query
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.clientIDQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.setPickupAction))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.defaultPickupQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffLatQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffLongQuery))
-        XCTAssertTrue(query!.containsString(expectedDeeplinkUserAgent!))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.clientIDQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.setPickupAction))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.defaultPickupQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.dropoffLatQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.dropoffLongQuery))
+        XCTAssertTrue(query!.contains(expectedDeeplinkUserAgent!))
     }
     
     /**
@@ -170,29 +170,29 @@ class UberRidesDeeplinkTests: XCTestCase {
             .setDropoffLocation(dropoffLocation, nickname: dropoffNickname, address: dropoffAddress).build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = NSURLComponents(URL: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(url: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 12)
         
         let query = components?.query
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.clientIDQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.productIDQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.setPickupAction))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupLatQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupLongQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupNicknameQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.pickupAddressQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffLatQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffLongQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffNicknameQuery))
-        XCTAssertTrue(query!.containsString(ExpectedDeeplink.dropoffAddressQuery))
-        XCTAssertTrue(query!.containsString(expectedDeeplinkUserAgent!))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.clientIDQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.productIDQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.setPickupAction))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.pickupLatQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.pickupLongQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.pickupNicknameQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.pickupAddressQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.dropoffLatQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.dropoffLongQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.dropoffNicknameQuery))
+        XCTAssertTrue(query!.contains(ExpectedDeeplink.dropoffAddressQuery))
+        XCTAssertTrue(query!.contains(expectedDeeplinkUserAgent!))
     }
     
     func testDeeplinkDefaultSource() {
-        let expectation = expectationWithDescription("Test Deeplink source parameter")
-        let expectationClosure: (NSURL?) -> (Bool) = { url in
+        let expectation = self.expectation(description: "Test Deeplink source parameter")
+        let expectationClosure: (URL?) -> (Bool) = { url in
             expectation.fulfill()
-            guard let url = url, let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false), let items = components.queryItems else {
+            guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: false), let items = components.queryItems else {
                 XCTAssert(false)
                 return false
             }
@@ -202,7 +202,7 @@ class UberRidesDeeplinkTests: XCTestCase {
                 if (item.name == "user-agent") {
                     if let value = item.value {
                         foundUserAgent = true
-                        XCTAssertTrue(value.containsString(RequestDeeplink.sourceString))
+                        XCTAssertTrue(value.contains(RequestDeeplink.sourceString))
                         break
                     }
                 }
@@ -215,7 +215,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         
         deeplink.execute()
         
-        waitForExpectationsWithTimeout(timeout, handler: { error in
+        waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
         })
     }

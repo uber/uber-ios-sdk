@@ -32,15 +32,15 @@ import ObjectMapper
 @objc(UBSDKRideCharge) public class RideCharge: NSObject {
     
     /// The amount of the charge.
-    public private(set) var amount: Float = 0.0
+    public fileprivate(set) var amount: Float = 0.0
     
     /// The name of the charge.
-    public private(set) var name: String?
+    public fileprivate(set) var name: String?
     
     /// The type of the charge.
-    public private(set) var type: String?
+    public fileprivate(set) var type: String?
     
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 }
 

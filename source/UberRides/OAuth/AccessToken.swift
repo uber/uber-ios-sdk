@@ -34,7 +34,7 @@ import ObjectMapper
     public private(set) var refreshToken: String?
     
     /// The expiration date for this access token
-    public private(set) var expirationDate: NSDate?
+    public private(set) var expirationDate: Date?
     
     /// The scopes this token is valid for
     public private(set) var grantedScopes: [RidesScope]?
@@ -61,13 +61,13 @@ import ObjectMapper
      */
     @objc public required init?(coder decoder: NSCoder) {
         super.init()
-        guard let token = decoder.decodeObjectForKey("tokenString") as? String else {
+        guard let token = decoder.decodeObject(forKey: "tokenString") as? String else {
             return nil
         }
         tokenString = token
-        refreshToken = decoder.decodeObjectForKey("refreshToken") as? String
-        expirationDate = decoder.decodeObjectForKey("expirationDate") as? NSDate
-        if let scopesString = decoder.decodeObjectForKey("grantedScopes") as? String {
+        refreshToken = decoder.decodeObject(forKey: "refreshToken") as? String
+        expirationDate = decoder.decodeObject(forKey: "expirationDate") as? Date
+        if let scopesString = decoder.decodeObject(forKey: "grantedScopes") as? String {
             grantedScopes = scopesString.toRidesScopesArray()
         }
     }
@@ -79,7 +79,7 @@ import ObjectMapper
      
      - returns: An initialized AccessToken, or nil if someting went wrong
      */
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
     
     /**
@@ -87,11 +87,11 @@ import ObjectMapper
      
      - parameter coder: The NSCoder to encode the access token on
      */
-    @objc public func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.tokenString, forKey: "tokenString")
-        coder.encodeObject(self.refreshToken, forKey:  "refreshToken")
-        coder.encodeObject(self.expirationDate, forKey: "expirationDate")
-        coder.encodeObject(self.grantedScopes?.toRidesScopeString(), forKey: "grantedScopes")
+    @objc public func encode(with coder: NSCoder) {
+        coder.encode(self.tokenString, forKey: "tokenString")
+        coder.encode(self.refreshToken, forKey:  "refreshToken")
+        coder.encode(self.expirationDate, forKey: "expirationDate")
+        coder.encode(self.grantedScopes?.toRidesScopeString(), forKey: "grantedScopes")
     }
     
     /**

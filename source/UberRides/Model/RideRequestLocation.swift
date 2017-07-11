@@ -32,18 +32,18 @@ import ObjectMapper
 @objc(UBSDKRideRequestLocation) public class RideRequestLocation: NSObject {
     
     /// The current bearing in degrees for a moving location.
-    public private(set) var bearing: Int = 0
+    public fileprivate(set) var bearing: Int = 0
     
     /// ETA is only available when the trips is accepted or arriving.
-    public private(set) var eta: Int = 0
+    public fileprivate(set) var eta: Int = 0
     
     /// The latitude of the location.
-    public private(set) var latitude: Double = 0
+    public fileprivate(set) var latitude: Double = 0
     
     /// The longitude of the location.
-    public private(set) var longitude: Double = 0
+    public fileprivate(set) var longitude: Double = 0
     
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 }
 

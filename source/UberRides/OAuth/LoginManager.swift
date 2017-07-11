@@ -25,10 +25,10 @@
 
 
 /// Manages user login via SSO, authorization code grant, or implicit grant.
-@objc(UBSDKLoginManager) public class LoginManager: NSObject, LoginManaging {
+@objc(UBSDKLoginManager) open class LoginManager: NSObject, LoginManaging {
     
     /// Optional state to use for explcit grant authorization
-    public var state: String?
+    open var state: String?
     
     var accessTokenIdentifier: String
     var keychainAccessGroup: String
@@ -66,7 +66,7 @@
      */
     @objc public convenience init(accessTokenIdentifier: String, keychainAccessGroup: String?) {
         let accessGroup = keychainAccessGroup ?? Configuration.getDefaultKeychainAccessGroup()
-        self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: accessGroup, loginType: LoginType.Implicit)
+        self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: accessGroup, loginType: LoginType.implicit)
     }
     
     /**
@@ -91,7 +91,7 @@
      - returns: An initialized LoginManager
      */
     @objc public convenience init(loginType: LoginType) {
-        self.init(accessTokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(), keychainAccessGroup: Configuration.getDefaultAccessTokenIdentifier(), loginType: loginType)
+        self.init(accessTokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(), keychainAccessGroup: Configuration.getDefaultKeychainAccessGroup(), loginType: loginType)
     }
     
     /**
@@ -102,7 +102,7 @@
      - returns: An initialized LoginManager
      */
     @objc public convenience override init() {
-        self.init(accessTokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(), keychainAccessGroup: Configuration.getDefaultAccessTokenIdentifier(), loginType: LoginType.Native)
+        self.init(accessTokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(), keychainAccessGroup: Configuration.getDefaultKeychainAccessGroup(), loginType: LoginType.native)
     }
     
     // Mark: LoginManaging
@@ -115,28 +115,28 @@
      - parameter presentingViewController: The presenting view controller present the login view controller over.
      - parameter completion:               The LoginManagerRequestTokenHandler completion handler for login success/failure.
      */
-    @objc public func login(requestedScopes scopes: [RidesScope], presentingViewController: UIViewController? = nil, completion: ((accessToken: AccessToken?, error: NSError?) -> Void)? = nil) {
+    @objc open func login(requestedScopes scopes: [RidesScope], presentingViewController: UIViewController? = nil, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)? = nil) {
         guard !loggingIn else {
-            completion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .Unavailable))
+            completion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
             return
         }
         
         var loginAuthenticator: UberAuthenticating!
         
         switch loginType {
-        case .AuthorizationCode:
+        case .authorizationCode:
             guard let presentingViewController = presentingViewController else {
-                completion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .UnableToPresentLogin))
+                completion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
                 return
             }
             loginAuthenticator = AuthorizationCodeGrantAuthenticator(presentingViewController: presentingViewController, scopes: scopes, state: state)
-        case .Implicit:
+        case .implicit:
             guard let presentingViewController = presentingViewController else {
-                completion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .UnableToPresentLogin))
+                completion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
                 return
             }
             loginAuthenticator = ImplicitGrantAuthenticator(presentingViewController: presentingViewController, scopes: scopes)
-        case .Native:
+        case .native:
             let nativeAuthenticator = NativeAuthenticator(scopes: scopes)
             nativeAuthenticator.deeplinkCompletion = { error in
                 if (error == nil) {
@@ -173,12 +173,12 @@
      
      - returns: true if the url was meant to be handled by the SDK, false otherwise
      */
-    public func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        guard let source = sourceApplication where source.hasPrefix("com.ubercab"),
+    open func application(_ application: UIApplication, openURL url: URL, sourceApplication: String?, annotation: Any?) -> Bool {
+        guard let source = sourceApplication, source.hasPrefix("com.ubercab"),
         let nativeAuthenticator = authenticator as? NativeAuthenticator else {
             return false
         }
-        let redirectURL = NSURLRequest(URL: url)
+        let redirectURL = URLRequest(url: url)
         let handled = nativeAuthenticator.handleRedirectRequest(redirectURL)
         loggingIn = false
         authenticator = nil
@@ -191,7 +191,7 @@
      
      - parameter application: The UIApplication object. Pass in the value from the App Delegate
      */
-    public func applicationDidBecomeActive() {
+    open func applicationDidBecomeActive() {
         if loggingIn {
             self.handleLoginCanceled()
         }
@@ -207,37 +207,37 @@
     
     private func handleLoginCanceled() {
         loggingIn = false
-        authenticator?.loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .UserCancelled))
+        authenticator?.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .userCancelled))
         authenticator = nil
     }
     
-    private func loginCompletion(loginType: LoginType, presentingViewController: UIViewController?, completion: ((accessToken: AccessToken?, error: NSError?) -> Void)?) -> ((accessToken: AccessToken?, error: NSError?) -> Void)? {
-        var loginCompletion: ((accessToken: AccessToken?, error: NSError?) -> Void)?
+    private func loginCompletion(_ loginType: LoginType, presentingViewController: UIViewController?, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?) -> ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)? {
+        var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
         
         switch loginType {
-        case .Native:
+        case .native:
             loginCompletion = { token, error in
                 self.loggingIn = false
-                if let error = error where error.code == RidesAuthenticationErrorType.Unavailable.rawValue {
+                if let error = error, error.code == RidesAuthenticationErrorType.unavailable.rawValue {
                     self.handleNativeFallback(error, presentingViewController: presentingViewController, completion: completion)
                 } else {
-                    completion?(accessToken: token, error: error)
+                    completion?(token, error)
                 }
             }
             break
-        case .Implicit:
+        case .implicit:
             fallthrough
-        case .AuthorizationCode:
+        case .authorizationCode:
             fallthrough
         default:
             loginCompletion = { token, error in
                 self.loggingIn = false
                 if let presentingViewController = presentingViewController {
-                    presentingViewController.dismissViewControllerAnimated(true, completion: { () -> Void in
-                        completion?(accessToken: token, error: error)
+                    presentingViewController.dismiss(animated: true, completion: { () -> Void in
+                        completion?(token, error)
                     })
                 } else {
-                    completion?(accessToken: token, error: error)
+                    completion?(token, error)
                 }
             }
             break
@@ -246,24 +246,24 @@
         return loginCompletion
     }
     
-    private func handleNativeFallback(error: NSError?, presentingViewController: UIViewController?, completion: ((accessToken: AccessToken?, error: NSError?) -> Void)?) {
+    private func handleNativeFallback(_ error: NSError?, presentingViewController: UIViewController?, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?) {
         guard let manager = authenticator as? NativeAuthenticator else {
-            completion?(accessToken: nil, error: error)
+            completion?(nil, error)
             return
         }
         
-        if manager.scopes.contains({ $0.scopeType == .Privileged }) {
+        if manager.scopes.contains(where: { $0.scopeType == .privileged }) {
             if (Configuration.getFallbackEnabled()) {
-                loginType = .AuthorizationCode
+                loginType = .authorizationCode
             } else {
                 let appstoreDeeplink = AppStoreDeeplink(userAgent: nil)
                 appstoreDeeplink.execute({ _ in
-                    completion?(accessToken: nil, error: error)
+                    completion?(nil, error)
                 })
                 return
             }
         } else {
-            loginType = .Implicit
+            loginType = .implicit
         }
         login(requestedScopes: manager.scopes, presentingViewController: presentingViewController, completion: completion)
     }

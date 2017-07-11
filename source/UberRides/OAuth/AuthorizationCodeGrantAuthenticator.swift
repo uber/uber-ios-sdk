@@ -24,28 +24,28 @@
 
 import UIKit
 
-@objc(UBSDKAuthorizationCodeGrantAuthenticator) public class AuthorizationCodeGrantAuthenticator: LoginViewAuthenticator {
-    public var state: String?
+@objc(UBSDKAuthorizationCodeGrantAuthenticator) open class AuthorizationCodeGrantAuthenticator: LoginViewAuthenticator {
+    open var state: String?
     
     @objc public init(presentingViewController: UIViewController, scopes: [RidesScope], state: String?) {
         self.state = state
         super.init(presentingViewController: presentingViewController, scopes: scopes)
-        callbackURIType = .AuthorizationCode
+        callbackURIType = .authorizationCode
     }
     
     override var endpoint: UberAPI {
-        return OAuth.AuthorizationCodeLogin(clientID: Configuration.getClientID(), redirect: Configuration.getCallbackURIString(.AuthorizationCode), scopes: scopes, state: state)
+        return OAuth.authorizationCodeLogin(clientID: Configuration.getClientID(), redirect: Configuration.getCallbackURIString(.authorizationCode), scopes: scopes, state: state)
     }
     
     override public convenience init(presentingViewController: UIViewController, scopes: [RidesScope]) {
         self.init(presentingViewController: presentingViewController, scopes: scopes, state: nil)
     }
     
-    override func handleRedirectRequest(request: NSURLRequest) -> Bool {
+    override func handleRedirectRequest(_ request: URLRequest) -> Bool {
         var shouldHandle = false
-        if let url = request.URL where AuthenticationURLUtility.shouldHandleRedirectURL(url, type: callbackURIType) {
-            if let urlComponents = NSURLComponents(URL: url, resolvingAgainstBaseURL: false),
-                let queryItems = urlComponents.queryItems where queryItems.contains({ $0.name == "error" }) {
+        if let url = request.url, AuthenticationURLUtility.shouldHandleRedirectURL(url, type: callbackURIType) {
+            if let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
+                let queryItems = urlComponents.queryItems, queryItems.contains(where: { $0.name == "error" }) {
                 shouldHandle = false
             } else {
                 shouldHandle = true
@@ -54,14 +54,14 @@ import UIKit
         
         if shouldHandle {
             executeRedirect(request)
-            loginCompletion?(accessToken: nil, error: nil)
+            loginCompletion?(nil, nil)
         } else {
             shouldHandle = super.handleRedirectRequest(request)
         }
         return shouldHandle
     }
     
-    func executeRedirect(request: NSURLRequest) {
-        NSURLSession.sharedSession().dataTaskWithRequest(request).resume()
+    func executeRedirect(_ request: URLRequest) {
+        URLSession.shared.dataTask(with: request).resume()
     }
 }

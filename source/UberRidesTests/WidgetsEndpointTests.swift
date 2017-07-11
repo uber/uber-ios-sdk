@@ -32,7 +32,7 @@ class WidgetsEndpointTests: XCTestCase {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(for: type(of: self))
     }
     
     override func tearDown() {
@@ -42,13 +42,13 @@ class WidgetsEndpointTests: XCTestCase {
     
     func testERRC_withNoLocation() {
         Configuration.setSandboxEnabled(true)
-        Configuration.setRegion(Region.Default)
+        Configuration.setRegion(Region.default)
         
         let expectedHost = "https://components.uber.com"
         let expectedPath = "/rides/"
         let expectedQueryItems = queryBuilder( ("env", "sandbox") )
         
-        let rideRequestWidget = Components.RideRequestWidget(rideParameters: nil)
+        let rideRequestWidget = Components.rideRequestWidget(rideParameters: nil)
         
         XCTAssertEqual(rideRequestWidget.host, expectedHost)
         XCTAssertEqual(rideRequestWidget.path, expectedPath)
@@ -57,7 +57,7 @@ class WidgetsEndpointTests: XCTestCase {
     
     func testERRC_withRegionDefault_withSandboxEnabled() {
         Configuration.setSandboxEnabled(true)
-        Configuration.setRegion(Region.Default)
+        Configuration.setRegion(Region.default)
         
         let expectedLat = 33.2
         let expectedLong = -41.2
@@ -68,7 +68,7 @@ class WidgetsEndpointTests: XCTestCase {
             ("pickup[longitude]", "\(expectedLong)")
         )
         let rideParameters = RideParametersBuilder().setPickupLocation(CLLocation(latitude: expectedLat, longitude: expectedLong)).build()
-        let rideRequestWidget = Components.RideRequestWidget(rideParameters: rideParameters)
+        let rideRequestWidget = Components.rideRequestWidget(rideParameters: rideParameters)
         
         XCTAssertEqual(rideRequestWidget.host, expectedHost)
         XCTAssertEqual(rideRequestWidget.path, expectedPath)
@@ -80,13 +80,13 @@ class WidgetsEndpointTests: XCTestCase {
     
     func testERRC_withRegionChina_withSandboxEnabled() {
         Configuration.setSandboxEnabled(true)
-        Configuration.setRegion(Region.China)
+        Configuration.setRegion(Region.china)
         
         let expectedHost = "https://components.uber.com.cn"
         let expectedPath = "/rides/"
         let expectedQueryItems = queryBuilder( ("env", "sandbox") )
         
-        let rideRequestWidget = Components.RideRequestWidget(rideParameters: nil)
+        let rideRequestWidget = Components.rideRequestWidget(rideParameters: nil)
         
         XCTAssertEqual(rideRequestWidget.host, expectedHost)
         XCTAssertEqual(rideRequestWidget.path, expectedPath)
@@ -95,13 +95,13 @@ class WidgetsEndpointTests: XCTestCase {
     
     func testERRC_withRegionDefault_withSandboxDisabled() {
         Configuration.setSandboxEnabled(false)
-        Configuration.setRegion(Region.Default)
+        Configuration.setRegion(Region.default)
         
         let expectedHost = "https://components.uber.com"
         let expectedPath = "/rides/"
         let expectedQueryItems = queryBuilder( ("env", "production") )
         
-        let rideRequestWidget = Components.RideRequestWidget(rideParameters: nil)
+        let rideRequestWidget = Components.rideRequestWidget(rideParameters: nil)
         
         XCTAssertEqual(rideRequestWidget.host, expectedHost)
         XCTAssertEqual(rideRequestWidget.path, expectedPath)
@@ -110,13 +110,13 @@ class WidgetsEndpointTests: XCTestCase {
     
     func testERRC_withRegionChina_withSandboxDisabled() {
         Configuration.setSandboxEnabled(false)
-        Configuration.setRegion(Region.China)
+        Configuration.setRegion(Region.china)
         
         let expectedHost = "https://components.uber.com.cn"
         let expectedPath = "/rides/"
         let expectedQueryItems = queryBuilder( ("env", "production") )
         
-        let rideRequestWidget = Components.RideRequestWidget(rideParameters: nil)
+        let rideRequestWidget = Components.rideRequestWidget(rideParameters: nil)
         
         XCTAssertEqual(rideRequestWidget.host, expectedHost)
         XCTAssertEqual(rideRequestWidget.path, expectedPath)

@@ -27,10 +27,10 @@ import Foundation
 /**
  * UberAuthenticating object for authenticating a user via the Native Uber app
  */
-@objc(UBSSONativeAuthenticator) public class NativeAuthenticator: BaseAuthenticator {
+@objc(UBSSONativeAuthenticator) open class NativeAuthenticator: BaseAuthenticator {
     
     /// The completion block to call when the deeplink is completed. Bool indicates if the deeplink was successful
-    public var deeplinkCompletion: ((NSError?) -> ())?
+    open var deeplinkCompletion: ((NSError?) -> ())?
 
     
     var deeplink: Deeplinking
@@ -45,16 +45,16 @@ import Foundation
     @objc public override init(scopes: [RidesScope]) {
         deeplink = AuthenticationDeeplink(scopes: scopes)
         super.init(scopes: scopes)
-        callbackURIType = .Native
+        callbackURIType = .native
     }
     
     override func login() {
         deeplink.execute { error in
             
-            if let error = error where error.code == DeeplinkErrorType.UnableToFollow.rawValue {
-                self.loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .InvalidRequest))
+            if let error = error, error.code == DeeplinkErrorType.unableToFollow.rawValue {
+                self.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest))
             } else if let _ = error {
-                self.loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .Unavailable))
+                self.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
             }
             self.deeplinkCompletion?(error)
         }

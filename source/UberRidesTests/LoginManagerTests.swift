@@ -32,7 +32,7 @@ class LoginManagerTests: XCTestCase {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
+        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.setSandboxEnabled(true)
     }
     
@@ -42,13 +42,13 @@ class LoginManagerTests: XCTestCase {
     }
     
     func testAuthentictorIsNative_whenLoginWithNativeType() {
-        let expectation = expectationWithDescription("executeLogin called")
+        let expectation = self.expectation(description: "executeLogin called")
         
         let executeLoginClosure: () -> () = {
             expectation.fulfill()
         }
         
-        let loginManagerMock = LoginManagerPartialMock(loginType: .Native)
+        let loginManagerMock = LoginManagerPartialMock(loginType: .native)
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
         loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: nil, completion: nil)
@@ -56,16 +56,16 @@ class LoginManagerTests: XCTestCase {
             XCTFail("Expected NativeAuthenticator")
             return
         }
-        XCTAssertEqual(authenticator.callbackURIType, CallbackURIType.Native)
+        XCTAssertEqual(authenticator.callbackURIType, CallbackURIType.native)
         XCTAssertTrue(loginManagerMock.loggingIn)
         
-        waitForExpectationsWithTimeout(0.2, handler: nil)
+        waitForExpectations(timeout: 0.2, handler: nil)
     }
     
     func testRidesAppDelegateContainsManager_afterNativeLogin() {
         let executeLoginClosure: () -> () = {}
         
-        let loginManagerMock = LoginManagerPartialMock(loginType: .Native)
+        let loginManagerMock = LoginManagerPartialMock(loginType: .native)
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
         loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: nil, completion: nil)
@@ -83,13 +83,13 @@ class LoginManagerTests: XCTestCase {
     }
     
     func testAuthentictorIsImplicit_whenLoginWithImplicitType() {
-        let expectation = expectationWithDescription("executeLogin called")
+        let expectation = self.expectation(description: "executeLogin called")
         
         let executeLoginClosure: () -> () = {
             expectation.fulfill()
         }
         
-        let loginManagerMock = LoginManagerPartialMock(loginType: .Implicit)
+        let loginManagerMock = LoginManagerPartialMock(loginType: .implicit)
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
         let presentingViewController = UIViewController()
@@ -100,20 +100,20 @@ class LoginManagerTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(authenticator.callbackURIType, CallbackURIType.Implicit)
+        XCTAssertEqual(authenticator.callbackURIType, CallbackURIType.implicit)
         XCTAssertTrue(loginManagerMock.loggingIn)
         
-        waitForExpectationsWithTimeout(0.2, handler: nil)
+        waitForExpectations(timeout: 0.2, handler: nil)
     }
     
     func testAuthentictorIsAuthorizationCode_whenLoginWithAuthorizationCodeType() {
-        let expectation = expectationWithDescription("executeLogin called")
+        let expectation = self.expectation(description: "executeLogin called")
         
         let executeLoginClosure: () -> () = {
             expectation.fulfill()
         }
         
-        let loginManagerMock = LoginManagerPartialMock(loginType: .AuthorizationCode)
+        let loginManagerMock = LoginManagerPartialMock(loginType: .authorizationCode)
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
         let presentingViewController = UIViewController()
@@ -124,48 +124,48 @@ class LoginManagerTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(authenticator.callbackURIType, CallbackURIType.AuthorizationCode)
+        XCTAssertEqual(authenticator.callbackURIType, CallbackURIType.authorizationCode)
         XCTAssertTrue(loginManagerMock.loggingIn)
         
-        waitForExpectationsWithTimeout(0.2, handler: nil)
+        waitForExpectations(timeout: 0.2, handler: nil)
     }
     
     func testLoginFails_whenLoggingIn() {
-        let expectation = expectationWithDescription("loginCompletion called")
+        let expectation = self.expectation(description: "loginCompletion called")
         
         let executeLoginClosure: () -> () = {}
-        let loginCompletion: ((accessToken: AccessToken?, error: NSError?) -> Void) = { token, error in
+        let loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void) = { token, error in
             guard let error = error else {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.Unavailable.rawValue)
+            XCTAssertEqual(error.code, RidesAuthenticationErrorType.unavailable.rawValue)
             expectation.fulfill()
         }
         
-        let loginManagerMock = LoginManagerPartialMock(loginType: .Implicit)
+        let loginManagerMock = LoginManagerPartialMock(loginType: .implicit)
         loginManagerMock.executeLoginClosure = executeLoginClosure
         loginManagerMock.loggingIn = true
         
         loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: nil, completion: loginCompletion)
         
-        waitForExpectationsWithTimeout(0.2, handler: nil)
+        waitForExpectations(timeout: 0.2, handler: nil)
     }
     
     func testLoginFails_whenLoginWithAuthorizationCodeType_whenNoPresentingViewController() {
-        let expectation = expectationWithDescription("loginCompletion called")
+        let expectation = self.expectation(description: "loginCompletion called")
         
         let executeLoginClosure: () -> () = {}
-        let loginCompletion: ((accessToken: AccessToken?, error: NSError?) -> Void) = { token, error in
+        let loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void) = { token, error in
             guard let error = error else {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.UnableToPresentLogin.rawValue)
+            XCTAssertEqual(error.code, RidesAuthenticationErrorType.unableToPresentLogin.rawValue)
             expectation.fulfill()
         }
         
-        let loginManagerMock = LoginManagerPartialMock(loginType: .AuthorizationCode)
+        let loginManagerMock = LoginManagerPartialMock(loginType: .authorizationCode)
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
         
@@ -174,23 +174,23 @@ class LoginManagerTests: XCTestCase {
         XCTAssertNil(loginManagerMock.authenticator)
         XCTAssertFalse(loginManagerMock.loggingIn)
         
-        waitForExpectationsWithTimeout(0.2, handler: nil)
+        waitForExpectations(timeout: 0.2, handler: nil)
     }
     
     func testLoginFails_whenLoginWithImplicitType_whenNoPresentingViewController() {
-        let expectation = expectationWithDescription("loginCompletion called")
+        let expectation = self.expectation(description: "loginCompletion called")
         
         let executeLoginClosure: () -> () = {}
-        let loginCompletion: ((accessToken: AccessToken?, error: NSError?) -> Void) = { token, error in
+        let loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void) = { token, error in
             guard let error = error else {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.UnableToPresentLogin.rawValue)
+            XCTAssertEqual(error.code, RidesAuthenticationErrorType.unableToPresentLogin.rawValue)
             expectation.fulfill()
         }
         
-        let loginManagerMock = LoginManagerPartialMock(loginType: .Implicit)
+        let loginManagerMock = LoginManagerPartialMock(loginType: .implicit)
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
         
@@ -199,13 +199,13 @@ class LoginManagerTests: XCTestCase {
         XCTAssertNil(loginManagerMock.authenticator)
         XCTAssertFalse(loginManagerMock.loggingIn)
         
-        waitForExpectationsWithTimeout(0.2, handler: nil)
+        waitForExpectations(timeout: 0.2, handler: nil)
     }
     
     func testOpenURLFails_whenInvalidSource() {
-        let loginManager = LoginManager(loginType: .Native)
-        let testApp = UIApplication.sharedApplication()
-        guard let testURL = NSURL(string: "http://www.google.com") else {
+        let loginManager = LoginManager(loginType: .native)
+        let testApp = UIApplication.shared
+        guard let testURL = URL(string: "http://www.google.com") else {
             XCTFail()
             return
         }
@@ -216,9 +216,9 @@ class LoginManagerTests: XCTestCase {
     }
     
     func testOpenURLFails_whenNotNativeType() {
-        let loginManager = LoginManager(loginType: .Implicit)
-        let testApp = UIApplication.sharedApplication()
-        guard let testURL = NSURL(string: "http://www.google.com") else {
+        let loginManager = LoginManager(loginType: .implicit)
+        let testApp = UIApplication.shared
+        guard let testURL = URL(string: "http://www.google.com") else {
             XCTFail()
             return
         }
@@ -229,18 +229,18 @@ class LoginManagerTests: XCTestCase {
     }
     
     func testOpenURLSuccess() {
-        let expectation = expectationWithDescription("handleRedirect called")
-        let loginManager = LoginManager(loginType: .Native)
-        let testApp = UIApplication.sharedApplication()
-        guard let testURL = NSURL(string: "http://www.google.com") else {
+        let expectation = self.expectation(description: "handleRedirect called")
+        let loginManager = LoginManager(loginType: .native)
+        let testApp = UIApplication.shared
+        guard let testURL = URL(string: "http://www.google.com") else {
             XCTFail()
             return
         }
         let testSourceApplication = "com.ubercab.foo"
         let testAnnotation = "annotation"
         
-        let handleRedirectClosure: ((NSURLRequest) -> (Bool)) = { urlRequest in
-            guard let url = urlRequest.URL else {
+        let handleRedirectClosure: ((URLRequest) -> (Bool)) = { urlRequest in
+            guard let url = urlRequest.url else {
                 XCTFail("Redirect URL was nil")
                 return false
             }
@@ -255,25 +255,25 @@ class LoginManagerTests: XCTestCase {
         
         XCTAssertTrue(loginManager.application(testApp, openURL: testURL, sourceApplication: testSourceApplication, annotation: testAnnotation))
         
-        waitForExpectationsWithTimeout(0.2) { _ in
+        waitForExpectations(timeout: 0.2) { _ in
             XCTAssertFalse(loginManager.loggingIn)
             XCTAssertNil(loginManager.authenticator)
         }
     }
     
     func testCancelLoginCalled_whenDidBecomeActive() {
-        let expectation = expectationWithDescription("loginCompletion called")
+        let expectation = self.expectation(description: "loginCompletion called")
         
-        let loginCompletion: ((accessToken: AccessToken?, error: NSError?) -> Void) = { token, error in
+        let loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void) = { token, error in
             guard let error = error else {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.UserCancelled.rawValue)
+            XCTAssertEqual(error.code, RidesAuthenticationErrorType.userCancelled.rawValue)
             expectation.fulfill()
         }
         
-        let loginManager = LoginManager(loginType: .Native)
+        let loginManager = LoginManager(loginType: .native)
         loginManager.loggingIn = true
         
         let nativeAuthenticatorMock = NativeAuthenticatorPartialMock(scopes: [.Profile])
@@ -284,41 +284,41 @@ class LoginManagerTests: XCTestCase {
         XCTAssertNil(loginManager.authenticator)
         XCTAssertFalse(loginManager.loggingIn)
         
-        waitForExpectationsWithTimeout(0.2, handler: nil)
+        waitForExpectations(timeout: 0.2, handler: nil)
     }
     
     func testNativeLoginCompletion_whenNotUnavailableError() {
-        let expectation = expectationWithDescription("loginCompletion called")
+        let expectation = self.expectation(description: "loginCompletion called")
         
         let executeLoginClosure: () -> () = {}
-        let loginCompletion: ((accessToken: AccessToken?, error: NSError?) -> Void) = { token, error in
+        let loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void) = { token, error in
             guard let error = error else {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.InvalidRequest.rawValue)
+            XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
             expectation.fulfill()
         }
         
-        let loginManagerMock = LoginManagerPartialMock(loginType: .Native)
+        let loginManagerMock = LoginManagerPartialMock(loginType: .native)
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
         
         loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: nil, completion: loginCompletion)
         
-        loginManagerMock.authenticator?.loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .InvalidRequest))
+        loginManagerMock.authenticator?.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest))
         
-        waitForExpectationsWithTimeout(0.2, handler: nil)
+        waitForExpectations(timeout: 0.2, handler: nil)
     }
     
     func testNativeLoginCompletionDoesFallback_whenUnavailableError_withPrivelegedScopes() {
-        let expectationNative = expectationWithDescription("executeLogin Native called")
-        let expectationAuthorizationCode = expectationWithDescription("executeLogin Authorization Code called")
+        let expectationNative = expectation(description: "executeLogin Native called")
+        let expectationAuthorizationCode = expectation(description: "executeLogin Authorization Code called")
         
         Configuration.setFallbackEnabled(true)
         let scopes = [RidesScope.Request]
         
-        let loginManagerMock = LoginManagerPartialMock(loginType: .Native)
+        let loginManagerMock = LoginManagerPartialMock(loginType: .native)
         
         let executeLoginClosureAuthorizationCode: () -> () = {
             expectationAuthorizationCode.fulfill()
@@ -335,20 +335,20 @@ class LoginManagerTests: XCTestCase {
         
         loginManagerMock.login(requestedScopes: scopes, presentingViewController: viewController, completion: nil)
         
-        loginManagerMock.authenticator?.loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .Unavailable))
+        loginManagerMock.authenticator?.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
         
-        waitForExpectationsWithTimeout(0.2) { _ in
-            XCTAssertEqual(loginManagerMock.loginType, LoginType.AuthorizationCode)
+        waitForExpectations(timeout: 0.2) { _ in
+            XCTAssertEqual(loginManagerMock.loginType, LoginType.authorizationCode)
         }
     }
     
     func testNativeLoginCompletionDoesFallback_whenUnavailableError_withGeneralScopes() {
-        let expectationNative = expectationWithDescription("executeLogin Native called")
-        let expectationAuthorizationCode = expectationWithDescription("executeLogin Authorization Code called")
+        let expectationNative = expectation(description: "executeLogin Native called")
+        let expectationAuthorizationCode = expectation(description: "executeLogin Authorization Code called")
         
         let scopes = [RidesScope.Profile]
         
-        let loginManagerMock = LoginManagerPartialMock(loginType: .Native)
+        let loginManagerMock = LoginManagerPartialMock(loginType: .native)
         
         let executeLoginClosureAuthorizationCode: () -> () = {
             expectationAuthorizationCode.fulfill()
@@ -365,10 +365,10 @@ class LoginManagerTests: XCTestCase {
         
         loginManagerMock.login(requestedScopes: scopes, presentingViewController: viewController, completion: nil)
         
-        loginManagerMock.authenticator?.loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .Unavailable))
+        loginManagerMock.authenticator?.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
         
-        waitForExpectationsWithTimeout(0.2) { _ in
-            XCTAssertEqual(loginManagerMock.loginType, LoginType.Implicit)
+        waitForExpectations(timeout: 0.2) { _ in
+            XCTAssertEqual(loginManagerMock.loginType, LoginType.implicit)
         }
     }
     
@@ -377,40 +377,40 @@ class LoginManagerTests: XCTestCase {
             
             var dismissClosure: (() -> ())?
             
-            override func dismissViewControllerAnimated(flag: Bool, completion: (() -> Void)?) {
+            override func dismiss(animated flag: Bool, completion: (() -> Void)?) {
                 dismissClosure?()
                 completion?()
             }
         }
         
-        let expectation = expectationWithDescription("loginCompletion called")
-        let dismissExpectation = expectationWithDescription("dissmissViewController called")
+        let expectation = self.expectation(description: "loginCompletion called")
+        let dismissExpectation = self.expectation(description: "dissmissViewController called")
         let viewController = UIViewControllerMock()
     
         let dismissClosure: () -> () = {
             dismissExpectation.fulfill()
         }
         let executeLoginClosure: () -> () = {}
-        let loginCompletion: ((accessToken: AccessToken?, error: NSError?) -> Void) = { token, error in
+        let loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void) = { token, error in
             guard let error = error else {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.InvalidRequest.rawValue)
+            XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
             expectation.fulfill()
         }
         
         viewController.dismissClosure = dismissClosure
         
-        let loginManagerMock = LoginManagerPartialMock(loginType: .Implicit)
+        let loginManagerMock = LoginManagerPartialMock(loginType: .implicit)
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
         
         loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: viewController, completion: loginCompletion)
         
-        loginManagerMock.authenticator?.loginCompletion?(accessToken: nil, error: RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .InvalidRequest))
+        loginManagerMock.authenticator?.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest))
         
         XCTAssertFalse(loginManagerMock.loggingIn)
-        waitForExpectationsWithTimeout(0.2, handler: nil)
+        waitForExpectations(timeout: 0.2, handler: nil)
     }
 }

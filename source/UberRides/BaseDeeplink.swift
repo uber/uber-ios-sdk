@@ -27,39 +27,39 @@ import Foundation
 /**
  *  A Deeplinking object for authenticating a user via the native Uber app
  */
-@objc(UBSDKBaseDeeplink) public class BaseDeeplink: NSObject, Deeplinking {
+@objc(UBSDKBaseDeeplink) open class BaseDeeplink: NSObject, Deeplinking {
     
     /// The scheme for the auth deeplink
-    public var scheme: String
+    open var scheme: String
     
     /// The domain for the auth deeplink
-    public var domain: String
+    open var domain: String
     
     /// The path for the auth deeplink
-    public var path: String?
+    open var path: String
     
     /// The array of query items the deeplink will include
-    public var queryItems: [NSURLQueryItem]?
+    open var queryItems: [URLQueryItem]?
     
-    public let deeplinkURL: NSURL
+    open let deeplinkURL: URL
     
     private var waitingOnSystemPromptResponse = false
     private var checkingSystemPromptResponse = false
-    private var promptTimer: NSTimer?
+    private var promptTimer: Timer?
     private var completionWrapper: ((NSError?) -> ()) = { _ in }
     
-    @objc public init?(scheme: String, domain: String, path: String?, queryItems: [NSURLQueryItem]?) {
+    @objc public init?(scheme: String, domain: String, path: String, queryItems: [URLQueryItem]?) {
         self.scheme = scheme
         self.domain = domain
         self.path = path
         self.queryItems = queryItems
         
-        let requestURLComponents = NSURLComponents()
+        var requestURLComponents = URLComponents()
         requestURLComponents.scheme = scheme
         requestURLComponents.host = domain
         requestURLComponents.path = path
         requestURLComponents.queryItems = queryItems
-        guard let deeplinkURL = requestURLComponents.URL else {
+        guard let deeplinkURL = requestURLComponents.url else {
             return nil
         }
         self.deeplinkURL = deeplinkURL
@@ -74,9 +74,9 @@ import Foundation
      - parameter completion: The completion block to execute once the deeplink has
      executed. Passes in True if the url was successfully opened, false otherwise.
      */
-    @objc public func execute(completion: ((NSError?) -> ())? = nil) {
+    @objc open func execute(_ completion: ((NSError?) -> ())? = nil) {
         
-        let usingIOS9 = NSProcessInfo().isOperatingSystemAtLeastVersion(NSOperatingSystemVersion(majorVersion: 9, minorVersion: 0, patchVersion: 0))
+        let usingIOS9 = ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 9, minorVersion: 0, patchVersion: 0))
         
         if usingIOS9 {
             executeOnIOS9(completion)
@@ -87,13 +87,13 @@ import Foundation
     
     //Mark: Internal Interface
     
-    func executeOnIOS9(completion: ((NSError?) -> ())?) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appWillResignActiveHandler), name: UIApplicationWillResignActiveNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActiveHandler), name: UIApplicationDidBecomeActiveNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidEnterBackgroundHandler), name: UIApplicationDidEnterBackgroundNotification, object: nil)
+    func executeOnIOS9(_ completion: ((NSError?) -> ())?) {
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActiveHandler), name: Notification.Name.UIApplicationWillResignActive, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveHandler), name: Notification.Name.UIApplicationDidBecomeActive, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackgroundHandler), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
         
         completionWrapper = { handled in
-            NSNotificationCenter.defaultCenter().removeObserver(self)
+            NotificationCenter.default.removeObserver(self)
             self.promptTimer?.invalidate()
             self.promptTimer = nil
             self.checkingSystemPromptResponse = false
@@ -102,13 +102,13 @@ import Foundation
         }
         
         var error: NSError?
-        if UIApplication.sharedApplication().canOpenURL(deeplinkURL) {
-            let openedURL = UIApplication.sharedApplication().openURL(deeplinkURL)
+        if UIApplication.shared.canOpenURL(deeplinkURL) {
+            let openedURL = UIApplication.shared.openURL(deeplinkURL)
             if !openedURL {
-                error = DeeplinkErrorFactory.errorForType(.UnableToFollow)
+                error = DeeplinkErrorFactory.errorForType(.unableToFollow)
             }
         } else {
-            error = DeeplinkErrorFactory.errorForType(.UnableToOpen)
+            error = DeeplinkErrorFactory.errorForType(.unableToOpen)
         }
         
         if error != nil {
@@ -116,19 +116,19 @@ import Foundation
         }
     }
     
-    func executeOnBelowIOS9(completion: ((NSError?) -> ())?) {
+    func executeOnBelowIOS9(_ completion: ((NSError?) -> ())?) {
         completionWrapper = { handled in
             completion?(handled)
         }
         
         var error: NSError?
-        if UIApplication.sharedApplication().canOpenURL(deeplinkURL) {
-            let openedURL = UIApplication.sharedApplication().openURL(deeplinkURL)
+        if UIApplication.shared.canOpenURL(deeplinkURL) {
+            let openedURL = UIApplication.shared.openURL(deeplinkURL)
             if !openedURL {
-                error = DeeplinkErrorFactory.errorForType(.UnableToFollow)
+                error = DeeplinkErrorFactory.errorForType(.unableToFollow)
             }
         } else {
-            error = DeeplinkErrorFactory.errorForType(.UnableToOpen)
+            error = DeeplinkErrorFactory.errorForType(.unableToOpen)
         }
         
         completionWrapper(error)
@@ -136,7 +136,7 @@ import Foundation
     
     //Mark: App Lifecycle Notifications
     
-    @objc private func appWillResignActiveHandler(notification: NSNotification) {
+    @objc private func appWillResignActiveHandler(_ notification: Notification) {
         if !waitingOnSystemPromptResponse {
             waitingOnSystemPromptResponse = true
         } else if checkingSystemPromptResponse {
@@ -144,19 +144,19 @@ import Foundation
         }
     }
     
-    @objc private func appDidBecomeActiveHandler(notification: NSNotification) {
+    @objc private func appDidBecomeActiveHandler(_ notification: Notification) {
         if waitingOnSystemPromptResponse {
             checkingSystemPromptResponse = true
-            promptTimer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: #selector(deeplinkHelper), userInfo: nil, repeats: false)
+            promptTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(deeplinkHelper), userInfo: nil, repeats: false)
         }
     }
     
-    @objc private func appDidEnterBackgroundHandler(notification: NSNotification) {
+    @objc private func appDidEnterBackgroundHandler(_ notification: Notification) {
         completionWrapper(nil)
     }
     
     @objc private func deeplinkHelper() {
-        let error = DeeplinkErrorFactory.errorForType(.DeeplinkNotFollowed)
+        let error = DeeplinkErrorFactory.errorForType(.deeplinkNotFollowed)
         completionWrapper(error)
     }
 }

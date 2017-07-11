@@ -21,7 +21,7 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-@objc(UBSDKDeeplinkRequestingBehavior) public class DeeplinkRequestingBehavior : NSObject, RideRequesting {
+@objc(UBSDKDeeplinkRequestingBehavior) open class DeeplinkRequestingBehavior : NSObject, RideRequesting {
         
     /**
      Requests a ride using a RequestDeeplink that is constructed using the provided
@@ -30,14 +30,14 @@
      - parameter rideParameters: The RideParameters to use for building and executing 
      the deeplink
      */
-    @objc public func requestRide(rideParameters: RideParameters?) {
+    @objc open func requestRide(_ rideParameters: RideParameters?) {
         guard let rideParameters = rideParameters else {
             return
         }
         let deeplink = createDeeplink(rideParameters)
         
         let deeplinkCompletion: (NSError?) -> () = { error in
-            if let error = error where error.code != DeeplinkErrorType.DeeplinkNotFollowed.rawValue {
+            if let error = error, error.code != DeeplinkErrorType.deeplinkNotFollowed.rawValue {
                 self.createAppStoreDeeplink(rideParameters).execute(nil)
             }
         }
@@ -45,11 +45,11 @@
         deeplink.execute(deeplinkCompletion)
     }
     
-    func createDeeplink(rideParameters: RideParameters) -> RequestDeeplink {
+    func createDeeplink(_ rideParameters: RideParameters) -> RequestDeeplink {
         return RequestDeeplink(rideParameters: rideParameters)
     }
     
-    func createAppStoreDeeplink(rideParameters: RideParameters) -> Deeplinking {
+    func createAppStoreDeeplink(_ rideParameters: RideParameters) -> Deeplinking {
         return AppStoreDeeplink(userAgent: rideParameters.userAgent)
     }
 }

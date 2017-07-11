@@ -26,24 +26,27 @@ import UberRides
 
 class AuthorizationBaseViewController: UIViewController {
     
-    func delay(delay: Double, closure: ()->()) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay*Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
+    func delay(_ delay: Int, closure: @escaping ()->()) {
+        let deadlineTime = DispatchTime.now() + DispatchTimeInterval.seconds(delay)
+        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+            closure()
+        }
     }
     
-    func showMessage(message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil)
+    func showMessage(_ message: String) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(okayAction)
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
-    func checkError(response: Response) {
+    func checkError(_ response: Response) {
         // Unauthorized
         if response.statusCode == 401 {
-            TokenManager.deleteToken()
-            dispatch_async(dispatch_get_main_queue(), {
+            _ = TokenManager.deleteToken()
+            DispatchQueue.main.async {
                 self.reset()
-            })
+            }
         }
     }
     

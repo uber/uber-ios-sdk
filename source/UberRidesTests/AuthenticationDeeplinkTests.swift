@@ -32,8 +32,8 @@ class AuthenticationDeeplinkTests: XCTestCase {
         super.setUp()
         Configuration.restoreDefaults()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = NSBundle(forClass: self.dynamicType)
-        versionNumber = NSBundle(forClass: RideParameters.self).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
+        Configuration.bundle = Bundle(for: type(of: self))
+        versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
     }
     
     override func tearDown() {
@@ -53,7 +53,7 @@ class AuthenticationDeeplinkTests: XCTestCase {
     
     func testPath() {
         let authenticationDeeplink = AuthenticationDeeplink(scopes:[])
-        XCTAssertNil(authenticationDeeplink.path)
+        XCTAssertEqual(authenticationDeeplink.path, "")
     }
     
     func testDeeplinkURL() {

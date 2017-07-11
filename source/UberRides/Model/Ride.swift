@@ -32,33 +32,33 @@ import ObjectMapper
 @objc(UBSDKRide) public class Ride: NSObject {
     
     /// Contains the information about the destination of the trip, if one has been set.
-    public private(set) var destination: RideRequestLocation?
+    public fileprivate(set) var destination: RideRequestLocation?
     
     /// The object that contains driver details. Only non-null during an ongoing trip.
-    public private(set) var driver: Driver?
+    public fileprivate(set) var driver: Driver?
     
     /// The object that contains the location information of the vehicle and driver.
-    public private(set) var driverLocation: RideRequestLocation?
+    public fileprivate(set) var driverLocation: RideRequestLocation?
     
     /// The estimated time of vehicle arrival in minutes.
-    public private(set) var eta: Int = 0
+    public fileprivate(set) var eta: Int = 0
     
     /// The object containing the information about the pickup for the trip.
-    public private(set) var pickup: RideRequestLocation?
+    public fileprivate(set) var pickup: RideRequestLocation?
     
     /// The unique ID of the Request.
-    public private(set) var requestID: String?
+    public fileprivate(set) var requestID: String?
     
     /// The status of the Request indicating state.
-    public private(set) var status: RideStatus?
+    public fileprivate(set) var status: RideStatus = .unknown
     
     /// The surge pricing multiplier used to calculate the increased price of a Request.
-    public private(set) var surgeMultiplier: Double = 1.0
+    public fileprivate(set) var surgeMultiplier: Double = 1.0
     
     /// The object that contains vehicle details. Only non-null during an ongoing trip.
-    public private(set) var vehicle: Vehicle?
+    public fileprivate(set) var vehicle: Vehicle?
     
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 }
 
@@ -73,7 +73,7 @@ extension Ride: UberModel {
         surgeMultiplier <- map["surge_multiplier"]
         vehicle         <- map["vehicle"]
         
-        status = .Unknown
+        status = .unknown
         if let value = map["status"].currentValue as? String {
             status = RideStatusFactory.convertRideStatus(value)
         }

@@ -27,7 +27,7 @@ import Foundation
 /**
  *  A Deeplinking object for authenticating a user via the native Uber app
  */
-@objc(UBSDKAuthenticationDeeplink) public class AuthenticationDeeplink: BaseDeeplink {
+@objc(UBSDKAuthenticationDeeplink) open class AuthenticationDeeplink: BaseDeeplink {
 
     /**
      Initializes an Authentication Deeplink to request the provided scopes
@@ -41,6 +41,6 @@ import Foundation
         let scheme = "uberauth"
         let domain = "connect"
         
-        super.init(scheme: scheme, domain: domain, path: nil, queryItems: queryItems)!
+        super.init(scheme: scheme, domain: domain, path: "", queryItems: queryItems)!
     }
 }

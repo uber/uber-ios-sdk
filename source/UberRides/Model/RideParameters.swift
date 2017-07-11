@@ -65,7 +65,7 @@ import MapKit
     
     var userAgent: String {
         var userAgentString: String = ""
-        if let versionNumber: String = NSBundle(forClass: self.dynamicType).objectForInfoDictionaryKey("CFBundleShortVersionString") as? String {
+        if let versionNumber: String = Bundle(for: type(of: self)).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
             userAgentString = "rides-ios-v\(versionNumber)"
             if let source = source {
                 userAgentString = "\(userAgentString)-\(source)"
@@ -76,7 +76,7 @@ import MapKit
     
     var source: String?
     
-    private init(dropoffAddress: String?,
+    fileprivate init(dropoffAddress: String?,
         dropoffLocation: CLLocation?,
         dropoffNickname: String?,
         dropoffPlaceID: String?,
@@ -108,7 +108,7 @@ import MapKit
 }
 
 /// Builder for a RideParameters object.
-@objc(UBSDKRideParametersBuilder) public class RideParametersBuilder : NSObject {
+@objc(UBSDKRideParametersBuilder) open class RideParametersBuilder : NSObject {
     
     private var useCurrentLocationForPickup: Bool
     private var productID: String?
@@ -156,7 +156,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setProductID(productID: String) -> RideParametersBuilder {
+    open func setProductID(_ productID: String) -> RideParametersBuilder {
         self.productID = productID
         
         return self
@@ -166,7 +166,7 @@ import MapKit
      Sets the builder to use your current location for pickup. Will clear any set
      pickupLocation, pickupNickname, and pickupAddress.
      */
-    public func setPickupToCurrentLocation() -> RideParametersBuilder {
+    open func setPickupToCurrentLocation() -> RideParametersBuilder {
         useCurrentLocationForPickup = true
         pickupLocation = nil
         pickupNickname = nil
@@ -183,7 +183,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setPickupPlaceID(placeID: String) -> RideParametersBuilder {
+    open func setPickupPlaceID(_ placeID: String) -> RideParametersBuilder {
         useCurrentLocationForPickup = false
         pickupPlaceID = placeID
         pickupLocation = nil
@@ -202,7 +202,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setPickupLocation(location: CLLocation, nickname: String?, address: String?) -> RideParametersBuilder {
+    open func setPickupLocation(_ location: CLLocation, nickname: String?, address: String?) -> RideParametersBuilder {
         useCurrentLocationForPickup = false
         pickupLocation = location
         pickupNickname = nickname
@@ -219,7 +219,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setPickupLocation(location: CLLocation, address: String?) -> RideParametersBuilder {
+    open func setPickupLocation(_ location: CLLocation, address: String?) -> RideParametersBuilder {
         return self.setPickupLocation(location, nickname: nil, address: address)
     }
     
@@ -231,7 +231,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setPickupLocation(location: CLLocation, nickname: String?) -> RideParametersBuilder {
+    open func setPickupLocation(_ location: CLLocation, nickname: String?) -> RideParametersBuilder {
         return self.setPickupLocation(location, nickname: nickname, address: nil)
     }
     
@@ -242,7 +242,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setPickupLocation(location: CLLocation) -> RideParametersBuilder {
+    open func setPickupLocation(_ location: CLLocation) -> RideParametersBuilder {
         return self.setPickupLocation(location, nickname: nil, address: nil)
     }
     
@@ -255,7 +255,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setDropoffLocation(location: CLLocation, nickname: String?, address: String?) -> RideParametersBuilder {
+    open func setDropoffLocation(_ location: CLLocation, nickname: String?, address: String?) -> RideParametersBuilder {
         dropoffLocation = location
         dropoffNickname = nickname
         dropoffAddress = address
@@ -271,7 +271,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setDropoffLocation(location: CLLocation, address: String?) -> RideParametersBuilder {
+    open func setDropoffLocation(_ location: CLLocation, address: String?) -> RideParametersBuilder {
         return self.setDropoffLocation(location, nickname: nil, address: address)
     }
     
@@ -283,7 +283,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setDropoffLocation(location: CLLocation, nickname: String?) -> RideParametersBuilder {
+    open func setDropoffLocation(_ location: CLLocation, nickname: String?) -> RideParametersBuilder {
         return self.setDropoffLocation(location, nickname: nickname, address: nil)
     }
     
@@ -294,7 +294,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setDropoffLocation(location: CLLocation) -> RideParametersBuilder {
+    open func setDropoffLocation(_ location: CLLocation) -> RideParametersBuilder {
         return self.setDropoffLocation(location, nickname: nil, address: nil)
     }
     
@@ -306,7 +306,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setDropoffPlaceID(placeID: String) -> RideParametersBuilder {
+    open func setDropoffPlaceID(_ placeID: String) -> RideParametersBuilder {
         dropoffPlaceID = placeID
         dropoffLocation = nil
         dropoffNickname = nil
@@ -325,7 +325,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setPaymentMethod(method: String) -> RideParametersBuilder {
+    open func setPaymentMethod(_ method: String) -> RideParametersBuilder {
         paymentMethod = method
         
         return self
@@ -339,7 +339,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    public func setSurgeConfirmationID(surgeConfirmation: String) -> RideParametersBuilder {
+    open func setSurgeConfirmationID(_ surgeConfirmation: String) -> RideParametersBuilder {
         surgeConfirmationID = surgeConfirmation
         
         return self
@@ -352,7 +352,7 @@ import MapKit
      
      - returns: RideParametersBuilder to continue chaining.
      */
-    func setSource(source: String?) -> RideParametersBuilder {
+    func setSource(_ source: String?) -> RideParametersBuilder {
         self.source = source
         
         return self
@@ -363,7 +363,7 @@ import MapKit
      
      - returns: An initialized RideParameters object
      */
-    public func build() -> RideParameters {
+    open func build() -> RideParameters {
         return RideParameters(dropoffAddress: dropoffAddress,
             dropoffLocation: dropoffLocation,
             dropoffNickname: dropoffNickname,
