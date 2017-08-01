@@ -162,13 +162,13 @@ class Request: NSObject {
             
             // Any other errors.
             if response == nil || error != nil {
-                if let error = error as? NSError {
+                if let error = error as NSError? {
                     ridesError = RidesUnknownError(status: error.code, code: nil, title: error.domain)
                 } else {
                     ridesError = RidesUnknownError(status: -1, code: "request_error", title: "Request could not complete")
                 }
             }
-            
+          
             let ridesResponse = Response(data: data, statusCode: statusCode, response: httpResponse, error: ridesError)
             completion(ridesResponse)
         })
