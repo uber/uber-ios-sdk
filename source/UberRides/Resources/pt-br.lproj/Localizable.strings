@@ -19,9 +19,9 @@
 "User cancelled the login process." = "Usuário cancelou processo de login.";
 "Try Again" = "Tente novamente";
 "Cancel" = "Cancelar";
-"The operation you are attempting is not supported on the current device." = "A operação não pode ser executado neste tipo de equipamento.";
-"%d min away" = "%d min longe";
-"%d mins away" = "%d mins longe";
-"%1$@ for %2$@" = "%1$@ para %2$@";
+"The operation you are attempting is not supported on the current device." = "A operação não pode ser executado neste tipo de aparelho.";
+"%d min away" = "%d min";
+"%d mins away" = "%d mins";
+"%1$@ for %2$@" = "%1$@ %2$@";
 "Sign In" = "Login";
 "Sign Out" = "Logout";
