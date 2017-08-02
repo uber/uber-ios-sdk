@@ -74,7 +74,7 @@ class FontUtil {
                     if (CTFontManagerRegisterGraphicsFont(font, &error)) {
                         return true
                     } else {
-                        print("Failed to load font with error: \(error)")
+                        print("Failed to load font with error: \(String(describing: error))")
                     }
                 }
             }
