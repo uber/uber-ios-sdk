@@ -65,7 +65,7 @@ import ObjectMapper
 extension RidesError: UberModel {
     public func mapping(map: Map) {
         code    <- map["code"]
-        status  <- map["status"]
+        status  <- map["status", ignoreNil: true]
         errors  <- map["errors"]
         
         if map["message"].currentValue != nil {

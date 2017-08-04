@@ -48,6 +48,6 @@ extension RideEstimate: UberModel {
     public func mapping(map: Map) {
         priceEstimate    <- map["price"]
         distanceEstimate <- map["trip"]
-        pickupEstimate   <- map["pickup_estimate"]
+        pickupEstimate   <- map["pickup_estimate", ignoreNil: true]
     }
 }
