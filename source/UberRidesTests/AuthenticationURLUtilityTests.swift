@@ -99,68 +99,6 @@ class AuthenticationURLUtilityTests: XCTestCase {
         XCTAssertEqual(comparisonSet, testComparisonSet)
     }
     
-    func testBuildQueryParameters_withChinaRegion_withSingleScope() {
-        
-        Configuration.setRegion(.china)
-        
-        let scopes = [RidesScope.RideWidgets]
-        
-        let expectedScopes = scopes.toRidesScopeString()
-        let expectedClientID = "testClientID"
-        let expectedAppName = "My Awesome App"
-        let expectedCallbackURI = "testURI://uberConnectNative"
-        let expectedLoginType = "china"
-        let expectedSDK = "ios"
-        let expectedSDKVersion = versionNumber
-        
-        let scopeQueryItem = URLQueryItem(name: AuthenticationURLUtility.scopesKey, value: expectedScopes)
-        let clientIDQueryItem = URLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
-        let appNameQueryItem = URLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
-        let callbackURIQueryItem = URLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
-        let loginTypeQueryItem = URLQueryItem(name: AuthenticationURLUtility.loginTypeKey, value: expectedLoginType)
-        let sdkQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
-        let sdkVersionQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)
-        
-        let expectedQueryItems = [scopeQueryItem, clientIDQueryItem, appNameQueryItem, callbackURIQueryItem, loginTypeQueryItem, sdkQueryItem, sdkVersionQueryItem]
-        let comparisonSet = NSSet(array: expectedQueryItems)
-        
-        let testQueryItems = AuthenticationURLUtility.buildQueryParameters(scopes)
-        let testComparisonSet = NSSet(array:testQueryItems)
-        
-        XCTAssertEqual(comparisonSet, testComparisonSet)
-    }
-    
-    func testBuildQueryParameters_withChinaRegion_withMultipleScopes() {
-        
-        Configuration.setRegion(.china)
-        
-        let scopes = [RidesScope.RideWidgets, RidesScope.AllTrips, RidesScope.History]
-        
-        let expectedScopes = scopes.toRidesScopeString()
-        let expectedClientID = "testClientID"
-        let expectedAppName = "My Awesome App"
-        let expectedCallbackURI = "testURI://uberConnectNative"
-        let expectedLoginType = "china"
-        let expectedSDK = "ios"
-        let expectedSDKVersion = versionNumber
-        
-        let scopeQueryItem = URLQueryItem(name: AuthenticationURLUtility.scopesKey, value: expectedScopes)
-        let clientIDQueryItem = URLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
-        let appNameQueryItem = URLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
-        let callbackURIQueryItem = URLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
-        let loginTypeQueryItem = URLQueryItem(name: AuthenticationURLUtility.loginTypeKey, value: expectedLoginType)
-        let sdkQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
-        let sdkVersionQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)
-        
-        let expectedQueryItems = [scopeQueryItem, clientIDQueryItem, appNameQueryItem, callbackURIQueryItem, loginTypeQueryItem, sdkQueryItem, sdkVersionQueryItem]
-        let comparisonSet = NSSet(array: expectedQueryItems)
-        
-        let testQueryItems = AuthenticationURLUtility.buildQueryParameters(scopes)
-        let testComparisonSet = NSSet(array:testQueryItems)
-        
-        XCTAssertEqual(comparisonSet, testComparisonSet)
-    }
-    
     func testShouldHandleRedirectURL() {
         let testRedirectURLString = "test://handleThis"
         guard let testRedirectURL = URL(string: testRedirectURLString) else {
