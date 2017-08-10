@@ -47,23 +47,31 @@
     
     /**
      Called via the RidesAppDelegate when the application is opened via a URL. Responsible
-     for parsing the url and creating an OAuthToken.
+     for parsing the url and creating an OAuthToken. (iOS 8 and below)
      
      - parameter application:       The UIApplication object. Pass in the value from the App Delegate
      - parameter url:               The URL resource to open. As passed to the corresponding AppDelegate methods
      - parameter sourceApplication: The bundle ID of the app that is requesting your app to open the URL (url).
-     As passed to the corresponding AppDelegate method (iOS 8)
-     OR
-     options[UIApplicationOpenURLOptionsSourceApplicationKey] (iOS 9+)
+     As passed to the corresponding AppDelegate method
      - parameter annotation:        annotation: A property list object supplied by the source app to communicate
-     information to the receiving app As passed to the corresponding AppDelegate method (iOS 8)
-     OR
-     options[UIApplicationLaunchOptionsAnnotationKey] (iOS 9+)
-     
+     information to the receiving app As passed to the corresponding AppDelegate method
      
      - returns: true if the url was meant to be handled by the SDK, false otherwise
      */
-    func application(_ application: UIApplication, openURL url: URL, sourceApplication: String?, annotation: Any?) -> Bool
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool
+
+    /**
+     Called via the RidesAppDelegate when the application is opened via a URL. Responsible
+     for parsing the url and creating an OAuthToken. (iOS 9+)
+
+     - parameter application:       The UIApplication object. Pass in the value from the App Delegate
+     - parameter url:               The URL resource to open. As passed to the corresponding AppDelegate methods
+     - parameter options:           A dictionary of URL handling options. As passed to the corresponding AppDelegate method.
+
+     - returns: true if the url was meant to be handled by the SDK, false otherwise
+     */
+    @available(iOS 9.0, *)
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool
     
     /**
      Called via the RidesAppDelegate when the application becomes active. Used to determine

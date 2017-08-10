@@ -41,7 +41,7 @@ import UIKit
         self.init(presentingViewController: presentingViewController, scopes: scopes, state: nil)
     }
     
-    override func handleRedirectRequest(_ request: URLRequest) -> Bool {
+    override func handleRedirect(for request: URLRequest) -> Bool {
         var shouldHandle = false
         if let url = request.url, AuthenticationURLUtility.shouldHandleRedirectURL(url, type: callbackURIType) {
             if let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
@@ -56,7 +56,7 @@ import UIKit
             executeRedirect(request)
             loginCompletion?(nil, nil)
         } else {
-            shouldHandle = super.handleRedirectRequest(request)
+            shouldHandle = super.handleRedirect(for: request)
         }
         return shouldHandle
     }

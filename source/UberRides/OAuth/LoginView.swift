@@ -26,7 +26,7 @@ import Foundation
 import WebKit
 
 /// Login Web View class. Wrapper around a WKWebView to handle Login flow for Implicit Grant
-@objc(UBSDKLoginView) open class LoginView : UIView {
+@objc(UBSDKLoginView) open class LoginView: UIView {
     
     open var loginAuthenticator: LoginViewAuthenticator
     
@@ -43,7 +43,7 @@ import WebKit
     
     - returns: An initialized LoginWebView
     */
-    @objc public init(loginAuthenticator: LoginViewAuthenticator, frame: CGRect) {
+    @objc public init(loginAuthenticator: LoginViewAuthenticator, frame: CGRect = CGRect.zero) {
         let configuration = WKWebViewConfiguration()
         configuration.processPool = Configuration.processPool
         webView = WKWebView.init(frame: frame, configuration: configuration)
@@ -52,18 +52,6 @@ import WebKit
         webView.navigationDelegate = self
         self.addSubview(webView)
         setupWebView()
-    }
-    
-    /**
-     Creates a LoginWebView for obtaining an access token.
-     Defaults to a CGRectZero Frame
-     
-     - parameter loginAuthenticator: the login authentication process to use
-     
-     - returns: An initialized LoginWebView
-     */
-    @objc public convenience init(loginAuthenticator: LoginViewAuthenticator) {
-        self.init(loginAuthenticator: loginAuthenticator, frame: CGRect.zero)
     }
 
     /**
@@ -130,7 +118,7 @@ extension LoginView : WKNavigationDelegate {
     
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
             
-        if loginAuthenticator.handleRedirectRequest(navigationAction.request) {
+        if loginAuthenticator.handleRedirect(for: navigationAction.request) {
             decisionHandler(WKNavigationActionPolicy.cancel)
         } else {
             decisionHandler(WKNavigationActionPolicy.allow)

@@ -47,11 +47,11 @@ import UIKit
         super.init()
     }
     
-    func handleRedirectRequest(_ request: URLRequest) -> Bool {
+    func handleRedirect(for request: URLRequest) -> Bool {
         var didHandleRedirect = false
         if let url = request.url, AuthenticationURLUtility.shouldHandleRedirectURL(url, type: callbackURIType) {
             do {
-                let accessToken = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+                let accessToken = try AccessTokenFactory.createAccessToken(from: url)
                 
                 let tokenIdentifier = accessTokenIdentifier ?? Configuration.getDefaultAccessTokenIdentifier()
                 let accessGroup = keychainAccessGroup ?? Configuration.getDefaultKeychainAccessGroup()

@@ -30,8 +30,8 @@ Factory class to build access tokens
 */
 @objc(UBSDKAccessTokenFactory) public class AccessTokenFactory: NSObject {
     
-    @objc public static func createAccessTokenFromJSONString(string: String) -> AccessToken? {
-        return ModelMapper<AccessToken>().mapFromJSON(string)
+    @objc public static func createAccessToken(from jsonString: String) -> AccessToken? {
+        return ModelMapper<AccessToken>().mapFromJSON(jsonString)
     }
     
     /**
@@ -41,8 +41,8 @@ Factory class to build access tokens
      - parameter url: The URL to parse the token from
      - returns: An initialized AccessToken, or nil if one couldn't be created
      */
-    static func createAccessTokenFromRedirectURL(_ url : URL) throws -> AccessToken {
-        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+    static func createAccessToken(from redirectURL: URL) throws -> AccessToken {
+        guard var components = URLComponents(url: redirectURL, resolvingAgainstBaseURL: false) else {
             throw RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
         }
 
