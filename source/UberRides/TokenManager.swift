@@ -179,9 +179,6 @@ import Foundation
         if let loginURL = URL(string: OAuth.regionHost) {
             urlsToClear.append(loginURL)
         }
-        if let loginURL = URL(string: OAuth.regionHost) {
-            urlsToClear.append(loginURL)
-        }
         
         let sharedCookieStorage = HTTPCookieStorage.shared
         

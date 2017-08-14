@@ -67,33 +67,7 @@ class OauthEndpointTests: XCTestCase {
         XCTAssertEqual(login.path, expectedPath)
         XCTAssertEqual(login.query, expectedQueryItems)
     }
-    
-    func testLogin_withRegionChina_withSandboxEnabled() {
-        Configuration.setSandboxEnabled(true)
-        Configuration.setRegion(Region.china)
-        
-        let scopes = [ RidesScope.Profile, RidesScope.History ]
-        let expectedHost = "https://login.uber.com.cn"
-        let expectedPath = "/oauth/v2/authorize"
-        let expectedScopes = scopes.toRidesScopeString()
-        let expectedClientID = Configuration.shared.clientID
-        let expectedRedirect = Configuration.shared.getCallbackURIString()
-        let expectedTokenType = "token"
-        
-        let expectedQueryItems = queryBuilder(
-            ("scope", expectedScopes),
-            ("client_id", expectedClientID),
-            ("redirect_uri", expectedRedirect),
-            ("signup_params", base64EncodedSignup),
-            ("response_type", expectedTokenType))
-        
-        let login = OAuth.implicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
-        
-        XCTAssertEqual(login.host, expectedHost)
-        XCTAssertEqual(login.path, expectedPath)
-        XCTAssertEqual(login.query, expectedQueryItems)
-    }
-    
+
     func testLogin_withRegionDefault_withSandboxDisabled() {
         Configuration.setSandboxEnabled(false)
         Configuration.setRegion(Region.default)
@@ -119,62 +93,10 @@ class OauthEndpointTests: XCTestCase {
         XCTAssertEqual(login.path, expectedPath)
         XCTAssertEqual(login.query, expectedQueryItems)
     }
-    
-    func testLogin_withRegionChina_withSandboxDisabled() {
-        Configuration.setSandboxEnabled(false)
-        Configuration.setRegion(Region.china)
-        
-        let scopes = [ RidesScope.Profile, RidesScope.History ]
-        let expectedHost = "https://login.uber.com.cn"
-        let expectedPath = "/oauth/v2/authorize"
-        let expectedScopes = scopes.toRidesScopeString()
-        let expectedClientID = Configuration.shared.clientID
-        let expectedRedirect = Configuration.shared.getCallbackURIString()
-        let expectedTokenType = "token"
-        
-        let expectedQueryItems = queryBuilder(
-            ("scope", expectedScopes),
-            ("client_id", expectedClientID),
-            ("redirect_uri", expectedRedirect),
-            ("signup_params", base64EncodedSignup),
-            ("response_type", expectedTokenType))
-        
-        let login = OAuth.implicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
-        
-        XCTAssertEqual(login.host, expectedHost)
-        XCTAssertEqual(login.path, expectedPath)
-        XCTAssertEqual(login.query, expectedQueryItems)
-    }
-    
+
     func testLogin_forAuthorizationCodeGrant_defaultSettings() {
         let scopes = [ RidesScope.AllTrips, RidesScope.History ]
         let expectedHost = "https://login.uber.com"
-        let expectedPath = "/oauth/v2/authorize"
-        let expectedScopes = scopes.toRidesScopeString()
-        let expectedClientID = Configuration.shared.clientID
-        let expectedRedirect = Configuration.shared.getCallbackURIString()
-        let expectedTokenType = "code"
-        let expectedState = "state123423"
-        
-        let expectedQueryItems = queryBuilder(
-            ("scope", expectedScopes),
-            ("client_id", expectedClientID),
-            ("redirect_uri", expectedRedirect),
-            ("signup_params", base64EncodedSignup),
-            ("response_type", expectedTokenType),
-            ("state", expectedState))
-        
-        let login = OAuth.authorizationCodeLogin(clientID: expectedClientID, redirect: expectedRedirect, scopes: scopes, state: expectedState)
-        
-        XCTAssertEqual(login.host, expectedHost)
-        XCTAssertEqual(login.path, expectedPath)
-        XCTAssertEqual(login.query, expectedQueryItems)
-    }
-    
-    func testLogin_forAuthorizationCodeGrant_china() {
-        Configuration.setRegion(.china)
-        let scopes = [ RidesScope.AllTrips, RidesScope.History ]
-        let expectedHost = "https://login.uber.com.cn"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toRidesScopeString()
         let expectedClientID = Configuration.shared.clientID

@@ -162,7 +162,7 @@ class TokenManagerTests: XCTestCase {
     }
     
     func testCookiesCleared_whenTokenDeleted() {
-        guard let usUrl = URL(string: "https://login.uber.com"), let chinaURL = URL(string: "https://login.uber.com.cn")  else {
+        guard let usUrl = URL(string: "https://login.uber.com")  else {
             XCTAssertFalse(false)
             return
         }
@@ -177,11 +177,9 @@ class TokenManagerTests: XCTestCase {
         
         
         cookieStorage.setCookies(createTestUSCookies(), for: usUrl, mainDocumentURL: nil)
-        cookieStorage.setCookies(createTestChinaCookies(), for: chinaURL, mainDocumentURL: nil)
         UserDefaults.standard.synchronize()
-        XCTAssertEqual(cookieStorage.cookies?.count, 4)
+        XCTAssertEqual(cookieStorage.cookies?.count, 2)
         XCTAssertEqual(cookieStorage.cookies(for: usUrl)?.count, 2)
-        XCTAssertEqual(cookieStorage.cookies(for: chinaURL)?.count, 2)
         
         let identifier = "testIdentifier"
 
@@ -217,23 +215,6 @@ class TokenManagerTests: XCTestCase {
             HTTPCookiePropertyKey.secure : false])
         if let secureUSCookie = secureUSCookie, let unsecureUSCookie = unsecureUSCookie {
             return [secureUSCookie, unsecureUSCookie]
-        }
-        return []
-    }
-    
-    func createTestChinaCookies() -> [HTTPCookie] {
-        let secureChinaCookie = HTTPCookie(properties: [HTTPCookiePropertyKey.domain : ".uber.com.cn",
-            HTTPCookiePropertyKey.path : "/",
-            HTTPCookiePropertyKey.name : "cn_login_secure",
-            HTTPCookiePropertyKey.value : "some_value",
-            HTTPCookiePropertyKey.secure : true])
-        let unsecureChinaCookie  = HTTPCookie(properties: [HTTPCookiePropertyKey.domain : ".uber.com.cn",
-            HTTPCookiePropertyKey.path : "/",
-            HTTPCookiePropertyKey.name : "cn_login_unsecure",
-            HTTPCookiePropertyKey.value : "some_value",
-            HTTPCookiePropertyKey.secure : false])
-        if let secureChinaCookie = secureChinaCookie, let unsecureChinaCookie = unsecureChinaCookie {
-            return [secureChinaCookie, unsecureChinaCookie]
         }
         return []
     }

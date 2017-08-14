@@ -198,7 +198,7 @@ enum OAuth: UberAPI {
             return nil
         }
     }
-    
+
     static var regionHost: String {
         return "https://login.uber.com"
     }
