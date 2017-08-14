@@ -918,8 +918,8 @@ class RidesClientTests: XCTestCase {
 
         let keychainHelper = KeychainWrapper()
         
-        let tokenKey = Configuration.getDefaultAccessTokenIdentifier()
-        let tokenGroup = Configuration.getDefaultKeychainAccessGroup()
+        let tokenKey = Configuration.shared.defaultAccessTokenIdentifier
+        let tokenGroup = Configuration.shared.defaultKeychainAccessGroup
         
         keychainHelper.setAccessGroup(tokenGroup)
         XCTAssertTrue(keychainHelper.setObject(token, key: tokenKey))
@@ -958,7 +958,7 @@ class RidesClientTests: XCTestCase {
         let keychainHelper = KeychainWrapper()
         
         let tokenKey = "newTokenKey"
-        let tokenGroup = Configuration.getDefaultKeychainAccessGroup()
+        let tokenGroup = Configuration.shared.defaultKeychainAccessGroup
         
         keychainHelper.setAccessGroup(tokenGroup)
         XCTAssertTrue(keychainHelper.setObject(token, key: tokenKey))

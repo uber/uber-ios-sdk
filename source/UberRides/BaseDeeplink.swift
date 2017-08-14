@@ -74,8 +74,8 @@ import Foundation
      - parameter completion: The completion block to execute once the deeplink has
      executed. Passes in True if the url was successfully opened, false otherwise.
      */
-    @objc open func execute(_ completion: ((NSError?) -> ())? = nil) {
-        
+    @objc open func execute(completion: ((NSError?) -> ())? = nil) {
+
         let usingIOS9 = ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 9, minorVersion: 0, patchVersion: 0))
         
         if usingIOS9 {

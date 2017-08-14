@@ -52,14 +52,14 @@
 // MARK: Objective-C Compatibility
 
 private enum RideStatusString: String {
-    case Accepted = "accepted"
-    case Arriving = "arriving"
-    case Completed = "completed"
-    case DriverCanceled = "driver_canceled"
-    case InProgress = "in_progress"
-    case NoDriversAvailable = "no_drivers_available"
-    case Processing = "processing"
-    case RiderCanceled = "rider_canceled"
+    case accepted = "accepted"
+    case arriving = "arriving"
+    case completed = "completed"
+    case driverCanceled = "driver_canceled"
+    case inProgress = "in_progress"
+    case noDriversAvailable = "no_drivers_available"
+    case processing = "processing"
+    case riderCanceled = "rider_canceled"
 }
 
 class RideStatusFactory: NSObject {
@@ -69,21 +69,21 @@ class RideStatusFactory: NSObject {
         }
         
         switch status {
-        case .Accepted:
+        case .accepted:
             return .accepted
-        case .Arriving:
+        case .arriving:
             return .arriving
-        case .Completed:
+        case .completed:
             return .completed
-        case .DriverCanceled:
+        case .driverCanceled:
             return .driverCanceled
-        case .InProgress:
+        case .inProgress:
             return .inProgress
-        case .NoDriversAvailable:
+        case .noDriversAvailable:
             return .noDriversAvailable
-        case .Processing:
+        case .processing:
             return .processing
-        case .RiderCanceled:
+        case .riderCanceled:
             return .riderCanceled
         }
     }

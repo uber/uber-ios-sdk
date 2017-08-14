@@ -31,7 +31,7 @@
     
     //MARK: Class variables
     
-    open static let sharedInstance = RidesAppDelegate()
+    open static let shared = RidesAppDelegate()
     
     //MARK: Public variables
     
@@ -67,7 +67,7 @@
      communicate information to the receiving app As passed to the corresponding AppDelegate method
      - returns: true if the URL was intended for the Rides SDK, false otherwise
      */
-    open func application(_ application: UIApplication, openURL url: URL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    open func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         guard let manager = loginManager else {
             return false
         }
@@ -86,7 +86,7 @@
         
         let manager = loginManager ?? LoginManager()
         let sourceApplication = options[UIApplicationLaunchOptionsKey.sourceApplication] as? String
-        let annotation = options[UIApplicationLaunchOptionsKey.annotation]
+        let annotation = options[UIApplicationLaunchOptionsKey.annotation] as Any
         let urlHandled = manager.application(application, open: launchURL, sourceApplication: sourceApplication, annotation: annotation)
         loginManager = nil
         return urlHandled

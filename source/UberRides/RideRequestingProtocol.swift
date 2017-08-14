@@ -30,7 +30,7 @@
      /**
      Requests a ride using the provided RideParameters.
      
-     - parameter rideParameters: The RideParameters to use for the ride request
+     - parameter parameters: The RideParameters to use for the ride request
      */
-    @objc func requestRide(_ rideParameters: RideParameters?)
+    @objc func requestRide(parameters: RideParameters?)
 }

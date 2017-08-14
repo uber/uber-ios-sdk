@@ -40,14 +40,14 @@
     /**
     Create instance of login manager to authenticate user and retreive access token.
     
-    - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.getDefaultAccessTokenIdentifier()
-    - parameter keychainAccessGroup:   The keychain access group to use for saving the Access Token, defaults to Configuration.getDefaultKeychainAccessGroup()
+    - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.shared.defaultAccessTokenIdentifier
+    - parameter keychainAccessGroup:   The keychain access group to use for saving the Access Token, defaults to Configuration.shared.defaultKeychainAccessGroup
     - parameter loginType:         The login type to use for logging in, defaults to Implicit
     
     - returns: An initialized LoginManager
     */
-    @objc public init(accessTokenIdentifier: String = Configuration.getDefaultAccessTokenIdentifier(),
-                      keychainAccessGroup: String = Configuration.getDefaultKeychainAccessGroup(),
+    @objc public init(accessTokenIdentifier: String = Configuration.shared.defaultAccessTokenIdentifier,
+                      keychainAccessGroup: String = Configuration.shared.defaultKeychainAccessGroup,
                       loginType: LoginType = .implicit) {
 
         self.accessTokenIdentifier = accessTokenIdentifier
@@ -92,7 +92,7 @@
             let nativeAuthenticator = NativeAuthenticator(scopes: scopes)
             nativeAuthenticator.deeplinkCompletion = { error in
                 if (error == nil) {
-                    RidesAppDelegate.sharedInstance.loginManager = self
+                    RidesAppDelegate.shared.loginManager = self
                 }
             };
             loginAuthenticator = nativeAuthenticator
@@ -216,11 +216,11 @@
         }
         
         if manager.scopes.contains(where: { $0.scopeType == .privileged }) {
-            if (Configuration.getFallbackEnabled()) {
+            if (Configuration.shared.useFallback) {
                 loginType = .authorizationCode
             } else {
                 let appstoreDeeplink = AppStoreDeeplink(userAgent: nil)
-                appstoreDeeplink.execute({ _ in
+                appstoreDeeplink.execute(completion: { _ in
                     completion?(nil, error)
                 })
                 return

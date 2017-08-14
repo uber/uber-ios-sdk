@@ -46,20 +46,10 @@ extension UberAPI {
     }
     
     var host: String {
-        if Configuration.getSandboxEnabled() {
-            switch Configuration.getRegion() {
-            case .china:
-                return "https://sandbox-api.uber.com.cn"
-            case .default:
-                return "https://sandbox-api.uber.com"
-            }
+        if Configuration.shared.isSandbox {
+            return "https://sandbox-api.uber.com"
         } else {
-            switch Configuration.getRegion() {
-            case .china:
-                return "https://api.uber.com.cn"
-            case .default:
-                return "https://api.uber.com"
-            }
+            return "https://api.uber.com"
         }
     }
 }
@@ -142,12 +132,7 @@ enum Components: UberAPI {
     }
     
     var host: String {
-        switch Configuration.getRegion() {
-        case .china:
-            return "https://components.uber.com.cn"
-        case .default:
-            return "https://components.uber.com"
-        }
+        return "https://components.uber.com"
     }
     
     var path: String {
@@ -160,7 +145,7 @@ enum Components: UberAPI {
     var query: [URLQueryItem] {
         switch self {
         case .rideRequestWidget(let rideParameters):
-            let environment = Configuration.getSandboxEnabled() ? "sandbox" : "production"
+            let environment = Configuration.shared.isSandbox ? "sandbox" : "production"
             var queryItems = queryBuilder( ("env", "\(environment)") )
             
             if let rideParameters = rideParameters {
@@ -196,7 +181,7 @@ enum OAuth: UberAPI {
     }
     
     var host: String {
-        return OAuth.regionHostString()
+        return OAuth.regionHost
     }
 
     var body: Data? {
@@ -214,13 +199,8 @@ enum OAuth: UberAPI {
         }
     }
     
-    static func regionHostString(_ region: Region = Configuration.getRegion()) -> String {
-        switch region {
-        case .china:
-            return "https://login.uber.com.cn"
-        case .default:
-            return "https://login.uber.com"
-        }
+    static var regionHost: String {
+        return "https://login.uber.com"
     }
     
     var path: String {

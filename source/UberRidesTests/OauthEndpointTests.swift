@@ -50,8 +50,8 @@ class OauthEndpointTests: XCTestCase {
         let expectedHost = "https://login.uber.com"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toRidesScopeString()
-        let expectedClientID = Configuration.getClientID()
-        let expectedRedirect = Configuration.getCallbackURIString()
+        let expectedClientID = Configuration.shared.clientID
+        let expectedRedirect = Configuration.shared.getCallbackURIString()
         let expectedTokenType = "token"
         
         let expectedQueryItems = queryBuilder(
@@ -76,8 +76,8 @@ class OauthEndpointTests: XCTestCase {
         let expectedHost = "https://login.uber.com.cn"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toRidesScopeString()
-        let expectedClientID = Configuration.getClientID()
-        let expectedRedirect = Configuration.getCallbackURIString()
+        let expectedClientID = Configuration.shared.clientID
+        let expectedRedirect = Configuration.shared.getCallbackURIString()
         let expectedTokenType = "token"
         
         let expectedQueryItems = queryBuilder(
@@ -102,8 +102,8 @@ class OauthEndpointTests: XCTestCase {
         let expectedHost = "https://login.uber.com"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toRidesScopeString()
-        let expectedClientID = Configuration.getClientID()
-        let expectedRedirect = Configuration.getCallbackURIString()
+        let expectedClientID = Configuration.shared.clientID
+        let expectedRedirect = Configuration.shared.getCallbackURIString()
         let expectedTokenType = "token"
         
         let expectedQueryItems = queryBuilder(
@@ -128,8 +128,8 @@ class OauthEndpointTests: XCTestCase {
         let expectedHost = "https://login.uber.com.cn"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toRidesScopeString()
-        let expectedClientID = Configuration.getClientID()
-        let expectedRedirect = Configuration.getCallbackURIString()
+        let expectedClientID = Configuration.shared.clientID
+        let expectedRedirect = Configuration.shared.getCallbackURIString()
         let expectedTokenType = "token"
         
         let expectedQueryItems = queryBuilder(
@@ -151,8 +151,8 @@ class OauthEndpointTests: XCTestCase {
         let expectedHost = "https://login.uber.com"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toRidesScopeString()
-        let expectedClientID = Configuration.getClientID()
-        let expectedRedirect = Configuration.getCallbackURIString()
+        let expectedClientID = Configuration.shared.clientID
+        let expectedRedirect = Configuration.shared.getCallbackURIString()
         let expectedTokenType = "code"
         let expectedState = "state123423"
         
@@ -177,8 +177,8 @@ class OauthEndpointTests: XCTestCase {
         let expectedHost = "https://login.uber.com.cn"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toRidesScopeString()
-        let expectedClientID = Configuration.getClientID()
-        let expectedRedirect = Configuration.getCallbackURIString()
+        let expectedClientID = Configuration.shared.clientID
+        let expectedRedirect = Configuration.shared.getCallbackURIString()
         let expectedTokenType = "code"
         let expectedState = "state123423"
         

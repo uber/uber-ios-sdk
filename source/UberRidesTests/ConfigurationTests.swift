@@ -73,14 +73,14 @@ class ConfigurationTests: XCTestCase {
         Configuration.setRegion(newRegion)
         Configuration.setSandboxEnabled(newSandbox)
         
-        XCTAssertEqual(newClientID, Configuration.getClientID())
-        XCTAssertEqual(newCallback, Configuration.getCallbackURIString())
+        XCTAssertEqual(newClientID, Configuration.shared.clientID)
+        XCTAssertEqual(newCallback, Configuration.shared.getCallbackURIString())
         XCTAssertEqual(newDisplay, Configuration.getAppDisplayName())
         XCTAssertEqual(newServerToken, Configuration.getServerToken())
-        XCTAssertEqual(newGroup, Configuration.getDefaultKeychainAccessGroup())
-        XCTAssertEqual(newTokenId, Configuration.getDefaultAccessTokenIdentifier())
-        XCTAssertEqual(newRegion, Configuration.getRegion())
-        XCTAssertEqual(newSandbox, Configuration.getSandboxEnabled())
+        XCTAssertEqual(newGroup, Configuration.shared.defaultKeychainAccessGroup)
+        XCTAssertEqual(newTokenId, Configuration.shared.defaultAccessTokenIdentifier)
+        XCTAssertEqual(newRegion, Configuration.shared.region)
+        XCTAssertEqual(newSandbox, Configuration.shared.sandboxEnabled)
         Configuration.restoreDefaults()
         
         XCTAssertEqual(Configuration.plistName, "Info")
@@ -89,26 +89,26 @@ class ConfigurationTests: XCTestCase {
         Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
         
-        XCTAssertEqual(Configuration.getClientID(), defaultClientID)
-        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString())
+        XCTAssertEqual(Configuration.shared.clientID, defaultClientID)
+        XCTAssertEqual(defaultGeneralCallbackString, Configuration.shared.getCallbackURIString())
         XCTAssertEqual(defaultDisplayName, Configuration.getAppDisplayName())
         XCTAssertEqual(defaultServerToken, Configuration.getServerToken())
-        XCTAssertEqual("", Configuration.getDefaultKeychainAccessGroup())
-        XCTAssertEqual(defaultAccessTokenIdentifier, Configuration.getDefaultAccessTokenIdentifier())
-        XCTAssertEqual(defaultRegion, Configuration.getRegion())
-        XCTAssertEqual(defaultSandbox, Configuration.getSandboxEnabled())
+        XCTAssertEqual("", Configuration.shared.defaultKeychainAccessGroup)
+        XCTAssertEqual(defaultAccessTokenIdentifier, Configuration.shared.defaultAccessTokenIdentifier)
+        XCTAssertEqual(defaultRegion, Configuration.shared.region)
+        XCTAssertEqual(defaultSandbox, Configuration.shared.sandboxEnabled)
     }
     
     //MARK: Client ID Tests
     
     func testClientID_getDefault() {
-        XCTAssertEqual(defaultClientID, Configuration.getClientID())
+        XCTAssertEqual(defaultClientID, Configuration.shared.clientID)
     }
     
     func testClientID_overwriteDefault() {
         let clientID = "clientID"
         Configuration.setClientID(clientID)
-        XCTAssertEqual(clientID, Configuration.getClientID())
+        XCTAssertEqual(clientID, Configuration.shared.clientID)
     }
     
     func testClientID_resetDefault() {
@@ -116,20 +116,20 @@ class ConfigurationTests: XCTestCase {
         
         Configuration.setClientID(nil)
         
-        XCTAssertEqual(defaultClientID, Configuration.getClientID())
+        XCTAssertEqual(defaultClientID, Configuration.shared.clientID)
     }
     
     //MARK: Callback URI String Tests
     
     func testCallbackURIString_getDefault() {
-        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString())
+        XCTAssertEqual(defaultGeneralCallbackString, Configuration.shared.getCallbackURIString())
     }
     
     func testCallbackURIString_overwriteDefault() {
         let callbackURIString = "callback://test"
         Configuration.setCallbackURIString(callbackURIString)
         
-        XCTAssertEqual(callbackURIString, Configuration.getCallbackURIString())
+        XCTAssertEqual(callbackURIString, Configuration.shared.getCallbackURIString())
     }
     
     func testCallbackURIString_resetDefault() {
@@ -137,14 +137,14 @@ class ConfigurationTests: XCTestCase {
         
         Configuration.setCallbackURIString(nil)
         
-        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString())
+        XCTAssertEqual(defaultGeneralCallbackString, Configuration.shared.getCallbackURIString())
     }
     
     func testCallbackURIString_getDefault_getTypes() {
-        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString(.general))
-        XCTAssertEqual(defaultAuthorizationCodeCallbackString, Configuration.getCallbackURIString(.authorizationCode))
-        XCTAssertEqual(defaultImplicitCallbackString, Configuration.getCallbackURIString(.implicit))
-        XCTAssertEqual(defaultNativeCallbackString, Configuration.getCallbackURIString(.native))
+        XCTAssertEqual(defaultGeneralCallbackString, Configuration.shared.getCallbackURIString(for: .general))
+        XCTAssertEqual(defaultAuthorizationCodeCallbackString, Configuration.shared.getCallbackURIString(for: .authorizationCode))
+        XCTAssertEqual(defaultImplicitCallbackString, Configuration.shared.getCallbackURIString(for: .implicit))
+        XCTAssertEqual(defaultNativeCallbackString, Configuration.shared.getCallbackURIString(for: .native))
     }
     
     func testCallbackURIString_overwriteDefault_allTypes() {
@@ -158,10 +158,10 @@ class ConfigurationTests: XCTestCase {
         Configuration.setCallbackURIString(implicitCallbackString, type: .implicit)
         Configuration.setCallbackURIString(nativeCallbackString, type: .native)
         
-        XCTAssertEqual(generalCallbackString, Configuration.getCallbackURIString(.general))
-        XCTAssertEqual(authorizationCodeCallbackString, Configuration.getCallbackURIString(.authorizationCode))
-        XCTAssertEqual(implicitCallbackString, Configuration.getCallbackURIString(.implicit))
-        XCTAssertEqual(nativeCallbackString, Configuration.getCallbackURIString(.native))
+        XCTAssertEqual(generalCallbackString, Configuration.shared.getCallbackURIString(for: .general))
+        XCTAssertEqual(authorizationCodeCallbackString, Configuration.shared.getCallbackURIString(for: .authorizationCode))
+        XCTAssertEqual(implicitCallbackString, Configuration.shared.getCallbackURIString(for: .implicit))
+        XCTAssertEqual(nativeCallbackString, Configuration.shared.getCallbackURIString(for: .native))
     }
     
     func testCallbackURIString_resetDefault_allTypes() {
@@ -180,10 +180,10 @@ class ConfigurationTests: XCTestCase {
         Configuration.setCallbackURIString(nil, type: .implicit)
         Configuration.setCallbackURIString(nil, type: .native)
         
-        XCTAssertEqual(defaultGeneralCallbackString, Configuration.getCallbackURIString(.general))
-        XCTAssertEqual(defaultAuthorizationCodeCallbackString, Configuration.getCallbackURIString(.authorizationCode))
-        XCTAssertEqual(defaultImplicitCallbackString, Configuration.getCallbackURIString(.implicit))
-        XCTAssertEqual(defaultNativeCallbackString, Configuration.getCallbackURIString(.native))
+        XCTAssertEqual(defaultGeneralCallbackString, Configuration.shared.getCallbackURIString(for: .general))
+        XCTAssertEqual(defaultAuthorizationCodeCallbackString, Configuration.shared.getCallbackURIString(for: .authorizationCode))
+        XCTAssertEqual(defaultImplicitCallbackString, Configuration.shared.getCallbackURIString(for: .implicit))
+        XCTAssertEqual(defaultNativeCallbackString, Configuration.shared.getCallbackURIString(for: .native))
     }
     
     func testCallbackURIString_resetDefault_oneType() {
@@ -199,28 +199,28 @@ class ConfigurationTests: XCTestCase {
 
         Configuration.setCallbackURIString(nil, type: .native)
         
-        XCTAssertEqual(generalCallbackString, Configuration.getCallbackURIString(.general))
-        XCTAssertEqual(authorizationCodeCallbackString, Configuration.getCallbackURIString(.authorizationCode))
-        XCTAssertEqual(implicitCallbackString, Configuration.getCallbackURIString(.implicit))
-        XCTAssertEqual(defaultNativeCallbackString, Configuration.getCallbackURIString(.native))
+        XCTAssertEqual(generalCallbackString, Configuration.shared.getCallbackURIString(for: .general))
+        XCTAssertEqual(authorizationCodeCallbackString, Configuration.shared.getCallbackURIString(for: .authorizationCode))
+        XCTAssertEqual(implicitCallbackString, Configuration.shared.getCallbackURIString(for: .implicit))
+        XCTAssertEqual(defaultNativeCallbackString, Configuration.shared.getCallbackURIString(for: .native))
     }
     
     func testCallbackURIStringFallback_whenCallbackURIsMissing() {
         Configuration.plistName = "testInfoMissingCallbacks"
-        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.general))
-        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.authorizationCode))
-        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.implicit))
-        XCTAssertEqual(defaultCallbackString, Configuration.getCallbackURIString(.native))
+        XCTAssertEqual(defaultCallbackString, Configuration.shared.getCallbackURIString(for: .general))
+        XCTAssertEqual(defaultCallbackString, Configuration.shared.getCallbackURIString(for: .authorizationCode))
+        XCTAssertEqual(defaultCallbackString, Configuration.shared.getCallbackURIString(for: .implicit))
+        XCTAssertEqual(defaultCallbackString, Configuration.shared.getCallbackURIString(for: .native))
     }
     
     func testCallbackURIStringFallbackUsesGeneralOverride_whenCallbackURIsMissing() {
         Configuration.plistName = "testInfoMissingCallbacks"
         let override = "testURI://override"
         Configuration.setCallbackURIString(override, type: .general)
-        XCTAssertEqual(override, Configuration.getCallbackURIString(.general))
-        XCTAssertEqual(override, Configuration.getCallbackURIString(.authorizationCode))
-        XCTAssertEqual(override, Configuration.getCallbackURIString(.implicit))
-        XCTAssertEqual(override, Configuration.getCallbackURIString(.native))
+        XCTAssertEqual(override, Configuration.shared.getCallbackURIString(for: .general))
+        XCTAssertEqual(override, Configuration.shared.getCallbackURIString(for: .authorizationCode))
+        XCTAssertEqual(override, Configuration.shared.getCallbackURIString(for: .implicit))
+        XCTAssertEqual(override, Configuration.shared.getCallbackURIString(for: .native))
     }
     
     //MARK: App Display Name Tests
@@ -268,14 +268,14 @@ class ConfigurationTests: XCTestCase {
     //MARK: Keychain Access Group Tests
     
     func testDefaultKeychainAccessGroup_getDefault() {
-        XCTAssertEqual("", Configuration.getDefaultKeychainAccessGroup())
+        XCTAssertEqual("", Configuration.shared.defaultKeychainAccessGroup)
     }
     
     func testDefaultKeychainAccessGroup_overwriteDefault() {
         let defaultKeychainAccessGroup = "accessGroup"
         Configuration.setDefaultKeychainAccessGroup(defaultKeychainAccessGroup)
         
-        XCTAssertEqual(defaultKeychainAccessGroup, Configuration.getDefaultKeychainAccessGroup())
+        XCTAssertEqual(defaultKeychainAccessGroup, Configuration.shared.defaultKeychainAccessGroup)
     }
     
     func testDefaultKeychainAccessGroup_resetDefault() {
@@ -283,20 +283,20 @@ class ConfigurationTests: XCTestCase {
         
         Configuration.setDefaultKeychainAccessGroup(nil)
         
-        XCTAssertEqual("", Configuration.getDefaultKeychainAccessGroup())
+        XCTAssertEqual("", Configuration.shared.defaultKeychainAccessGroup)
     }
     
     //MARK: Access token identifier tests
     
     func testDefaultAccessTokenIdentifier_getDefault() {
-        XCTAssertEqual(defaultAccessTokenIdentifier, Configuration.getDefaultAccessTokenIdentifier())
+        XCTAssertEqual(defaultAccessTokenIdentifier, Configuration.shared.defaultAccessTokenIdentifier)
     }
     
     func testDefaultAccessTokenIdentifier_overwriteDefault() {
         let newIdentifier = "newIdentifier"
         Configuration.setDefaultAccessTokenIdentifier(newIdentifier)
         
-        XCTAssertEqual(newIdentifier, Configuration.getDefaultAccessTokenIdentifier())
+        XCTAssertEqual(newIdentifier, Configuration.shared.defaultAccessTokenIdentifier)
     }
     
     func testDefaultAccessTokenIdentifier_resetDefault() {
@@ -304,32 +304,32 @@ class ConfigurationTests: XCTestCase {
 
         Configuration.setDefaultAccessTokenIdentifier(nil)
         
-        XCTAssertEqual(defaultAccessTokenIdentifier, Configuration.getDefaultAccessTokenIdentifier())
+        XCTAssertEqual(defaultAccessTokenIdentifier, Configuration.shared.defaultAccessTokenIdentifier)
     }
     
     //MARK: Region Tests
     
     func testRegion_getDefault() {
-        XCTAssertEqual(defaultRegion, Configuration.getRegion())
+        XCTAssertEqual(defaultRegion, Configuration.shared.region)
     }
     
     func testRegion_overwriteDefault() {
         let newRegion = Region.china
         Configuration.setRegion(newRegion)
         
-        XCTAssertEqual(newRegion, Configuration.getRegion())
+        XCTAssertEqual(newRegion, Configuration.shared.region)
     }
     
     //MARK: Sandbox Tests
     
     func testSandbox_getDefault() {
-        XCTAssertEqual(defaultSandbox, Configuration.getSandboxEnabled())
+        XCTAssertEqual(defaultSandbox, Configuration.shared.sandboxEnabled)
     }
     
     func testSandbox_overwriteDefault() {
         let newSandbox = true
         Configuration.setSandboxEnabled(newSandbox)
         
-        XCTAssertEqual(newSandbox, Configuration.getSandboxEnabled())
+        XCTAssertEqual(newSandbox, Configuration.shared.sandboxEnabled)
     }
 }

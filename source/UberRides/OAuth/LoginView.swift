@@ -30,7 +30,7 @@ import WebKit
     
     open var loginAuthenticator: LoginViewAuthenticator
     
-    var clientID = Configuration.getClientID()
+    var clientID = Configuration.shared.clientID
     let webView: WKWebView
     
     //MARK: Initializers
@@ -45,7 +45,7 @@ import WebKit
     */
     @objc public init(loginAuthenticator: LoginViewAuthenticator, frame: CGRect = CGRect.zero) {
         let configuration = WKWebViewConfiguration()
-        configuration.processPool = Configuration.processPool
+        configuration.processPool = Configuration.shared.processPool
         webView = WKWebView.init(frame: frame, configuration: configuration)
         self.loginAuthenticator = loginAuthenticator
         super.init(frame: frame)

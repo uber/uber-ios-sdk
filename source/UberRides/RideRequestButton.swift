@@ -296,7 +296,7 @@ import CoreLocation
     // Initiate deeplink when button is tapped
     func uberButtonTapped(_ sender: UIButton) {
         rideParameters.source = RideRequestButton.sourceString
-        requestBehavior.requestRide(rideParameters)
+        requestBehavior.requestRide(parameters: rideParameters)
     }
     
     //Mark: Private Interface

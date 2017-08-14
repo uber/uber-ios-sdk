@@ -34,7 +34,7 @@ import UIKit
     }
     
     override var endpoint: UberAPI {
-        return OAuth.authorizationCodeLogin(clientID: Configuration.getClientID(), redirect: Configuration.getCallbackURIString(.authorizationCode), scopes: scopes, state: state)
+        return OAuth.authorizationCodeLogin(clientID: Configuration.shared.clientID, redirect: Configuration.shared.getCallbackURIString(for: .authorizationCode), scopes: scopes, state: state)
     }
     
     override public convenience init(presentingViewController: UIViewController, scopes: [RidesScope]) {

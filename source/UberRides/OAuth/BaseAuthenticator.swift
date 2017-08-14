@@ -53,10 +53,10 @@ import UIKit
             do {
                 let accessToken = try AccessTokenFactory.createAccessToken(from: url)
                 
-                let tokenIdentifier = accessTokenIdentifier ?? Configuration.getDefaultAccessTokenIdentifier()
-                let accessGroup = keychainAccessGroup ?? Configuration.getDefaultKeychainAccessGroup()
+                let tokenIdentifier = accessTokenIdentifier ?? Configuration.shared.defaultAccessTokenIdentifier
+                let accessGroup = keychainAccessGroup ?? Configuration.shared.defaultKeychainAccessGroup
                 var error: NSError?
-                let success = TokenManager.saveToken(accessToken, tokenIdentifier: tokenIdentifier, accessGroup: accessGroup)
+                let success = TokenManager.save(accessToken: accessToken, tokenIdentifier: tokenIdentifier, accessGroup: accessGroup)
                 if !success {
                     error = RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken)
                     print("Error: access token failed to save to keychain")

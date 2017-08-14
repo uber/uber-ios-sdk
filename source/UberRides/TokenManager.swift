@@ -27,8 +27,8 @@ import Foundation
 /// Manager class for saving and deleting AccessTokens. Allows you to manage tokens based on token identifier & keychain access group
 @objc(UBSDKTokenManager) public class TokenManager: NSObject {
 
-    public static let TokenManagerDidSaveTokenNotification = "TokenManagerDidSaveTokenNotification"
-    public static let TokenManagerDidDeleteTokenNotification = "TokenManagerDidDeleteTokenNotification"
+    public static let tokenManagerDidSaveTokenNotification = "TokenManagerDidSaveTokenNotification"
+    public static let tokenManagerDidDeleteTokenNotification = "TokenManagerDidDeleteTokenNotification"
     
     private static let keychainWrapper = KeychainWrapper()
 
@@ -37,14 +37,14 @@ import Foundation
     /**
      Gets the AccessToken for the given tokenIdentifier and accessGroup.
 
-     - parameter tokenIdentifier: The token identifier string to use
+     - parameter identifier:      The token identifier string to use
      - parameter accessGroup:     The keychain access group to use
 
      - returns: An AccessToken, or nil if one wasn't found
      */
-    @objc public static func fetchToken(_ tokenIdentifier: String, accessGroup: String) -> AccessToken? {
+    @objc public static func fetchToken(identifier: String, accessGroup: String) -> AccessToken? {
         keychainWrapper.setAccessGroup(accessGroup)
-        guard let token = keychainWrapper.getObjectForKey(tokenIdentifier) as? AccessToken else {
+        guard let token = keychainWrapper.getObjectForKey(identifier) as? AccessToken else {
             return nil
         }
         return token
@@ -58,9 +58,9 @@ import Foundation
      
      - returns: An AccessToken, or nil if one wasn't found
      */
-    @objc public static func fetchToken(_ tokenIdentifier: String) -> AccessToken? {
-        return self.fetchToken(tokenIdentifier,
-            accessGroup: Configuration.getDefaultKeychainAccessGroup())
+    @objc public static func fetchToken(identifier: String) -> AccessToken? {
+        return self.fetchToken(identifier: identifier,
+            accessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
     
     /**
@@ -70,8 +70,8 @@ import Foundation
      - returns: An AccessToken, or nil if one wasn't found
      */
     @objc public static func fetchToken() -> AccessToken? {
-        return self.fetchToken(Configuration.getDefaultAccessTokenIdentifier(),
-            accessGroup: Configuration.getDefaultKeychainAccessGroup())
+        return self.fetchToken(identifier: Configuration.shared.defaultAccessTokenIdentifier,
+            accessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
 
     //MARK: Save
@@ -83,16 +83,16 @@ import Foundation
     Access Token is saved syncronously
 
      - parameter accessToken:     The AccessToken to save
-     - parameter tokenIdentifier: The token identifier string to use (defaults to Configuration.getDefaultAccessTokenIdentifier())
-     - parameter accessGroup:     The keychain access group to use (defaults to Configuration.getDefaultKeychainAccessGroup())
+     - parameter tokenIdentifier: The token identifier string to use (defaults to Configuration.shared.defaultAccessTokenIdentifier)
+     - parameter accessGroup:     The keychain access group to use (defaults to Configuration.shared.defaultKeychainAccessGroup)
 
      - returns: true if the accessToken was saved successfully, false otherwise
      */
-    @objc public static func saveToken(_ accessToken: AccessToken, tokenIdentifier: String, accessGroup: String) -> Bool {
+    @objc public static func save(accessToken: AccessToken, tokenIdentifier: String, accessGroup: String) -> Bool {
         keychainWrapper.setAccessGroup(accessGroup)
         let success = keychainWrapper.setObject(accessToken, key: tokenIdentifier)
         if success {
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TokenManagerDidSaveTokenNotification), object: self)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: tokenManagerDidSaveTokenNotification), object: self)
         }
         return success
     }
@@ -108,8 +108,8 @@ import Foundation
      
      - returns: true if the accessToken was saved successfully, false otherwise
      */
-    @objc public static func saveToken(_ accessToken: AccessToken, tokenIdentifier: String) -> Bool {
-        return self.saveToken(accessToken, tokenIdentifier: tokenIdentifier, accessGroup: Configuration.getDefaultKeychainAccessGroup())
+    @objc public static func save(accessToken: AccessToken, tokenIdentifier: String) -> Bool {
+        return self.save(accessToken: accessToken, tokenIdentifier: tokenIdentifier, accessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
     
     /**
@@ -123,8 +123,8 @@ import Foundation
      
      - returns: true if the accessToken was saved successfully, false otherwise
      */
-    @objc public static func saveToken(_ accessToken: AccessToken) -> Bool {
-        return self.saveToken(accessToken,  tokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(), accessGroup: Configuration.getDefaultKeychainAccessGroup())
+    @objc public static func save(accessToken: AccessToken) -> Bool {
+        return self.save(accessToken: accessToken,  tokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, accessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
     
     //MARK: Delete
@@ -133,17 +133,17 @@ import Foundation
      Deletes the AccessToken for the givent tokenIdentifier and accessGroup. If no values
      are supplied, it uses the defaults defined in your Configuration.
 
-     - parameter tokenIdentifier: The token identifier string to use (defaults to Configuration.getDefaultAccessTokenIdentifier())
-     - parameter accessGroup:     The keychain access group to use (defaults to Configuration.getDefaultKeychainAccessGroup())
+     - parameter tokenIdentifier: The token identifier string to use (defaults to Configuration.shared.defaultAccessTokenIdentifier)
+     - parameter accessGroup:     The keychain access group to use (defaults to Configuration.shared.defaultKeychainAccessGroup)
 
      - returns: true if the token was deleted, false otherwise
      */
-    @objc public static func deleteToken(_ tokenIdentifier: String, accessGroup: String) -> Bool {
+    @objc public static func deleteToken(identifier: String, accessGroup: String) -> Bool {
         keychainWrapper.setAccessGroup(accessGroup)
         deleteCookies()
-        let success = keychainWrapper.deleteObjectForKey(tokenIdentifier)
+        let success = keychainWrapper.deleteObjectForKey(identifier)
         if success {
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TokenManagerDidDeleteTokenNotification), object: self)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: tokenManagerDidDeleteTokenNotification), object: self)
         }
         return success
     }
@@ -156,8 +156,8 @@ import Foundation
      
      - returns: true if the token was deleted, false otherwise
      */
-    @objc public static func deleteToken(_ tokenIdentifier: String) -> Bool {
-        return self.deleteToken(tokenIdentifier, accessGroup: Configuration.getDefaultKeychainAccessGroup())
+    @objc public static func deleteToken(identifier: String) -> Bool {
+        return self.deleteToken(identifier: identifier, accessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
     
     /**
@@ -168,18 +168,18 @@ import Foundation
      - returns: true if the token was deleted, false otherwise
      */
     @objc public static func deleteToken() -> Bool {
-        return self.deleteToken(Configuration.getDefaultAccessTokenIdentifier(), accessGroup: Configuration.getDefaultKeychainAccessGroup())
+        return self.deleteToken(identifier: Configuration.shared.defaultAccessTokenIdentifier, accessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
     
     // MARK: Private Interface
     
     private static func deleteCookies() {
-        Configuration.resetProcessPool()
+        Configuration.shared.resetProcessPool()
         var urlsToClear = [URL]()
-        if let loginURL = URL(string: OAuth.regionHostString(.default)) {
+        if let loginURL = URL(string: OAuth.regionHost) {
             urlsToClear.append(loginURL)
         }
-        if let loginURL = URL(string: OAuth.regionHostString(.china)) {
+        if let loginURL = URL(string: OAuth.regionHost) {
             urlsToClear.append(loginURL)
         }
         

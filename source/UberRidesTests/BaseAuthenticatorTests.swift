@@ -39,7 +39,7 @@ class BaseAuthenticatorTests: XCTestCase {
         Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
         Configuration.setSandboxEnabled(true)
-        redirectURI = Configuration.getCallbackURIString(.general)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .general)
     }
     
     override func tearDown() {
