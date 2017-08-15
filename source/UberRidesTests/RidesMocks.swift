@@ -178,7 +178,7 @@ class RequestDeeplinkMock : RequestDeeplink {
         super.init(rideParameters: rideParameters)
     }
     
-    override func execute(_ completion: ((NSError?) -> ())? = nil) {
+    override func execute(completion: ((NSError?) -> ())? = nil) {
         guard let testClosure = testClosure else {
             completion?(nil)
             return
@@ -187,14 +187,14 @@ class RequestDeeplinkMock : RequestDeeplink {
     }
 }
 
-class DeeplinkRequestingBehaviorMock : DeeplinkRequestingBehavior {
+class DeeplinkRequestingBehaviorMock: DeeplinkRequestingBehavior {
     var testClosure: ((URL?) -> (Bool))?
     init(testClosure: ((URL?) -> (Bool))?) {
         self.testClosure = testClosure
         super.init()
     }
     
-    override func createDeeplink(_ rideParameters: RideParameters) -> RequestDeeplink {
+    override func createDeeplink(rideParameters: RideParameters) -> RequestDeeplink {
         return RequestDeeplinkMock(rideParameters: rideParameters, testClosure: testClosure)
     }
 }
@@ -268,13 +268,13 @@ class DeeplinkRequestingBehaviorMock : DeeplinkRequestingBehavior {
         }
     }
 
-    @objc func execute(_ completion: ((NSError?) -> ())?) {
+    @objc func execute(completion: ((NSError?) -> ())?) {
         if let closure = executeClosure {
             closure(completion)
         } else if overrideExecute {
             completion?(overrideExecuteValue)
         } else {
-            deeplinkingObject.execute(completion)
+            deeplinkingObject.execute(completion: completion)
         }
     }
     
@@ -305,16 +305,24 @@ class DeeplinkRequestingBehaviorMock : DeeplinkRequestingBehavior {
         }
     }
     
-    func application(_ application: UIApplication, openURL url: URL, sourceApplication: String?, annotation: Any?) -> Bool {
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         if let closure = openURLClosure {
             return closure(application, url, sourceApplication, annotation)
         } else if let manager = backingManager {
-            return manager.application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+            return manager.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
         } else {
             return false
         }
     }
-    
+
+    @available(iOS 9.0, *)
+    open func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+        let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String
+        let annotation = options[.annotation] as Any
+
+        return application(app, open: url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+
     func applicationDidBecomeActive() {
         if let closure = didBecomeActiveClosure {
             closure()
@@ -341,11 +349,11 @@ class NativeAuthenticatorPartialMock : NativeAuthenticator {
     
     var handleRedirectClosure: ((URLRequest) -> (Bool))?
     
-    override func handleRedirectRequest(_ request: URLRequest) -> Bool {
+    override func handleRedirect(for request: URLRequest) -> Bool {
         if let closure = handleRedirectClosure {
             return closure(request)
         } else {
-            return super.handleRedirectRequest(request)
+            return super.handleRedirect(for: request)
         }
     }
     

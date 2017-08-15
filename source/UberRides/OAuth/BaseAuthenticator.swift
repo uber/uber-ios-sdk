@@ -51,7 +51,7 @@ import UIKit
         var didHandleRedirect = false
         if let url = request.url, AuthenticationURLUtility.shouldHandleRedirectURL(url, type: callbackURIType) {
             do {
-                let accessToken = try AccessTokenFactory.createAccessToken(from: url)
+                let accessToken = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
                 
                 let tokenIdentifier = accessTokenIdentifier ?? Configuration.shared.defaultAccessTokenIdentifier
                 let accessGroup = keychainAccessGroup ?? Configuration.shared.defaultKeychainAccessGroup

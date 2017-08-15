@@ -32,9 +32,9 @@ class OauthEndpointTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
     }
     
     override func tearDown() {
@@ -42,9 +42,8 @@ class OauthEndpointTests: XCTestCase {
         super.tearDown()
     }
     
-    func testLogin_withRegionDefault_withSandboxEnabled() {
-        Configuration.setSandboxEnabled(true)
-        Configuration.setRegion(Region.default)
+    func testLogin_withSandboxEnabled() {
+        Configuration.shared.isSandbox = true
         
         let scopes = [ RidesScope.Profile, RidesScope.History ]
         let expectedHost = "https://login.uber.com"
@@ -68,9 +67,8 @@ class OauthEndpointTests: XCTestCase {
         XCTAssertEqual(login.query, expectedQueryItems)
     }
 
-    func testLogin_withRegionDefault_withSandboxDisabled() {
-        Configuration.setSandboxEnabled(false)
-        Configuration.setRegion(Region.default)
+    func testLogin_withSandboxDisabled() {
+        Configuration.shared.isSandbox = false
         
         let scopes = [ RidesScope.Profile, RidesScope.History ]
         let expectedHost = "https://login.uber.com"

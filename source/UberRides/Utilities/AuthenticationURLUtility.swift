@@ -29,7 +29,6 @@ class AuthenticationURLUtility {
     static let appNameKey = "third_party_app_name"
     static let callbackURIKey = "callback_uri_string"
     static let clientIDKey = "client_id"
-    static let loginTypeKey = "login_type"
     static let scopesKey = "scope"
     static let sdkKey = "sdk"
     static let sdkVersionKey = "sdk_version"

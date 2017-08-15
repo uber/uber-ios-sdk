@@ -46,17 +46,64 @@
     
     - returns: An initialized LoginManager
     */
-    @objc public init(accessTokenIdentifier: String = Configuration.shared.defaultAccessTokenIdentifier,
-                      keychainAccessGroup: String = Configuration.shared.defaultKeychainAccessGroup,
-                      loginType: LoginType = .implicit) {
+    @objc public init(accessTokenIdentifier: String, keychainAccessGroup: String?, loginType: LoginType) {
 
         self.accessTokenIdentifier = accessTokenIdentifier
-        self.keychainAccessGroup = keychainAccessGroup
+        self.keychainAccessGroup = keychainAccessGroup ?? Configuration.shared.defaultKeychainAccessGroup
         self.loginType = loginType
         
         super.init()
     }
-    
+
+    /**
+     Create instance of login manager to authenticate user and retreive access token.
+     Uses the Implicit Login Behavior
+
+     - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.getDefaultAccessTokenIdentifier()
+     - parameter keychainAccessGroup:   The keychain access group to use for saving the Access Token, defaults to Configuration.getDefaultKeychainAccessGroup()
+
+     - returns: An initialized LoginManager
+     */
+    @objc public convenience init(accessTokenIdentifier: String, keychainAccessGroup: String?) {
+        self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: keychainAccessGroup, loginType: LoginType.implicit)
+    }
+
+    /**
+     Create instance of login manager to authenticate user and retreive access token.
+     Uses the Implicit Login Behavior & your Configuration's keychain access group
+
+     - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.getDefaultAccessTokenIdentifier()
+
+     - returns: An initialized LoginManager
+     */
+    @objc public convenience init(accessTokenIdentifier: String) {
+        self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: nil)
+    }
+
+    /**
+     Create instance of login manager to authenticate user and retreive access token.
+     Uses the provided LoginType, with the accessTokenIdentifier & keychainAccessGroup defined
+     in your Configuration
+
+     - parameter loginType: The login behavior to use for logging in
+
+     - returns: An initialized LoginManager
+     */
+    @objc public convenience init(loginType: LoginType) {
+        self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, keychainAccessGroup: nil, loginType: loginType)
+    }
+
+    /**
+     Create instance of login manager to authenticate user and retreive access token.
+     Uses the Native LoginType, with the accessTokenIdentifier & keychainAccessGroup defined
+     in your Configuration
+
+     - returns: An initialized LoginManager
+     */
+    @objc public convenience override init() {
+        self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, keychainAccessGroup: nil, loginType: LoginType.native)
+    }
+
     // Mark: LoginManaging
     
      /**

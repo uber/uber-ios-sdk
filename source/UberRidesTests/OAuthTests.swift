@@ -35,10 +35,10 @@ class OAuthTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setSandboxEnabled(true)
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.isSandbox = true
         redirectURI = Configuration.shared.getCallbackURIString()
     }
     
@@ -330,7 +330,7 @@ class OAuthTests: XCTestCase {
         implicitGrantBehavior.loginCompletion = { accessToken, error in
             XCTAssert(false)
         }
-        let result = implicitGrantBehavior.handleRedirectRequest(request)
+        let result = implicitGrantBehavior.handleRedirect(for: request)
         XCTAssertFalse(result)
     }
     
@@ -341,7 +341,7 @@ class OAuthTests: XCTestCase {
         authorizationCodeGrantAuthenticator.loginCompletion = { accessToken, error in
             XCTAssert(false)
         }
-        let result = authorizationCodeGrantAuthenticator.handleRedirectRequest(request)
+        let result = authorizationCodeGrantAuthenticator.handleRedirect(for: request)
         XCTAssertFalse(result)
     }
     
@@ -361,7 +361,7 @@ class OAuthTests: XCTestCase {
             XCTAssertEqual(accessToken?.tokenString, tokenString)
             self.testExpectation.fulfill()
         }
-        let result = implicitGrantBehavior.handleRedirectRequest(request)
+        let result = implicitGrantBehavior.handleRedirect(for: request)
         XCTAssertTrue(result)
         
         waitForExpectations(timeout: timeout, handler: { error in
@@ -380,7 +380,7 @@ class OAuthTests: XCTestCase {
             XCTAssertNil(accessToken)
             loginCompletionExpectation.fulfill()
         }
-        let result = authorizationCodeGrantAuthenticator.handleRedirectRequest(request)
+        let result = authorizationCodeGrantAuthenticator.handleRedirect(for: request)
         XCTAssertTrue(result)
         
         waitForExpectations(timeout: timeout, handler: { error in
@@ -412,7 +412,7 @@ class OAuthTests: XCTestCase {
             XCTAssertNil(accessToken)
             loginCompletionExpectation.fulfill()
         }
-        let result = authorizationCodeGrantAuthenticator.handleRedirectRequest(request)
+        let result = authorizationCodeGrantAuthenticator.handleRedirect(for: request)
         XCTAssertTrue(result)
         
         waitForExpectations(timeout: timeout, handler: { error in
@@ -436,7 +436,7 @@ class OAuthTests: XCTestCase {
             
             self.testExpectation.fulfill()
         }
-        let result = implicitGrantBehavior.handleRedirectRequest(request)
+        let result = implicitGrantBehavior.handleRedirect(for: request)
         XCTAssertTrue(result)
         
         waitForExpectations(timeout: timeout, handler: { error in

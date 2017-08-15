@@ -36,14 +36,13 @@ class ConfigurationTests: XCTestCase {
     private let defaultNativeCallbackString = "testURI://uberConnectNative"
     private let defaultServerToken = "testServerToken"
     private let defaultAccessTokenIdentifier = "RidesAccessTokenKey"
-    private let defaultRegion = Region.default
     private let defaultSandbox = false
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
     }
     
     override func tearDown() {
@@ -61,42 +60,35 @@ class ConfigurationTests: XCTestCase {
         let newServerToken = "newserver"
         let newGroup = "new group"
         let newTokenId = "newTokenID"
-        let newRegion = Region.china
         let newSandbox = true
         
-        Configuration.setClientID(newClientID)
-        Configuration.setCallbackURIString(newCallback)
-        Configuration.setAppDisplayName(newDisplay)
-        Configuration.setServerToken(newServerToken)
-        Configuration.setDefaultKeychainAccessGroup(newGroup)
-        Configuration.setDefaultAccessTokenIdentifier(newTokenId)
-        Configuration.setRegion(newRegion)
-        Configuration.setSandboxEnabled(newSandbox)
+        Configuration.shared.clientID = newClientID
+        Configuration.shared.setCallbackURIString(newCallback)
+        Configuration.shared.appDisplayName = newDisplay
+        Configuration.shared.serverToken = newServerToken
+        Configuration.shared.defaultKeychainAccessGroup = newGroup
+        Configuration.shared.defaultAccessTokenIdentifier = newTokenId
+        Configuration.shared.isSandbox = newSandbox
         
         XCTAssertEqual(newClientID, Configuration.shared.clientID)
         XCTAssertEqual(newCallback, Configuration.shared.getCallbackURIString())
-        XCTAssertEqual(newDisplay, Configuration.getAppDisplayName())
-        XCTAssertEqual(newServerToken, Configuration.getServerToken())
+        XCTAssertEqual(newDisplay, Configuration.shared.appDisplayName)
+        XCTAssertEqual(newServerToken, Configuration.shared.serverToken)
         XCTAssertEqual(newGroup, Configuration.shared.defaultKeychainAccessGroup)
         XCTAssertEqual(newTokenId, Configuration.shared.defaultAccessTokenIdentifier)
-        XCTAssertEqual(newRegion, Configuration.shared.region)
-        XCTAssertEqual(newSandbox, Configuration.shared.sandboxEnabled)
+        XCTAssertEqual(newSandbox, Configuration.shared.isSandbox)
         Configuration.restoreDefaults()
-        
-        XCTAssertEqual(Configuration.plistName, "Info")
-        XCTAssertEqual(Configuration.bundle, Bundle.main)
         
         Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
         
         XCTAssertEqual(Configuration.shared.clientID, defaultClientID)
         XCTAssertEqual(defaultGeneralCallbackString, Configuration.shared.getCallbackURIString())
-        XCTAssertEqual(defaultDisplayName, Configuration.getAppDisplayName())
-        XCTAssertEqual(defaultServerToken, Configuration.getServerToken())
+        XCTAssertEqual(defaultDisplayName, Configuration.shared.appDisplayName)
+        XCTAssertEqual(defaultServerToken, Configuration.shared.serverToken)
         XCTAssertEqual("", Configuration.shared.defaultKeychainAccessGroup)
         XCTAssertEqual(defaultAccessTokenIdentifier, Configuration.shared.defaultAccessTokenIdentifier)
-        XCTAssertEqual(defaultRegion, Configuration.shared.region)
-        XCTAssertEqual(defaultSandbox, Configuration.shared.sandboxEnabled)
+        XCTAssertEqual(defaultSandbox, Configuration.shared.isSandbox)
     }
     
     //MARK: Client ID Tests
@@ -107,16 +99,8 @@ class ConfigurationTests: XCTestCase {
     
     func testClientID_overwriteDefault() {
         let clientID = "clientID"
-        Configuration.setClientID(clientID)
+        Configuration.shared.clientID = clientID
         XCTAssertEqual(clientID, Configuration.shared.clientID)
-    }
-    
-    func testClientID_resetDefault() {
-        Configuration.setClientID("alternateClient")
-        
-        Configuration.setClientID(nil)
-        
-        XCTAssertEqual(defaultClientID, Configuration.shared.clientID)
     }
     
     //MARK: Callback URI String Tests
@@ -127,17 +111,9 @@ class ConfigurationTests: XCTestCase {
     
     func testCallbackURIString_overwriteDefault() {
         let callbackURIString = "callback://test"
-        Configuration.setCallbackURIString(callbackURIString)
+        Configuration.shared.setCallbackURIString(callbackURIString)
         
         XCTAssertEqual(callbackURIString, Configuration.shared.getCallbackURIString())
-    }
-    
-    func testCallbackURIString_resetDefault() {
-        Configuration.setCallbackURIString("testCallback://asdf")
-        
-        Configuration.setCallbackURIString(nil)
-        
-        XCTAssertEqual(defaultGeneralCallbackString, Configuration.shared.getCallbackURIString())
     }
     
     func testCallbackURIString_getDefault_getTypes() {
@@ -153,10 +129,10 @@ class ConfigurationTests: XCTestCase {
         let implicitCallbackString = "testURI://uberConnectImplicitNew"
         let nativeCallbackString = "testURI://uberConnectNativeNew"
         
-        Configuration.setCallbackURIString(generalCallbackString, type: .general)
-        Configuration.setCallbackURIString(authorizationCodeCallbackString, type: .authorizationCode)
-        Configuration.setCallbackURIString(implicitCallbackString, type: .implicit)
-        Configuration.setCallbackURIString(nativeCallbackString, type: .native)
+        Configuration.shared.setCallbackURIString(generalCallbackString, type: .general)
+        Configuration.shared.setCallbackURIString(authorizationCodeCallbackString, type: .authorizationCode)
+        Configuration.shared.setCallbackURIString(implicitCallbackString, type: .implicit)
+        Configuration.shared.setCallbackURIString(nativeCallbackString, type: .native)
         
         XCTAssertEqual(generalCallbackString, Configuration.shared.getCallbackURIString(for: .general))
         XCTAssertEqual(authorizationCodeCallbackString, Configuration.shared.getCallbackURIString(for: .authorizationCode))
@@ -170,15 +146,15 @@ class ConfigurationTests: XCTestCase {
         let implicitCallbackString = "testURI://uberConnectImplicitNew"
         let nativeCallbackString = "testURI://uberConnectNativeNew"
         
-        Configuration.setCallbackURIString(generalCallbackString, type: .general)
-        Configuration.setCallbackURIString(authorizationCodeCallbackString, type: .authorizationCode)
-        Configuration.setCallbackURIString(implicitCallbackString, type: .implicit)
-        Configuration.setCallbackURIString(nativeCallbackString, type: .native)
+        Configuration.shared.setCallbackURIString(generalCallbackString, type: .general)
+        Configuration.shared.setCallbackURIString(authorizationCodeCallbackString, type: .authorizationCode)
+        Configuration.shared.setCallbackURIString(implicitCallbackString, type: .implicit)
+        Configuration.shared.setCallbackURIString(nativeCallbackString, type: .native)
         
-        Configuration.setCallbackURIString(nil, type: .general)
-        Configuration.setCallbackURIString(nil, type: .authorizationCode)
-        Configuration.setCallbackURIString(nil, type: .implicit)
-        Configuration.setCallbackURIString(nil, type: .native)
+        Configuration.shared.setCallbackURIString(nil, type: .general)
+        Configuration.shared.setCallbackURIString(nil, type: .authorizationCode)
+        Configuration.shared.setCallbackURIString(nil, type: .implicit)
+        Configuration.shared.setCallbackURIString(nil, type: .native)
         
         XCTAssertEqual(defaultGeneralCallbackString, Configuration.shared.getCallbackURIString(for: .general))
         XCTAssertEqual(defaultAuthorizationCodeCallbackString, Configuration.shared.getCallbackURIString(for: .authorizationCode))
@@ -192,12 +168,12 @@ class ConfigurationTests: XCTestCase {
         let implicitCallbackString = "testURI://uberConnectImplicitNew"
         let nativeCallbackString = "testURI://uberConnectNativeNew"
         
-        Configuration.setCallbackURIString(generalCallbackString, type: .general)
-        Configuration.setCallbackURIString(authorizationCodeCallbackString, type: .authorizationCode)
-        Configuration.setCallbackURIString(implicitCallbackString, type: .implicit)
-        Configuration.setCallbackURIString(nativeCallbackString, type: .native)
+        Configuration.shared.setCallbackURIString(generalCallbackString, type: .general)
+        Configuration.shared.setCallbackURIString(authorizationCodeCallbackString, type: .authorizationCode)
+        Configuration.shared.setCallbackURIString(implicitCallbackString, type: .implicit)
+        Configuration.shared.setCallbackURIString(nativeCallbackString, type: .native)
 
-        Configuration.setCallbackURIString(nil, type: .native)
+        Configuration.shared.setCallbackURIString(nil, type: .native)
         
         XCTAssertEqual(generalCallbackString, Configuration.shared.getCallbackURIString(for: .general))
         XCTAssertEqual(authorizationCodeCallbackString, Configuration.shared.getCallbackURIString(for: .authorizationCode))
@@ -216,7 +192,7 @@ class ConfigurationTests: XCTestCase {
     func testCallbackURIStringFallbackUsesGeneralOverride_whenCallbackURIsMissing() {
         Configuration.plistName = "testInfoMissingCallbacks"
         let override = "testURI://override"
-        Configuration.setCallbackURIString(override, type: .general)
+        Configuration.shared.setCallbackURIString(override, type: .general)
         XCTAssertEqual(override, Configuration.shared.getCallbackURIString(for: .general))
         XCTAssertEqual(override, Configuration.shared.getCallbackURIString(for: .authorizationCode))
         XCTAssertEqual(override, Configuration.shared.getCallbackURIString(for: .implicit))
@@ -226,43 +202,27 @@ class ConfigurationTests: XCTestCase {
     //MARK: App Display Name Tests
     
     func testAppDisplayName_getDefault() {
-        XCTAssertEqual(defaultDisplayName, Configuration.getAppDisplayName())
+        XCTAssertEqual(defaultDisplayName, Configuration.shared.appDisplayName)
     }
     
     func testAppDisplayName_overwriteDefault() {
         let appDisplayName = "Test App"
-        Configuration.setAppDisplayName(appDisplayName)
+        Configuration.shared.appDisplayName = appDisplayName
         
-        XCTAssertEqual(appDisplayName, Configuration.getAppDisplayName())
-    }
-    
-    func testAppDisplayName_resetDefault() {
-        Configuration.setAppDisplayName("new app name")
-        
-        Configuration.setAppDisplayName(nil)
-        
-        XCTAssertEqual(defaultDisplayName, Configuration.getAppDisplayName())
+        XCTAssertEqual(appDisplayName, Configuration.shared.appDisplayName)
     }
     
     //MARK: Server Token Tests
     
     func testServerToken_getDefault() {
-        XCTAssertEqual(defaultServerToken, Configuration.getServerToken())
+        XCTAssertEqual(defaultServerToken, Configuration.shared.serverToken)
     }
     
     func testServerToken_overwriteDefault() {
         let serverToken = "nonDefaultToken"
-        Configuration.setServerToken(serverToken)
+        Configuration.shared.serverToken = serverToken
         
-        XCTAssertEqual(serverToken, Configuration.getServerToken())
-    }
-    
-    func testServerToken_resetDefault() {
-        Configuration.setServerToken("nonDefaultToken")
-        
-        Configuration.setServerToken(nil)
-        
-        XCTAssertEqual(defaultServerToken, Configuration.getServerToken())
+        XCTAssertEqual(serverToken, Configuration.shared.serverToken)
     }
     
     //MARK: Keychain Access Group Tests
@@ -273,19 +233,11 @@ class ConfigurationTests: XCTestCase {
     
     func testDefaultKeychainAccessGroup_overwriteDefault() {
         let defaultKeychainAccessGroup = "accessGroup"
-        Configuration.setDefaultKeychainAccessGroup(defaultKeychainAccessGroup)
+        Configuration.shared.defaultKeychainAccessGroup = defaultKeychainAccessGroup
         
         XCTAssertEqual(defaultKeychainAccessGroup, Configuration.shared.defaultKeychainAccessGroup)
     }
-    
-    func testDefaultKeychainAccessGroup_resetDefault() {
-        Configuration.setDefaultKeychainAccessGroup("accessGroup")
-        
-        Configuration.setDefaultKeychainAccessGroup(nil)
-        
-        XCTAssertEqual("", Configuration.shared.defaultKeychainAccessGroup)
-    }
-    
+
     //MARK: Access token identifier tests
     
     func testDefaultAccessTokenIdentifier_getDefault() {
@@ -294,42 +246,21 @@ class ConfigurationTests: XCTestCase {
     
     func testDefaultAccessTokenIdentifier_overwriteDefault() {
         let newIdentifier = "newIdentifier"
-        Configuration.setDefaultAccessTokenIdentifier(newIdentifier)
+        Configuration.shared.defaultAccessTokenIdentifier = newIdentifier
         
         XCTAssertEqual(newIdentifier, Configuration.shared.defaultAccessTokenIdentifier)
     }
-    
-    func testDefaultAccessTokenIdentifier_resetDefault() {
-        Configuration.setDefaultAccessTokenIdentifier("newIdentifier")
 
-        Configuration.setDefaultAccessTokenIdentifier(nil)
-        
-        XCTAssertEqual(defaultAccessTokenIdentifier, Configuration.shared.defaultAccessTokenIdentifier)
-    }
-    
-    //MARK: Region Tests
-    
-    func testRegion_getDefault() {
-        XCTAssertEqual(defaultRegion, Configuration.shared.region)
-    }
-    
-    func testRegion_overwriteDefault() {
-        let newRegion = Region.china
-        Configuration.setRegion(newRegion)
-        
-        XCTAssertEqual(newRegion, Configuration.shared.region)
-    }
-    
     //MARK: Sandbox Tests
     
     func testSandbox_getDefault() {
-        XCTAssertEqual(defaultSandbox, Configuration.shared.sandboxEnabled)
+        XCTAssertEqual(defaultSandbox, Configuration.shared.isSandbox)
     }
     
     func testSandbox_overwriteDefault() {
         let newSandbox = true
-        Configuration.setSandboxEnabled(newSandbox)
+        Configuration.shared.isSandbox = newSandbox
         
-        XCTAssertEqual(newSandbox, Configuration.shared.sandboxEnabled)
+        XCTAssertEqual(newSandbox, Configuration.shared.isSandbox)
     }
 }

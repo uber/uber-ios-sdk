@@ -35,10 +35,10 @@ class BaseAuthenticatorTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setSandboxEnabled(true)
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.isSandbox = true
         redirectURI = Configuration.shared.getCallbackURIString(for: .general)
     }
     
@@ -67,20 +67,20 @@ class BaseAuthenticatorTests: XCTestCase {
         var emptyRequest = URLRequest(url: url)
         emptyRequest.url = nil
         let baseAuthenticator = BaseAuthenticator(scopes: [])
-        XCTAssertFalse(baseAuthenticator.handleRedirectRequest(emptyRequest))
+        XCTAssertFalse(baseAuthenticator.handleRedirect(for: emptyRequest))
     }
     
     func testBaseAuthenticator_handleRedirectFalse_whenURLNotRedirect() {
         let redirectURLString = "testURI://redirect"
         let notRedirectURLString = "testURI://notRedirect"
-        Configuration.setCallbackURIString(redirectURLString, type: .general)
+        Configuration.shared.setCallbackURIString(redirectURLString, type: .general)
         guard let notRedirectURL = URL(string: notRedirectURLString) else {
             XCTFail()
             return
         }
         let handleRequest = URLRequest(url: notRedirectURL)
         let baseAuthenticator = BaseAuthenticator(scopes: [])
-        XCTAssertFalse(baseAuthenticator.handleRedirectRequest(handleRequest))
+        XCTAssertFalse(baseAuthenticator.handleRedirect(for: handleRequest))
     }
     
     func testBaseAuthenticator_handleRedirectTrue_whenValidRedirect() {
@@ -91,7 +91,7 @@ class BaseAuthenticatorTests: XCTestCase {
         }
         
         let redirectURLString = "testURI://redirect?error=server_error"
-        Configuration.setCallbackURIString(redirectURLString, type: .general)
+        Configuration.shared.setCallbackURIString(redirectURLString, type: .general)
         guard let redirectURL = URL(string: redirectURLString) else {
             XCTFail()
             return
@@ -100,7 +100,7 @@ class BaseAuthenticatorTests: XCTestCase {
         let baseAuthenticator = BaseAuthenticator(scopes: [])
         baseAuthenticator.loginCompletion = loginCompletionBlock
         
-        XCTAssertTrue(baseAuthenticator.handleRedirectRequest(handleRequest))
+        XCTAssertTrue(baseAuthenticator.handleRedirect(for: handleRequest))
         
         waitForExpectations(timeout: 1, handler: nil)
     }

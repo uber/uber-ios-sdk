@@ -32,11 +32,11 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setClientID(clientID)
-        Configuration.setSandboxEnabled(true)
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.clientID = clientID
+        Configuration.shared.isSandbox = true
         versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         expectedDeeplinkUserAgent = "rides-ios-v\(versionNumber!)-deeplink"
         expectedButtonUserAgent = "rides-ios-v\(versionNumber!)-button"
@@ -46,7 +46,7 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
         Configuration.restoreDefaults()
         super.tearDown()
     }
-    
+
     /**
      *  Test createURL with source button.
      */
@@ -56,7 +56,7 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
         let rideParameters = RideParametersBuilder().setSource(RideRequestButton.sourceString).build()
         let requestingBehavior = DeeplinkRequestingBehavior()
         
-        let appStoreDeeplink = requestingBehavior.createAppStoreDeeplink(rideParameters)
+        let appStoreDeeplink = requestingBehavior.createAppStoreDeeplink(rideParameters: rideParameters)
         
         let components = URLComponents(url: appStoreDeeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertNotNil(components)
@@ -75,7 +75,7 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
         let rideParameters = RideParametersBuilder().setSource(RequestDeeplink.sourceString).build()
         let requestingBehavior = DeeplinkRequestingBehavior()
         
-        let appStoreDeeplink = requestingBehavior.createAppStoreDeeplink(rideParameters)
+        let appStoreDeeplink = requestingBehavior.createAppStoreDeeplink(rideParameters: rideParameters)
         
         let components = URLComponents(url: appStoreDeeplink.deeplinkURL, resolvingAgainstBaseURL: false)
         XCTAssertNotNil(components)
@@ -94,7 +94,7 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
         }
         let requestingBehavior = DeeplinkRequestingBehaviorMock(testClosure: testClosure)
         
-        requestingBehavior.requestRide(rideParameters)
+        requestingBehavior.requestRide(parameters: rideParameters)
         
         waitForExpectations(timeout: 0.5, handler: nil)
     }

@@ -34,22 +34,22 @@
         guard let rideParameters = rideParameters else {
             return
         }
-        let deeplink = createDeeplink(parameters: rideParameters)
+        let deeplink = createDeeplink(rideParameters: rideParameters)
         
         let deeplinkCompletion: (NSError?) -> () = { error in
             if let error = error, error.code != DeeplinkErrorType.deeplinkNotFollowed.rawValue {
-                self.createAppStoreDeeplink(parameters: rideParameters).execute(completion: nil)
+                self.createAppStoreDeeplink(rideParameters: rideParameters).execute(completion: nil)
             }
         }
         
         deeplink.execute(completion: deeplinkCompletion)
     }
     
-    func createDeeplink(parameters rideParameters: RideParameters) -> RequestDeeplink {
+    func createDeeplink(rideParameters: RideParameters) -> RequestDeeplink {
         return RequestDeeplink(rideParameters: rideParameters)
     }
     
-    func createAppStoreDeeplink(parameters rideParameters: RideParameters) -> Deeplinking {
+    func createAppStoreDeeplink(rideParameters: RideParameters) -> Deeplinking {
         return AppStoreDeeplink(userAgent: rideParameters.userAgent)
     }
 }

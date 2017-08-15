@@ -31,10 +31,10 @@ class LoginButtonTests : XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setSandboxEnabled(true)
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.isSandbox = true
         keychain = KeychainWrapper()
         let tokenData = ["access_token" : "testTokenString"]
         testToken = AccessToken(JSON: tokenData)
@@ -51,7 +51,7 @@ class LoginButtonTests : XCTestCase {
 
         _ = keychain.deleteObjectForKey(identifier)
         
-        let token = TokenManager.fetchToken(identifier)
+        let token = TokenManager.fetchToken(identifier: identifier)
         XCTAssertNil(token)
         
         let loginManager = LoginManager(accessTokenIdentifier: identifier, keychainAccessGroup: nil, loginType: .implicit)
@@ -82,7 +82,7 @@ class LoginButtonTests : XCTestCase {
 
         _ = keychain.deleteObjectForKey(identifier)
         
-        let token = TokenManager.fetchToken(identifier)
+        let token = TokenManager.fetchToken(identifier: identifier)
         XCTAssertNil(token)
         
         let expectation = self.expectation(description: "Expected executeLogin() called")
@@ -120,7 +120,7 @@ class LoginButtonTests : XCTestCase {
         XCTAssertEqual(loginButton.buttonState, LoginButtonState.signedIn)
         loginButton.uberButtonTapped(loginButton)
         
-        XCTAssertNil(TokenManager.fetchToken(identifier))
+        XCTAssertNil(TokenManager.fetchToken(identifier: identifier))
         
         _ = keychain.deleteObjectForKey(identifier)
     }

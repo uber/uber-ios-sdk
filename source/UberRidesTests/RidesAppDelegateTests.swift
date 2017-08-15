@@ -32,11 +32,11 @@ class RidesAppDelegateTests : XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setClientID(clientID)
-        Configuration.setSandboxEnabled(true)
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.clientID = clientID
+        Configuration.shared.isSandbox = true
         versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         expectedDeeplinkUserAgent = "rides-ios-v\(versionNumber!)-deeplink"
         expectedButtonUserAgent = "rides-ios-v\(versionNumber!)-button"
@@ -49,7 +49,7 @@ class RidesAppDelegateTests : XCTestCase {
     }
     
     func testOpenUrlReturnsFalse_whenNoLoginManager() {
-        let appDelegate = RidesAppDelegate.sharedInstance
+        let appDelegate = RidesAppDelegate.shared
         
         let testApp = UIApplication.shared
         guard let url = URL(string: "http://www.google.com") else {
@@ -57,12 +57,12 @@ class RidesAppDelegateTests : XCTestCase {
             return
         }
         
-        XCTAssertFalse(appDelegate.application(testApp, openURL: url, sourceApplication: nil, annotation: nil))
+        XCTAssertFalse(appDelegate.application(testApp, open: url, sourceApplication: nil, annotation: ""))
     }
     
     func testOpenUrlReturnsTrue_callsOpenURLOnLoginManager() {
         let expectation = self.expectation(description: "open URL called")
-        let appDelegate = RidesAppDelegate.sharedInstance
+        let appDelegate = RidesAppDelegate.shared
         let loginManagerMock = LoginManagingProtocolMock()
         let testApp = UIApplication.shared
         guard let testURL = URL(string: "http://www.google.com") else {
@@ -83,20 +83,20 @@ class RidesAppDelegateTests : XCTestCase {
         
         loginManagerMock.openURLClosure = urlClosure
         appDelegate.loginManager = loginManagerMock
-        XCTAssertTrue(appDelegate.application(testApp, openURL: testURL, sourceApplication: testSourceApplication, annotation: testAnnotation as AnyObject?))
+        XCTAssertTrue(appDelegate.application(testApp, open: testURL, sourceApplication: testSourceApplication, annotation: testAnnotation))
         XCTAssertNil(appDelegate.loginManager)
         waitForExpectations(timeout: 0.2, handler: nil)
     }
     
     func testDidFinishLaunchingReturnsFalse_whenNoLaunchOptions() {
-        let appDelegate = RidesAppDelegate.sharedInstance
+        let appDelegate = RidesAppDelegate.shared
         let testApp = UIApplication.shared
         XCTAssertFalse(appDelegate.application(testApp, didFinishLaunchingWithOptions: nil))
     }
     
     func testDidFinishLaunchingCallsOpenURL_whenLaunchURL() {
         let expectation = self.expectation(description: "open URL called")
-        let appDelegate = RidesAppDelegate.sharedInstance
+        let appDelegate = RidesAppDelegate.shared
         let testApp = UIApplication.shared
         let loginManagerMock = LoginManagingProtocolMock()
         guard let testURL = URL(string: "http://www.google.com") else {
@@ -128,7 +128,7 @@ class RidesAppDelegateTests : XCTestCase {
     
     func testDidBecomeActiveCallsLoginManager_whenDidBecomeActiveNotification() {
         let expectation = self.expectation(description: "didBecomeActive called")
-        let appDelegate = RidesAppDelegate.sharedInstance
+        let appDelegate = RidesAppDelegate.shared
         let loginManagerMock = LoginManagingProtocolMock()
         
         let didBecomeActiveClosure: () -> () = {

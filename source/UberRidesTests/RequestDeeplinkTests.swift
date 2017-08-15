@@ -66,11 +66,11 @@ class UberRidesDeeplinkTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setClientID(clientID)
-        Configuration.setSandboxEnabled(true)
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.clientID = clientID
+        Configuration.shared.isSandbox = true
         versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         expectedDeeplinkUserAgent = "rides-ios-v\(versionNumber!)-deeplink"
         expectedButtonUserAgent = "rides-ios-v\(versionNumber!)-button"

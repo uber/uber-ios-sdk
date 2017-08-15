@@ -84,13 +84,13 @@ private let callbackURIStringKey = "URIString"
 */
 @objc(UBSDKConfiguration) open class Configuration : NSObject {
     // MARK : Variables
-    private(set) open static var shared: Configuration = Configuration()
+    open static var shared: Configuration = Configuration()
     
     /// The .plist file to use, default is Info.plist
-    open var plistName = "Info"
+    open static var plistName = "Info"
     
     /// The bundle that contains the .plist file. Default is the mainBundle()
-    open var bundle = Bundle.main
+    open static var bundle = Bundle.main
     
     open var processPool = WKProcessPool()
 
@@ -278,11 +278,11 @@ private let callbackURIStringKey = "URIString"
     }
 
     private func fatalConfigurationError(_ variableName: String, key: String ) -> Never  {
-        fatalError("Unable to get your \(variableName). Did you forget to set it in your \(plistName).plist? (Should be under \(key) key)")
+        fatalError("Unable to get your \(variableName). Did you forget to set it in your \(Configuration.plistName).plist? (Should be under \(key) key)")
     }
 
     private func getPlistDictionary() -> [String : AnyObject]? {
-        guard let path = bundle.path(forResource: plistName, ofType: "plist"),
+        guard let path = Configuration.bundle.path(forResource: Configuration.plistName, ofType: "plist"),
             let dictionary = NSDictionary(contentsOfFile: path) as? [String: AnyObject] else {
                 return nil
         }

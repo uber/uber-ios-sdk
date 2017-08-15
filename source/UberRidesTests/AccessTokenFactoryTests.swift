@@ -56,7 +56,7 @@ class AccessTokenFactoryTests: XCTestCase {
         do {
             let expectedExpirationInterval = Date().timeIntervalSince1970 + expirationTime
             
-            let token : AccessToken = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            let token : AccessToken = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertEqual(token.refreshToken, refreshTokenString)
@@ -86,7 +86,7 @@ class AccessTokenFactoryTests: XCTestCase {
             return
         }
         do {
-            _ = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            _ = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTFail("Didn't parse out error")
         } catch let error as NSError {
             XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
@@ -105,7 +105,7 @@ class AccessTokenFactoryTests: XCTestCase {
             return
         }
         do {
-            _ = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            _ = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTFail("Didn't parse out error")
         } catch let error as NSError {
             XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
@@ -124,7 +124,7 @@ class AccessTokenFactoryTests: XCTestCase {
             return
         }
         do {
-            let token : AccessToken = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            let token : AccessToken = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertNil(token.refreshToken)
@@ -147,7 +147,7 @@ class AccessTokenFactoryTests: XCTestCase {
             return
         }
         do {
-            _ = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            _ = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTFail("Didn't parse out error")
         } catch let error as NSError {
             XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
@@ -169,7 +169,7 @@ class AccessTokenFactoryTests: XCTestCase {
         do {
             let expectedExpirationInterval = Date().timeIntervalSince1970 + expirationTime
             
-            let token : AccessToken = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            let token : AccessToken = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertEqual(token.refreshToken, refreshTokenString)
@@ -199,7 +199,7 @@ class AccessTokenFactoryTests: XCTestCase {
             return
         }
         do {
-            let token : AccessToken = try AccessTokenFactory.createAccessTokenFromRedirectURL(url)
+            let token : AccessToken = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertNil(token.refreshToken)
@@ -215,7 +215,7 @@ class AccessTokenFactoryTests: XCTestCase {
     func testParseValidJsonStringToAccessToken() {
         let tokenString = "tokenString1234"
         let jsonString = "{\"access_token\": \"\(tokenString)\"}"
-        let accessToken = AccessTokenFactory.createAccessTokenFromJSONString(string: jsonString)
+        let accessToken = AccessTokenFactory.createAccessToken(fromJSONString: jsonString)
         
         XCTAssertNotNil(accessToken)
         XCTAssertEqual(accessToken?.tokenString, tokenString)
@@ -224,7 +224,7 @@ class AccessTokenFactoryTests: XCTestCase {
     func testParseInvalidJsonStringToAccessToken() {
         let tokenString = "tokenString1234"
         let jsonString = "{\"access_token\": \"\(tokenString)\""
-        let accessToken = AccessTokenFactory.createAccessTokenFromJSONString(string: jsonString)
+        let accessToken = AccessTokenFactory.createAccessToken(fromJSONString: jsonString)
         
         XCTAssertNil(accessToken)
     }
