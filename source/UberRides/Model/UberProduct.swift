@@ -66,6 +66,9 @@ extension UberProducts: UberModel {
     /// The basic price details. See `PriceDetails` for structure.
     public fileprivate(set) var priceDetails: PriceDetails?
     
+    /// Specifies whether this product allows for the pickup and dropoff of other riders during the trip.
+    public fileprivate(set) var shared: Bool = false
+    
     public required init?(map: Map) {
     }
 }
@@ -78,6 +81,7 @@ extension UberProduct : UberModel {
         capacity     <- map["capacity"]
         imagePath    <- map["image"]
         priceDetails <- map["price_details"]
+        shared       <- map["shared"]
     }
 }
 
