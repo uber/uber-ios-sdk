@@ -106,7 +106,7 @@ class ExampleTableViewController: UITableViewController {
             }
         case 1:
             viewControllerToPush = nil
-            TokenManager.deleteToken()
+            _ = TokenManager.deleteToken()
         default:
             viewControllerToPush = nil
         }

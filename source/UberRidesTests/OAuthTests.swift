@@ -62,8 +62,8 @@ class OAuthTests: XCTestCase {
         loginView.webView.load(URLRequest(url: url!))
         
         waitForExpectations(timeout: timeout, handler: { error in
-            if error != nil {
-                print("Error: \(error)")
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
             }
             
             XCTAssertNotNil(self.accessToken)
@@ -85,8 +85,8 @@ class OAuthTests: XCTestCase {
         loginView.webView.load(URLRequest(url: url!))
         
         waitForExpectations(timeout: timeout, handler: { error in
-            if error != nil {
-                print("Error: \(error)")
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
                 return
             }
             
@@ -109,8 +109,8 @@ class OAuthTests: XCTestCase {
         loginView.webView.load(URLRequest(url: url!))
         
         waitForExpectations(timeout: timeout, handler: { error in
-            if error != nil {
-                print("Error: \(error)")
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
                 return
             }
             
@@ -134,8 +134,8 @@ class OAuthTests: XCTestCase {
         loginView.webView.load(URLRequest(url: url!))
         
         waitForExpectations(timeout: timeout, handler: { error in
-            if error != nil {
-                print("Error: \(error)")
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
                 return
             }
             
@@ -159,8 +159,8 @@ class OAuthTests: XCTestCase {
         loginView.webView.load(URLRequest(url: url!))
         
         waitForExpectations(timeout: timeout, handler: { error in
-            if error != nil {
-                print("Error: \(error)")
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
                 return
             }
             
@@ -184,8 +184,8 @@ class OAuthTests: XCTestCase {
         loginView.webView.load(URLRequest(url: url!))
         
         waitForExpectations(timeout: timeout, handler: { error in
-            if error != nil {
-                print("Error: \(error)")
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
                 return
             }
             
@@ -209,8 +209,8 @@ class OAuthTests: XCTestCase {
         loginView.webView.load(URLRequest(url: url!))
         
         waitForExpectations(timeout: timeout, handler: { error in
-            if error != nil {
-                print("Error: \(error)")
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
                 return
             }
             
@@ -234,8 +234,8 @@ class OAuthTests: XCTestCase {
         loginView.webView.load(URLRequest(url: url!))
         
         waitForExpectations(timeout: timeout, handler: { error in
-            if error != nil {
-                print("Error: \(error)")
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
                 return
             }
             

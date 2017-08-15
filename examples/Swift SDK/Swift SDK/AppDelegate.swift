@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Configuration.setSandboxEnabled(true)
         
         // Handle incoming SSO Requests
-        RidesAppDelegate.sharedInstance.application(application, didFinishLaunchingWithOptions: launchOptions)
+        _ = RidesAppDelegate.sharedInstance.application(application, didFinishLaunchingWithOptions: launchOptions)
         return true
     }
 

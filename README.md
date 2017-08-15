@@ -1,6 +1,6 @@
 # Uber Rides iOS SDK (beta)
 
-This [Swift library] (https://developer.apple.com/library/ios/documentation/General/Reference/SwiftStandardLibraryReference/) allows you to integrate Uber into your iOS app.
+This [Swift library](https://developer.apple.com/library/ios/documentation/General/Reference/SwiftStandardLibraryReference/) allows you to integrate Uber into your iOS app.
 
 ## Beta
 
@@ -33,7 +33,7 @@ To integrate Uber Rides into your Xcode project, navigate to the directory that 
 use_frameworks!
 
 target 'Your Project Name' do
-pod 'UberRides'
+  pod 'UberRides'
 end
 ```
 
@@ -110,7 +110,7 @@ If you are compiling on iOS SDK 9.0, you will need to modify your application’
 
 ```
 <key>LSApplicationQueriesSchemes</key>
-<array>                                           
+<array>
 <string>uber</string>
 <string>uberauth</string>
 </array>
@@ -130,7 +130,7 @@ Add the following code snippet, replacing the placeholders within the square bra
 ```
 <key>UberClientID</key>
 <string>[ClientID]</string>
-<key>UberServerToken<key>
+<key>UberServerToken</key>
 <string>[Server Token]</string>
 <key>UberDisplayName</key>
 <string>[App Name]</string>
@@ -171,7 +171,7 @@ You can also define specific callback URIs for different login types. For exampl
         <string>Native</string>
         <key>URIString</key>
         <string>[myApp://native_deeplink_callback]</string>
-    </dict>    
+    </dict>
 </array>
 ```
 If you don't specify a callback for a login type, the General entry will be used. **Note:** All of these callbacks need to be registered on your developer dashboard.
