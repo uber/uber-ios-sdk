@@ -78,10 +78,9 @@ import MapKit
         keychainAccessGroup = loginManager.keychainAccessGroup
         
         super.init(coder: aDecoder)
-        
-        var builder = RideParametersBuilder()
-        builder = builder.setSource(RideRequestViewController.sourceString)
-        let defaultRideParameters = builder.build()
+
+        let defaultRideParameters = RideParameters()
+        defaultRideParameters.source = RideRequestViewController.sourceString
         
         rideRequestView.rideParameters = defaultRideParameters
     }

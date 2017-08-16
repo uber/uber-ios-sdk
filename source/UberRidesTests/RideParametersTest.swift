@@ -28,19 +28,15 @@ class RideParametersTest: XCTestCase {
     private var versionNumber: String?
     private var baseUserAgent: String?
     
-    private var builder: RideParametersBuilder = RideParametersBuilder()
-    
     override func setUp() {
         super.setUp()
-        builder = RideParametersBuilder()
         versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         baseUserAgent = "rides-ios-v\(versionNumber!)"
     }
     
     func testBuilder_withNoParams() {
-        let params = builder.build()
+        let params = RideParameters()
         XCTAssertNotNil(params)
-        XCTAssertTrue(params.useCurrentLocationForPickup)
         XCTAssertNil(params.pickupLocation)
         XCTAssertNil(params.pickupAddress)
         XCTAssertNil(params.pickupNickname)
@@ -53,9 +49,7 @@ class RideParametersTest: XCTestCase {
     
     func testBuilder_correctUseCurrentLocation() {
         let testPickup = CLLocation(latitude: 32.0, longitude: -32.0)
-        builder = builder.setPickupLocation(testPickup)
-        let params = builder.build()
-        XCTAssertFalse(params.useCurrentLocationForPickup)
+        let params = RideParameters(pickupLocation: testPickup, dropoffLocation: nil)
         XCTAssertEqual(testPickup, params.pickupLocation)
         XCTAssertNil(params.pickupAddress)
         XCTAssertNil(params.pickupNickname)
@@ -79,14 +73,16 @@ class RideParametersTest: XCTestCase {
         let testPaymentID = "test payment id"
         let testSurgeConfirm = "test surge confirm"
         let expectedUserAgent = "\(baseUserAgent!)-\(testSource)"
-        builder = builder.setPickupLocation(testPickupLocation, nickname: testPickupNickname, address: testPickupAddress)
-        builder = builder.setDropoffLocation(testDropoffLocation, nickname: testDropoffNickname, address: testDropoffAddress)
-        builder = builder.setPaymentMethod(testPaymentID)
-        builder = builder.setSurgeConfirmationID(testSurgeConfirm)
-        builder = builder.setProductID(testProductID).setSource(testSource)
-        let params = builder.build()
-        
-        XCTAssertFalse(params.useCurrentLocationForPickup)
+        let params = RideParameters(pickupLocation: testPickupLocation, dropoffLocation: testDropoffLocation)
+        params.pickupNickname = testPickupNickname
+        params.pickupAddress = testPickupAddress
+        params.dropoffNickname = testDropoffNickname
+        params.dropoffAddress = testDropoffAddress
+        params.paymentMethod = testPaymentID
+        params.surgeConfirmationID = testSurgeConfirm
+        params.productID = testProductID
+        params.source = testSource
+
         XCTAssertEqual(params.pickupLocation, testPickupLocation)
         XCTAssertEqual(params.pickupAddress, testPickupAddress)
         XCTAssertEqual(params.pickupNickname, testPickupNickname)
@@ -107,12 +103,11 @@ class RideParametersTest: XCTestCase {
         let testPaymentID = "test payment id"
         let testSurgeConfirm = "test surge confirm"
         let expectedUserAgent = "\(baseUserAgent!)-\(testSource)"
-        builder = builder.setPickupPlaceID(testPickupPlace)
-        builder = builder.setDropoffPlaceID(testDropoffPlace)
-        builder = builder.setPaymentMethod(testPaymentID)
-        builder = builder.setSurgeConfirmationID(testSurgeConfirm)
-        builder = builder.setProductID(testProductID).setSource(testSource)
-        let params = builder.build()
+        let params = RideParameters(pickupPlaceID: testPickupPlace, dropoffPlaceID: testDropoffPlace)
+        params.paymentMethod = testPaymentID
+        params.surgeConfirmationID = testSurgeConfirm
+        params.productID = testProductID
+        params.source = testSource
         
         XCTAssertEqual(params.pickupPlaceID, testPickupPlace)
         XCTAssertEqual(params.dropoffPlaceID, testDropoffPlace)
@@ -122,123 +117,9 @@ class RideParametersTest: XCTestCase {
         XCTAssertNil(params.pickupLocation)
         XCTAssertNil(params.pickupAddress)
         XCTAssertNil(params.pickupNickname)
-        XCTAssertFalse(params.useCurrentLocationForPickup)
         XCTAssertEqual(params.productID, testProductID)
         XCTAssertEqual(params.userAgent, expectedUserAgent)
         XCTAssertEqual(params.paymentMethod, testPaymentID)
         XCTAssertEqual(params.surgeConfirmationID, testSurgeConfirm)
-    }
-    
-    func testBuilder_updateParameter() {
-        let testPickupLocation1 = CLLocation(latitude: 32.0, longitude: -32.0)
-        let testPickupLocation2 = CLLocation(latitude: 62.0, longitude: -62.0)
-        builder = builder.setPickupLocation(testPickupLocation1)
-        builder = builder.setPickupLocation(testPickupLocation2)
-        let params = builder.build()
-        XCTAssertFalse(params.useCurrentLocationForPickup)
-        XCTAssertEqual(params.pickupLocation, testPickupLocation2)
-        XCTAssertNil(params.pickupAddress)
-        XCTAssertNil(params.pickupNickname)
-        XCTAssertNil(params.dropoffLocation)
-        XCTAssertNil(params.dropoffAddress)
-        XCTAssertNil(params.dropoffNickname)
-        XCTAssertNil(params.productID)
-        XCTAssertNil(params.paymentMethod)
-        XCTAssertNil(params.surgeConfirmationID)
-        XCTAssertNil(params.pickupPlaceID)
-        XCTAssertNil(params.dropoffPlaceID)
-        XCTAssertEqual(params.userAgent, baseUserAgent)
-    }
-    
-    func testBuilder_useCurrentLocation() {
-        let testPickupLocation = CLLocation(latitude: 32.0, longitude: -32.0)
-        let testPickupNickname = "testPickup nickname"
-        let testPickupAddress = "123 test pickup st"
-        builder = builder.setPickupLocation(testPickupLocation, nickname: testPickupNickname, address: testPickupAddress)
-        builder = builder.setPickupToCurrentLocation()
-        let params = builder.build()
-        XCTAssertTrue(params.useCurrentLocationForPickup)
-        XCTAssertNil(params.pickupLocation)
-        XCTAssertNil(params.pickupAddress)
-        XCTAssertNil(params.pickupNickname)
-        XCTAssertNil(params.dropoffLocation)
-        XCTAssertNil(params.dropoffAddress)
-        XCTAssertNil(params.dropoffNickname)
-        XCTAssertNil(params.productID)
-        XCTAssertNil(params.paymentMethod)
-        XCTAssertNil(params.surgeConfirmationID)
-        XCTAssertNil(params.pickupPlaceID)
-        XCTAssertNil(params.dropoffPlaceID)
-        XCTAssertEqual(params.userAgent, baseUserAgent)
-    }
-    
-    func testBuilder_withExistingParameters() {
-        var expectedBuilder = RideParametersBuilder()
-        let testPickupLocation = CLLocation(latitude: 32.0, longitude: -32.0)
-        let testDropoffLocation = CLLocation(latitude: 62.0, longitude: -62.0)
-        let testPickupNickname = "testPickup"
-        let testPickupAddress = "123 pickup address"
-        let testDropoffNickname = "testDropoff"
-        let testDropoffAddress = "123 dropoff address"
-        let testProductID = "test ID"
-        let testSource = "test source"
-        let testPaymentID = "test payment id"
-        let testSurgeConfirm = "test surge confirm"
-        
-        expectedBuilder = expectedBuilder.setPickupLocation(testPickupLocation, nickname: testPickupNickname, address: testPickupAddress)
-        expectedBuilder = expectedBuilder.setDropoffLocation(testDropoffLocation, nickname: testDropoffNickname, address: testDropoffAddress)
-        expectedBuilder = expectedBuilder.setPaymentMethod(testPaymentID)
-        expectedBuilder = expectedBuilder.setSurgeConfirmationID(testSurgeConfirm)
-        expectedBuilder = expectedBuilder.setProductID(testProductID).setSource(testSource)
-        let expectedParams = expectedBuilder.build()
-        let params = RideParametersBuilder(rideParameters: expectedParams).build()
-        
-        XCTAssertEqual(params.useCurrentLocationForPickup, expectedParams.useCurrentLocationForPickup)
-        XCTAssertEqual(params.pickupLocation, expectedParams.pickupLocation)
-        XCTAssertEqual(params.pickupAddress, expectedParams.pickupAddress)
-        XCTAssertEqual(params.pickupNickname, expectedParams.pickupNickname)
-        XCTAssertEqual(params.dropoffLocation, expectedParams.dropoffLocation)
-        XCTAssertEqual(params.dropoffAddress, expectedParams.dropoffAddress)
-        XCTAssertEqual(params.dropoffNickname, expectedParams.dropoffNickname)
-        XCTAssertEqual(params.productID, expectedParams.productID)
-        XCTAssertEqual(params.userAgent, expectedParams.userAgent)
-        XCTAssertEqual(params.surgeConfirmationID, expectedParams.surgeConfirmationID)
-        XCTAssertEqual(params.paymentMethod, expectedParams.paymentMethod)
-    }
-    
-    func testBuilder_withPickupPlaceID_hasNoPickupLocation() {
-        var expectedBuilder = RideParametersBuilder()
-        let testPickupLocation = CLLocation(latitude: 32.0, longitude: -32.0)
-        let testPickupNickname = "testPickup"
-        let testPickupAddress = "123 pickup address"
-
-        let testPlaceID = "home"
-        
-        expectedBuilder = expectedBuilder.setPickupLocation(testPickupLocation, nickname: testPickupNickname, address: testPickupAddress)
-        expectedBuilder = expectedBuilder.setPickupPlaceID(testPlaceID)
-        
-        let params = expectedBuilder.build()
-        XCTAssertNil(params.pickupLocation)
-        XCTAssertNil(params.pickupNickname)
-        XCTAssertNil(params.pickupAddress)
-        XCTAssertEqual(params.pickupPlaceID, testPlaceID)
-    }
-    
-    func testBuilder_withDropoffPlaceID_hasNoDropoffLocation() {
-        var expectedBuilder = RideParametersBuilder()
-        let testDropoffLocation = CLLocation(latitude: 32.0, longitude: -32.0)
-        let testDropoffNickname = "testDropoff"
-        let testDropoffAddress = "123 dropoff address"
-        
-        let testPlaceID = "home"
-        
-        expectedBuilder = expectedBuilder.setDropoffLocation(testDropoffLocation, nickname: testDropoffNickname, address: testDropoffAddress)
-        expectedBuilder = expectedBuilder.setDropoffPlaceID(testPlaceID)
-        
-        let params = expectedBuilder.build()
-        XCTAssertNil(params.dropoffLocation)
-        XCTAssertNil(params.dropoffNickname)
-        XCTAssertNil(params.dropoffAddress)
-        XCTAssertEqual(params.dropoffPlaceID, testPlaceID)
     }
 }

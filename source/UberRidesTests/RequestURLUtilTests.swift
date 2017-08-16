@@ -45,7 +45,7 @@ class RequestURLUtilTests: XCTestCase {
     }
     
     func testCreateQueryParameters_withDefaultRideParameters() {
-        let parameters = RideParametersBuilder().build()
+        let parameters = RideParameters()
         let locationQueryItem = URLQueryItem(name: "pickup", value: "my_location")
         let actionQueryItem = URLQueryItem(name: "action", value: "setPickup")
         let clientIdQueryItem = URLQueryItem(name: "client_id", value: "testClientID")
@@ -90,11 +90,13 @@ class RequestURLUtilTests: XCTestCase {
                                        dropoffLatitudeQueryItem, dropoffLongitudeQueryItem, dropoffNicknameQueryItem, dropoffAddressQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
         
-        var builder = RideParametersBuilder()
-        builder = builder.setPickupLocation(testPickupLocation, nickname: testPickupNickname, address: testPickupAddress)
-        builder = builder.setDropoffLocation(testDropoffLocation, nickname: testDropoffNickname, address: testDropoffAddress)
-        builder = builder.setProductID(testProductID).setSource(testSource)
-        let parameters = builder.build()
+        let parameters = RideParameters(pickupLocation: testPickupLocation, dropoffLocation: testDropoffLocation)
+        parameters.pickupNickname = testPickupNickname
+        parameters.pickupAddress = testPickupAddress
+        parameters.dropoffNickname = testDropoffNickname
+        parameters.dropoffAddress = testDropoffAddress
+        parameters.productID = testProductID
+        parameters.source = testSource
         
         let comparisonSet = NSSet(array: expectedQueryParameters)
         
@@ -131,11 +133,11 @@ class RequestURLUtilTests: XCTestCase {
                                        dropoffLatitudeQueryItem, dropoffLongitudeQueryItem, dropoffAddressQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
         
-        var builder = RideParametersBuilder()
-        builder = builder.setPickupLocation(testPickupLocation, address: testPickupAddress)
-        builder = builder.setDropoffLocation(testDropoffLocation, address: testDropoffAddress)
-        builder = builder.setProductID(testProductID).setSource(testSource)
-        let parameters = builder.build()
+        let parameters = RideParameters(pickupLocation: testPickupLocation, dropoffLocation: testDropoffLocation)
+        parameters.pickupAddress = testPickupAddress
+        parameters.dropoffAddress = testDropoffAddress
+        parameters.productID = testProductID
+        parameters.source = testSource
         
         let comparisonSet = NSSet(array: expectedQueryParameters)
         
@@ -171,12 +173,12 @@ class RequestURLUtilTests: XCTestCase {
         let expectedQueryParameters = [pickupLatitudeQueryItem, pickupLongitudeQueryItem, pickupNicknameQueryItem,
                                        dropoffLatitudeQueryItem, dropoffLongitudeQueryItem, dropoffNicknameQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
-        
-        var builder = RideParametersBuilder()
-        builder = builder.setPickupLocation(testPickupLocation, nickname: testPickupNickname)
-        builder = builder.setDropoffLocation(testDropoffLocation, nickname: testDropoffNickname)
-        builder = builder.setProductID(testProductID).setSource(testSource)
-        let parameters = builder.build()
+
+        let parameters = RideParameters(pickupLocation: testPickupLocation, dropoffLocation: testDropoffLocation)
+        parameters.pickupNickname = testPickupNickname
+        parameters.dropoffNickname = testDropoffNickname
+        parameters.productID = testProductID
+        parameters.source = testSource
         
         let comparisonSet = NSSet(array: expectedQueryParameters)
         
@@ -207,11 +209,12 @@ class RequestURLUtilTests: XCTestCase {
         
         let expectedQueryParameters = [pickupLatitudeQueryItem, pickupLongitudeQueryItem, pickupNicknameQueryItem, pickupAddressQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
-        
-        var builder = RideParametersBuilder()
-        builder = builder.setPickupLocation(testPickupLocation, nickname: testPickupNickname, address: testPickupAddress)
-        builder = builder.setProductID(testProductID).setSource(testSource)
-        let parameters = builder.build()
+
+        let parameters = RideParameters(pickupLocation: testPickupLocation, dropoffLocation: nil)
+        parameters.pickupNickname = testPickupNickname
+        parameters.pickupAddress = testPickupAddress
+        parameters.productID = testProductID
+        parameters.source = testSource
         
         let comparisonSet = NSSet(array: expectedQueryParameters)
         

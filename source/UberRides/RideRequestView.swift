@@ -109,7 +109,7 @@ import CoreLocation
      - returns: An initialized RideRequestView
      */
     @objc public convenience override init(frame: CGRect) {
-        self.init(rideParameters: RideParametersBuilder().build(), accessToken: TokenManager.fetchToken(), frame: frame)
+        self.init(rideParameters: RideParameters(), accessToken: TokenManager.fetchToken(), frame: frame)
     }
     
     /**
@@ -121,11 +121,11 @@ import CoreLocation
      - returns: An initialized RideRequestView
      */
     @objc public convenience init() {
-        self.init(rideParameters: RideParametersBuilder().build(), accessToken: TokenManager.fetchToken(), frame: CGRect.zero)
+        self.init(rideParameters: RideParameters(), accessToken: TokenManager.fetchToken(), frame: CGRect.zero)
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        rideParameters = RideParametersBuilder().build()
+        rideParameters = RideParameters()
         let configuration = WKWebViewConfiguration()
         configuration.processPool = Configuration.shared.processPool
         webView = WKWebView(frame: CGRect.zero, configuration: configuration)
