@@ -63,15 +63,15 @@ import MapKit
     /// The source to use for attributing the ride
     public var source: String?
 
-    convenience override init() {
+    convenience public override init() {
         self.init(pickupLocation: nil, dropoffLocation: nil, pickupPlaceID: nil, dropoffPlaceID: nil)
     }
 
-    convenience init(pickupLocation: CLLocation?, dropoffLocation: CLLocation?) {
+    convenience public init(pickupLocation: CLLocation?, dropoffLocation: CLLocation?) {
         self.init(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation, pickupPlaceID: nil, dropoffPlaceID: nil)
     }
 
-    convenience init(pickupPlaceID: String?, dropoffPlaceID: String?) {
+    convenience public init(pickupPlaceID: String?, dropoffPlaceID: String?) {
         self.init(pickupLocation: nil, dropoffLocation: nil, pickupPlaceID: pickupPlaceID, dropoffPlaceID: dropoffPlaceID)
     }
 
