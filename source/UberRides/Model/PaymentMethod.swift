@@ -49,13 +49,13 @@ extension PaymentMethods: UberModel {
 @objc(UBSDKPaymentMethod) public class PaymentMethod: NSObject {
     
     /// The account identification or description associated with the payment method.
-    public fileprivate(set) var paymentDescription: String?
+    @objc public private(set) var paymentDescription: String?
     
     /// Unique identifier of the payment method.
-    public fileprivate(set) var methodID: String?
+    @objc public private(set) var methodID: String?
     
     /// The type of the payment method. See https://developer.uber.com/docs/v1-payment-methods.
-    public fileprivate(set) var type: String?
+    @objc public private(set) var type: String?
     
     public required init?(map: Map) {
     }

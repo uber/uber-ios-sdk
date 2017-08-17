@@ -32,16 +32,16 @@ import ObjectMapper
 @objc(UBSDKVehicle) public class Vehicle: NSObject {
     
     /// The license plate number of the vehicle.
-    public fileprivate(set) var licensePlate: String?
+    @objc public private(set) var licensePlate: String?
     
     /// The vehicle make or brand.
-    public fileprivate(set) var make: String?
+    @objc public private(set) var make: String?
     
     /// The vehicle model or type.
-    public fileprivate(set) var model: String?
+    @objc public private(set) var model: String?
     
     /// The URL to a stock photo of the vehicle (may be null).
-    public fileprivate(set) var pictureURL: String?
+    @objc public private(set) var pictureURL: String?
     
     public required init?(map: Map) {
     }

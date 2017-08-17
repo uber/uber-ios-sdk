@@ -43,10 +43,10 @@ import MapKit
 // View controller to wrap the RideRequestView
 @objc (UBSDKRideRequestViewController) open class RideRequestViewController: UIViewController {
     /// The RideRequestViewControllerDelegate to handle the errors
-    open var delegate: RideRequestViewControllerDelegate?
+    @objc open var delegate: RideRequestViewControllerDelegate?
     
     /// The LoginManager to use for managing the login process
-    open var loginManager: LoginManager {
+    @objc open var loginManager: LoginManager {
         didSet {
             accessTokenIdentifier = loginManager.accessTokenIdentifier
             keychainAccessGroup = loginManager.keychainAccessGroup
@@ -56,12 +56,12 @@ import MapKit
     lazy var rideRequestView: RideRequestView = RideRequestView()
     lazy var loginView: LoginView = LoginView(loginAuthenticator: ImplicitGrantAuthenticator(presentingViewController: self, scopes: [.RideWidgets]))
     lazy var nativeAuthenticator = NativeAuthenticator(scopes: [.RideWidgets])
-    
+
     static let sourceString = "ride_request_widget"
-    
-    fileprivate var accessTokenWasUnauthorizedOnPreviousAttempt = false
-    fileprivate var accessTokenIdentifier: String
-    fileprivate var keychainAccessGroup: String
+
+    private var accessTokenWasUnauthorizedOnPreviousAttempt = false
+    private var accessTokenIdentifier: String
+    private var keychainAccessGroup: String
     private var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
     
     /**

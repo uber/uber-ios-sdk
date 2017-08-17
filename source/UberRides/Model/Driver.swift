@@ -32,16 +32,16 @@ import ObjectMapper
 @objc(UBSDKDriver) public class Driver: NSObject {
     
     /// The first name of the driver.
-    public fileprivate(set) var name: String?
+    @objc public private(set) var name: String?
     
     /// The URL to the photo of the driver.
-    public fileprivate(set) var pictureURL: String?
+    @objc public private(set) var pictureURL: String?
     
     /// The formatted phone number for contacting the driver.
-    public fileprivate(set) var phoneNumber: String?
+    @objc public private(set) var phoneNumber: String?
     
     /// The driver's star rating out of 5 stars.
-    public fileprivate(set) var rating: Double = 0.0
+    @objc public private(set) var rating: Double = 0.0
     
     public required init?(map: Map) {
     }

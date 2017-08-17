@@ -28,21 +28,21 @@ import UIKit
 @objc(UBSDKBaseAuthenticator) open class BaseAuthenticator: NSObject, UberAuthenticating {
     
     /// Optional identifier for saving the access token in keychain
-    open var accessTokenIdentifier: String?
+    @objc open var accessTokenIdentifier: String?
     
     /// Optional access group for saving the access token in keychain
-    open var keychainAccessGroup: String?
+    @objc open var keychainAccessGroup: String?
     
     /// Completion block for when login has completed
-    open var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
+    @objc open var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
     
     /// Scopes to request during login
-    open var scopes: [RidesScope]
+    @objc open var scopes: [RidesScope]
     
     /// The Callback URL Type to use for this authentication method
-    open var callbackURIType: CallbackURIType = .general
+    @objc open var callbackURIType: CallbackURIType = .general
     
-    init(scopes: [RidesScope]) {
+    @objc init(scopes: [RidesScope]) {
         self.scopes = scopes
         super.init()
     }

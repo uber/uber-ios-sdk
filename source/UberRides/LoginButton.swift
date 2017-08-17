@@ -58,25 +58,25 @@ import UIKit
     let horizontalCenterPadding: CGFloat = 50
     let loginVerticalPadding: CGFloat = 15
     let loginHorizontalEdgePadding: CGFloat = 15
-    
+
     /// The LoginButtonDelegate for this button
-    open weak var delegate: LoginButtonDelegate?
+    @objc open weak var delegate: LoginButtonDelegate?
     
     /// The LoginManager to use for log in
-    open var loginManager: LoginManager {
+    @objc open var loginManager: LoginManager {
         didSet {
             refreshContent()
         }
     }
     
     /// The RidesScopes to request
-    open var scopes: [RidesScope]
+    @objc open var scopes: [RidesScope]
     
     /// The view controller to present login over. Used
-    open var presentingViewController: UIViewController?
+    @objc open var presentingViewController: UIViewController?
     
     /// The current LoginButtonState of this button (signed in / signed out)
-    open var buttonState: LoginButtonState {
+    @objc open var buttonState: LoginButtonState {
         if let _ = TokenManager.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup) {
             return .signedIn
         } else {
@@ -94,7 +94,7 @@ import UIKit
     
     private var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
     
-    public init(frame: CGRect, scopes: [RidesScope], loginManager: LoginManager) {
+    @objc public init(frame: CGRect, scopes: [RidesScope], loginManager: LoginManager) {
         self.loginManager = loginManager
         self.scopes = scopes
         super.init(frame: frame)
@@ -154,9 +154,9 @@ import UIKit
         uberTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         uberImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        uberImageView.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
-        uberTitleLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
-        uberTitleLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .vertical)
+        uberImageView.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        uberTitleLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        uberTitleLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         
         let imageLeftConstraint = NSLayoutConstraint(item: uberImageView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: loginHorizontalEdgePadding)
         let imageTopConstraint = NSLayoutConstraint(item: uberImageView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: loginVerticalPadding)
@@ -168,7 +168,7 @@ import UIKit
         let imagePaddingRightConstraint = NSLayoutConstraint(item: uberTitleLabel, attribute: .left, relatedBy: .greaterThanOrEqual , toItem: uberImageView, attribute: .right, multiplier: 1.0, constant: imageLabelPadding)
         
         let horizontalCenterPaddingConstraint = NSLayoutConstraint(item: uberTitleLabel, attribute: .left, relatedBy: .greaterThanOrEqual , toItem: uberImageView, attribute: .right, multiplier: 1.0, constant: horizontalCenterPadding)
-        horizontalCenterPaddingConstraint.priority = UILayoutPriorityDefaultLow
+        horizontalCenterPaddingConstraint.priority = UILayoutPriority.defaultLow
         
         addConstraints([imageLeftConstraint, imageTopConstraint, imageBottomConstraint])
         addConstraints([titleLabelRightConstraint, titleLabelCenterYConstraint])
@@ -198,7 +198,7 @@ import UIKit
     
     //Mark: Internal Interface
     
-    func uberButtonTapped(_ button: UIButton) {
+    @objc func uberButtonTapped(_ button: UIButton) {
         switch buttonState {
         case .signedIn:
             let success = TokenManager.deleteToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup)

@@ -27,16 +27,16 @@
 */
 @objc(UBSDKResponse) public class Response: NSObject {
     /// String representing JSON response data.
-    public var data: Data?
+    @objc public var data: Data?
     
     /// HTTP status code of response.
-    public var statusCode: Int
+    @objc public var statusCode: Int
     
     /// Response metadata.
-    public var response: HTTPURLResponse?
+    @objc public var response: HTTPURLResponse?
     
     /// NSError representing an optional error.
-    public var error: RidesError?
+    @objc public var error: RidesError?
     
     /**
      Initialize a Response object.
@@ -45,7 +45,7 @@
      - parameter response: Provides response metadata, such as HTTP headers and status code.
      - parameter error:    Indicates why the request failed, or nil if the request was successful.
      */
-    init(data: Data?, statusCode: Int, response: HTTPURLResponse?, error: RidesError?) {
+    @objc init(data: Data?, statusCode: Int, response: HTTPURLResponse?, error: RidesError?) {
         self.data = data
         self.response = response
         self.statusCode = statusCode

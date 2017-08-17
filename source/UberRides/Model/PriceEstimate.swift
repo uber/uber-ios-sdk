@@ -49,37 +49,37 @@ extension PriceEstimates: UberModel {
 @objc(UBSDKPriceEstimate) public class PriceEstimate: NSObject {
     
     /// ISO 4217 currency code.
-    public fileprivate(set) var currencyCode: String?
+    @objc public private(set) var currencyCode: String?
     
     /// Expected activity distance (in miles).
-    public fileprivate(set) var distance: Double = 0.0
+    @objc public private(set) var distance: Double = 0.0
     
     /// Expected activity duration (in seconds).
-    public fileprivate(set) var duration: Int = 0
+    @objc public private(set) var duration: Int = 0
     
     /// A formatted string representing the estimate in local currency. Could be range, single number, or "Metered" for TAXI.
-    public fileprivate(set) var estimate: String?
+    @objc public private(set) var estimate: String?
     
     /// Upper bound of the estimated price.
-    public fileprivate(set) var highEstimate: Int = 0
+    @objc public private(set) var highEstimate: Int = 0
     
     /// Lower bound of the estimated price.
-    public fileprivate(set) var lowEstimate: Int = 0
+    @objc public private(set) var lowEstimate: Int = 0
     
     /// Display name of product. Ex: "UberBLACK".
-    public fileprivate(set) var name: String?
+    @objc public private(set) var name: String?
     
     /// Unique identifier representing a specific product for a given latitude & longitude.
-    public fileprivate(set) var productID: String?
+    @objc public private(set) var productID: String?
     
     /// The unique identifier of the surge session for a user. Nil for no surge.
-    public fileprivate(set) var surgeConfirmationID: String?
+    @objc public private(set) var surgeConfirmationID: String?
     
     /// The URL a user must visit to accept surge pricing.
-    public fileprivate(set) var surgeConfirmationURL: String?
+    @objc public private(set) var surgeConfirmationURL: String?
     
     /// Expected surge multiplier (active if surge is greater than 1).
-    public fileprivate(set) var surgeMultiplier: Double = 1.0
+    @objc public private(set) var surgeMultiplier: Double = 1.0
     
     public required init?(map: Map) {
     }

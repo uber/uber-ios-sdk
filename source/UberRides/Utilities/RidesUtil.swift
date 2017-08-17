@@ -70,8 +70,8 @@ class FontUtil {
                 var error: Unmanaged<CFError>?
                 let cfdata = CFDataCreate(nil, (inData as NSData).bytes.bindMemory(to: UInt8.self, capacity: inData.count), inData.count)
                 if let provider = CGDataProvider(data: cfdata!) {
-                    let font = CGFont(provider)
-                    if (CTFontManagerRegisterGraphicsFont(font, &error)) {
+                    if let font = CGFont(provider),
+                    (CTFontManagerRegisterGraphicsFont(font, &error)) {
                         return true
                     } else {
                         print("Failed to load font with error: \(error.debugDescription)")

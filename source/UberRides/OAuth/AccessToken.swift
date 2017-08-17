@@ -28,16 +28,16 @@ import ObjectMapper
 @objc(UBSDKAccessToken) public class AccessToken: NSObject, NSCoding, UberModel {
     
     /// String containing the bearer token.
-    public private(set) var tokenString: String?
+    @objc public private(set) var tokenString: String?
     
     /// String containing the refresh token.
-    public private(set) var refreshToken: String?
+    @objc public private(set) var refreshToken: String?
     
     /// The expiration date for this access token
-    public private(set) var expirationDate: Date?
+    @objc public private(set) var expirationDate: Date?
     
     /// The scopes this token is valid for
-    public private(set) var grantedScopes: [RidesScope]?
+    @objc public private(set) var grantedScopes: [RidesScope]?
     
     /**
      Initializes an AccessToken with the provided tokenString

@@ -30,13 +30,13 @@ import ObjectMapper
 @objc(UBSDKPlace) public class Place: NSObject {
     
     /// Convenience constant for "home" place ID
-    public static let Home = "home"
+    @objc public static let Home = "home"
     
     /// Convenience constant for "work" place ID
-    public static let Work = "work"
+    @objc public static let Work = "work"
     
     /// Fully qualified address of the location.
-    public fileprivate(set) var address: String?
+    @objc public private(set) var address: String?
     
     public required init?(map: Map) {
     }

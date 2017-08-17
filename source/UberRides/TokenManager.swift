@@ -27,8 +27,8 @@ import Foundation
 /// Manager class for saving and deleting AccessTokens. Allows you to manage tokens based on token identifier & keychain access group
 @objc(UBSDKTokenManager) public class TokenManager: NSObject {
 
-    public static let tokenManagerDidSaveTokenNotification = "TokenManagerDidSaveTokenNotification"
-    public static let tokenManagerDidDeleteTokenNotification = "TokenManagerDidDeleteTokenNotification"
+    @objc public static let tokenManagerDidSaveTokenNotification = "TokenManagerDidSaveTokenNotification"
+    @objc public static let tokenManagerDidDeleteTokenNotification = "TokenManagerDidDeleteTokenNotification"
     
     private static let keychainWrapper = KeychainWrapper()
 

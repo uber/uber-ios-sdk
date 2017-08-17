@@ -72,7 +72,7 @@ private enum Resources: String {
     case products = "products"
     case request = "requests"
     
-    fileprivate var version: String {
+    private var version: String {
         switch self {
         case .estimates: return "v1"
         case .history: return "v1.2"

@@ -32,13 +32,13 @@ import ObjectMapper
 @objc(UBSDKDistanceEstimate) public class DistanceEstimate: NSObject {
     
     /// Expected activity distance.
-    public fileprivate(set) var distance: Double = 0.0
+    @objc public private(set) var distance: Double = 0.0
     
     /// The unit of distance (mile or km).
-    public fileprivate(set) var distanceUnit: String?
+    @objc public private(set) var distanceUnit: String?
     
     /// Expected activity duration (in seconds).
-    public fileprivate(set) var duration: Int = 0
+    @objc public private(set) var duration: Int = 0
     
     public required init?(map: Map) {
     }
