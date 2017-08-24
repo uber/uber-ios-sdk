@@ -22,14 +22,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: TripHistory
 
 /**
 *  User's lifetime trip activity with Uber.
 */
-@objc(UBSDKTripHistory) public class TripHistory: NSObject {
+@objc(UBSDKTripHistory) public class TripHistory: NSObject, Codable {
     /// Position in pagination.
     @objc public private(set) var offset: Int = 0
     
@@ -41,17 +39,12 @@ import ObjectMapper
     
     /// Array of trip information.
     @objc public private(set) var history: [UserActivity]?
-    
-    public required init?(map: Map) {
-    }
-}
 
-extension TripHistory: UberModel {
-    public func mapping(map: Map) {
-        offset  <- map["offset"]
-        limit   <- map["limit"]
-        count   <- map["count"]
-        history <- map["history"]
+    enum CodingKeys: String, CodingKey {
+        case offset  = "offset"
+        case limit   = "limit"
+        case count   = "count"
+        case history = "history"
     }
 }
 
@@ -60,12 +53,12 @@ extension TripHistory: UberModel {
 /**
 *  Information regarding an Uber trip in a user's activity history.
 */
-@objc(UBSDKUserActivity) public class UserActivity: NSObject {
+@objc(UBSDKUserActivity) public class UserActivity: NSObject, Codable {
     /// Status of the activity. Only returns completed for now.
-    public private(set) var status: RideStatus?
+    public private(set) var status: RideStatus
     
     /// Length of activity in miles.
-    @objc public private(set) var distance: Float = 0.0
+    @objc public private(set) var distance: Double
     
     /// Represents timestamp of activity request time in current locale.
     @objc public private(set) var requestTime: Date?
@@ -84,25 +77,27 @@ extension TripHistory: UberModel {
     
     /// Unique identifier representing a specific product for a given latitude & longitude.
     @objc public private(set) var productID: String?
-    
-    public required init?(map: Map) {
-    }
-}
 
-extension UserActivity: UberModel {
-    public func mapping(map: Map) {
-        distance    <- map["distance"]
-        requestTime <- (map["request_time"], DateTransform())
-        startTime   <- (map["start_time"], DateTransform())
-        endTime     <- (map["end_time"], DateTransform())
-        startCity   <- map["start_city"]
-        requestID   <- map["request_id"]
-        productID   <- map["product_id"]
-        
-        status = .unknown
-        if let value = map["status"].currentValue as? String {
-            status = RideStatusFactory.convertRideStatus(value)
-        }
+    enum CodingKeys: String, CodingKey {
+        case distance    = "distance"
+        case requestTime = "request_time"
+        case startTime   = "start_time"
+        case endTime     = "end_time"
+        case startCity   = "start_city"
+        case requestID   = "request_id"
+        case productID   = "product_id"
+        case status      = "status"
+    }
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        distance = try container.decodeIfPresent(Double.self, forKey: .distance) ?? 0.0
+        requestTime = try container.decodeIfPresent(Date.self, forKey: .requestTime)
+        startTime = try container.decodeIfPresent(Date.self, forKey: .startTime)
+        endTime = try container.decodeIfPresent(Date.self, forKey: .endTime)
+        startCity = try container.decodeIfPresent(TripCity.self, forKey: .startCity)
+        requestID = try container.decodeIfPresent(String.self, forKey: .requestID)
+        productID = try container.decodeIfPresent(String.self, forKey: .productID)
+        status = try container.decodeIfPresent(RideStatus.self, forKey: .status) ?? .unknown
     }
 }
 
@@ -111,7 +106,7 @@ extension UserActivity: UberModel {
 /**
 *  Information relating to a city in a trip activity.
 */
-@objc(UBSDKTripCity) public class TripCity : NSObject {
+@objc(UBSDKTripCity) public class TripCity: NSObject, Codable {
     /// Latitude of city location.
     @objc public private(set) var latitude: Float = 0.0
     
@@ -120,15 +115,10 @@ extension UserActivity: UberModel {
     
     /// Display name of city.
     @objc public private(set) var name: String?
-    
-    public required init?(map: Map) {
-    }
-}
 
-extension TripCity: Mappable {
-    public func mapping(map: Map) {
-        latitude  <- map["latitude"]
-        longitude <- map["longitude"]
-        name      <- map["display_name"]
+    enum CodingKeys: String, CodingKey {
+        case latitude  = "latitude"
+        case longitude = "longitude"
+        case name      = "display_name"
     }
 }

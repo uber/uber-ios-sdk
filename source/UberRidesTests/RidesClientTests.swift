@@ -354,7 +354,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "get place")
-        let testPlace = Place.Home
+        let testPlace = Place.home
         
         client.fetchPlace(placeID: testPlace, completion: { place, response in
             guard let place = place else {
@@ -417,7 +417,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "get place not found error")
-        let testPlace = Place.Home
+        let testPlace = Place.home
         
         client.fetchPlace(placeID: testPlace, completion: { place, response in
             XCTAssertNil(place)
@@ -447,7 +447,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.Work)
+        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.work)
         client.updateRideDetails(requestID: "requestID1234", rideParameters: params, completion: { response in
             XCTAssertNil(response.error)
             XCTAssertEqual(response.statusCode, 204)
@@ -465,7 +465,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.Work)
+        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.work)
         client.updateRideDetails(requestID: "requestID1234", rideParameters: params, completion: { response in
             guard let error = response.error else {
                 XCTAssert(false)
@@ -489,7 +489,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.Work)
+        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.work)
         client.updateRideDetails(requestID: "requestID1234", rideParameters: params, completion: { response in
             guard let error = response.error else {
                 XCTAssert(false)
@@ -513,7 +513,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.Work)
+        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.work)
         client.updateRideDetails(requestID: "requestID1234", rideParameters: params, completion: { response in
             guard let error = response.error else {
                 XCTAssert(false)
@@ -537,7 +537,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.Work)
+        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.work)
         client.updateCurrentRide(rideParameters: params, completion: { response in
             XCTAssertNil(response.error)
             XCTAssertEqual(response.statusCode, 204)
@@ -555,7 +555,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.Work)
+        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.work)
         client.updateCurrentRide(rideParameters: params, completion: { response in
             guard let error = response.error else {
                 XCTAssert(false)
@@ -579,7 +579,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.Work)
+        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.work)
         client.updateCurrentRide(rideParameters: params, completion: { response in
             guard let error = response.error else {
                 XCTAssert(false)
@@ -603,7 +603,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.Work)
+        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.work)
         client.updateCurrentRide(rideParameters: params, completion: { response in
             guard let error = response.error else {
                 XCTAssert(false)
@@ -627,7 +627,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.Work)
+        let params = RideParameters(pickupPlaceID: nil, dropoffPlaceID: Place.work)
         client.updateCurrentRide(rideParameters: params, completion: { response in
             guard let error = response.error else {
                 XCTAssert(false)
@@ -860,10 +860,11 @@ class RidesClientTests: XCTestCase {
         
         let expectation = self.expectation(description: "Refresh token completion")
         client.refreshAccessToken(usingRefreshToken: refreshToken, completion: { accessToken, response in
-            guard let accessToken = accessToken, let scopes = accessToken.grantedScopes else {
+            guard let accessToken = accessToken else {
                 XCTAssert(false)
                 return
             }
+            let scopes = accessToken.grantedScopes
             
             XCTAssertEqual(accessToken.tokenString, "Access999Token")
             XCTAssertEqual(accessToken.refreshToken, "888RefreshToken")
@@ -910,11 +911,7 @@ class RidesClientTests: XCTestCase {
      and the token exists
      */
     func testGetAccessTokenSuccess_defaultId_defaultGroup() {
-        let tokenData = [ "access_token" : "testAccessToken" ]
-        guard let token = AccessToken(JSON: tokenData) else {
-            XCTAssert(false)
-            return
-        }
+        let token = AccessToken(tokenString: "testAccessToken")
 
         let keychainHelper = KeychainWrapper()
         
@@ -950,11 +947,7 @@ class RidesClientTests: XCTestCase {
      and the token exists
      */
     func testGetAccessTokenSuccess_customId_defaultGroup() {
-        let tokenData = [ "access_token" : "testAccessToken" ]
-        guard let token = AccessToken(JSON: tokenData) else {
-            XCTAssert(false)
-            return
-        }
+        let token = AccessToken(tokenString: "testAccessToken")
         let keychainHelper = KeychainWrapper()
         
         let tokenKey = "newTokenKey"

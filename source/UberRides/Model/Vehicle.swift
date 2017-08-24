@@ -22,14 +22,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: Vehicle
 
 /**
  *  Contains information for an Uber driver's car.
  */
-@objc(UBSDKVehicle) public class Vehicle: NSObject {
+@objc(UBSDKVehicle) public class Vehicle: NSObject, Codable {
     
     /// The license plate number of the vehicle.
     @objc public private(set) var licensePlate: String?
@@ -42,16 +40,11 @@ import ObjectMapper
     
     /// The URL to a stock photo of the vehicle (may be null).
     @objc public private(set) var pictureURL: String?
-    
-    public required init?(map: Map) {
-    }
-}
 
-extension Vehicle: UberModel {
-    public func mapping(map: Map) {
-        make         <- map["make"]
-        model        <- map["model"]
-        licensePlate <- map["license_plate"]
-        pictureURL   <- map["picture_url"]
+    enum CodingKeys: String, CodingKey {
+        case make         = "make"
+        case model        = "model"
+        case licensePlate = "license_plate"
+        case pictureURL   = "picture_url"
     }
 }

@@ -22,22 +22,16 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: TimeEstimates
 
 /**
 *  Internal object that contains a list of ETAs for Uber products.
 */
-struct TimeEstimates {
+struct TimeEstimates: Codable {
     var list: [TimeEstimate]?
-    init?(map: Map) {
-    }
-}
 
-extension TimeEstimates: UberModel {
-    mutating func mapping(map: Map) {
-        list <- map["times"]
+    enum CodingKeys: String, CodingKey {
+        case list = "times"
     }
 }
 
@@ -46,7 +40,7 @@ extension TimeEstimates: UberModel {
 /**
 *  Contains information regarding the ETA of an Uber product.
 */
-@objc(UBSDKTimeEstimate) public class TimeEstimate: NSObject {
+@objc(UBSDKTimeEstimate) public class TimeEstimate: NSObject, Codable {
     /// Unique identifier representing a specific product for a given latitude & longitude.
     @objc public private(set) var productID: String?
     
@@ -54,16 +48,18 @@ extension TimeEstimates: UberModel {
     @objc public private(set) var name: String?
     
     /// ETA for the product (in seconds).
-    @objc public private(set) var estimate: Int = 0
-    
-    public required init?(map: Map) {
-    }
-}
+    @objc public private(set) var estimate: Int
 
-extension TimeEstimate: UberModel {
-    public func mapping(map: Map) {
-        productID <- map["product_id"]
-        name      <- map["display_name"]
-        estimate  <- map["estimate"]
+    enum CodingKeys: String, CodingKey {
+        case productID = "product_id"
+        case name      = "display_name"
+        case estimate  = "estimate"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        productID = try container.decodeIfPresent(String.self, forKey: .productID)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        estimate = try container.decodeIfPresent(Int.self, forKey: .estimate) ?? 0
     }
 }

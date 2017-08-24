@@ -22,14 +22,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: RideEstimate
 
 /**
  *  Contains estimates for a desired ride request.
  */
-@objc(UBSDKRideEstimate) public class RideEstimate: NSObject {
+@objc(UBSDKRideEstimate) public class RideEstimate: NSObject, Codable {
     
     /// Details of the estimated fare. If end location omitted, only the minimum is returned.
     @objc public private(set) var priceEstimate: PriceEstimate?
@@ -38,16 +36,18 @@ import ObjectMapper
     @objc public private(set) var distanceEstimate: DistanceEstimate?
     
     /// The estimated time of vehicle arrival in minutes. -1 if there are no cars available.
-    @objc public private(set) var pickupEstimate: Int = -1
-    
-    public required init?(map: Map) {
-    }
-}
+    @objc public private(set) var pickupEstimate: Int
 
-extension RideEstimate: UberModel {
-    public func mapping(map: Map) {
-        priceEstimate    <- map["price"]
-        distanceEstimate <- map["trip"]
-        pickupEstimate   <- map["pickup_estimate", ignoreNil: true]
+    enum CodingKeys: String, CodingKey {
+        case priceEstimate    = "price"
+        case distanceEstimate = "trip"
+        case pickupEstimate   = "pickup_estimate"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        priceEstimate = try container.decodeIfPresent(PriceEstimate.self, forKey: .priceEstimate)
+        distanceEstimate = try container.decodeIfPresent(DistanceEstimate.self, forKey: .distanceEstimate)
+        pickupEstimate = try container.decodeIfPresent(Int.self, forKey: .pickupEstimate) ?? -1
     }
 }

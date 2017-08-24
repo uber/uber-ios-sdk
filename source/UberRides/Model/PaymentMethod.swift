@@ -22,31 +22,23 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: PaymentMethods
 
 /**
  *  Internal struct for handling a list of payment methods
  */
-struct PaymentMethods {
+struct PaymentMethods: Codable {
     var lastUsed: String?
     var list: [PaymentMethod]?
-    
-    init?(map: Map) {
+
+    enum CodingKeys: String, CodingKey {
+        case lastUsed = "last_used"
+        case list     = "payment_methods"
     }
 }
-
-extension PaymentMethods: UberModel {
-    mutating func mapping(map: Map) {
-        lastUsed <- map["last_used"]
-        list     <- map["payment_methods"]
-    }
-}
-
 // MARK: PaymentMethod
 
-@objc(UBSDKPaymentMethod) public class PaymentMethod: NSObject {
+@objc(UBSDKPaymentMethod) public class PaymentMethod: NSObject, Codable {
     
     /// The account identification or description associated with the payment method.
     @objc public private(set) var paymentDescription: String?
@@ -56,15 +48,10 @@ extension PaymentMethods: UberModel {
     
     /// The type of the payment method. See https://developer.uber.com/docs/v1-payment-methods.
     @objc public private(set) var type: String?
-    
-    public required init?(map: Map) {
-    }
-}
 
-extension PaymentMethod: UberModel {
-    public func mapping(map: Map) {
-        paymentDescription <- map["description"]
-        methodID           <- map["payment_method_id"]
-        type               <- map["type"]
+    enum CodingKeys: String, CodingKey {
+        case paymentDescription = "description"
+        case methodID           = "payment_method_id"
+        case type               = "type"
     }
 }

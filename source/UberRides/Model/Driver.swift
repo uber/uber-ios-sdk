@@ -22,14 +22,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: Driver
 
 /**
  *  Contains information for an Uber driver dispatched for a ride request.
  */
-@objc(UBSDKDriver) public class Driver: NSObject {
+@objc(UBSDKDriver) public class Driver: NSObject, Codable {
     
     /// The first name of the driver.
     @objc public private(set) var name: String?
@@ -41,17 +39,20 @@ import ObjectMapper
     @objc public private(set) var phoneNumber: String?
     
     /// The driver's star rating out of 5 stars.
-    @objc public private(set) var rating: Double = 0.0
-    
-    public required init?(map: Map) {
-    }
-}
+    @objc public private(set) var rating: Double
 
-extension Driver: UberModel {
-    public func mapping(map: Map) {
-        name        <- map["name"]
-        pictureURL  <- map["picture_url"]
-        phoneNumber <- map["phone_number"]
-        rating      <- map["rating"]
+    enum CodingKeys: String, CodingKey {
+        case name        = "name"
+        case pictureURL  = "picture_url"
+        case phoneNumber = "phone_number"
+        case rating      = "rating"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        pictureURL = try container.decodeIfPresent(String.self, forKey: .pictureURL)
+        phoneNumber = try container.decodeIfPresent(String.self, forKey: .phoneNumber)
+        rating = try container.decodeIfPresent(Double.self, forKey: .rating) ?? 0.0
     }
 }

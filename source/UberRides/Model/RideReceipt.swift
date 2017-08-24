@@ -22,14 +22,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: RideReceipt
 
 /**
  *  Get the receipt information of a completed request that was made with the request endpoint.
  */
-@objc(UBSDKRideReceipt) public class RideReceipt: NSObject {
+@objc(UBSDKRideReceipt) public class RideReceipt: NSObject, Codable {
     
     /// Adjustments made to the charges such as promotions, and fees.
     @objc public private(set) var chargeAdjustments: [RideCharge]?
@@ -65,25 +63,36 @@ import ObjectMapper
     @objc public private(set) var totalCharged: String?
     
     /// The total amount still owed after attempting to charge the user. May be 0 if amount was paid in full.
-    @objc public private(set) var totalOwed: Double = 0.0
-    
-    public required init?(map: Map) {
-    }
-}
+    @objc public private(set) var totalOwed: Double
 
-extension RideReceipt: UberModel {
-    public func mapping(map: Map) {
-        chargeAdjustments <- map["charge_adjustments"]
-        charges           <- map["charges"]
-        currencyCode      <- map["currency_code"]
-        distance          <- map["distance"]
-        distanceLabel     <- map["distance_label"]
-        duration          <- map["duration"]
-        normalFare        <- map["normal_fare"]
-        requestID         <- map["request_id"]
-        subtotal          <- map["subtotal"]
-        surgeCharge       <- map["surge_charge"]
-        totalCharged      <- map["total_charged"]
-        totalOwed         <- map["total_owed"]
+    enum CodingKeys: String, CodingKey {
+        case chargeAdjustments = "charge_adjustments"
+        case charges           = "charges"
+        case currencyCode      = "currency_code"
+        case distance          = "distance"
+        case distanceLabel     = "distance_label"
+        case duration          = "duration"
+        case normalFare        = "normal_fare"
+        case requestID         = "request_id"
+        case subtotal          = "subtotal"
+        case surgeCharge       = "surge_charge"
+        case totalCharged      = "total_charged"
+        case totalOwed         = "total_owed"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        chargeAdjustments = try container.decodeIfPresent([RideCharge].self, forKey: .chargeAdjustments)
+        charges = try container.decodeIfPresent([RideCharge].self, forKey: .charges)
+        currencyCode = try container.decodeIfPresent(String.self, forKey: .currencyCode)
+        distance = try container.decodeIfPresent(String.self, forKey: .distance)
+        distanceLabel = try container.decodeIfPresent(String.self, forKey: .distanceLabel)
+        duration = try container.decodeIfPresent(String.self, forKey: .duration)
+        normalFare = try container.decodeIfPresent(String.self, forKey: .normalFare)
+        requestID = try container.decodeIfPresent(String.self, forKey: .requestID)
+        subtotal = try container.decodeIfPresent(String.self, forKey: .subtotal)
+        surgeCharge = try container.decodeIfPresent(RideCharge.self, forKey: .surgeCharge)
+        totalCharged = try container.decodeIfPresent(String.self, forKey: .totalCharged)
+        totalOwed = try container.decodeIfPresent(Double.self, forKey: .totalOwed) ?? 0.0
     }
 }

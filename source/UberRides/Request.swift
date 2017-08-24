@@ -148,13 +148,12 @@ class Request: NSObject {
                     break errorCheck
                 }
                 
-                let jsonString = String(data: data!, encoding: String.Encoding.utf8)!
                 if statusCode >= 400 && statusCode <= 499 {
-                    ridesError = ModelMapper<RidesClientError>().mapFromJSON(jsonString)
+                    ridesError = try? JSONDecoder.uberDecoder.decode(RidesClientError.self, from: data!)
                 } else if (statusCode >= 500 && statusCode <= 599) {
-                    ridesError = ModelMapper<RidesServerError>().mapFromJSON(jsonString)
+                    ridesError = try? JSONDecoder.uberDecoder.decode(RidesServerError.self, from: data!)
                 } else {
-                    ridesError = ModelMapper<RidesUnknownError>().mapFromJSON(jsonString)
+                    ridesError = try? JSONDecoder.uberDecoder.decode(RidesUnknownError.self, from: data!)
                 }
                 
                 ridesError?.status = statusCode

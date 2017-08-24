@@ -81,10 +81,10 @@ class RequestButtonTests: XCTestCase {
             }
             XCTAssert(foundUserAgent)
         }
-        
+
         let testIdentifier = "testAccessTokenIdentifier"
-        let testToken = AccessToken(JSON: ["access_token" : "testTokenString"])
-        _ = TokenManager.save(accessToken: testToken!, tokenIdentifier: testIdentifier)
+        let testToken = AccessToken(tokenString: "testTokenString")
+        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
         defer {
             _ = TokenManager.deleteToken(identifier: testIdentifier)
         }

@@ -22,10 +22,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 /// Stores information about an access token used for authorizing requests.
-@objc(UBSDKAccessToken) public class AccessToken: NSObject, NSCoding, UberModel {
+@objc(UBSDKAccessToken) public class AccessToken: NSObject, NSCoding, Decodable {
     
     /// String containing the bearer token.
     @objc public private(set) var tokenString: String?
@@ -37,7 +35,7 @@ import ObjectMapper
     @objc public private(set) var expirationDate: Date?
     
     /// The scopes this token is valid for
-    @objc public private(set) var grantedScopes: [RidesScope]?
+    @objc public private(set) var grantedScopes: [RidesScope] = []
     
     /**
      Initializes an AccessToken with the provided tokenString
@@ -71,16 +69,6 @@ import ObjectMapper
             grantedScopes = scopesString.toRidesScopesArray()
         }
     }
-
-    /**
-     Required initializer for ObjectMapper
-     
-     - parameter map: The Map to build an AccessToken from
-     
-     - returns: An initialized AccessToken, or nil if someting went wrong
-     */
-    public required init?(map: Map) {
-    }
     
     /**
      Encodes the AccessToken. Required to allow for serialization
@@ -91,7 +79,7 @@ import ObjectMapper
         coder.encode(self.tokenString, forKey: "tokenString")
         coder.encode(self.refreshToken, forKey:  "refreshToken")
         coder.encode(self.expirationDate, forKey: "expirationDate")
-        coder.encode(self.grantedScopes?.toRidesScopeString(), forKey: "grantedScopes")
+        coder.encode(self.grantedScopes.toRidesScopeString(), forKey: "grantedScopes")
     }
     
     /**
@@ -100,12 +88,19 @@ import ObjectMapper
      
      - parameter map: The Map to use for populatng this AccessToken.
      */
-    public func mapping(map: Map) {
-        tokenString         <- map["access_token"]
-        refreshToken        <- map["refresh_token"]
-        expirationDate <- (map["expiration_date"], DateTransform())
-        var scopesString = String()
-        scopesString <- map["scope"]
-        grantedScopes = scopesString.toRidesScopesArray()
+    enum CodingKeys: String, CodingKey {
+        case tokenString         = "access_token"
+        case refreshToken        = "refresh_token"
+        case expirationDate      = "expiration_date"
+        case scopesString        = "scope"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        tokenString = try container.decode(String.self, forKey: .tokenString)
+        refreshToken = try container.decodeIfPresent(String.self, forKey: .refreshToken)
+        expirationDate = try container.decodeIfPresent(Date.self, forKey: .expirationDate)
+        let scopesString = try container.decodeIfPresent(String.self, forKey: .scopesString)
+        grantedScopes = scopesString?.toRidesScopesArray() ?? []
     }
 }

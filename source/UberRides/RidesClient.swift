@@ -187,8 +187,9 @@ import CoreLocation
     private func apiCallForRideResponse(_ endpoint: UberAPI, completion:@escaping (_ ride: Ride?, _ response: Response) -> Void) {
         apiCall(endpoint, completion: { response in
             var ride: Ride? = nil
-            if response.error == nil {
-                ride = ModelMapper<Ride>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                ride = try? JSONDecoder.uberDecoder.decode(Ride.self, from: data)
             }
             completion(ride, response)
         })
@@ -229,8 +230,9 @@ import CoreLocation
         let endpoint = Products.getAll(location: location)
         apiCall(endpoint, completion: { response in
             var products: UberProducts?
-            if response.error == nil {
-                products = ModelMapper<UberProducts>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                products = try? JSONDecoder.uberDecoder.decode(UberProducts.self, from: data)
                 if let productList = products?.list {
                     completion(productList, response)
                     return
@@ -250,8 +252,9 @@ import CoreLocation
         let endpoint = Products.getProduct(productID: productID)
         apiCall(endpoint, completion: { response in
             var product: UberProduct?
-            if response.error == nil {
-                product = ModelMapper<UberProduct>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                product = try? JSONDecoder.uberDecoder.decode(UberProduct.self, from: data)
             }
             completion(product, response)
         })
@@ -268,8 +271,9 @@ import CoreLocation
         let endpoint = Estimates.time(location: location, productID: productID)
         apiCall(endpoint, completion: { response in
             var timeEstimates: TimeEstimates?
-            if response.error == nil {
-                timeEstimates = ModelMapper<TimeEstimates>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                timeEstimates = try? JSONDecoder.uberDecoder.decode(TimeEstimates.self, from: data)
                 if let estimateList = timeEstimates?.list {
                     completion(estimateList, response)
                     return
@@ -291,8 +295,9 @@ import CoreLocation
                                        endLocation: dropoffLocation)
         apiCall(endpoint, completion: { response in
             var priceEstimates: PriceEstimates?
-            if response.error == nil {
-                priceEstimates = ModelMapper<PriceEstimates>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                priceEstimates = try? JSONDecoder.uberDecoder.decode(PriceEstimates.self, from: data)
                 if let estimateList = priceEstimates?.list {
                     completion(estimateList, response)
                     return
@@ -313,8 +318,9 @@ import CoreLocation
         let endpoint = History.get(offset: offset, limit: limit)
         apiCall(endpoint, completion: { response in
             var history: TripHistory?
-            if response.error == nil {
-                history = ModelMapper<TripHistory>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                history = try? JSONDecoder.uberDecoder.decode(TripHistory.self, from: data)
             }
             completion(history, response)
         })
@@ -329,8 +335,9 @@ import CoreLocation
         let endpoint = Me.userProfile
         apiCall(endpoint, completion: { response in
             var userProfile: UserProfile?
-            if response.error == nil {
-                userProfile = ModelMapper<UserProfile>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                userProfile = try? JSONDecoder.uberDecoder.decode(UserProfile.self, from: data)
             }
             completion(userProfile, response)
         })
@@ -378,8 +385,9 @@ import CoreLocation
         let endpoint = Requests.estimate(rideParameters: parameters)
         apiCall(endpoint, completion: { response in
             var estimate: RideEstimate? = nil
-            if response.error == nil {
-                estimate = ModelMapper<RideEstimate>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                estimate = try? JSONDecoder.uberDecoder.decode(RideEstimate.self, from: data)
             }
             completion(estimate, response)
         })
@@ -396,7 +404,8 @@ import CoreLocation
             var paymentMethods = [PaymentMethod]()
             var lastUsed: PaymentMethod?
             if response.error == nil,
-                let allPayments = ModelMapper<PaymentMethods>().mapFromJSON(response.toJSONString()),
+                let data = response.data,
+                let allPayments = try? JSONDecoder.uberDecoder.decode(PaymentMethods.self, from: data),
                 let payments = allPayments.list {
                 paymentMethods = payments
                 lastUsed = paymentMethods.filter({$0.methodID == allPayments.lastUsed}).first
@@ -416,8 +425,9 @@ import CoreLocation
         let endpoint = Places.getPlace(placeID: placeID)
         apiCall(endpoint, completion: { response in
             var place: Place? = nil
-            if response.error == nil {
-                place = ModelMapper<Place>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                place = try? JSONDecoder.uberDecoder.decode(Place.self, from: data)
             }
             completion(place, response)
         })
@@ -434,8 +444,9 @@ import CoreLocation
         let endpoint = Places.putPlace(placeID: placeID, address: address)
         apiCall(endpoint, completion: { response in
             var place: Place?
-            if response.error == nil {
-                place = ModelMapper<Place>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                place = try? JSONDecoder.uberDecoder.decode(Place.self, from: data)
             }
             completion(place, response)
         })
@@ -513,8 +524,9 @@ import CoreLocation
         let endpoint = Requests.rideReceipt(requestID: requestID)
         apiCall(endpoint, completion: { response in
             var receipt: RideReceipt?
-            if response.error == nil {
-                receipt = ModelMapper<RideReceipt>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                receipt = try? JSONDecoder.uberDecoder.decode(RideReceipt.self, from: data)
             }
             completion(receipt, response)
         })
@@ -530,8 +542,9 @@ import CoreLocation
         let endpoint = Requests.rideMap(requestID: requestID)
         apiCall(endpoint, completion: { response in
             var map: RideMap?
-            if response.error == nil {
-                map = ModelMapper<RideMap>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                map = try? JSONDecoder.uberDecoder.decode(RideMap.self, from: data)
             }
             completion(map, response)
         })
@@ -548,8 +561,9 @@ import CoreLocation
         let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
         apiCall(endpoint) { response in
             var accessToken: AccessToken?
-            if response.error == nil {
-                accessToken = ModelMapper<AccessToken>().mapFromJSON(response.toJSONString())
+            if let data = response.data,
+                response.error == nil {
+                accessToken = try? JSONDecoder.uberDecoder.decode(AccessToken.self, from: data)
             }
             completion(accessToken, response)
         }

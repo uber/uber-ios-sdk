@@ -22,14 +22,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: Ride
 
 /**
  *  Contains the status of an ongoing/completed trip created using the Ride Request endpoint
  */
-@objc(UBSDKRide) public class Ride: NSObject {
+@objc(UBSDKRide) public class Ride: NSObject, Codable {
     
     /// Contains the information about the destination of the trip, if one has been set.
     @objc public private(set) var destination: RideRequestLocation?
@@ -41,7 +39,7 @@ import ObjectMapper
     @objc public private(set) var driverLocation: RideRequestLocation?
     
     /// The estimated time of vehicle arrival in minutes.
-    @objc public private(set) var eta: Int = 0
+    @objc public private(set) var eta: Int
     
     /// The object containing the information about the pickup for the trip.
     @objc public private(set) var pickup: RideRequestLocation?
@@ -50,32 +48,36 @@ import ObjectMapper
     @objc public private(set) var requestID: String?
     
     /// The status of the Request indicating state.
-    @objc public private(set) var status: RideStatus = .unknown
+    @objc public private(set) var status: RideStatus
     
     /// The surge pricing multiplier used to calculate the increased price of a Request.
-    @objc public private(set) var surgeMultiplier: Double = 1.0
+    @objc public private(set) var surgeMultiplier: Double
     
     /// The object that contains vehicle details. Only non-null during an ongoing trip.
     @objc public private(set) var vehicle: Vehicle?
-    
-    public required init?(map: Map) {
-    }
-}
 
-extension Ride: UberModel {
-    public func mapping(map: Map) {
-        destination     <- map["destination"]
-        driver          <- map["driver"]
-        driverLocation  <- map["location"]
-        eta             <- map["eta"]
-        pickup          <- map["pickup"]
-        requestID       <- map["request_id"]
-        surgeMultiplier <- map["surge_multiplier"]
-        vehicle         <- map["vehicle"]
-        
-        status = .unknown
-        if let value = map["status"].currentValue as? String {
-            status = RideStatusFactory.convertRideStatus(value)
-        }
+    enum CodingKeys: String, CodingKey {
+        case destination     = "destination"
+        case driver          = "driver"
+        case driverLocation  = "location"
+        case eta             = "eta"
+        case pickup          = "pickup"
+        case requestID       = "request_id"
+        case surgeMultiplier = "surge_multiplier"
+        case vehicle         = "vehicle"
+        case status          = "status"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        destination = try container.decodeIfPresent(RideRequestLocation.self, forKey: .destination)
+        driver = try container.decodeIfPresent(Driver.self, forKey: .driver)
+        driverLocation = try container.decodeIfPresent(RideRequestLocation.self, forKey: .driverLocation)
+        eta = try container.decodeIfPresent(Int.self, forKey: .eta) ?? 0
+        pickup = try container.decodeIfPresent(RideRequestLocation.self, forKey: .pickup)
+        requestID = try container.decodeIfPresent(String.self, forKey: .requestID)
+        surgeMultiplier = try container.decodeIfPresent(Double.self, forKey: .surgeMultiplier) ?? 1.0
+        vehicle = try container.decodeIfPresent(Vehicle.self, forKey: .vehicle)
+        status = try container.decodeIfPresent(RideStatus.self, forKey: .status) ?? .unknown
     }
 }

@@ -22,32 +22,32 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: DistanceEstimate
 
 /**
  *  Estimate information on an Uber trip.
  */
-@objc(UBSDKDistanceEstimate) public class DistanceEstimate: NSObject {
+@objc(UBSDKDistanceEstimate) public class DistanceEstimate: NSObject, Codable {
     
     /// Expected activity distance.
-    @objc public private(set) var distance: Double = 0.0
+    @objc public private(set) var distance: Double
     
     /// The unit of distance (mile or km).
     @objc public private(set) var distanceUnit: String?
     
     /// Expected activity duration (in seconds).
-    @objc public private(set) var duration: Int = 0
-    
-    public required init?(map: Map) {
-    }
-}
+    @objc public private(set) var duration: Int
 
-extension DistanceEstimate: UberModel {
-    public func mapping(map: Map) {
-        distance     <- map["distance_estimate"]
-        distanceUnit <- map["distance_unit"]
-        duration     <- map["duration_estimate"]
+    enum CodingKeys: String, CodingKey {
+        case distance        = "distance_estimate"
+        case distanceUnit    = "distance_unit"
+        case duration        = "duration_estimate"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        distance = try container.decodeIfPresent(Double.self, forKey: .distance) ?? 0.0
+        distanceUnit = try container.decodeIfPresent(String.self, forKey: .distanceUnit)
+        duration = try container.decodeIfPresent(Int.self, forKey: .duration) ?? 0
     }
 }

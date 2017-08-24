@@ -37,7 +37,7 @@
  - RiderCanceled:      The ride request was canceled by rider.
  - Unknown:            An unexpected status.
  */
-@objc(UBSDKRideStatus) public enum RideStatus: Int {
+@objc(UBSDKRideStatus) public enum RideStatus: Int, Codable {
     case accepted
     case arriving
     case completed
@@ -47,44 +47,39 @@
     case processing
     case riderCanceled
     case unknown
-}
 
-// MARK: Objective-C Compatibility
+    enum CodingKeys: String, CodingKey {
+        case accepted = "accepted"
+        case arriving = "arriving"
+        case completed = "completed"
+        case driverCanceled = "driver_canceled"
+        case inProgress = "in_progress"
+        case noDriversAvailable = "no_drivers_available"
+        case processing = "processing"
+        case riderCanceled = "rider_canceled"
+    }
 
-private enum RideStatusString: String {
-    case accepted = "accepted"
-    case arriving = "arriving"
-    case completed = "completed"
-    case driverCanceled = "driver_canceled"
-    case inProgress = "in_progress"
-    case noDriversAvailable = "no_drivers_available"
-    case processing = "processing"
-    case riderCanceled = "rider_canceled"
-}
-
-class RideStatusFactory: NSObject {
-    static func convertRideStatus(_ stringValue: String) -> RideStatus {
-        guard let status = RideStatusString(rawValue: stringValue) else {
-            return .unknown
-        }
-        
-        switch status {
-        case .accepted:
-            return .accepted
-        case .arriving:
-            return .arriving
-        case .completed:
-            return .completed
-        case .driverCanceled:
-            return .driverCanceled
-        case .inProgress:
-            return .inProgress
-        case .noDriversAvailable:
-            return .noDriversAvailable
-        case .processing:
-            return .processing
-        case .riderCanceled:
-            return .riderCanceled
+    public init(from decoder: Decoder) throws {
+        let string = try decoder.singleValueContainer().decode(String.self)
+        switch string {
+        case "accepted":
+            self = .accepted
+        case "arriving":
+            self = .arriving
+        case "completed":
+            self = .completed
+        case "driver_canceled":
+            self = .driverCanceled
+        case "in_progress":
+            self = .inProgress
+        case "no_drivers_available":
+            self = .noDriversAvailable
+        case "processing":
+            self = .processing
+        case "rider_canceled":
+            self = .riderCanceled
+        default:
+            self = .unknown
         }
     }
 }

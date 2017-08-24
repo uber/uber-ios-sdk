@@ -37,8 +37,7 @@ class TokenManagerTests: XCTestCase {
         Configuration.bundle = Bundle(for: type(of: self))
         keychain = KeychainWrapper()
         notificationFired = false
-        let tokenData = ["access_token" : "testTokenString"]
-        token = AccessToken(JSON: tokenData)
+        token = AccessToken(tokenString: "testTokenString")
     }
     
     override func tearDown() {

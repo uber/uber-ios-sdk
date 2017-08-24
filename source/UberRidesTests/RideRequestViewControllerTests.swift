@@ -66,8 +66,8 @@ class RideRequestViewControllerTests: XCTestCase {
             expectation = true
         }
         let testIdentifier = "testAccessTokenIdentifier"
-        let testToken = AccessToken(JSON: ["access_token" : "testTokenString"])
-        _ = TokenManager.save(accessToken: testToken!, tokenIdentifier: testIdentifier)
+        let testToken = AccessToken(tokenString: "testTokenString")
+        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
         defer {
             _ = TokenManager.deleteToken(identifier: testIdentifier)
         }
@@ -159,7 +159,7 @@ class RideRequestViewControllerTests: XCTestCase {
         var expectation = false
         
         let testIdentifier = "testAccessTokenIdentifier"
-        let testToken = AccessToken(JSON: ["access_token" : "test"])
+        let testToken = AccessToken(tokenString: "test")
         
         _ = TokenManager.deleteToken(identifier: testIdentifier)
         let loginManger = LoginManager(accessTokenIdentifier: testIdentifier, keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup, loginType: .native)
@@ -319,8 +319,8 @@ class RideRequestViewControllerTests: XCTestCase {
         }
         
         let testIdentifier = "testAccessTokenIdentifier"
-        let testToken = AccessToken(JSON: ["access_token" : "testTokenString"])
-        _ = TokenManager.save(accessToken: testToken!, tokenIdentifier: testIdentifier)
+        let testToken = AccessToken(tokenString: "testTokenString")
+        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
         defer {
             _ = TokenManager.deleteToken(identifier: testIdentifier)
         }
@@ -366,8 +366,8 @@ class RideRequestViewControllerTests: XCTestCase {
         }
         
         let testIdentifier = "testAccessTokenIdentifier"
-        let testToken = AccessToken(JSON: ["access_token" : "testTokenString"])
-        _ = TokenManager.save(accessToken: testToken!, tokenIdentifier: testIdentifier)
+        let testToken = AccessToken(tokenString: "testTokenString")
+        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
         defer {
             _ = TokenManager.deleteToken(identifier: testIdentifier)
         }
@@ -392,8 +392,8 @@ class RideRequestViewControllerTests: XCTestCase {
             expectation = true
         }
         let testIdentifier = "testAccessTokenIdentifier"
-        let testToken = AccessToken(JSON: ["access_token" : "testTokenString"])
-        _ = TokenManager.save(accessToken: testToken!, tokenIdentifier: testIdentifier)
+        let testToken = AccessToken(tokenString: "testTokenString")
+        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
         defer {
             _ = TokenManager.deleteToken(identifier: testIdentifier)
         }
@@ -434,8 +434,8 @@ class RideRequestViewControllerTests: XCTestCase {
             XCTAssertTrue(type(of: viewController) == UIAlertController.self)
         }
         let testIdentifier = "testAccessTokenIdentifier"
-        let testToken = AccessToken(JSON: ["access_token" : "testTokenString"])
-        _ = TokenManager.save(accessToken: testToken!, tokenIdentifier: testIdentifier)
+        let testToken = AccessToken(tokenString: "testTokenString")
+        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
         defer {
             _ = TokenManager.deleteToken(identifier: testIdentifier)
         }

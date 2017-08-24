@@ -22,32 +22,26 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: RideCharge
 
 /**
  *  Describes the charges made against the rider in a ride receipt.
  */
-@objc(UBSDKRideCharge) public class RideCharge: NSObject {
+@objc(UBSDKRideCharge) public class RideCharge: NSObject, Codable {
     
     /// The amount of the charge.
-    @objc public private(set) var amount: Float = 0.0
+    @objc public private(set) var amount: Double
     
     /// The name of the charge.
     @objc public private(set) var name: String?
     
     /// The type of the charge.
     @objc public private(set) var type: String?
-    
-    public required init?(map: Map) {
-    }
-}
 
-extension RideCharge: UberModel {
-    public func mapping(map: Map) {
-        amount <- map["amount"]
-        name   <- map["name"]
-        type   <- map["type"]
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        amount = try container.decodeIfPresent(Double.self, forKey: .amount) ?? 0.0
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        type = try container.decodeIfPresent(String.self, forKey: .type)
     }
 }

@@ -22,14 +22,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: RidesError
 
 /// Base class for errors that can be mapped from HTTP responses.
-@objc(UBSDKRidesError) public class RidesError : NSObject {
+@objc(UBSDKRidesError) public class RidesError: NSObject, Decodable {
     /// HTTP status code for error.
-    @objc public internal(set) var status: Int = -1
+    @objc public internal(set) var status: Int
     
     /// Human readable message which corresponds to the client error.
     @objc public internal(set) var title: String?
@@ -38,81 +36,77 @@ import ObjectMapper
     @objc public internal(set) var code: String?
     
     /// Additional information about errors. Can be "fields" or "meta" as the key.
-    @objc public internal(set) var meta: [String: AnyObject]?
+    @objc public internal(set) var meta: [String: Any]?
     
     /// List of additional errors. This can be populated instead of status/code/title.
     @objc public internal(set) var errors: [RidesError]?
-
-    override init() {
-    }
 
     /// Convenience initializer.
     ///
     /// - parameter status: The Status code to use for this error
     /// - parameter code:   The underscore delimited code string to use for this error
     /// - parameter title:  Human readable message which corresponds to this error
-    @objc public convenience init(status: Int, code: String?, title: String?) {
-        self.init()
+    @objc public init(status: Int, code: String?, title: String?) {
         self.status = status
         self.code = code
         self.title = title
     }
-    
-    public required init?(map: Map) {
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        status = try container.decodeIfPresent(Int.self, forKey: .status) ?? -1
+        title = try container.decodeIfPresent(String.self, forKey: .error)
+        title = try title ?? container.decodeIfPresent(String.self, forKey: .message)
+        title = try title ?? container.decodeIfPresent(String.self, forKey: .title)
+        code = try container.decodeIfPresent(String.self, forKey: .code)
+        errors = try container.decodeIfPresent([RidesError].self, forKey: .errors)
+        meta = try? container.decode([String: [String]].self, forKey: .fields)
+        meta = try? meta ?? container.decode([String: [String: String]].self, forKey: .meta)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case code    = "code"
+        case status  = "status"
+        case errors  = "errors"
+        case message = "message"
+        case title   = "title"
+        case meta    = "meta"
+        case fields  = "fields"
+        case error   = "error"
     }
 }
-
-extension RidesError: UberModel {
-    public func mapping(map: Map) {
-        code    <- map["code"]
-        status  <- map["status", ignoreNil: true]
-        errors  <- map["errors"]
-        
-        if map["message"].currentValue != nil {
-            title <- map["message"]
-        } else if map["title"].currentValue != nil {
-            title <- map["title"]
-        }
-        
-        if map["fields"].currentValue != nil {
-            meta  <- map["fields"]
-        } else if map["meta"].currentValue != nil {
-            meta  <- map["meta"]
-        }
-        
-        if map["error"].currentValue != nil {
-            title <- map["error"]
-        }
-    }
-}
-
 // MARK: RidesError subclasses
 
 /// Client error 4xx.
 @objc(UBSDKRidesClientError) public class RidesClientError: RidesError {
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+    }
 
-    public required init?(map: Map) {
-        super.init(map: map)
+    @objc public override init(status: Int, code: String?, title: String?) {
+        super.init(status: status, code: code, title: title)
     }
 }
 
 /// Server error 5xx.
 @objc(UBSDKRidesServerError) public class RidesServerError: RidesError {
-    
-    public required init?(map: Map) {
-        super.init(map: map)
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+    }
+
+    @objc public override init(status: Int, code: String?, title: String?) {
+        super.init(status: status, code: code, title: title)
     }
 }
 
 /// Unknown error type.
 @objc(UBSDKRidesUnknownError) public class RidesUnknownError: RidesError {
-    
-    override init() {
-        super.init()
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
     }
-    
-    public required init?(map: Map) {
-        super.init(map: map)
+
+    @objc public override init(status: Int, code: String?, title: String?) {
+        super.init(status: status, code: code, title: title)
     }
 }
 

@@ -22,28 +22,17 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 /**
  *  Describes a pre-set place for an Uber account (home or work).
  */
-@objc(UBSDKPlace) public class Place: NSObject {
+@objc(UBSDKPlace) public class Place: NSObject, Codable {
     
     /// Convenience constant for "home" place ID
-    @objc public static let Home = "home"
+    @objc public static let home = "home"
     
     /// Convenience constant for "work" place ID
-    @objc public static let Work = "work"
+    @objc public static let work = "work"
     
     /// Fully qualified address of the location.
     @objc public private(set) var address: String?
-    
-    public required init?(map: Map) {
-    }
-}
-
-extension Place: UberModel {
-    public func mapping(map: Map) {
-        address <- map["address"]
-    }
 }

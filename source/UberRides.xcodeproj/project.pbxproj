@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3A66B4721D1F38D600B4F181 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA459AF1D000813003CBA3D /* ObjectMapper.framework */; };
 		AC0404791BFACD1D00AC1501 /* UberRides.h in Headers */ = {isa = PBXBuildFile; fileRef = AC0404781BFACD1D00AC1501 /* UberRides.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AC0404801BFACD1D00AC1501 /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC0404751BFACD1D00AC1501 /* UberRides.framework */; };
 		AC0404851BFACD1D00AC1501 /* UberRidesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404841BFACD1D00AC1501 /* UberRidesTests.swift */; };
@@ -69,7 +68,6 @@
 		D8D18E871CBF42AD00055B76 /* postRequests.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D18E861CBF42AD00055B76 /* postRequests.json */; };
 		D8D2DC091C90E54700A65FF0 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D2DC081C90E54700A65FF0 /* UserProfile.swift */; };
 		D8D2DC0B1C90E55900A65FF0 /* getMe.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D2DC0A1C90E55900A65FF0 /* getMe.json */; };
-		D8DAB6371C60240B007DE82C /* ModelMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DAB6361C60240B007DE82C /* ModelMapper.swift */; };
 		D8E2C96C1C62B3B2006091BA /* PriceEstimate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E2C96B1C62B3B2006091BA /* PriceEstimate.swift */; };
 		D8E2C96E1C62B3C7006091BA /* getPriceEstimates.json in Resources */ = {isa = PBXBuildFile; fileRef = D8E2C96D1C62B3C7006091BA /* getPriceEstimates.json */; };
 		DC1039731C96B1CE004854E3 /* RidesScopeExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1039721C96B1CE004854E3 /* RidesScopeExtensionsTests.swift */; };
@@ -119,8 +117,6 @@
 		DC92DC041CA38DBE001A0DCC /* WidgetsEndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC92DC031CA38DBE001A0DCC /* WidgetsEndpointTests.swift */; };
 		DC92DC061CA3AC59001A0DCC /* OauthEndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC92DC051CA3AC59001A0DCC /* OauthEndpointTests.swift */; };
 		DC9C2BCB1CF3FF34007C0FE9 /* LoginManagingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9C2BCA1CF3FF34007C0FE9 /* LoginManagingProtocol.swift */; };
-		DCA459B21D000861003CBA3D /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA459AF1D000813003CBA3D /* ObjectMapper.framework */; };
-		DCA459D41D003EFC003CBA3D /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA459D31D003EFC003CBA3D /* OHHTTPStubs.framework */; };
 		DCAEA98F1CEE4C9C00E6F239 /* RequestURLUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAEA98E1CEE4C9C00E6F239 /* RequestURLUtilTests.swift */; };
 		DCAEA9911CEE61C400E6F239 /* AuthenticationDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAEA9901CEE61C400E6F239 /* AuthenticationDeeplink.swift */; };
 		DCAEA9941CEE91D000E6F239 /* AuthenticationURLUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAEA9931CEE91D000E6F239 /* AuthenticationURLUtility.swift */; };
@@ -140,6 +136,7 @@
 		DCF87E7B1CF3995C0081894C /* BaseAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF87E7A1CF3995C0081894C /* BaseAuthenticator.swift */; };
 		DCF87E7D1CF3A9D40081894C /* BaseAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF87E7C1CF3A9D40081894C /* BaseAuthenticatorTests.swift */; };
 		DCF87E7F1CF3DD010081894C /* NativeAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF87E7E1CF3DD010081894C /* NativeAuthenticatorTests.swift */; };
+		DFCA38F51F4F575300131FF0 /* Codable+Uber.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFCA38F41F4F575300131FF0 /* Codable+Uber.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -230,7 +227,6 @@
 		D8D18E861CBF42AD00055B76 /* postRequests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = postRequests.json; sourceTree = "<group>"; };
 		D8D2DC081C90E54700A65FF0 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserProfile.swift; path = Model/UserProfile.swift; sourceTree = "<group>"; };
 		D8D2DC0A1C90E55900A65FF0 /* getMe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getMe.json; sourceTree = "<group>"; };
-		D8DAB6361C60240B007DE82C /* ModelMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelMapper.swift; sourceTree = "<group>"; };
 		D8E2C96B1C62B3B2006091BA /* PriceEstimate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PriceEstimate.swift; path = Model/PriceEstimate.swift; sourceTree = "<group>"; };
 		D8E2C96D1C62B3C7006091BA /* getPriceEstimates.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getPriceEstimates.json; sourceTree = "<group>"; };
 		DC1039721C96B1CE004854E3 /* RidesScopeExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesScopeExtensionsTests.swift; sourceTree = "<group>"; };
@@ -283,7 +279,6 @@
 		DC92DC031CA38DBE001A0DCC /* WidgetsEndpointTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetsEndpointTests.swift; sourceTree = "<group>"; };
 		DC92DC051CA3AC59001A0DCC /* OauthEndpointTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OauthEndpointTests.swift; sourceTree = "<group>"; };
 		DC9C2BCA1CF3FF34007C0FE9 /* LoginManagingProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginManagingProtocol.swift; path = OAuth/LoginManagingProtocol.swift; sourceTree = "<group>"; };
-		DCA459AF1D000813003CBA3D /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = ../Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
 		DCA459D31D003EFC003CBA3D /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = ../Carthage/Build/iOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
 		DCAEA98E1CEE4C9C00E6F239 /* RequestURLUtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestURLUtilTests.swift; sourceTree = "<group>"; };
 		DCAEA9901CEE61C400E6F239 /* AuthenticationDeeplink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationDeeplink.swift; sourceTree = "<group>"; };
@@ -307,6 +302,7 @@
 		DCF87E7A1CF3995C0081894C /* BaseAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseAuthenticator.swift; path = OAuth/BaseAuthenticator.swift; sourceTree = "<group>"; };
 		DCF87E7C1CF3A9D40081894C /* BaseAuthenticatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseAuthenticatorTests.swift; sourceTree = "<group>"; };
 		DCF87E7E1CF3DD010081894C /* NativeAuthenticatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeAuthenticatorTests.swift; sourceTree = "<group>"; };
+		DFCA38F41F4F575300131FF0 /* Codable+Uber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Codable+Uber.swift"; path = "Utilities/Codable+Uber.swift"; sourceTree = "<group>"; };
 		DFD7096F1F159865007550C8 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "Resources/pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		EA01FB909C9A04DC5D83A4D9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -316,7 +312,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCA459B21D000861003CBA3D /* ObjectMapper.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,9 +319,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A66B4721D1F38D600B4F181 /* ObjectMapper.framework in Frameworks */,
 				AC0404801BFACD1D00AC1501 /* UberRides.framework in Frameworks */,
-				DCA459D41D003EFC003CBA3D /* OHHTTPStubs.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -459,7 +452,6 @@
 				D8E2C96B1C62B3B2006091BA /* PriceEstimate.swift */,
 				D81C85311CC819C500DC82EE /* Place.swift */,
 				D81A8B151C658A2800339C13 /* TimeEstimate.swift */,
-				D8DAB6361C60240B007DE82C /* ModelMapper.swift */,
 				DC75DFEB1CA5EC1200071417 /* RideParameters.swift */,
 				D81C852B1CC801B500DC82EE /* RideRequestDataBuilder.swift */,
 				D8D18E7E1CBF417600055B76 /* Ride.swift */,
@@ -539,6 +531,7 @@
 			children = (
 				D8A93F0C1C6E62D800AA5E58 /* RidesUtil.swift */,
 				DCAEA9931CEE91D000E6F239 /* AuthenticationURLUtility.swift */,
+				DFCA38F41F4F575300131FF0 /* Codable+Uber.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -572,7 +565,6 @@
 			isa = PBXGroup;
 			children = (
 				DCA459D31D003EFC003CBA3D /* OHHTTPStubs.framework */,
-				DCA459AF1D000813003CBA3D /* ObjectMapper.framework */,
 				01CD6B39D5C3EB668427CE75 /* Pods.framework */,
 				3B095F1A046D6ABD97CBBFE1 /* Pods_UberRidesTests.framework */,
 			);
@@ -763,7 +755,6 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/../Carthage/Build/iOS/OHHTTPStubs.framework",
-				"$(SRCROOT)/../Carthage/Build/iOS/ObjectMapper.framework",
 			);
 			name = "Copy Carthage Frameworks";
 			outputPaths = (
@@ -815,7 +806,7 @@
 				D81C85361CC8315200DC82EE /* RideEstimate.swift in Sources */,
 				DCB0D38E1CAD9D5800194DD5 /* RideRequestViewRequestingBehavior.swift in Sources */,
 				DC78ED0F1CB502BF00850814 /* RideRequestViewErrorFactory.swift in Sources */,
-				D8DAB6371C60240B007DE82C /* ModelMapper.swift in Sources */,
+				DFCA38F51F4F575300131FF0 /* Codable+Uber.swift in Sources */,
 				DC9C2BCB1CF3FF34007C0FE9 /* LoginManagingProtocol.swift in Sources */,
 				DC8D42A91CF4C95000C16D16 /* RidesAppDelegate.swift in Sources */,
 				D81C852E1CC801E900DC82EE /* Vehicle.swift in Sources */,
