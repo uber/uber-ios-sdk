@@ -44,19 +44,19 @@ struct UberProducts: Codable {
 */
 @objc(UBSDKUberProduct) public class UberProduct: NSObject, Codable {
     /// Unique identifier representing a specific product for a given latitude & longitude.
-    @objc public private(set) var productID: String?
+    @objc public private(set) var productID: String
     
     /// Display name of product. Ex: "UberBLACK".
-    @objc public private(set) var name: String?
+    @objc public private(set) var name: String
     
     /// Description of product. Ex: "The original Uber".
-    @objc public private(set) var details: String?
+    @objc public private(set) var details: String
     
     /// Capacity of product. Ex: 4, for a product that fits 4.
-    @objc public private(set) var capacity: Int = 0
+    @objc public private(set) var capacity: Int
     
     /// Path of image URL representing the product.
-    @objc public private(set) var imagePath: String?
+    @objc public private(set) var imagePath: URL
     
     /// The basic price details. See `PriceDetails` for structure.
     @objc public private(set) var priceDetails: PriceDetails?
@@ -68,6 +68,16 @@ struct UberProducts: Codable {
         case capacity     = "capacity"
         case imagePath    = "image"
         case priceDetails = "price_details"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        productID = try container.decode(String.self, forKey: .productID)
+        name = try container.decode(String.self, forKey: .name)
+        details = try container.decode(String.self, forKey: .details)
+        capacity = try container.decode(Int.self, forKey: .capacity)
+        imagePath = try container.decode(URL.self, forKey: .imagePath)
+        priceDetails = try container.decodeIfPresent(PriceDetails.self, forKey: .priceDetails)
     }
 }
 

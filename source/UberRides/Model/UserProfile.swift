@@ -44,7 +44,7 @@
     @objc public private(set) var promoCode: String?
     
     /// Unique identifier of the Uber user.
-    @objc public private(set) var UUID: String?
+    @objc public private(set) var UUID: String
 
     enum CodingKeys: String, CodingKey {
         case firstName   = "first_name"
@@ -53,5 +53,15 @@
         case picturePath = "picture"
         case promoCode   = "promo_code"
         case UUID        = "uuid"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
+        lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
+        email = try container.decodeIfPresent(String.self, forKey: .email)
+        picturePath = try container.decodeIfPresent(String.self, forKey: .picturePath)
+        promoCode = try container.decodeIfPresent(String.self, forKey: .promoCode)
+        UUID = try container.decode(String.self, forKey: .UUID)
     }
 }

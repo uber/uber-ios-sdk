@@ -30,7 +30,7 @@
 @objc(UBSDKRideEstimate) public class RideEstimate: NSObject, Codable {
     
     /// Details of the estimated fare. If end location omitted, only the minimum is returned.
-    @objc public private(set) var priceEstimate: PriceEstimate?
+    @objc public private(set) var priceEstimate: PriceEstimate
     
     /// Details of the estimated distance. Nil if end location is omitted.
     @objc public private(set) var distanceEstimate: DistanceEstimate?
@@ -46,7 +46,7 @@
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        priceEstimate = try container.decodeIfPresent(PriceEstimate.self, forKey: .priceEstimate)
+        priceEstimate = try container.decode(PriceEstimate.self, forKey: .priceEstimate)
         distanceEstimate = try container.decodeIfPresent(DistanceEstimate.self, forKey: .distanceEstimate)
         pickupEstimate = try container.decodeIfPresent(Int.self, forKey: .pickupEstimate) ?? -1
     }

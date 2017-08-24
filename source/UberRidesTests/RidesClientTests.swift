@@ -812,7 +812,7 @@ class RidesClientTests: XCTestCase {
             }
             
             XCTAssertEqual(map.requestID, "b5512127-a134-4bf4-b1ba-fe9f48f56d9d")
-            XCTAssertEqual(map.path, "https://trip.uber.com/abc123")
+            XCTAssertEqual(map.path, URL(string: "https://trip.uber.com/abc123")!)
             
             XCTAssertEqual(response.statusCode, 200)
             expectation.fulfill()

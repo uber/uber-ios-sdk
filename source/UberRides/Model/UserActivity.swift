@@ -61,22 +61,22 @@
     @objc public private(set) var distance: Double
     
     /// Represents timestamp of activity request time in current locale.
-    @objc public private(set) var requestTime: Date?
+    @objc public private(set) var requestTime: Date
     
     /// Represents timestamp of activity start time in current locale.
-    @objc public private(set) var startTime: Date?
+    @objc public private(set) var startTime: Date
     
     /// Represents timestamp of activity end time in current locale.
-    @objc public private(set) var endTime: Date?
+    @objc public private(set) var endTime: Date
     
     /// City that activity started in.
-    @objc public private(set) var startCity: TripCity?
+    @objc public private(set) var startCity: TripCity
     
     /// Unique activity identifier.
-    @objc public private(set) var requestID: String?
+    @objc public private(set) var requestID: String
     
     /// Unique identifier representing a specific product for a given latitude & longitude.
-    @objc public private(set) var productID: String?
+    @objc public private(set) var productID: String
 
     enum CodingKeys: String, CodingKey {
         case distance    = "distance"
@@ -91,12 +91,12 @@
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         distance = try container.decodeIfPresent(Double.self, forKey: .distance) ?? 0.0
-        requestTime = try container.decodeIfPresent(Date.self, forKey: .requestTime)
-        startTime = try container.decodeIfPresent(Date.self, forKey: .startTime)
-        endTime = try container.decodeIfPresent(Date.self, forKey: .endTime)
-        startCity = try container.decodeIfPresent(TripCity.self, forKey: .startCity)
-        requestID = try container.decodeIfPresent(String.self, forKey: .requestID)
-        productID = try container.decodeIfPresent(String.self, forKey: .productID)
+        requestTime = try container.decode(Date.self, forKey: .requestTime)
+        startTime = try container.decode(Date.self, forKey: .startTime)
+        endTime = try container.decode(Date.self, forKey: .endTime)
+        startCity = try container.decode(TripCity.self, forKey: .startCity)
+        requestID = try container.decode(String.self, forKey: .requestID)
+        productID = try container.decode(String.self, forKey: .productID)
         status = try container.decodeIfPresent(RideStatus.self, forKey: .status) ?? .unknown
     }
 }
@@ -114,7 +114,7 @@
     @objc public private(set) var longitude: Float = 0.0
     
     /// Display name of city.
-    @objc public private(set) var name: String?
+    @objc public private(set) var name: String = ""
 
     enum CodingKeys: String, CodingKey {
         case latitude  = "latitude"

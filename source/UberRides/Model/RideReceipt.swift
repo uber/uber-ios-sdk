@@ -30,37 +30,37 @@
 @objc(UBSDKRideReceipt) public class RideReceipt: NSObject, Codable {
     
     /// Adjustments made to the charges such as promotions, and fees.
-    @objc public private(set) var chargeAdjustments: [RideCharge]?
+    @objc public private(set) var chargeAdjustments: [RideCharge]
     
     /// Describes the charges made against the rider.
-    @objc public private(set) var charges: [RideCharge]?
+    @objc public private(set) var charges: [RideCharge]
     
     /// ISO 4217
-    @objc public private(set) var currencyCode: String?
+    @objc public private(set) var currencyCode: String
     
     /// Distance of the trip charged.
-    @objc public private(set) var distance: String?
+    @objc public private(set) var distance: String
     
     /// The localized unit of distance.
-    @objc public private(set) var distanceLabel: String?
+    @objc public private(set) var distanceLabel: String
     
     /// Time duration of the trip in ISO 8601 HH:MM:SS format.
-    @objc public private(set) var duration: String?
+    @objc public private(set) var duration: String // TODO
     
     /// The summation of the charges array.
-    @objc public private(set) var normalFare: String?
+    @objc public private(set) var normalFare: String
     
     /// Unique identifier representing a Request.
-    @objc public private(set) var requestID: String?
+    @objc public private(set) var requestID: String
     
     /// The summation of the normal fare and surge charge amount.
-    @objc public private(set) var subtotal: String?
+    @objc public private(set) var subtotal: String
     
     /// Describes the surge charge. May be null if surge pricing was not in effect.
     @objc public private(set) var surgeCharge: RideCharge?
     
     /// The total amount charged to the users payment method. This is the the subtotal (split if applicable) with taxes included.
-    @objc public private(set) var totalCharged: String?
+    @objc public private(set) var totalCharged: String
     
     /// The total amount still owed after attempting to charge the user. May be 0 if amount was paid in full.
     @objc public private(set) var totalOwed: Double
@@ -82,17 +82,17 @@
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        chargeAdjustments = try container.decodeIfPresent([RideCharge].self, forKey: .chargeAdjustments)
-        charges = try container.decodeIfPresent([RideCharge].self, forKey: .charges)
-        currencyCode = try container.decodeIfPresent(String.self, forKey: .currencyCode)
-        distance = try container.decodeIfPresent(String.self, forKey: .distance)
-        distanceLabel = try container.decodeIfPresent(String.self, forKey: .distanceLabel)
-        duration = try container.decodeIfPresent(String.self, forKey: .duration)
-        normalFare = try container.decodeIfPresent(String.self, forKey: .normalFare)
-        requestID = try container.decodeIfPresent(String.self, forKey: .requestID)
-        subtotal = try container.decodeIfPresent(String.self, forKey: .subtotal)
+        chargeAdjustments = try container.decode([RideCharge].self, forKey: .chargeAdjustments)
+        charges = try container.decode([RideCharge].self, forKey: .charges)
+        currencyCode = try container.decode(String.self, forKey: .currencyCode)
+        distance = try container.decode(String.self, forKey: .distance)
+        distanceLabel = try container.decode(String.self, forKey: .distanceLabel)
+        duration = try container.decode(String.self, forKey: .duration)
+        normalFare = try container.decode(String.self, forKey: .normalFare)
+        requestID = try container.decode(String.self, forKey: .requestID)
+        subtotal = try container.decode(String.self, forKey: .subtotal)
         surgeCharge = try container.decodeIfPresent(RideCharge.self, forKey: .surgeCharge)
-        totalCharged = try container.decodeIfPresent(String.self, forKey: .totalCharged)
+        totalCharged = try container.decode(String.self, forKey: .totalCharged)
         totalOwed = try container.decodeIfPresent(Double.self, forKey: .totalOwed) ?? 0.0
     }
 }

@@ -30,16 +30,16 @@
 @objc(UBSDKVehicle) public class Vehicle: NSObject, Codable {
     
     /// The license plate number of the vehicle.
-    @objc public private(set) var licensePlate: String?
+    @objc public private(set) var licensePlate: String = ""
     
     /// The vehicle make or brand.
-    @objc public private(set) var make: String?
+    @objc public private(set) var make: String = ""
     
     /// The vehicle model or type.
-    @objc public private(set) var model: String?
+    @objc public private(set) var model: String = ""
     
     /// The URL to a stock photo of the vehicle (may be null).
-    @objc public private(set) var pictureURL: String?
+    @objc public private(set) var pictureURL: URL?
 
     enum CodingKeys: String, CodingKey {
         case make         = "make"

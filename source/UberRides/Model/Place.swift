@@ -34,5 +34,5 @@
     @objc public static let work = "work"
     
     /// Fully qualified address of the location.
-    @objc public private(set) var address: String?
+    @objc public private(set) var address: String = ""
 }

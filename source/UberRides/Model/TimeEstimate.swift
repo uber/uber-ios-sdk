@@ -42,10 +42,10 @@ struct TimeEstimates: Codable {
 */
 @objc(UBSDKTimeEstimate) public class TimeEstimate: NSObject, Codable {
     /// Unique identifier representing a specific product for a given latitude & longitude.
-    @objc public private(set) var productID: String?
+    @objc public private(set) var productID: String
     
     /// Display name of product. Ex: "UberBLACK".
-    @objc public private(set) var name: String?
+    @objc public private(set) var name: String
     
     /// ETA for the product (in seconds).
     @objc public private(set) var estimate: Int
@@ -58,8 +58,8 @@ struct TimeEstimates: Codable {
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        productID = try container.decodeIfPresent(String.self, forKey: .productID)
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        estimate = try container.decodeIfPresent(Int.self, forKey: .estimate) ?? 0
+        productID = try container.decode(String.self, forKey: .productID)
+        name = try container.decode(String.self, forKey: .name)
+        estimate = try container.decode(Int.self, forKey: .estimate)
     }
 }

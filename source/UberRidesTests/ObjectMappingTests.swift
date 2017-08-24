@@ -51,7 +51,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(product!.name, "UberBLACK")
                 XCTAssertEqual(product!.details, "The original Uber")
                 XCTAssertEqual(product!.capacity, 4)
-                XCTAssertEqual(product!.imagePath, "http://d1a3f4spazzrp4.cloudfront.net/car.jpg")
+                XCTAssertEqual(product!.imagePath, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car.jpg")!)
                 
                 let priceDetails = product!.priceDetails
                 XCTAssertNotNil(priceDetails)
@@ -244,7 +244,7 @@ class ObjectMappingTests: XCTestCase {
                 
                 XCTAssertNotNil(history[0].startCity)
                 
-                let city = history[0].startCity!
+                let city = history[0].startCity
                 XCTAssertEqual(city.name, "San Francisco")
                 XCTAssertEqual(city.latitude, 37.7749295)
                 XCTAssertEqual(city.longitude, -122.4194155)
@@ -355,11 +355,11 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(trip.vehicle!.make, "Bugatti")
                 XCTAssertEqual(trip.vehicle!.model, "Veyron")
                 XCTAssertEqual(trip.vehicle!.licensePlate, "I<3Uber")
-                XCTAssertEqual(trip.vehicle!.pictureURL, "https://d1w2poirtb3as9.cloudfront.net/car.jpeg")
+                XCTAssertEqual(trip.vehicle!.pictureURL, URL(string: "https://d1w2poirtb3as9.cloudfront.net/car.jpeg")!)
                 
                 XCTAssertNotNil(trip.driver)
                 XCTAssertEqual(trip.driver!.name, "Bob")
-                XCTAssertEqual(trip.driver!.pictureURL, "https://d1w2poirtb3as9.cloudfront.net/img.jpeg")
+                XCTAssertEqual(trip.driver!.pictureURL, URL(string: "https://d1w2poirtb3as9.cloudfront.net/img.jpeg")!)
                 XCTAssertEqual(trip.driver!.phoneNumber, "(555)555-5555")
                 XCTAssertEqual(trip.driver!.rating, 5)
                 
@@ -388,8 +388,8 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(estimate!.pickupEstimate, 2)
                 
                 XCTAssertNotNil(estimate!.priceEstimate)
-                XCTAssertEqual(estimate!.priceEstimate!.surgeConfirmationURL, "https://api.uber.com/v1/surge-confirmations/7d604f5e")
-                XCTAssertEqual(estimate!.priceEstimate!.surgeConfirmationID, "7d604f5e")
+                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationURL, "https://api.uber.com/v1/surge-confirmations/7d604f5e")
+                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationID, "7d604f5e")
                 
                 XCTAssertNotNil(estimate!.distanceEstimate)
                 XCTAssertEqual(estimate!.distanceEstimate!.distance, 2.1)
@@ -408,8 +408,8 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(estimate!.pickupEstimate, -1)
                 
                 XCTAssertNotNil(estimate!.priceEstimate)
-                XCTAssertEqual(estimate!.priceEstimate!.surgeConfirmationURL, "https://api.uber.com/v1/surge-confirmations/7d604f5e")
-                XCTAssertEqual(estimate!.priceEstimate!.surgeConfirmationID, "7d604f5e")
+                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationURL, "https://api.uber.com/v1/surge-confirmations/7d604f5e")
+                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationID, "7d604f5e")
                 
                 XCTAssertNotNil(estimate!.distanceEstimate)
                 XCTAssertEqual(estimate!.distanceEstimate!.distance, 2.1)
@@ -495,11 +495,7 @@ class ObjectMappingTests: XCTestCase {
                 
                 XCTAssertEqual(receipt.requestID, "b5512127-a134-4bf4-b1ba-fe9f48f56d9d")
                 
-                guard let charges = receipt.charges else {
-                    XCTAssert(false)
-                    return
-                }
-                
+                let charges = receipt.charges
                 XCTAssertEqual(charges.count, 3)
                 XCTAssertEqual(charges[0].name, "Base Fare")
                 XCTAssertEqual(charges[0].amount, 2.20)
@@ -520,10 +516,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(surgeCharge.amount, 4.26)
                 XCTAssertEqual(surgeCharge.type, "surge")
                 
-                guard let chargeAdjustments = receipt.chargeAdjustments else {
-                    XCTAssert(false)
-                    return
-                }
+                let chargeAdjustments = receipt.chargeAdjustments
                 
                 XCTAssertEqual(chargeAdjustments.count, 3)
                 XCTAssertEqual(chargeAdjustments[0].name, "Promotion")
@@ -563,10 +556,7 @@ class ObjectMappingTests: XCTestCase {
                 
                 XCTAssertEqual(receipt.requestID, "b5512127-a134-4bf4-b1ba-fe9f48f56d9d")
                 
-                guard let charges = receipt.charges else {
-                    XCTAssert(false)
-                    return
-                }
+                let charges = receipt.charges
                 
                 XCTAssertEqual(charges.count, 3)
                 XCTAssertEqual(charges[0].name, "Base Fare")
@@ -581,10 +571,7 @@ class ObjectMappingTests: XCTestCase {
                 
                 XCTAssertNil(receipt.surgeCharge)
                 
-                guard let chargeAdjustments = receipt.chargeAdjustments else {
-                    XCTAssert(false)
-                    return
-                }
+                let chargeAdjustments = receipt.chargeAdjustments
                 
                 XCTAssertEqual(chargeAdjustments.count, 3)
                 XCTAssertEqual(chargeAdjustments[0].name, "Promotion")
@@ -643,7 +630,7 @@ class ObjectMappingTests: XCTestCase {
                     return
                 }
                 
-                XCTAssertEqual(map.path, "https://trip.uber.com/abc123")
+                XCTAssertEqual(map.path, URL(string: "https://trip.uber.com/abc123")!)
                 XCTAssertEqual(map.requestID, "b5512127-a134-4bf4-b1ba-fe9f48f56d9d")
                 
                 return

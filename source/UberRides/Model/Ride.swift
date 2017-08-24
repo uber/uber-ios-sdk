@@ -45,7 +45,7 @@
     @objc public private(set) var pickup: RideRequestLocation?
     
     /// The unique ID of the Request.
-    @objc public private(set) var requestID: String?
+    @objc public private(set) var requestID: String
     
     /// The status of the Request indicating state.
     @objc public private(set) var status: RideStatus
@@ -75,7 +75,7 @@
         driverLocation = try container.decodeIfPresent(RideRequestLocation.self, forKey: .driverLocation)
         eta = try container.decodeIfPresent(Int.self, forKey: .eta) ?? 0
         pickup = try container.decodeIfPresent(RideRequestLocation.self, forKey: .pickup)
-        requestID = try container.decodeIfPresent(String.self, forKey: .requestID)
+        requestID = try container.decode(String.self, forKey: .requestID)
         surgeMultiplier = try container.decodeIfPresent(Double.self, forKey: .surgeMultiplier) ?? 1.0
         vehicle = try container.decodeIfPresent(Vehicle.self, forKey: .vehicle)
         status = try container.decodeIfPresent(RideStatus.self, forKey: .status) ?? .unknown

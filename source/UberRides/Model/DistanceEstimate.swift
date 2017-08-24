@@ -33,7 +33,7 @@
     @objc public private(set) var distance: Double
     
     /// The unit of distance (mile or km).
-    @objc public private(set) var distanceUnit: String?
+    @objc public private(set) var distanceUnit: String
     
     /// Expected activity duration (in seconds).
     @objc public private(set) var duration: Int
@@ -47,7 +47,7 @@
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         distance = try container.decodeIfPresent(Double.self, forKey: .distance) ?? 0.0
-        distanceUnit = try container.decodeIfPresent(String.self, forKey: .distanceUnit)
+        distanceUnit = try container.decodeIfPresent(String.self, forKey: .distanceUnit) ?? ""
         duration = try container.decodeIfPresent(Int.self, forKey: .duration) ?? 0
     }
 }

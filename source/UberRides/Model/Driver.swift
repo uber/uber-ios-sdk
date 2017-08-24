@@ -30,13 +30,13 @@
 @objc(UBSDKDriver) public class Driver: NSObject, Codable {
     
     /// The first name of the driver.
-    @objc public private(set) var name: String?
+    @objc public private(set) var name: String
     
     /// The URL to the photo of the driver.
-    @objc public private(set) var pictureURL: String?
+    @objc public private(set) var pictureURL: URL
     
     /// The formatted phone number for contacting the driver.
-    @objc public private(set) var phoneNumber: String?
+    @objc public private(set) var phoneNumber: String
     
     /// The driver's star rating out of 5 stars.
     @objc public private(set) var rating: Double
@@ -50,9 +50,9 @@
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        pictureURL = try container.decodeIfPresent(String.self, forKey: .pictureURL)
-        phoneNumber = try container.decodeIfPresent(String.self, forKey: .phoneNumber)
-        rating = try container.decodeIfPresent(Double.self, forKey: .rating) ?? 0.0
+        name = try container.decode(String.self, forKey: .name)
+        pictureURL = try container.decode(URL.self, forKey: .pictureURL)
+        phoneNumber = try container.decode(String.self, forKey: .phoneNumber)
+        rating = try container.decode(Double.self, forKey: .rating)
     }
 }

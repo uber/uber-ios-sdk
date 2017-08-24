@@ -33,15 +33,15 @@
     @objc public private(set) var amount: Double
     
     /// The name of the charge.
-    @objc public private(set) var name: String?
+    @objc public private(set) var name: String
     
     /// The type of the charge.
-    @objc public private(set) var type: String?
+    @objc public private(set) var type: String
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        amount = try container.decodeIfPresent(Double.self, forKey: .amount) ?? 0.0
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        type = try container.decodeIfPresent(String.self, forKey: .type)
+        amount = try container.decode(Double.self, forKey: .amount)
+        name = try container.decode(String.self, forKey: .name)
+        type = try container.decode(String.self, forKey: .type)
     }
 }
