@@ -133,7 +133,7 @@ class ObjectMappingTests: XCTestCase {
     }
     
     /**
-     Tests mapping result of GET /v1/estimates/time
+     Tests mapping result of GET /v1.2/estimates/time
      */
     func testGetTimeEstimates() {
         let bundle = Bundle(for: ObjectMappingTests.self)
@@ -156,7 +156,7 @@ class ObjectMappingTests: XCTestCase {
     }
     
     /**
-     Tests mapping of malformed result of GET /v1/estimates/time
+     Tests mapping of malformed result of GET /v1.2/estimates/time
      */
     func testGetTimeEstimatesBadJSON() {
         let bundle = Bundle(for: ObjectMappingTests.self)
@@ -174,7 +174,7 @@ class ObjectMappingTests: XCTestCase {
     }
     
     /**
-     Tests mapping result of GET /v1/estimates/price endpoint.
+     Tests mapping result of GET /v1.2/estimates/price endpoint.
      */
     func testGetPriceEstimates() {
         let bundle = Bundle(for: ObjectMappingTests.self)
@@ -205,7 +205,7 @@ class ObjectMappingTests: XCTestCase {
     }
 
     /**
-     Tests mapping of malformed result of GET /v1/estimates/price endpoint.
+     Tests mapping of malformed result of GET /v1.2/estimates/price endpoint.
      */
     func testGetPriceEstimatesBadJSON() {
         let bundle = Bundle(for: ObjectMappingTests.self)

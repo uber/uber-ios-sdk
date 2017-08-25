@@ -34,9 +34,9 @@ let placeID = Place.home
 struct ExpectedEndpoint {
     static let GetProducts = "https://sandbox-api.uber.com/v1.2/products?latitude=\(pickupLat)&longitude=\(pickupLong)"
     static let GetProduct = "https://sandbox-api.uber.com/v1.2/products/\(productID)?"
-    static let GetPriceEstimates = "https://sandbox-api.uber.com/v1/estimates/price?start_latitude=\(pickupLat)&start_longitude=\(pickupLong)&end_latitude=\(dropoffLat)&end_longitude=\(dropoffLong)"
-    static let GetTimeEstimates = "https://sandbox-api.uber.com/v1/estimates/time?start_latitude=\(pickupLat)&start_longitude=\(pickupLong)"
-    static let GetTimeEstimatesAllParams = "https://sandbox-api.uber.com/v1/estimates/time?start_latitude=\(pickupLat)&start_longitude=\(pickupLong)&product_id=\(productID)"
+    static let GetPriceEstimates = "https://sandbox-api.uber.com/v1.2/estimates/price?start_latitude=\(pickupLat)&start_longitude=\(pickupLong)&end_latitude=\(dropoffLat)&end_longitude=\(dropoffLong)"
+    static let GetTimeEstimates = "https://sandbox-api.uber.com/v1.2/estimates/time?start_latitude=\(pickupLat)&start_longitude=\(pickupLong)"
+    static let GetTimeEstimatesAllParams = "https://sandbox-api.uber.com/v1.2/estimates/time?start_latitude=\(pickupLat)&start_longitude=\(pickupLong)&product_id=\(productID)"
     static let GetHistory = "https://sandbox-api.uber.com/v1.2/history?"
     static let GetHistoryWithOffset = "https://sandbox-api.uber.com/v1.2/history?offset=\(offset)"
     static let GetHistoryWithLimit = "https://sandbox-api.uber.com/v1.2/history?limit=\(limit)"
@@ -110,7 +110,7 @@ class APIManagerTests: XCTestCase {
     }
     
     /**
-     Tests the GET /v1/estimates/price endpoint.
+     Tests the GET /v1.2/estimates/price endpoint.
      */
     func testGetPriceEstimates() {
         let request = buildRequestForEndpoint(Estimates.price(startLocation: CLLocation(latitude: pickupLat, longitude: pickupLong), endLocation: CLLocation(latitude: dropoffLat, longitude: dropoffLong)))
@@ -123,7 +123,7 @@ class APIManagerTests: XCTestCase {
     }
     
     /**
-     Tests the GET /v1/estimates/time endpoint with only latitude and longitude.
+     Tests the GET /v1.2/estimates/time endpoint with only latitude and longitude.
      */
     func testGetTimeEstimates() {
         let request = buildRequestForEndpoint(Estimates.time(location: CLLocation(latitude: pickupLat, longitude: pickupLong), productID: nil))
@@ -136,7 +136,7 @@ class APIManagerTests: XCTestCase {
     }
     
     /**
-     Tests the GET /v1/estimates/time endpoint with optional parameters.
+     Tests the GET /v1.2/estimates/time endpoint with optional parameters.
      */
     func testGetTimeEstimatesWithOptionalParameters() {
         let request = buildRequestForEndpoint(Estimates.time(location: CLLocation(latitude: pickupLat, longitude: pickupLong), productID: productID))

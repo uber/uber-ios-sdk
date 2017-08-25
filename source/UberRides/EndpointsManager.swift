@@ -74,7 +74,7 @@ private enum Resources: String {
     
     private var version: String {
         switch self {
-        case .estimates: return "v1"
+        case .estimates: return "v1.2"
         case .history: return "v1.2"
         case .me: return "v1.2"
         case .paymentMethod: return "v1.2"

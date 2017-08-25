@@ -208,9 +208,9 @@ class RequestButtonTests: XCTestCase {
      */
     func testGetMetadataDetailed() {
         stub(condition: isHost("sandbox-api.uber.com")) { urlRequest in
-            if isPath("/v1/estimates/price")(urlRequest) {
+            if isPath("/v1.2/estimates/price")(urlRequest) {
                 return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimates.json", type(of: self))!, statusCode:200, headers:nil)
-            } else if isPath("/v1/estimates/time")(urlRequest) {
+            } else if isPath("/v1.2/estimates/time")(urlRequest) {
                 return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimateProduct.json", type(of: self))!, statusCode:200, headers:nil)
             } else {
                 XCTAssert(false)
@@ -236,9 +236,9 @@ class RequestButtonTests: XCTestCase {
     
     func testErrorGettingPriceEstimates() {
         stub(condition: isHost("sandbox-api.uber.com")) { urlRequest in
-            if isPath("/v1/estimates/time")(urlRequest) {
+            if isPath("/v1.2/estimates/time")(urlRequest) {
                 return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimateProduct.json", type(of: self))!, statusCode:200, headers: [ "Authorization" : "Bearer token" ])
-            } else if isPath("/v1/estimates/price")(urlRequest) {
+            } else if isPath("/v1.2/estimates/price")(urlRequest) {
                 let obj = ["code":"price_estimate_error"]
                 return OHHTTPStubsResponse(jsonObject: obj, statusCode: 404, headers: nil)
             } else {
@@ -266,9 +266,9 @@ class RequestButtonTests: XCTestCase {
     
     func testErrorGettingTimeEstimates() {
         stub(condition: isHost("sandbox-api.uber.com")) { urlRequest in
-            if isPath("/v1/estimates/price")(urlRequest) {
+            if isPath("/v1.2/estimates/price")(urlRequest) {
                 return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimates.json", type(of: self))!, statusCode:200, headers:nil)
-            } else if isPath("/v1/estimates/time")(urlRequest) {
+            } else if isPath("/v1.2/estimates/time")(urlRequest) {
                 let obj = ["code":"time_estimate_error"]
                 return OHHTTPStubsResponse(jsonObject: obj, statusCode: 404, headers: nil)
             } else {
@@ -297,9 +297,9 @@ class RequestButtonTests: XCTestCase {
     func testEmptyTimeEstimatesCallsDelegateValidPriceEstimates() {
         stub(condition: isHost("sandbox-api.uber.com")) { urlRequest in
 
-            if isPath("/v1/estimates/price")(urlRequest) {
+            if isPath("/v1.2/estimates/price")(urlRequest) {
                 return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimates.json", type(of: self))!, statusCode:200, headers:nil)
-            } else if isPath("/v1/estimates/time")(urlRequest) {
+            } else if isPath("/v1.2/estimates/time")(urlRequest) {
                 return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimatesEmpty.json", type(of: self))!, statusCode:200, headers:nil)
             } else {
                 XCTAssert(false)
@@ -326,9 +326,9 @@ class RequestButtonTests: XCTestCase {
 
     func testEmptyPriceEstimatesValidTimeEstimates() {
         stub(condition: isHost("sandbox-api.uber.com")) { urlRequest in
-            if isPath("/v1/estimates/price")(urlRequest) {
+            if isPath("/v1.2/estimates/price")(urlRequest) {
                 return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimatesEmpty.json", type(of: self))!, statusCode:200, headers:nil)
-            } else if isPath("/v1/estimates/time")(urlRequest) {
+            } else if isPath("/v1.2/estimates/time")(urlRequest) {
                 return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimateProduct.json", type(of: self))!, statusCode:200, headers:nil)
             } else {
                 XCTAssert(false)
@@ -354,9 +354,9 @@ class RequestButtonTests: XCTestCase {
 
     func testEmptyPriceEstimatesEmptyTimeEstimates() {
         stub(condition: isHost("sandbox-api.uber.com")) { urlRequest in
-            if isPath("/v1/estimates/price")(urlRequest) {
+            if isPath("/v1.2/estimates/price")(urlRequest) {
                 return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimatesEmpty.json", type(of: self))!, statusCode:200, headers:nil)
-            } else if isPath("/v1/estimates/time")(urlRequest) {
+            } else if isPath("/v1.2/estimates/time")(urlRequest) {
                 return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimatesEmpty.json", type(of: self))!, statusCode:200, headers:nil)
             } else {
                 XCTAssert(false)
