@@ -41,7 +41,7 @@ struct ExpectedEndpoint {
     static let GetHistoryWithOffset = "https://sandbox-api.uber.com/v1.2/history?offset=\(offset)"
     static let GetHistoryWithLimit = "https://sandbox-api.uber.com/v1.2/history?limit=\(limit)"
     static let GetHistoryWithAllParameters = "https://sandbox-api.uber.com/v1.2/history?offset=\(offset)&limit=\(limit)"
-    static let GetUserProfile = "https://sandbox-api.uber.com/v1/me?"
+    static let GetUserProfile = "https://sandbox-api.uber.com/v1.2/me?"
     static let PostRequest = "https://sandbox-api.uber.com/v1/requests?"
     static let GetCurrentRequest = "https://sandbox-api.uber.com/v1/requests/current?"
     static let GetRequestByID = "https://sandbox-api.uber.com/v1/requests/\(requestID)?"

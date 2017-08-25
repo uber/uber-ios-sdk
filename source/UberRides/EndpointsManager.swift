@@ -76,7 +76,7 @@ private enum Resources: String {
         switch self {
         case .estimates: return "v1"
         case .history: return "v1.2"
-        case .me: return "v1"
+        case .me: return "v1.2"
         case .paymentMethod: return "v1"
         case .places: return "v1"
         case .products: return "v1"
