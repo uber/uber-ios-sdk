@@ -28,26 +28,31 @@
  *  Contains estimates for a desired ride request.
  */
 @objc(UBSDKRideEstimate) public class RideEstimate: NSObject, Codable {
+
+    /// Details of the estimated fare.
+    @objc public private(set) var priceEstimate: PriceEstimate?
     
-    /// Details of the estimated fare. If end location omitted, only the minimum is returned.
-    @objc public private(set) var priceEstimate: PriceEstimate
-    
-    /// Details of the estimated distance. Nil if end location is omitted.
+    /// Details of the estimated distance.
     @objc public private(set) var distanceEstimate: DistanceEstimate?
-    
+
     /// The estimated time of vehicle arrival in minutes. -1 if there are no cars available.
     @objc public private(set) var pickupEstimate: Int
 
+    /// Upfront Fare for the Ride Estimate. 
+    @objc public private(set) var fare: UpfrontFare?
+
     enum CodingKeys: String, CodingKey {
-        case priceEstimate    = "price"
+        case priceEstimate    = "estimate"
         case distanceEstimate = "trip"
         case pickupEstimate   = "pickup_estimate"
+        case fare = "fare"
     }
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        priceEstimate = try container.decode(PriceEstimate.self, forKey: .priceEstimate)
+        priceEstimate = try container.decodeIfPresent(PriceEstimate.self, forKey: .priceEstimate)
         distanceEstimate = try container.decodeIfPresent(DistanceEstimate.self, forKey: .distanceEstimate)
         pickupEstimate = try container.decodeIfPresent(Int.self, forKey: .pickupEstimate) ?? -1
+        fare = try container.decodeIfPresent(UpfrontFare.self, forKey: .fare)
     }
 }

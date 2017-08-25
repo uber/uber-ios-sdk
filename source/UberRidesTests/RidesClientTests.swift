@@ -768,7 +768,7 @@ class RidesClientTests: XCTestCase {
                 return
             }
             
-            XCTAssertEqual(receipt.requestID, "b5512127-a134-4bf4-b1ba-fe9f48f56d9d")
+            XCTAssertEqual(receipt.requestID, "f590713c-fe6b-438b-9da1-8aeeea430657")
             
             XCTAssertEqual(response.statusCode, 200)
             expectation.fulfill()

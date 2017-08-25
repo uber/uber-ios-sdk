@@ -379,25 +379,60 @@ class ObjectMappingTests: XCTestCase {
             }
         }
     }
-    
+
     /**
-     Tests mapping of POST /v1/requests/estimate endpoint.
+     Tests mapping of POST /v1.2/requests/estimate endpoint.
      */
     func testGetRequestEstimate() {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "requestEstimate", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                var estimate: RideEstimate?
+                do {
+                    estimate = try JSONDecoder.uberDecoder.decode(RideEstimate.self, from: jsonData)
+                }
+                catch let e {
+                    XCTFail(e.localizedDescription)
+                }
+                XCTAssertNotNil(estimate)
+                XCTAssertEqual(estimate!.pickupEstimate, 2)
+
+                XCTAssertNotNil(estimate?.fare)
+                XCTAssertEqual(estimate?.fare?.breakdown.first?.name, "Base Fare")
+                XCTAssertEqual(estimate?.fare?.breakdown.first?.type, UpfrontFareComponentType.baseFare)
+                XCTAssertEqual(estimate?.fare?.breakdown.first?.value, 11.95)
+                XCTAssertEqual(estimate?.fare?.value, 11.95)
+                XCTAssertEqual(estimate?.fare?.fareID, "3d957d6ab84e88209b6778d91bd4df3c12d17b60796d89793d6ed01650cbabfe")
+                XCTAssertEqual(estimate?.fare?.expiresAt, Date(timeIntervalSince1970: 1503702982))
+                XCTAssertEqual(estimate?.fare?.display, "$11.95")
+                XCTAssertEqual(estimate?.fare?.currencyCode, "USD")
+
+                XCTAssertNotNil(estimate!.distanceEstimate)
+                XCTAssertEqual(estimate!.distanceEstimate!.distance, 5.35)
+                XCTAssertEqual(estimate!.distanceEstimate!.duration, 840)
+                XCTAssertEqual(estimate!.distanceEstimate!.distanceUnit, "mile")
+            }
+        }
+    }
+
+    /**
+     Tests mapping of POST /v1.2/requests/estimate endpoint for a city w/o upfront pricing.
+     */
+    func testGetRequestEstimateNoUpfront() {
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "requestEstimateNoUpfront", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
                 let estimate = try? JSONDecoder.uberDecoder.decode(RideEstimate.self, from: jsonData)
                 XCTAssertNotNil(estimate)
                 XCTAssertEqual(estimate!.pickupEstimate, 2)
-                
+
                 XCTAssertNotNil(estimate!.priceEstimate)
-                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationURL, "https://api.uber.com/v1/surge-confirmations/7d604f5e")
-                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationID, "7d604f5e")
-                
+                XCTAssertEqual(estimate!.priceEstimate?.surgeConfirmationURL, URL(string: "https://api.uber.com/v1/surge-confirmations/7d604f5e"))
+                XCTAssertEqual(estimate!.priceEstimate?.surgeConfirmationID, "7d604f5e")
+
                 XCTAssertNotNil(estimate!.distanceEstimate)
-                XCTAssertEqual(estimate!.distanceEstimate!.distance, 2.1)
-                XCTAssertEqual(estimate!.distanceEstimate!.duration, 540)
+                XCTAssertEqual(estimate!.distanceEstimate!.distance, 4.87)
+                XCTAssertEqual(estimate!.distanceEstimate!.duration, 660)
                 XCTAssertEqual(estimate!.distanceEstimate!.distanceUnit, "mile")
             }
         }
@@ -410,14 +445,14 @@ class ObjectMappingTests: XCTestCase {
                 let estimate = try? JSONDecoder.uberDecoder.decode(RideEstimate.self, from: jsonData)
                 XCTAssertNotNil(estimate)
                 XCTAssertEqual(estimate!.pickupEstimate, -1)
-                
+
                 XCTAssertNotNil(estimate!.priceEstimate)
-                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationURL, "https://api.uber.com/v1/surge-confirmations/7d604f5e")
-                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationID, "7d604f5e")
-                
+                XCTAssertEqual(estimate!.priceEstimate?.surgeConfirmationURL, URL(string: "https://api.uber.com/v1/surge-confirmations/7d604f5e"))
+                XCTAssertEqual(estimate!.priceEstimate?.surgeConfirmationID, "7d604f5e")
+
                 XCTAssertNotNil(estimate!.distanceEstimate)
-                XCTAssertEqual(estimate!.distanceEstimate!.distance, 2.1)
-                XCTAssertEqual(estimate!.distanceEstimate!.duration, 540)
+                XCTAssertEqual(estimate!.distanceEstimate!.distance, 4.87)
+                XCTAssertEqual(estimate!.distanceEstimate!.duration, 660)
                 XCTAssertEqual(estimate!.distanceEstimate!.distanceUnit, "mile")
             }
         }
@@ -497,104 +532,23 @@ class ObjectMappingTests: XCTestCase {
                     return
                 }
                 
-                XCTAssertEqual(receipt.requestID, "b5512127-a134-4bf4-b1ba-fe9f48f56d9d")
-                
-                let charges = receipt.charges
-                XCTAssertEqual(charges.count, 3)
-                XCTAssertEqual(charges[0].name, "Base Fare")
-                XCTAssertEqual(charges[0].amount, 2.20)
-                XCTAssertEqual(charges[0].type, "base_fare")
-                XCTAssertEqual(charges[1].name, "Distance")
-                XCTAssertEqual(charges[1].amount, 2.75)
-                XCTAssertEqual(charges[1].type, "distance")
-                XCTAssertEqual(charges[2].name, "Time")
-                XCTAssertEqual(charges[2].amount, 3.57)
-                XCTAssertEqual(charges[2].type, "time")
-                
-                guard let surgeCharge = receipt.surgeCharge else {
-                    XCTAssert(false)
-                    return
-                }
-                
-                XCTAssertEqual(surgeCharge.name, "Surge x1.5")
-                XCTAssertEqual(surgeCharge.amount, 4.26)
-                XCTAssertEqual(surgeCharge.type, "surge")
+                XCTAssertEqual(receipt.requestID, "f590713c-fe6b-438b-9da1-8aeeea430657")
                 
                 let chargeAdjustments = receipt.chargeAdjustments
                 
-                XCTAssertEqual(chargeAdjustments.count, 3)
-                XCTAssertEqual(chargeAdjustments[0].name, "Promotion")
-                XCTAssertEqual(chargeAdjustments[0].amount, -2.43)
-                XCTAssertEqual(chargeAdjustments[0].type, "promotion")
-                XCTAssertEqual(chargeAdjustments[1].name, "Booking Fee")
-                XCTAssertEqual(chargeAdjustments[1].amount, 1.00)
-                XCTAssertEqual(chargeAdjustments[1].type, "booking_fee")
-                XCTAssertEqual(chargeAdjustments[2].name, "Rounding Down")
-                XCTAssertEqual(chargeAdjustments[2].amount, 0.78)
-                XCTAssertEqual(chargeAdjustments[2].type, "rounding_down")
-                
-                XCTAssertEqual(receipt.normalFare, "$8.52")
+                XCTAssertEqual(chargeAdjustments.count, 1)
+                XCTAssertEqual(chargeAdjustments.first?.name, "Booking Fee")
+                XCTAssertEqual(chargeAdjustments.first?.type, "booking_fee")
+
                 XCTAssertEqual(receipt.subtotal, "$12.78")
                 XCTAssertEqual(receipt.totalCharged, "$5.92")
+                XCTAssertEqual(receipt.totalFare, "$12.79")
                 XCTAssertEqual(receipt.totalOwed, 0.0)
                 XCTAssertEqual(receipt.currencyCode, "USD")
-                XCTAssertEqual(receipt.duration, "00:11:35")
-                XCTAssertEqual(receipt.distance, "1.49")
-                XCTAssertEqual(receipt.distanceLabel, "miles")
-                
-                return
-            }
-        }
-        
-        XCTAssert(false)
-    }
-    
-    func testGetRideReceipt_withNullSurge_withTotalOwed() {
-        let bundle = Bundle(for: ObjectMappingTests.self)
-        if let path = bundle.path(forResource: "rideReceiptNullSurgeTotalOwed", ofType: "json") {
-            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                guard let receipt = try? JSONDecoder.uberDecoder.decode(RideReceipt.self, from: jsonData) else {
-                    XCTAssert(false)
-                    return
-                }
-                
-                XCTAssertEqual(receipt.requestID, "b5512127-a134-4bf4-b1ba-fe9f48f56d9d")
-                
-                let charges = receipt.charges
-                
-                XCTAssertEqual(charges.count, 3)
-                XCTAssertEqual(charges[0].name, "Base Fare")
-                XCTAssertEqual(charges[0].amount, 2.20)
-                XCTAssertEqual(charges[0].type, "base_fare")
-                XCTAssertEqual(charges[1].name, "Distance")
-                XCTAssertEqual(charges[1].amount, 2.75)
-                XCTAssertEqual(charges[1].type, "distance")
-                XCTAssertEqual(charges[2].name, "Time")
-                XCTAssertEqual(charges[2].amount, 3.57)
-                XCTAssertEqual(charges[2].type, "time")
-                
-                XCTAssertNil(receipt.surgeCharge)
-                
-                let chargeAdjustments = receipt.chargeAdjustments
-                
-                XCTAssertEqual(chargeAdjustments.count, 3)
-                XCTAssertEqual(chargeAdjustments[0].name, "Promotion")
-                XCTAssertEqual(chargeAdjustments[0].amount, -2.43)
-                XCTAssertEqual(chargeAdjustments[0].type, "promotion")
-                XCTAssertEqual(chargeAdjustments[1].name, "Booking Fee")
-                XCTAssertEqual(chargeAdjustments[1].amount, 1.00)
-                XCTAssertEqual(chargeAdjustments[1].type, "booking_fee")
-                XCTAssertEqual(chargeAdjustments[2].name, "Rounding Down")
-                XCTAssertEqual(chargeAdjustments[2].amount, 0.78)
-                XCTAssertEqual(chargeAdjustments[2].type, "rounding_down")
-                
-                XCTAssertEqual(receipt.normalFare, "$8.52")
-                XCTAssertEqual(receipt.subtotal, "$12.78")
-                XCTAssertEqual(receipt.totalCharged, "$5.92")
-                XCTAssertEqual(receipt.totalOwed, 0.50)
-                XCTAssertEqual(receipt.currencyCode, "USD")
-                XCTAssertEqual(receipt.duration, "00:11:35")
-                XCTAssertEqual(receipt.distance, "1.49")
+                XCTAssertEqual(receipt.duration.hour, 0)
+                XCTAssertEqual(receipt.duration.minute, 11)
+                XCTAssertEqual(receipt.duration.second, 32)
+                XCTAssertEqual(receipt.distance, "1.87")
                 XCTAssertEqual(receipt.distanceLabel, "miles")
                 
                 return

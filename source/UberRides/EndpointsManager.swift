@@ -80,7 +80,7 @@ private enum Resources: String {
         case .paymentMethod: return "v1.2"
         case .places: return "v1.2"
         case .products: return "v1.2"
-        case .request: return "v1"
+        case .request: return "v1.2"
         }
     }
     

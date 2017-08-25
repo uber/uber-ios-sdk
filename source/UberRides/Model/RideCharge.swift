@@ -40,7 +40,7 @@
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        amount = try container.decode(Double.self, forKey: .amount)
+        amount = try Double(container.decode(String.self, forKey: .amount)) ?? 0.0
         name = try container.decode(String.self, forKey: .name)
         type = try container.decode(String.self, forKey: .type)
     }

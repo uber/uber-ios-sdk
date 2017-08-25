@@ -70,7 +70,7 @@ struct PriceEstimates: Codable {
     @objc public private(set) var surgeConfirmationID: String?
     
     /// The URL a user must visit to accept surge pricing.
-    @objc public private(set) var surgeConfirmationURL: String?
+    @objc public private(set) var surgeConfirmationURL: URL?
     
     /// Expected surge multiplier (active if surge is greater than 1).
     @objc public private(set) var surgeMultiplier: Double
@@ -100,7 +100,7 @@ struct PriceEstimates: Codable {
         name = try container.decodeIfPresent(String.self, forKey: .name)
         productID = try container.decodeIfPresent(String.self, forKey: .productID)
         surgeConfirmationID = try container.decodeIfPresent(String.self, forKey: .surgeConfirmationID)
-        surgeConfirmationURL = try container.decodeIfPresent(String.self, forKey: .surgeConfirmationURL)
+        surgeConfirmationURL = try container.decodeIfPresent(URL.self, forKey: .surgeConfirmationURL)
         surgeMultiplier = try container.decodeIfPresent(Double.self, forKey: .surgeMultiplier) ?? 1.0
     }
 }
