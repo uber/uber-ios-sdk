@@ -32,8 +32,8 @@ let requestID = "request1234"
 let placeID = Place.home
 
 struct ExpectedEndpoint {
-    static let GetProducts = "https://sandbox-api.uber.com/v1/products?latitude=\(pickupLat)&longitude=\(pickupLong)"
-    static let GetProduct = "https://sandbox-api.uber.com/v1/products/\(productID)?"
+    static let GetProducts = "https://sandbox-api.uber.com/v1.2/products?latitude=\(pickupLat)&longitude=\(pickupLong)"
+    static let GetProduct = "https://sandbox-api.uber.com/v1.2/products/\(productID)?"
     static let GetPriceEstimates = "https://sandbox-api.uber.com/v1/estimates/price?start_latitude=\(pickupLat)&start_longitude=\(pickupLong)&end_latitude=\(dropoffLat)&end_longitude=\(dropoffLong)"
     static let GetTimeEstimates = "https://sandbox-api.uber.com/v1/estimates/time?start_latitude=\(pickupLat)&start_longitude=\(pickupLong)"
     static let GetTimeEstimatesAllParams = "https://sandbox-api.uber.com/v1/estimates/time?start_latitude=\(pickupLat)&start_longitude=\(pickupLong)&product_id=\(productID)"

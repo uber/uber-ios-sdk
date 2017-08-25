@@ -1,90 +1,112 @@
 {
     "products": [
                  {
+                 "upfront_fare_enabled": true,
                  "capacity": 4,
-                 "description": "The low-cost Uber",
-                 "price_details": {
-                 "distance_unit": "mile",
-                 "cost_per_minute": 0.26,
-                 "service_fees": [
-                                  {
-                                  "fee": 1.0,
-                                  "name": "Safe Rides Fee"
-                                  }
-                                  ],
-                 "minimum": 5.0,
-                 "cost_per_distance": 1.3,
-                 "base": 2.2,
-                 "cancellation_fee": 5.0,
-                 "currency_code": "USD"
-                 },
-                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car.jpg",
-                 "display_name": "uberX",
-                 "product_id": "a1111c8c-c720-46c3-8534-2fcdd730040d"
+                 "product_id": "57c0ff4e-1493-4ef9-a4df-6b961525cf92",
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberselect.png",
+                 "cash_enabled": false,
+                 "shared": false,
+                 "short_description": "SELECT",
+                 "display_name": "SELECT",
+                 "product_group": "uberx",
+                 "description": "A STEP ABOVE THE EVERY DAY"
                  },
                  {
+                 "upfront_fare_enabled": true,
                  "capacity": 6,
-                 "description": "low-cost rides for large groups",
-                 "price_details": {
-                 "distance_unit": "mile",
-                 "cost_per_minute": 0.45,
-                 "service_fees": [
-                                  {
-                                  "fee": 1.0,
-                                  "name": "Safe Rides Fee"
-                                  }
-                                  ],
-                 "minimum": 8.0,
-                 "cost_per_distance": 2.15,
-                 "base": 5.0,
-                 "cancellation_fee": 5.0,
-                 "currency_code": "USD"
-                 },
-                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car.jpg",
+                 "product_id": "821415d8-3bd5-4e27-9604-194e4359a449",
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberxl2.png",
+                 "cash_enabled": false,
+                 "shared": false,
+                 "short_description": "uberXL",
                  "display_name": "uberXL",
-                 "product_id": "821415d8-3bd5-4e27-9604-194e4359a449"
+                 "product_group": "uberxl",
+                 "description": "LOW-COST RIDES FOR LARGE GROUPS"
                  },
                  {
+                 "upfront_fare_enabled": true,
                  "capacity": 4,
-                 "description": "The original Uber",
-                 "price_details": {
-                 "distance_unit": "mile",
-                 "cost_per_minute": 0.65,
-                 "service_fees": [],
-                 "minimum": 15.0,
-                 "cost_per_distance": 3.75,
-                 "base": 8.0,
-                 "cancellation_fee": 10.0,
-                 "currency_code": "USD"
-                 },
-                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car.jpg",
-                 "display_name": "UberBLACK",
-                 "product_id": "d4abaae7-f4d6-4152-91cc-77523e8165a4"
+                 "product_id": "d4abaae7-f4d6-4152-91cc-77523e8165a4",
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png",
+                 "cash_enabled": false,
+                 "shared": false,
+                 "short_description": "BLACK",
+                 "display_name": "BLACK",
+                 "product_group": "uberblack",
+                 "description": "THE ORIGINAL UBER"
                  },
                  {
+                 "upfront_fare_enabled": true,
                  "capacity": 6,
-                 "description": "Room for everyone",
-                 "price_details": {
-                 "distance_unit": "mile",
-                 "cost_per_minute": 0.9,
-                 "service_fees": [],
-                 "minimum": 25.0,
-                 "cost_per_distance": 3.75,
-                 "base": 15.0,
-                 "cancellation_fee": 10.0,
-                 "currency_code": "USD"
-                 },
-                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car.jpg",
-                 "display_name": "UberSUV",
-                 "product_id": "8920cb5e-51a4-4fa4-acdf-dd86c5e18ae0"
+                 "product_id": "8920cb5e-51a4-4fa4-acdf-dd86c5e18ae0",
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-suv.png",
+                 "cash_enabled": false,
+                 "shared": false,
+                 "short_description": "SUV",
+                 "display_name": "SUV",
+                 "product_group": "suv",
+                 "description": "ROOM FOR EVERYONE"
                  },
                  {
+                 "upfront_fare_enabled": true,
                  "capacity": 4,
-                 "description": "Taxi without the hassle",
-                 "price_details": null,
-                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car.jpg",
-                 "display_name": "uberTAXI",
-                 "product_id": "3ab64887-4842-4c8e-9780-ccecd3a0391d"
+                 "product_id": "ff5ed8fe-6585-4803-be13-3ca541235de3",
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png",
+                 "cash_enabled": false,
+                 "shared": false,
+                 "short_description": "ASSIST",
+                 "display_name": "ASSIST",
+                 "product_group": "uberx",
+                 "description": "uberX with extra assistance"
+                 },
+                 {
+                 "upfront_fare_enabled": true,
+                 "capacity": 4,
+                 "product_id": "2832a1f5-cfc0-48bb-ab76-7ea7a62060e7",
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-wheelchair.png",
+                 "cash_enabled": false,
+                 "shared": false,
+                 "short_description": "WAV",
+                 "display_name": "WAV",
+                 "product_group": "uberx",
+                 "description": "WHEELCHAIR ACCESSIBLE VEHICLES"
+                 },
+                 {
+                 "upfront_fare_enabled": true,
+                 "capacity": 2,
+                 "product_id": "26546650-e557-4a7b-86e7-6a3942445247",
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png",
+                 "cash_enabled": false,
+                 "shared": true,
+                 "short_description": "POOL",
+                 "display_name": "POOL",
+                 "product_group": "rideshare",
+                 "description": "Share the ride, split the cost."
+                 },
+                 {
+                 "upfront_fare_enabled": true,
+                 "capacity": 4,
+                 "product_id": "a1111c8c-c720-46c3-8534-2fcdd730040d",
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png",
+                 "cash_enabled": false,
+                 "shared": false,
+                 "short_description": "uberX",
+                 "display_name": "uberX",
+                 "product_group": "uberx",
+                 "description": "THE LOW-COST UBER"
+                 },
+                 {
+                 "upfront_fare_enabled": false,
+                 "capacity": 4,
+                 "product_id": "3ab64887-4842-4c8e-9780-ccecd3a0391d",
+                 "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-taxi.png",
+                 "cash_enabled": false,
+                 "shared": false,
+                 "short_description": "TAXI",
+                 "display_name": "TAXI",
+                 "product_group": "taxi",
+                 "description": "TAXI WITHOUT THE HASSLE"
                  }
                  ]
 }

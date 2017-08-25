@@ -57,9 +57,12 @@ struct UberProducts: Codable {
     
     /// Path of image URL representing the product.
     @objc public private(set) var imagePath: URL
-    
+
     /// The basic price details. See `PriceDetails` for structure.
     @objc public private(set) var priceDetails: PriceDetails?
+
+    /// Allows users to get upfront fares, instead of time + distance.
+    @objc public private(set) var upfrontFareEnabled: Bool
 
     enum CodingKeys: String, CodingKey {
         case productID    = "product_id"
@@ -68,6 +71,7 @@ struct UberProducts: Codable {
         case capacity     = "capacity"
         case imagePath    = "image"
         case priceDetails = "price_details"
+        case upfrontFareEnabled = "upfront_fare_enabled"
     }
 
     public required init(from decoder: Decoder) throws {
@@ -78,6 +82,7 @@ struct UberProducts: Codable {
         capacity = try container.decode(Int.self, forKey: .capacity)
         imagePath = try container.decode(URL.self, forKey: .imagePath)
         priceDetails = try container.decodeIfPresent(PriceDetails.self, forKey: .priceDetails)
+        upfrontFareEnabled = try container.decode(Bool.self, forKey: .upfrontFareEnabled)
     }
 }
 

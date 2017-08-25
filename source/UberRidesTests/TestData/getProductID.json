@@ -1,22 +1,27 @@
 {
+    "upfront_fare_enabled": false,
     "capacity": 4,
-    "description": "The original Uber",
+    "product_id": "a1111c8c-c720-46c3-8534-2fcdd730040d",
     "price_details": {
-        "distance_unit": "mile",
-        "cost_per_minute": 0.65,
         "service_fees": [
-            {
-                "fee": 1.0,
-                "name": "Safe Rides Fee"
-            }
-        ],
-        "minimum": 15.0,
-        "cost_per_distance": 3.75,
-        "base": 8.0,
-        "cancellation_fee": 10.0,
+                         {
+                         "fee": 2,
+                         "name": "Booking fee"
+                         }
+                         ],
+        "cost_per_minute": 0.22,
+        "distance_unit": "mile",
+        "minimum": 7,
+        "cost_per_distance": 1.15,
+        "base": 2,
+        "cancellation_fee": 5,
         "currency_code": "USD"
     },
-    "image": "http://d1a3f4spazzrp4.cloudfront.net/car.jpg",
-    "display_name": "UberBLACK",
-    "product_id": "d4abaae7-f4d6-4152-91cc-77523e8165a4"
+    "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png",
+    "cash_enabled": false,
+    "shared": false,
+    "short_description": "uberX",
+    "display_name": "uberX",
+    "product_group": "uberx",
+    "description": "THE LOW-COST UBER"
 }

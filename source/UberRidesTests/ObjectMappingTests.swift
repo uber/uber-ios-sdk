@@ -47,27 +47,27 @@ class ObjectMappingTests: XCTestCase {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
                 let product = try? JSONDecoder.uberDecoder.decode(UberProduct.self, from: jsonData)
                 XCTAssertNotNil(product)
-                XCTAssertEqual(product!.productID, "d4abaae7-f4d6-4152-91cc-77523e8165a4")
-                XCTAssertEqual(product!.name, "UberBLACK")
-                XCTAssertEqual(product!.details, "The original Uber")
+                XCTAssertEqual(product!.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
+                XCTAssertEqual(product!.name, "uberX")
+                XCTAssertEqual(product!.details, "THE LOW-COST UBER")
                 XCTAssertEqual(product!.capacity, 4)
-                XCTAssertEqual(product!.imagePath, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car.jpg")!)
+                XCTAssertEqual(product!.imagePath, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png")!)
                 
                 let priceDetails = product!.priceDetails
                 XCTAssertNotNil(priceDetails)
                 XCTAssertEqual(priceDetails!.distanceUnit, "mile")
-                XCTAssertEqual(priceDetails!.costPerMinute, 0.65)
-                XCTAssertEqual(priceDetails!.minimumFee, 15.0)
-                XCTAssertEqual(priceDetails!.costPerDistance, 3.75)
-                XCTAssertEqual(priceDetails!.baseFee, 8.0)
-                XCTAssertEqual(priceDetails!.cancellationFee, 10.0)
+                XCTAssertEqual(priceDetails!.costPerMinute, 0.22)
+                XCTAssertEqual(priceDetails!.minimumFee, 7.0)
+                XCTAssertEqual(priceDetails!.costPerDistance, 1.15)
+                XCTAssertEqual(priceDetails!.baseFee, 2.0)
+                XCTAssertEqual(priceDetails!.cancellationFee, 5.0)
                 XCTAssertEqual(priceDetails!.currencyCode, "USD")
                 
                 let serviceFees = priceDetails!.serviceFees
                 XCTAssertNotNil(serviceFees)
                 XCTAssertEqual(serviceFees!.count, 1)
-                XCTAssertEqual(serviceFees!.first!.name, "Safe Rides Fee")
-                XCTAssertEqual(serviceFees!.first!.fee, 1.0)
+                XCTAssertEqual(serviceFees!.first!.name, "Booking fee")
+                XCTAssertEqual(serviceFees!.first!.fee, 2.0)
             }
         }
     }
@@ -100,12 +100,16 @@ class ObjectMappingTests: XCTestCase {
                 let products = try? JSONDecoder.uberDecoder.decode(UberProducts.self, from: jsonData)
                 XCTAssertNotNil(products)
                 XCTAssertNotNil(products!.list)
-                XCTAssertEqual(products!.list!.count, 5)
-                XCTAssertEqual(products!.list![0].name, "uberX")
+                XCTAssertEqual(products!.list!.count, 9)
+                XCTAssertEqual(products!.list![0].name, "SELECT")
                 XCTAssertEqual(products!.list![1].name, "uberXL")
-                XCTAssertEqual(products!.list![2].name, "UberBLACK")
-                XCTAssertEqual(products!.list![3].name, "UberSUV")
-                XCTAssertEqual(products!.list![4].name, "uberTAXI")
+                XCTAssertEqual(products!.list![2].name, "BLACK")
+                XCTAssertEqual(products!.list![3].name, "SUV")
+                XCTAssertEqual(products!.list![4].name, "ASSIST")
+                XCTAssertEqual(products!.list![5].name, "WAV")
+                XCTAssertEqual(products!.list![6].name, "POOL")
+                XCTAssertEqual(products!.list![7].name, "uberX")
+                XCTAssertEqual(products!.list![8].name, "TAXI")
             }
         }
     }

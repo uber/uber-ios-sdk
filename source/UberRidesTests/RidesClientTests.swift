@@ -60,30 +60,6 @@ class RidesClientTests: XCTestCase {
     }
     
     /**
-     Test convenience function for getting cheapest product.
-     */
-    func testGetCheapestProduct() {
-        stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProducts.json", type(of: self))!, statusCode:200, headers:nil)
-        }
-        
-        let expectation = self.expectation(description: "get cheapest product")
-        let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
-        client.fetchCheapestProduct(pickupLocation: location, completion: { ridesProduct, response in
-            XCTAssertNotNil(ridesProduct)
-            XCTAssertEqual(ridesProduct!.name, "uberX")
-            
-            expectation.fulfill()
-        })
-        
-        waitForExpectations(timeout: timeout, handler:{ error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-            }
-        })
-    }
-    
-    /**
      Test getting all products.
      */
     func testGetProducts() {
@@ -94,13 +70,17 @@ class RidesClientTests: XCTestCase {
         let expectation = self.expectation(description: "get all products")
         let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
         client.fetchProducts(pickupLocation: location, completion: { products, response in
-            
-            XCTAssertEqual(products.count, 5)
-            XCTAssertEqual(products[0].name, "uberX")
+
+            XCTAssertEqual(products.count, 9)
+            XCTAssertEqual(products[0].name, "SELECT")
             XCTAssertEqual(products[1].name, "uberXL")
-            XCTAssertEqual(products[2].name, "UberBLACK")
-            XCTAssertEqual(products[3].name, "UberSUV")
-            XCTAssertEqual(products[4].name, "uberTAXI")
+            XCTAssertEqual(products[2].name, "BLACK")
+            XCTAssertEqual(products[3].name, "SUV")
+            XCTAssertEqual(products[4].name, "ASSIST")
+            XCTAssertEqual(products[5].name, "WAV")
+            XCTAssertEqual(products[6].name, "POOL")
+            XCTAssertEqual(products[7].name, "uberX")
+            XCTAssertEqual(products[8].name, "TAXI")
             
             expectation.fulfill()
         })
@@ -125,7 +105,7 @@ class RidesClientTests: XCTestCase {
         client.fetchProduct(productID: productID, completion: { product, response in
             
             XCTAssertNotNil(product)
-            XCTAssertEqual(product!.name, "UberBLACK")
+            XCTAssertEqual(product!.name, "uberX")
             XCTAssertEqual(product!.capacity, 4)
             
             expectation.fulfill()

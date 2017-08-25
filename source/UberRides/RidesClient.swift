@@ -198,29 +198,6 @@ import CoreLocation
     // MARK: Endpoints
     
     /**
-    Convenience function for returning cheapest product at location.
-    
-    - parameter location:  coordinates of pickup location.
-    - parameter completion: completion handler for returned product.
-    */
-    @objc open func fetchCheapestProduct(pickupLocation location: CLLocation, completion:@escaping (_ product: UberProduct?, _ response: Response) -> Void) {
-        fetchProducts(pickupLocation: location, completion:{ products, response in
-            let filteredProducts = products.filter({$0.priceDetails != nil})
-            if filteredProducts.count == 0 {
-                completion(nil, response)
-                return
-            }
-            
-            // Find cheapest product by first comparing minimum value, then by cost per distance; compared in order such that products earlier in display order are favored.
-            let cheapestMinimumValue = filteredProducts.reduce(filteredProducts[0].priceDetails!.minimumFee, {min($0, $1.priceDetails!.minimumFee)})
-            let cheapestProducts = filteredProducts.filter({$0.priceDetails!.minimumFee == cheapestMinimumValue})
-            let cheapest = cheapestProducts.reduce(cheapestProducts[0], {$1.priceDetails!.costPerDistance < $0.priceDetails!.costPerDistance ? $1 : $0})
-            
-            completion(cheapest, response)
-        })
-    }
-    
-    /**
      Get all products at specified location.
      
      - parameter location:  coordinates of pickup location
