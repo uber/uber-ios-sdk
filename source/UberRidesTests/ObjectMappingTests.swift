@@ -49,9 +49,9 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertNotNil(product)
                 XCTAssertEqual(product!.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
                 XCTAssertEqual(product!.name, "uberX")
-                XCTAssertEqual(product!.details, "THE LOW-COST UBER")
+                XCTAssertEqual(product!.productDescription, "THE LOW-COST UBER")
                 XCTAssertEqual(product!.capacity, 4)
-                XCTAssertEqual(product!.imagePath, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png")!)
+                XCTAssertEqual(product!.imageURL, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png")!)
                 
                 let priceDetails = product!.priceDetails
                 XCTAssertNotNil(priceDetails)
@@ -110,6 +110,54 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(products!.list![6].name, "POOL")
                 XCTAssertEqual(products!.list![7].name, "uberX")
                 XCTAssertEqual(products!.list![8].name, "TAXI")
+
+                /// Assert upfront fare product, POOL
+                let uberPool = products?.list?[6]
+                XCTAssertEqual(uberPool?.upfrontFareEnabled, true)
+                XCTAssertEqual(uberPool?.capacity, 2)
+                XCTAssertEqual(uberPool?.productID, "26546650-e557-4a7b-86e7-6a3942445247")
+                XCTAssertNil(uberPool?.priceDetails)
+                XCTAssertEqual(uberPool?.imageURL, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png")!)
+                XCTAssertEqual(uberPool?.cashEnabled, false)
+                XCTAssertEqual(uberPool?.isShared, true)
+                XCTAssertEqual(uberPool?.name, "POOL")
+                XCTAssertEqual(uberPool?.productGroup, ProductGroup.rideshare)
+                XCTAssertEqual(uberPool?.productDescription, "Share the ride, split the cost.")
+
+                /// Assert time+distance product, uberX (pulled from Sydney)
+                let uberX = products?.list?[7]
+                XCTAssertEqual(uberX?.upfrontFareEnabled, false)
+                XCTAssertEqual(uberX?.capacity, 4)
+                XCTAssertEqual(uberX?.productID, "2d1d002b-d4d0-4411-98e1-673b244878b2")
+                XCTAssertEqual(uberX?.imageURL, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png")!)
+                XCTAssertEqual(uberX?.cashEnabled, false)
+                XCTAssertEqual(uberX?.isShared, false)
+                XCTAssertEqual(uberX?.name, "uberX")
+                XCTAssertEqual(uberX?.productGroup, ProductGroup.uberX)
+                XCTAssertEqual(uberX?.productDescription, "Everyday rides that are always smarter than a taxi")
+
+                XCTAssertEqual(uberX?.priceDetails?.serviceFees?.first?.fee, 0.55)
+                XCTAssertEqual(uberX?.priceDetails?.serviceFees?.first?.name, "Booking fee")
+                XCTAssertEqual(uberX?.priceDetails?.costPerMinute, 0.4)
+                XCTAssertEqual(uberX?.priceDetails?.distanceUnit, "km")
+                XCTAssertEqual(uberX?.priceDetails?.minimumFee, 9)
+                XCTAssertEqual(uberX?.priceDetails?.costPerDistance, 1.45)
+                XCTAssertEqual(uberX?.priceDetails?.baseFee, 2.5)
+                XCTAssertEqual(uberX?.priceDetails?.cancellationFee, 10)
+                XCTAssertEqual(uberX?.priceDetails?.currencyCode, "AUD")
+
+                /// Assert hail product, TAXI
+                let taxi = products?.list?[8]
+                XCTAssertEqual(taxi?.upfrontFareEnabled, false)
+                XCTAssertEqual(taxi?.capacity, 4)
+                XCTAssertEqual(taxi?.productID, "3ab64887-4842-4c8e-9780-ccecd3a0391d")
+                XCTAssertNil(uberPool?.priceDetails)
+                XCTAssertEqual(taxi?.imageURL, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-taxi.png")!)
+                XCTAssertEqual(taxi?.cashEnabled, false)
+                XCTAssertEqual(taxi?.isShared, false)
+                XCTAssertEqual(taxi?.name, "TAXI")
+                XCTAssertEqual(taxi?.productGroup, ProductGroup.taxi)
+                XCTAssertEqual(taxi?.productDescription, "TAXI WITHOUT THE HASSLE")
             }
         }
     }

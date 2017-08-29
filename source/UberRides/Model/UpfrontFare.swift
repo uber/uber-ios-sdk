@@ -79,15 +79,13 @@
 @objc(UBSDKUpfrontFareComponentType) public enum UpfrontFareComponentType: Int, Codable {
     /// Base fare
     case baseFare
-
     /// Promotion adjustment
     case promotion
-
     /// Unknown case.
     case unknown
 
     public init(from decoder: Decoder) throws {
-        let string = try decoder.singleValueContainer().decode(String.self)
+        let string = try decoder.singleValueContainer().decode(String.self).lowercased()
         switch string.lowercased() {
         case "base_fare":
             self = .baseFare

@@ -50,13 +50,13 @@ struct UberProducts: Codable {
     @objc public private(set) var name: String
     
     /// Description of product. Ex: "The original Uber".
-    @objc public private(set) var details: String
+    @objc public private(set) var productDescription: String
     
     /// Capacity of product. Ex: 4, for a product that fits 4.
     @objc public private(set) var capacity: Int
     
-    /// Path of image URL representing the product.
-    @objc public private(set) var imagePath: URL
+    /// Image URL representing the product.
+    @objc public private(set) var imageURL: URL
 
     /// The basic price details. See `PriceDetails` for structure.
     @objc public private(set) var priceDetails: PriceDetails?
@@ -64,25 +64,40 @@ struct UberProducts: Codable {
     /// Allows users to get upfront fares, instead of time + distance.
     @objc public private(set) var upfrontFareEnabled: Bool
 
+    /// Specifies whether this product allows cash payments
+    @objc public private(set) var cashEnabled: Bool
+
+    /// Specifies whether this product allows for the pickup and drop off of other riders during the trip
+    @objc public private(set) var isShared: Bool
+
+    /// The product group that this product belongs to
+    @objc public private(set) var productGroup: ProductGroup
+
     enum CodingKeys: String, CodingKey {
         case productID    = "product_id"
         case name         = "display_name"
-        case details      = "description"
+        case productDescription      = "description"
         case capacity     = "capacity"
-        case imagePath    = "image"
+        case imageURL     = "image"
         case priceDetails = "price_details"
         case upfrontFareEnabled = "upfront_fare_enabled"
+        case cashEnabled  = "cash_enabled"
+        case isShared     = "shared"
+        case productGroup = "product_group"
     }
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         productID = try container.decode(String.self, forKey: .productID)
         name = try container.decode(String.self, forKey: .name)
-        details = try container.decode(String.self, forKey: .details)
+        productDescription = try container.decode(String.self, forKey: .productDescription)
         capacity = try container.decode(Int.self, forKey: .capacity)
-        imagePath = try container.decode(URL.self, forKey: .imagePath)
+        imageURL = try container.decode(URL.self, forKey: .imageURL)
         priceDetails = try container.decodeIfPresent(PriceDetails.self, forKey: .priceDetails)
         upfrontFareEnabled = try container.decode(Bool.self, forKey: .upfrontFareEnabled)
+        cashEnabled = try container.decode(Bool.self, forKey: .cashEnabled)
+        isShared = try container.decode(Bool.self, forKey: .isShared)
+        productGroup = try container.decode(ProductGroup.self, forKey: .productGroup)
     }
 }
 
@@ -143,5 +158,43 @@ public class ServiceFee: NSObject, Codable {
     enum CodingKeys: String, CodingKey {
         case name = "name"
         case fee  = "fee"
+    }
+}
+
+/// Uber Product Category
+@objc(UBSDKProductGroup) public enum ProductGroup: Int, Codable {
+    /// Shared rides products (eg, UberPOOL)
+    case rideshare
+    /// UberX
+    case uberX
+    /// UberXL
+    case uberXL
+    /// UberBLACK
+    case uberBlack
+    /// UberSUV
+    case suv
+    /// 3rd party taxis
+    case taxi
+    /// Unknown product group
+    case unknown
+
+    public init(from decoder: Decoder) throws {
+        let string = try decoder.singleValueContainer().decode(String.self).lowercased()
+        switch string {
+        case "rideshare":
+            self = .rideshare
+        case "uberx":
+            self = .uberX
+        case "uberxl":
+            self = .uberXL
+        case "uberblack":
+            self = .uberBlack
+        case "suv":
+            self = .suv
+        case "taxi":
+            self = .taxi
+        default:
+            self = .unknown
+        }
     }
 }

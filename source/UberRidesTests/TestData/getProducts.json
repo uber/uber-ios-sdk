@@ -85,16 +85,31 @@
                  "description": "Share the ride, split the cost."
                  },
                  {
-                 "upfront_fare_enabled": true,
+                 "upfront_fare_enabled": false,
                  "capacity": 4,
-                 "product_id": "a1111c8c-c720-46c3-8534-2fcdd730040d",
+                 "product_id": "2d1d002b-d4d0-4411-98e1-673b244878b2",
+                 "price_details": {
+                 "service_fees": [
+                                  {
+                                  "fee": 0.55,
+                                  "name": "Booking fee"
+                                  }
+                                  ],
+                 "cost_per_minute": 0.4,
+                 "distance_unit": "km",
+                 "minimum": 9,
+                 "cost_per_distance": 1.45,
+                 "base": 2.5,
+                 "cancellation_fee": 10,
+                 "currency_code": "AUD"
+                 },
                  "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png",
                  "cash_enabled": false,
                  "shared": false,
                  "short_description": "uberX",
                  "display_name": "uberX",
                  "product_group": "uberx",
-                 "description": "THE LOW-COST UBER"
+                 "description": "Everyday rides that are always smarter than a taxi"
                  },
                  {
                  "upfront_fare_enabled": false,

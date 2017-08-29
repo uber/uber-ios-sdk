@@ -48,19 +48,8 @@
     case riderCanceled
     case unknown
 
-    enum CodingKeys: String, CodingKey {
-        case accepted = "accepted"
-        case arriving = "arriving"
-        case completed = "completed"
-        case driverCanceled = "driver_canceled"
-        case inProgress = "in_progress"
-        case noDriversAvailable = "no_drivers_available"
-        case processing = "processing"
-        case riderCanceled = "rider_canceled"
-    }
-
     public init(from decoder: Decoder) throws {
-        let string = try decoder.singleValueContainer().decode(String.self)
+        let string = try decoder.singleValueContainer().decode(String.self).lowercased()
         switch string {
         case "accepted":
             self = .accepted
