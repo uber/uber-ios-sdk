@@ -54,4 +54,11 @@ struct PaymentMethods: Codable {
         case methodID           = "payment_method_id"
         case type               = "type"
     }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        paymentDescription = try container.decodeIfPresent(String.self, forKey: .paymentDescription) ?? ""
+        methodID = try container.decode(String.self, forKey: .methodID)
+        type = try container.decode(String.self, forKey: .type)
+    }
 }
