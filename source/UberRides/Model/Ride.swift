@@ -38,14 +38,14 @@
     /// The object that contains the location information of the vehicle and driver.
     @objc public private(set) var driverLocation: RideRequestLocation?
     
-    /// The estimated time of vehicle arrival in minutes.
-    @objc public private(set) var eta: Int
-    
     /// The object containing the information about the pickup for the trip.
     @objc public private(set) var pickup: RideRequestLocation?
     
     /// The unique ID of the Request.
     @objc public private(set) var requestID: String
+
+    /// The ID of the product
+    @objc public private(set) var productID: String
     
     /// The status of the Request indicating state.
     @objc public private(set) var status: RideStatus
@@ -56,16 +56,20 @@
     /// The object that contains vehicle details. Only non-null during an ongoing trip.
     @objc public private(set) var vehicle: Vehicle?
 
+    /// True if the ride is an UberPOOL ride. False otherwise.
+    @objc public private(set) var isShared: Bool
+
     enum CodingKeys: String, CodingKey {
         case destination     = "destination"
         case driver          = "driver"
         case driverLocation  = "location"
-        case eta             = "eta"
         case pickup          = "pickup"
         case requestID       = "request_id"
+        case productID       = "product_id"
         case surgeMultiplier = "surge_multiplier"
         case vehicle         = "vehicle"
         case status          = "status"
+        case isShared        = "shared"
     }
 
     public required init(from decoder: Decoder) throws {
@@ -73,11 +77,12 @@
         destination = try container.decodeIfPresent(RideRequestLocation.self, forKey: .destination)
         driver = try container.decodeIfPresent(Driver.self, forKey: .driver)
         driverLocation = try container.decodeIfPresent(RideRequestLocation.self, forKey: .driverLocation)
-        eta = try container.decodeIfPresent(Int.self, forKey: .eta) ?? 0
         pickup = try container.decodeIfPresent(RideRequestLocation.self, forKey: .pickup)
         requestID = try container.decode(String.self, forKey: .requestID)
+        productID = try container.decode(String.self, forKey: .productID)
         surgeMultiplier = try container.decodeIfPresent(Double.self, forKey: .surgeMultiplier) ?? 1.0
         vehicle = try container.decodeIfPresent(Vehicle.self, forKey: .vehicle)
         status = try container.decodeIfPresent(RideStatus.self, forKey: .status) ?? .unknown
+        isShared = try container.decode(Bool.self, forKey: .isShared)
     }
 }

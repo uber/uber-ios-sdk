@@ -289,6 +289,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(userProfile!.picturePath, "https://profile-picture.jpg")
                 XCTAssertEqual(userProfile!.promoCode, "teypo")
                 XCTAssertEqual(userProfile!.UUID, "91d81273-45c2-4b57-8124-d0165f8240c0")
+                XCTAssertEqual(userProfile!.riderID, "kIN8tMqcXMSJt1VC3HWNF0H4VD1JKlJkY==")
             }
         }
     }
@@ -324,7 +325,6 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertNotNil(trip)
                 XCTAssertEqual(trip.requestID, "852b8fdd-4369-4659-9628-e122662ad257")
                 XCTAssertEqual(trip.status, RideStatus.processing)
-                XCTAssertEqual(trip.eta, 5)
                 XCTAssertNil(trip.vehicle)
                 XCTAssertNil(trip.driver)
                 XCTAssertNil(trip.driverLocation)
@@ -332,50 +332,208 @@ class ObjectMappingTests: XCTestCase {
             }
         }
     }
-    
+
     /**
      Tests mapping result of GET /v1/requests/current or /v1/requests/{request_id}
      */
-    func testGetRequest() {
+    func testGetRequestProcessing() {
         let bundle = Bundle(for: ObjectMappingTests.self)
-        if let path = bundle.path(forResource: "getRequest", ofType: "json") {
+        if let path = bundle.path(forResource: "getRequestProcessing", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
                 guard let trip = try? JSONDecoder.uberDecoder.decode(Ride.self, from: jsonData) else {
                     XCTAssert(false)
                     return
                 }
-                
+
+                XCTAssertEqual(trip.requestID, "43faeac4-1634-4a0c-9826-783e3a3d1668")
+                XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
+                XCTAssertEqual(trip.status, RideStatus.processing)
+                XCTAssertFalse(trip.isShared)
+
+                XCTAssertNil(trip.driverLocation)
+                XCTAssertNil(trip.vehicle)
+                XCTAssertNil(trip.driver)
+
+                XCTAssertNotNil(trip.pickup)
+                XCTAssertEqual(trip.pickup!.latitude, 37.7759792)
+                XCTAssertEqual(trip.pickup!.longitude, -122.41823)
+                XCTAssertEqual(trip.pickup!.eta, -1)
+
+                XCTAssertNotNil(trip.destination)
+                XCTAssertEqual(trip.destination!.latitude, 37.7259792)
+                XCTAssertEqual(trip.destination!.longitude, -122.42823)
+                XCTAssertEqual(trip.destination!.eta, -1)
+            }
+        }
+    }
+
+    /**
+     Tests mapping result of GET /v1/requests/current or /v1/requests/{request_id}
+     */
+    func testGetRequestAccepted() {
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getRequestAccepted", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                guard let trip = try? JSONDecoder.uberDecoder.decode(Ride.self, from: jsonData) else {
+                    XCTAssert(false)
+                    return
+                }
+
                 XCTAssertEqual(trip.requestID, "17cb78a7-b672-4d34-a288-a6c6e44d5315")
+                XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
                 XCTAssertEqual(trip.status, RideStatus.accepted)
-                XCTAssertEqual(trip.eta, 5)
+                XCTAssertFalse(trip.isShared)
                 XCTAssertEqual(trip.surgeMultiplier, 1.0)
-                
+
                 XCTAssertNotNil(trip.driverLocation)
                 XCTAssertEqual(trip.driverLocation!.latitude, 37.7886532015)
                 XCTAssertEqual(trip.driverLocation!.longitude, -122.3961987534)
                 XCTAssertEqual(trip.driverLocation!.bearing, 135)
-                
+
                 XCTAssertNotNil(trip.vehicle)
                 XCTAssertEqual(trip.vehicle!.make, "Bugatti")
                 XCTAssertEqual(trip.vehicle!.model, "Veyron")
                 XCTAssertEqual(trip.vehicle!.licensePlate, "I<3Uber")
                 XCTAssertEqual(trip.vehicle!.pictureURL, URL(string: "https://d1w2poirtb3as9.cloudfront.net/car.jpeg")!)
-                
+
                 XCTAssertNotNil(trip.driver)
                 XCTAssertEqual(trip.driver!.name, "Bob")
                 XCTAssertEqual(trip.driver!.pictureURL, URL(string: "https://d1w2poirtb3as9.cloudfront.net/img.jpeg")!)
-                XCTAssertEqual(trip.driver!.phoneNumber, "(555)555-5555")
+                XCTAssertEqual(trip.driver!.phoneNumber, "+14155550000")
+                XCTAssertEqual(trip.driver!.smsNumber, "+14155550000")
                 XCTAssertEqual(trip.driver!.rating, 5)
-                
+
                 XCTAssertNotNil(trip.pickup)
                 XCTAssertEqual(trip.pickup!.latitude, 37.7872486012)
                 XCTAssertEqual(trip.pickup!.longitude, -122.4026315287)
                 XCTAssertEqual(trip.pickup!.eta, 5)
-                
+
                 XCTAssertNotNil(trip.destination)
                 XCTAssertEqual(trip.destination!.latitude, 37.7766874)
                 XCTAssertEqual(trip.destination!.longitude, -122.394857)
                 XCTAssertEqual(trip.destination!.eta, 19)
+            }
+        }
+    }
+
+    /**
+     Tests mapping result of GET /v1/requests/current or /v1/requests/{request_id}
+     */
+    func testGetRequestArriving() {
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getRequestArriving", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                guard let trip = try? JSONDecoder.uberDecoder.decode(Ride.self, from: jsonData) else {
+                    XCTAssert(false)
+                    return
+                }
+
+                XCTAssertEqual(trip.requestID, "a274f565-cdb7-4a64-947d-042dfd185eed")
+                XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
+                XCTAssertEqual(trip.status, RideStatus.arriving)
+                XCTAssertFalse(trip.isShared)
+
+                XCTAssertNotNil(trip.driverLocation)
+                XCTAssertEqual(trip.driverLocation?.latitude, 37.7751956968)
+                XCTAssertEqual(trip.driverLocation?.longitude, -122.4174361781)
+                XCTAssertEqual(trip.driverLocation?.bearing, 310)
+
+                XCTAssertNotNil(trip.vehicle)
+                XCTAssertEqual(trip.vehicle?.make, "Oldsmobile")
+                XCTAssertNil(trip.vehicle?.pictureURL)
+                XCTAssertEqual(trip.vehicle?.model, "Alero")
+                XCTAssertEqual(trip.vehicle?.licensePlate, "123-XYZ")
+
+                XCTAssertNotNil(trip.driver)
+                XCTAssertEqual(trip.driver?.phoneNumber, "+16504886027")
+                XCTAssertEqual(trip.driver?.rating, 5)
+                XCTAssertEqual(trip.driver?.pictureURL, URL(string: "https://d1w2poirtb3as9.cloudfront.net/4615701cdfbb033148d4.jpeg")!)
+                XCTAssertEqual(trip.driver?.name, "Edward")
+                XCTAssertEqual(trip.driver?.smsNumber, "+16504886027")
+
+                XCTAssertNotNil(trip.pickup)
+                XCTAssertEqual(trip.pickup!.latitude, 37.7759792)
+                XCTAssertEqual(trip.pickup!.longitude, -122.41823)
+                XCTAssertEqual(trip.pickup!.eta, 1)
+
+                XCTAssertNotNil(trip.destination)
+                XCTAssertEqual(trip.destination!.latitude, 37.7259792)
+                XCTAssertEqual(trip.destination!.longitude, -122.42823)
+                XCTAssertEqual(trip.destination!.eta, 16)
+            }
+        }
+    }
+
+    /**
+     Tests mapping result of GET /v1/requests/current or /v1/requests/{request_id}
+     */
+    func testGetRequestInProgress() {
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getRequestInProgress", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                guard let trip = try? JSONDecoder.uberDecoder.decode(Ride.self, from: jsonData) else {
+                    XCTAssert(false)
+                    return
+                }
+
+                XCTAssertEqual(trip.requestID, "a274f565-cdb7-4a64-947d-042dfd185eed")
+                XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
+                XCTAssertEqual(trip.status, RideStatus.inProgress)
+                XCTAssertFalse(trip.isShared)
+
+                XCTAssertNotNil(trip.driverLocation)
+                XCTAssertEqual(trip.driverLocation?.latitude, 37.7751956968)
+                XCTAssertEqual(trip.driverLocation?.longitude, -122.4174361781)
+                XCTAssertEqual(trip.driverLocation?.bearing, 310)
+
+                XCTAssertNotNil(trip.vehicle)
+                XCTAssertEqual(trip.vehicle?.make, "Oldsmobile")
+                XCTAssertNil(trip.vehicle?.pictureURL)
+                XCTAssertEqual(trip.vehicle?.model, "Alero")
+                XCTAssertEqual(trip.vehicle?.licensePlate, "123-XYZ")
+
+                XCTAssertNotNil(trip.driver)
+                XCTAssertEqual(trip.driver?.phoneNumber, "+16504886027")
+                XCTAssertEqual(trip.driver?.rating, 5)
+                XCTAssertEqual(trip.driver?.pictureURL, URL(string: "https://d1w2poirtb3as9.cloudfront.net/4615701cdfbb033148d4.jpeg")!)
+                XCTAssertEqual(trip.driver?.name, "Edward")
+                XCTAssertEqual(trip.driver?.smsNumber, "+16504886027")
+
+                XCTAssertNotNil(trip.pickup)
+                XCTAssertEqual(trip.pickup!.latitude, 37.7759792)
+                XCTAssertEqual(trip.pickup!.longitude, -122.41823)
+                XCTAssertEqual(trip.pickup!.eta, -1)
+
+                XCTAssertNotNil(trip.destination)
+                XCTAssertEqual(trip.destination!.latitude, 37.7259792)
+                XCTAssertEqual(trip.destination!.longitude, -122.42823)
+                XCTAssertEqual(trip.destination!.eta, 16)
+            }
+        }
+    }
+
+    /**
+     Tests mapping result of GET /v1/requests/current or /v1/requests/{request_id}
+     */
+    func testGetRequestCompleted() {
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getRequestCompleted", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                guard let trip = try? JSONDecoder.uberDecoder.decode(Ride.self, from: jsonData) else {
+                    XCTAssert(false)
+                    return
+                }
+
+                XCTAssertEqual(trip.requestID, "a274f565-cdb7-4a64-947d-042dfd185eed")
+                XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
+                XCTAssertEqual(trip.status, RideStatus.completed)
+                XCTAssertFalse(trip.isShared)
+
+                XCTAssertNil(trip.driverLocation)
+                XCTAssertNil(trip.vehicle)
+                XCTAssertNil(trip.driver)
+                XCTAssertNil(trip.pickup)
+                XCTAssertNil(trip.destination)
             }
         }
     }

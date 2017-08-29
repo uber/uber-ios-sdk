@@ -32,7 +32,7 @@
     /// The current bearing in degrees for a moving location.
     @objc public private(set) var bearing: Int
     
-    /// ETA is only available when the trips is accepted or arriving.
+    /// ETA is only available when the trips is accepted or arriving. -1 if not available.
     @objc public private(set) var eta: Int
     
     /// The latitude of the location.
@@ -44,7 +44,7 @@
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         bearing = try container.decodeIfPresent(Int.self, forKey: .bearing) ?? 0
-        eta = try container.decodeIfPresent(Int.self, forKey: .eta) ?? 0
+        eta = try container.decodeIfPresent(Int.self, forKey: .eta) ?? -1
         latitude = try container.decodeIfPresent(Double.self, forKey: .latitude) ?? 0
         longitude = try container.decodeIfPresent(Double.self, forKey: .longitude) ?? 0
     }

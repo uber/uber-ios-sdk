@@ -1,0 +1,24 @@
+{
+    "status": "processing",
+    "product_id": "a1111c8c-c720-46c3-8534-2fcdd730040d",
+    "destination": {
+        "latitude": 37.7259792,
+        "longitude": -122.42823
+    },
+    "driver": null,
+    "pickup": {
+        "latitude": 37.7759792,
+        "region": {
+            "latitude": 37.7749295,
+            "country_name": "United States",
+            "country_code": "US",
+            "name": "San Francisco",
+            "longitude": -122.4194155
+        },
+        "longitude": -122.41823
+    },
+    "request_id": "43faeac4-1634-4a0c-9826-783e3a3d1668",
+    "location": null,
+    "vehicle": null,
+    "shared": false
+}

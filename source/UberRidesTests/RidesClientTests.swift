@@ -241,7 +241,6 @@ class RidesClientTests: XCTestCase {
             XCTAssertNotNil(ride)
             XCTAssertEqual(ride!.status, RideStatus.processing)
             XCTAssertEqual(ride!.requestID, "852b8fdd-4369-4659-9628-e122662ad257")
-            XCTAssertEqual(ride!.eta, 5)
             
             expectation.fulfill()
         })
@@ -258,7 +257,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetCurrentRide() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getRequest.json", type(of: self))!, statusCode: 200, headers: nil)
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getRequestAccepted.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
         let expectation = self.expectation(description: "get current ride")
@@ -283,7 +282,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetRideByID() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getRequest.json", type(of: self))!, statusCode: 200, headers: nil)
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getRequestAccepted.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
         let expectation = self.expectation(description: "get ride by ID")

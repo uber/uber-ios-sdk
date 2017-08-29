@@ -64,7 +64,7 @@
 		D8D18E7F1CBF417600055B76 /* Ride.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D18E7E1CBF417600055B76 /* Ride.swift */; };
 		D8D18E811CBF419700055B76 /* RideStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D18E801CBF419700055B76 /* RideStatus.swift */; };
 		D8D18E831CBF41F200055B76 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D18E821CBF41F200055B76 /* Driver.swift */; };
-		D8D18E851CBF429C00055B76 /* getRequest.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D18E841CBF429C00055B76 /* getRequest.json */; };
+		D8D18E851CBF429C00055B76 /* getRequestAccepted.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D18E841CBF429C00055B76 /* getRequestAccepted.json */; };
 		D8D18E871CBF42AD00055B76 /* postRequests.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D18E861CBF42AD00055B76 /* postRequests.json */; };
 		D8D2DC091C90E54700A65FF0 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D2DC081C90E54700A65FF0 /* UserProfile.swift */; };
 		D8D2DC0B1C90E55900A65FF0 /* getMe.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D2DC0A1C90E55900A65FF0 /* getMe.json */; };
@@ -138,6 +138,10 @@
 		DFCA38F51F4F575300131FF0 /* Codable+Uber.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFCA38F41F4F575300131FF0 /* Codable+Uber.swift */; };
 		DFF443881F50DF9200525F7A /* UpfrontFare.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF443871F50DF9200525F7A /* UpfrontFare.swift */; };
 		DFF4438A1F50E73500525F7A /* requestEstimateNoUpfront.json in Resources */ = {isa = PBXBuildFile; fileRef = DFF443891F50E73500525F7A /* requestEstimateNoUpfront.json */; };
+		DFF4438C1F54ED2600525F7A /* getRequestProcessing.json in Resources */ = {isa = PBXBuildFile; fileRef = DFF4438B1F54ED2600525F7A /* getRequestProcessing.json */; };
+		DFF4438E1F54EF5A00525F7A /* getRequestArriving.json in Resources */ = {isa = PBXBuildFile; fileRef = DFF4438D1F54EF5A00525F7A /* getRequestArriving.json */; };
+		DFF443901F54EFD700525F7A /* getRequestInProgress.json in Resources */ = {isa = PBXBuildFile; fileRef = DFF4438F1F54EFD700525F7A /* getRequestInProgress.json */; };
+		DFF443921F54EFF800525F7A /* getRequestCompleted.json in Resources */ = {isa = PBXBuildFile; fileRef = DFF443911F54EFF800525F7A /* getRequestCompleted.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -224,7 +228,7 @@
 		D8D18E7E1CBF417600055B76 /* Ride.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Ride.swift; path = Model/Ride.swift; sourceTree = "<group>"; };
 		D8D18E801CBF419700055B76 /* RideStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RideStatus.swift; path = Model/RideStatus.swift; sourceTree = "<group>"; };
 		D8D18E821CBF41F200055B76 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Driver.swift; path = Model/Driver.swift; sourceTree = "<group>"; };
-		D8D18E841CBF429C00055B76 /* getRequest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getRequest.json; sourceTree = "<group>"; };
+		D8D18E841CBF429C00055B76 /* getRequestAccepted.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getRequestAccepted.json; sourceTree = "<group>"; };
 		D8D18E861CBF42AD00055B76 /* postRequests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = postRequests.json; sourceTree = "<group>"; };
 		D8D2DC081C90E54700A65FF0 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserProfile.swift; path = Model/UserProfile.swift; sourceTree = "<group>"; };
 		D8D2DC0A1C90E55900A65FF0 /* getMe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getMe.json; sourceTree = "<group>"; };
@@ -306,6 +310,10 @@
 		DFD7096F1F159865007550C8 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "Resources/pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		DFF443871F50DF9200525F7A /* UpfrontFare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UpfrontFare.swift; path = Model/UpfrontFare.swift; sourceTree = "<group>"; };
 		DFF443891F50E73500525F7A /* requestEstimateNoUpfront.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = requestEstimateNoUpfront.json; sourceTree = "<group>"; };
+		DFF4438B1F54ED2600525F7A /* getRequestProcessing.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = getRequestProcessing.json; sourceTree = "<group>"; };
+		DFF4438D1F54EF5A00525F7A /* getRequestArriving.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = getRequestArriving.json; sourceTree = "<group>"; };
+		DFF4438F1F54EFD700525F7A /* getRequestInProgress.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = getRequestInProgress.json; sourceTree = "<group>"; };
+		DFF443911F54EFF800525F7A /* getRequestCompleted.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = getRequestCompleted.json; sourceTree = "<group>"; };
 		EA01FB909C9A04DC5D83A4D9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -480,7 +488,11 @@
 				D8A0D7181C72798400707DC6 /* getTimeEstimateProduct.json */,
 				D8D2DC0A1C90E55900A65FF0 /* getMe.json */,
 				D829FD541C98A0B200AC6578 /* getHistory.json */,
-				D8D18E841CBF429C00055B76 /* getRequest.json */,
+				DFF4438B1F54ED2600525F7A /* getRequestProcessing.json */,
+				D8D18E841CBF429C00055B76 /* getRequestAccepted.json */,
+				DFF4438D1F54EF5A00525F7A /* getRequestArriving.json */,
+				DFF4438F1F54EFD700525F7A /* getRequestInProgress.json */,
+				DFF443911F54EFF800525F7A /* getRequestCompleted.json */,
 				D8D18E861CBF42AD00055B76 /* postRequests.json */,
 				D81C85371CC831F900DC82EE /* requestEstimate.json */,
 				DFF443891F50E73500525F7A /* requestEstimateNoUpfront.json */,
@@ -719,6 +731,7 @@
 				D829FD551C98A0B200AC6578 /* getHistory.json in Resources */,
 				D81C853A1CC836F300DC82EE /* place.json in Resources */,
 				DCF87E791CF2F7AF0081894C /* testInfoMissingCallbacks.plist in Resources */,
+				DFF443921F54EFF800525F7A /* getRequestCompleted.json in Resources */,
 				DFF4438A1F50E73500525F7A /* requestEstimateNoUpfront.json in Resources */,
 				D8D2DC0B1C90E55900A65FF0 /* getMe.json in Resources */,
 				D82707011CCF327E00D9297E /* rideReceipt.json in Resources */,
@@ -726,14 +739,17 @@
 				D8874F2E1C5AC5470098DF99 /* getProductID.json in Resources */,
 				DC8E2AD41C9B268600EDD74B /* testInfo.plist in Resources */,
 				DC1D80341DA34CD600712178 /* getPriceEstimatesEmpty.json in Resources */,
+				DFF4438E1F54EF5A00525F7A /* getRequestArriving.json in Resources */,
 				D8A0D7191C72798400707DC6 /* getTimeEstimateProduct.json in Resources */,
 				DC75DFE61CA4FB5400071417 /* testInfoNoServerToken.plist in Resources */,
 				DC1D80321DA34CA400712178 /* getTimeEstimatesEmpty.json in Resources */,
 				D8E2C96E1C62B3C7006091BA /* getPriceEstimates.json in Resources */,
+				DFF4438C1F54ED2600525F7A /* getRequestProcessing.json in Resources */,
 				D82707071CCF39B000D9297E /* rideMap.json in Resources */,
 				DCD8060C1CFE50F300EF6EB1 /* requestEstimateNoCars.json in Resources */,
 				D81C85381CC831F900DC82EE /* requestEstimate.json in Resources */,
-				D8D18E851CBF429C00055B76 /* getRequest.json in Resources */,
+				D8D18E851CBF429C00055B76 /* getRequestAccepted.json in Resources */,
+				DFF443901F54EFD700525F7A /* getRequestInProgress.json in Resources */,
 				D81A8B181C658A4F00339C13 /* getTimeEstimates.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

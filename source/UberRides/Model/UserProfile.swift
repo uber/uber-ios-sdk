@@ -42,9 +42,13 @@
     
     /// Promo code of the Uber user.
     @objc public private(set) var promoCode: String?
-    
-    /// Unique identifier of the Uber user.
+
+    /// Unique identifier of the Uber user. Deprecated, use riderID instead.
+    @available(*, deprecated, message:"use riderID instead")
     @objc public private(set) var UUID: String
+
+    /// Unique identifier of the Uber user.
+    @objc public private(set) var riderID: String
 
     enum CodingKeys: String, CodingKey {
         case firstName   = "first_name"
@@ -53,6 +57,7 @@
         case picturePath = "picture"
         case promoCode   = "promo_code"
         case UUID        = "uuid"
+        case riderID     = "rider_id"
     }
 
     public required init(from decoder: Decoder) throws {
@@ -63,5 +68,6 @@
         picturePath = try container.decodeIfPresent(String.self, forKey: .picturePath)
         promoCode = try container.decodeIfPresent(String.self, forKey: .promoCode)
         UUID = try container.decode(String.self, forKey: .UUID)
+        riderID = try container.decode(String.self, forKey: .riderID)
     }
 }
