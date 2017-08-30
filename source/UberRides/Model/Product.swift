@@ -1,5 +1,5 @@
 //
-//  UberProduct.swift
+//  Product.swift
 //  UberRides
 //
 //  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
@@ -24,25 +24,25 @@
 
 import UIKit
 
-// MARK: UberProducts
+// MARK: Products
 
 /**
 *  Internal object that contains a list of Uber products.
 */
 struct UberProducts: Codable {
-    var list: [UberProduct]?
+    var list: [Product]?
 
     enum CodingKeys: String, CodingKey {
         case list = "products"
     }
 }
 
-// MARK: UberProduct
+// MARK: Product
 
 /**
 *  Contains information for a single Uber product.
 */
-@objc(UBSDKUberProduct) public class UberProduct: NSObject, Codable {
+@objc(UBSDKProduct) public class Product: NSObject, Codable {
     /// Unique identifier representing a specific product for a given latitude & longitude.
     @objc public private(set) var productID: String
     
@@ -148,7 +148,7 @@ struct UberProducts: Codable {
 /**
 *  Contains information for additional fees that can be added to the price of an Uber product.
 */
-public class ServiceFee: NSObject, Codable {
+@objc(UBSDKServiceFee) public class ServiceFee: NSObject, Codable {
     /// The name of the service fee.
     @objc public private(set) var name: String?
     

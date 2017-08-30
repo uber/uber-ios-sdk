@@ -203,7 +203,7 @@ import CoreLocation
      - parameter location:  coordinates of pickup location
      - parameter completion: completion handler for returned products.
      */
-    @objc open func fetchProducts(pickupLocation location: CLLocation, completion:@escaping (_ products: [UberProduct], _ response: Response) -> Void) {
+    @objc open func fetchProducts(pickupLocation location: CLLocation, completion:@escaping (_ products: [Product], _ response: Response) -> Void) {
         let endpoint = Products.getAll(location: location)
         apiCall(endpoint, completion: { response in
             var products: UberProducts?
@@ -225,13 +225,13 @@ import CoreLocation
      - parameter productID:  string representing product ID.
      - parameter completion: completion handler for returned product.
      */
-    @objc open func fetchProduct(productID: String, completion:@escaping (_ product: UberProduct?, _ response: Response) -> Void) {
+    @objc open func fetchProduct(productID: String, completion:@escaping (_ product: Product?, _ response: Response) -> Void) {
         let endpoint = Products.getProduct(productID: productID)
         apiCall(endpoint, completion: { response in
-            var product: UberProduct?
+            var product: Product?
             if let data = response.data,
                 response.error == nil {
-                product = try? JSONDecoder.uberDecoder.decode(UberProduct.self, from: data)
+                product = try? JSONDecoder.uberDecoder.decode(Product.self, from: data)
             }
             completion(product, response)
         })

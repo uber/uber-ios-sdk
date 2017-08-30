@@ -45,7 +45,7 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getProductID", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let product = try? JSONDecoder.uberDecoder.decode(UberProduct.self, from: jsonData)
+                let product = try? JSONDecoder.uberDecoder.decode(Product.self, from: jsonData)
                 XCTAssertNotNil(product)
                 XCTAssertEqual(product!.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
                 XCTAssertEqual(product!.name, "uberX")

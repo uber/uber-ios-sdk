@@ -534,7 +534,7 @@ enum Places: UberAPI {
             return nil
         case .putPlace(_, let address):
             do {
-                let data = try JSONSerialization.data(withJSONObject: ["address": address], options: .prettyPrinted)
+                let data = try JSONSerialization.data(withJSONObject: ["address": address], options: [])
                 return data
             } catch { }
             return nil
