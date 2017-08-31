@@ -67,7 +67,7 @@ class RideRequestWidgetExampleViewController: ButtonExampleViewController {
         let requestBehavior = RideRequestViewRequestingBehavior(presentingViewController: self, loginManager: loginManager)
         requestBehavior.modalRideRequestViewController.delegate = self
         
-        let rideParameters = RideParametersBuilder().build()
+        let rideParameters = RideParameters()
         
         return RideRequestButton(rideParameters: rideParameters, requestingBehavior: requestBehavior)
     }

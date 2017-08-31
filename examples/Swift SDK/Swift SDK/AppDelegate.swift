@@ -37,10 +37,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Configuration.setRegion(.China)
         
         // Make requests to sandbox by default
-        Configuration.setSandboxEnabled(true)
+        Configuration.shared.isSandbox = true
         
         // Handle incoming SSO Requests
-        _ = RidesAppDelegate.sharedInstance.application(application, didFinishLaunchingWithOptions: launchOptions)
+        _ = RidesAppDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         return true
     }
 
@@ -68,14 +68,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     @available(iOS 9, *)
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
-        
-        let handledUberURL = RidesAppDelegate.sharedInstance.application(app, openURL: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as AnyObject?)
+        let handledUberURL = RidesAppDelegate.shared.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as Any)
         
         return handledUberURL
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        let handledUberURL = RidesAppDelegate.sharedInstance.application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation as AnyObject?)
+        let handledUberURL = RidesAppDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
         
         return handledUberURL
     }

@@ -23,8 +23,6 @@
 		DCD806181CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD806171CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift */; };
 		DCEB808A1D078BCA00899810 /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB80891D078BCA00899810 /* UberRides.framework */; };
 		DCEB808B1D078BCA00899810 /* UberRides.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB80891D078BCA00899810 /* UberRides.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		DCEB808D1D078BD200899810 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB808C1D078BD200899810 /* ObjectMapper.framework */; };
-		DCEB808E1D078BD200899810 /* ObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB808C1D078BD200899810 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +49,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DCEB808E1D078BD200899810 /* ObjectMapper.framework in Embed Frameworks */,
 				DCEB808B1D078BCA00899810 /* UberRides.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -89,7 +86,6 @@
 		DCD806151CFE7F4300EF6EB1 /* ButtonExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonExampleViewController.swift; sourceTree = "<group>"; };
 		DCD806171CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeLoginExampleViewController.swift; sourceTree = "<group>"; };
 		DCEB80891D078BCA00899810 /* UberRides.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UberRides.framework; path = Carthage/Build/iOS/UberRides.framework; sourceTree = "<group>"; };
-		DCEB808C1D078BD200899810 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +93,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCEB808D1D078BD200899810 /* ObjectMapper.framework in Frameworks */,
 				DCEB808A1D078BCA00899810 /* UberRides.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,7 +126,6 @@
 		823B0AE4697BBA3B456C5C93 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DCEB808C1D078BD200899810 /* ObjectMapper.framework */,
 				DCEB80891D078BCA00899810 /* UberRides.framework */,
 			);
 			name = Frameworks;
@@ -267,18 +261,18 @@
 				TargetAttributes = {
 					AC0404A31BFAD0C800AC1501 = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0900;
 					};
 					AC0404B71BFAD0C800AC1501 = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = 36UPBWHAQE;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0900;
 						TestTargetID = AC0404A31BFAD0C800AC1501;
 					};
 					AC0404C21BFAD0C800AC1501 = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = 36UPBWHAQE;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0900;
 						TestTargetID = AC0404A31BFAD0C800AC1501;
 					};
 				};
@@ -338,7 +332,6 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/UberRides.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/ObjectMapper.framework",
 			);
 			name = "Copy Carthage Frameworks";
 			outputPaths = (
@@ -525,7 +518,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uber.sdk.Swift-SDK";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -543,7 +537,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uber.sdk.Swift-SDK";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -555,7 +550,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uber.sdk.Swift-SDKTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swift SDK.app/Swift SDK";
 			};
 			name = Debug;
@@ -568,7 +564,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uber.sdk.Swift-SDKTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swift SDK.app/Swift SDK";
 			};
 			name = Release;
@@ -580,7 +577,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uber.sdk.Swift-SDKUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = "Swift SDK";
 				USES_XCTRUNNER = YES;
 			};
@@ -593,7 +591,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uber.sdk.Swift-SDKUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = "Swift SDK";
 				USES_XCTRUNNER = YES;
 			};

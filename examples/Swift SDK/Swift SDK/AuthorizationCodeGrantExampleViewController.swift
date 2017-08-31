@@ -94,15 +94,15 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
                 URLSession.shared.dataTask(with: request) { (data, response, error) in
                     DispatchQueue.main.async {
                         guard let data = data,
-                            let jsonString = String(data: data, encoding: String.Encoding.utf8),
-                            let token = AccessTokenFactory.createAccessTokenFromJSONString(string: jsonString) else {
+                            let jsonString = String(data: data, encoding: String.Encoding.utf8) else {
                                 self.showMessage("Unable to retrieve access token")
                                 return
                         }
-                        
+                        let token = AccessToken(tokenString: jsonString)
+
                         // Do any additional work to verify the state passed in earlier
                         
-                        if !TokenManager.saveToken(token) {
+                        if !TokenManager.save(accessToken: token) {
                             self.showMessage("Unable to save access token")
                         } else {
                             self.showMessage("Saved an AccessToken!")
@@ -117,27 +117,23 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
     
     @IBAction func requestRide(_ sender: AnyObject) {
         // Create ride parameters
-        var parameterBuilder = RideParametersBuilder()
         self.requestButton.isEnabled = false
-        parameterBuilder = parameterBuilder.setProductID("a1111c8c-c720-46c3-8534-2fcdd730040d")
         let pickupLocation = CLLocation(latitude: 37.770, longitude: -122.466)
-        parameterBuilder = parameterBuilder.setPickupLocation(pickupLocation, nickname: "California Academy of Sciences")
         let dropoffLocation = CLLocation(latitude: 37.791, longitude: -122.405)
-        parameterBuilder = parameterBuilder.setDropoffLocation(dropoffLocation, nickname: "Pier 39")
-        
+
+        let parameters = RideParameters(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation)
+        parameters.pickupNickname = "California Academy of Sciences"
+        parameters.dropoffNickname = "Pier 39"
+        parameters.productID = "a1111c8c-c720-46c3-8534-2fcdd730040d"
+
         // Use the POST /v1/requests endpoint to make a ride request (in sandbox)
-        ridesClient.requestRide(parameterBuilder.build(), completion: { ride, response in
+        ridesClient.requestRide(parameters: parameters, completion: { ride, response in
             DispatchQueue.main.async(execute: {
                 self.checkError(response)
                 if let ride = ride {
                     self.statusLabel.text = "Processing"
                     
-                    // Simulate stepping through the different ride statuses
-                    guard let requestID = ride.requestID else {
-                        return
-                    }
-                    
-                    self.updateRideStatus(requestID, index: 0)
+                    self.updateRideStatus(ride.requestID, index: 0)
                 } else {
                     self.requestButton.isEnabled = true
                 }
@@ -147,7 +143,7 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
     
     // Uses the the GET /v1/requests/{request_id} endpoint to get information about a ride request
     func getRideData(_ requestID: String) {
-        ridesClient.fetchRideDetails(requestID) { ride, response in
+        ridesClient.fetchRideDetails(requestID: requestID) { ride, response in
             self.checkError(response)
             
             // Unwrap some optionals for data we want to use
@@ -168,30 +164,26 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
                 self.carLabel.text = "\(make) \(model)\n(\(licensePlate)"
                 
                 // Asynchronously fetch images
-                if let driverUrl = URL(string: driverImage) {
-                    URLSession.shared.dataTask(with: driverUrl) {
-                        (data, response, error) in
-                        DispatchQueue.main.async {
-                            guard let data = data else {
-                                return
-                            }
-                            
-                            self.driverImageView.image = UIImage(data: data)
+                URLSession.shared.dataTask(with: driverImage) {
+                    (data, response, error) in
+                    DispatchQueue.main.async {
+                        guard let data = data else {
+                            return
                         }
-                    }.resume()
-                }
-                if let vehicleUrl = URL(string: carImage) {
-                    URLSession.shared.dataTask(with: vehicleUrl) {
-                        (data, response, error) in
-                        DispatchQueue.main.async {
-                            guard let data = data else {
-                                return
-                            }
-                            
-                            self.carImageView.image = UIImage(data: data)
+
+                        self.driverImageView.image = UIImage(data: data)
+                    }
+                }.resume()
+                URLSession.shared.dataTask(with: carImage) {
+                    (data, response, error) in
+                    DispatchQueue.main.async {
+                        guard let data = data else {
+                            return
                         }
-                    }.resume()
-                }
+
+                        self.carImageView.image = UIImage(data: data)
+                    }
+                }.resume()
                 self.updateRideStatus(requestID, index: 1)
             }
         }

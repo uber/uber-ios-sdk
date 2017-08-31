@@ -116,7 +116,7 @@ class ImplicitGrantExampleViewController: AuthorizationBaseViewController {
         }
         
         // Gets the address assigned as the "home" address for current user
-        ridesClient.fetchPlace(Place.Home) { place, response in
+        ridesClient.fetchPlace(placeID: Place.home) { place, response in
             self.checkError(response)
             DispatchQueue.main.async {
                 self.places[self.homePlaceRow] = place
@@ -125,7 +125,7 @@ class ImplicitGrantExampleViewController: AuthorizationBaseViewController {
         }
         
         // Gets the address assigned as the "work" address for current user
-        ridesClient.fetchPlace(Place.Work) { place, response in
+        ridesClient.fetchPlace(placeID: Place.work) { place, response in
             self.checkError(response)
             DispatchQueue.main.async {
                 self.places[self.workPlaceRow] = place
@@ -209,11 +209,9 @@ extension ImplicitGrantExampleViewController: UITableViewDataSource {
             return cell
         case HistorySection:
             let trip = history[indexPath.row]
-            guard let startCity = trip.startCity?.name,
-                let startTime = trip.startTime,
-                let endTime = trip.endTime else {
-                fallthrough
-            }
+            let startCity = trip.startCity.name
+            let startTime = trip.startTime
+            let endTime = trip.endTime
             
             let cell = tableView.dequeueReusableCell(withIdentifier: HistoryCell) ??
                 UITableViewCell(style: .default, reuseIdentifier: HistoryCell)
@@ -245,9 +243,8 @@ extension ImplicitGrantExampleViewController: UITableViewDelegate {
         
         let alertController = UIAlertController(title: "Update Place Address", message: nil, preferredStyle: .alert)
         alertController.addTextField(configurationHandler: { (textField) in
-            if let place = self.places[indexPath.row],
-                let address = place.address {
-                textField.placeholder = address
+            if let place = self.places[indexPath.row] {
+                textField.placeholder = place.address
             }
         })
         
@@ -259,8 +256,8 @@ extension ImplicitGrantExampleViewController: UITableViewDelegate {
                 return
             }
             
-            let placeID = indexPath.row == self.homePlaceRow ? Place.Home : Place.Work
-            self.ridesClient.updatePlace(placeID, withAddress: address) { place, response in
+            let placeID = indexPath.row == self.homePlaceRow ? Place.home : Place.work
+            self.ridesClient.updatePlace(placeID: placeID, withAddress: address) { place, response in
                 if response.error == nil, let place = place {
                     DispatchQueue.main.async {
                         self.places[indexPath.row] = place
