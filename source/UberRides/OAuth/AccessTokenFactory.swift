@@ -28,7 +28,7 @@ import Foundation
 /**
 Factory class to build access tokens
 */
-@objc(UBSDKAccessTokenFactory) public class AccessTokenFactory: NSObject {
+@objc(UBSDKAccessTokenFactory) class AccessTokenFactory: NSObject {
     /**
      Builds an AccessToken from the provided redirect URL
      
