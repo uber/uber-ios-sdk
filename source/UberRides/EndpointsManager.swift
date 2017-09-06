@@ -47,19 +47,9 @@ extension UberAPI {
     
     var host: String {
         if Configuration.getSandboxEnabled() {
-            switch Configuration.getRegion() {
-            case .china:
-                return "https://sandbox-api.uber.com.cn"
-            case .default:
-                return "https://sandbox-api.uber.com"
-            }
+            return "https://sandbox-api.uber.com"
         } else {
-            switch Configuration.getRegion() {
-            case .china:
-                return "https://api.uber.com.cn"
-            case .default:
-                return "https://api.uber.com"
-            }
+            return "https://api.uber.com"
         }
     }
 }
@@ -142,12 +132,7 @@ enum Components: UberAPI {
     }
     
     var host: String {
-        switch Configuration.getRegion() {
-        case .china:
-            return "https://components.uber.com.cn"
-        case .default:
-            return "https://components.uber.com"
-        }
+        return "https://components.uber.com"
     }
     
     var path: String {
@@ -215,12 +200,7 @@ enum OAuth: UberAPI {
     }
     
     static func regionHostString(_ region: Region = Configuration.getRegion()) -> String {
-        switch region {
-        case .china:
-            return "https://login.uber.com.cn"
-        case .default:
-            return "https://login.uber.com"
-        }
+        return "https://login.uber.com"
     }
     
     var path: String {

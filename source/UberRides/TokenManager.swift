@@ -179,9 +179,6 @@ import Foundation
         if let loginURL = URL(string: OAuth.regionHostString(.default)) {
             urlsToClear.append(loginURL)
         }
-        if let loginURL = URL(string: OAuth.regionHostString(.china)) {
-            urlsToClear.append(loginURL)
-        }
         
         let sharedCookieStorage = HTTPCookieStorage.shared
         

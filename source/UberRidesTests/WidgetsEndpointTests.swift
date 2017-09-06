@@ -77,22 +77,7 @@ class WidgetsEndpointTests: XCTestCase {
             XCTAssertTrue(rideRequestWidget.query.contains(item))
         }
     }
-    
-    func testERRC_withRegionChina_withSandboxEnabled() {
-        Configuration.setSandboxEnabled(true)
-        Configuration.setRegion(Region.china)
-        
-        let expectedHost = "https://components.uber.com.cn"
-        let expectedPath = "/rides/"
-        let expectedQueryItems = queryBuilder( ("env", "sandbox") )
-        
-        let rideRequestWidget = Components.rideRequestWidget(rideParameters: nil)
-        
-        XCTAssertEqual(rideRequestWidget.host, expectedHost)
-        XCTAssertEqual(rideRequestWidget.path, expectedPath)
-        XCTAssertEqual(rideRequestWidget.query, expectedQueryItems)
-    }
-    
+
     func testERRC_withRegionDefault_withSandboxDisabled() {
         Configuration.setSandboxEnabled(false)
         Configuration.setRegion(Region.default)
@@ -107,20 +92,4 @@ class WidgetsEndpointTests: XCTestCase {
         XCTAssertEqual(rideRequestWidget.path, expectedPath)
         XCTAssertEqual(rideRequestWidget.query, expectedQueryItems)
     }
-    
-    func testERRC_withRegionChina_withSandboxDisabled() {
-        Configuration.setSandboxEnabled(false)
-        Configuration.setRegion(Region.china)
-        
-        let expectedHost = "https://components.uber.com.cn"
-        let expectedPath = "/rides/"
-        let expectedQueryItems = queryBuilder( ("env", "production") )
-        
-        let rideRequestWidget = Components.rideRequestWidget(rideParameters: nil)
-        
-        XCTAssertEqual(rideRequestWidget.host, expectedHost)
-        XCTAssertEqual(rideRequestWidget.path, expectedPath)
-        XCTAssertEqual(rideRequestWidget.query, expectedQueryItems)
-    }
-    
 }
