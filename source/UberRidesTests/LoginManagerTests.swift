@@ -51,7 +51,7 @@ class LoginManagerTests: XCTestCase {
         let loginManagerMock = LoginManagerPartialMock(loginType: .native)
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
-        loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: nil, completion: nil)
+        loginManagerMock.login(requestedScopes: [.profile], presentingViewController: nil, completion: nil)
         guard let authenticator = loginManagerMock.authenticator as? NativeAuthenticator else {
             XCTFail("Expected NativeAuthenticator")
             return
@@ -68,7 +68,7 @@ class LoginManagerTests: XCTestCase {
         let loginManagerMock = LoginManagerPartialMock(loginType: .native)
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
-        loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: nil, completion: nil)
+        loginManagerMock.login(requestedScopes: [.profile], presentingViewController: nil, completion: nil)
         guard let authenticator = loginManagerMock.authenticator as? NativeAuthenticator else {
             XCTFail("Expected NativeAuthenticator")
             return
@@ -94,7 +94,7 @@ class LoginManagerTests: XCTestCase {
         
         let presentingViewController = UIViewController()
         
-        loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: presentingViewController, completion: nil)
+        loginManagerMock.login(requestedScopes: [.profile], presentingViewController: presentingViewController, completion: nil)
         guard let authenticator = loginManagerMock.authenticator as? ImplicitGrantAuthenticator else {
             XCTFail("Expected ImplicitGrantAuthenticator")
             return
@@ -118,7 +118,7 @@ class LoginManagerTests: XCTestCase {
         
         let presentingViewController = UIViewController()
         
-        loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: presentingViewController, completion: nil)
+        loginManagerMock.login(requestedScopes: [.profile], presentingViewController: presentingViewController, completion: nil)
         guard let authenticator = loginManagerMock.authenticator as? AuthorizationCodeGrantAuthenticator else {
             XCTFail("Expected AuthorizationCodeGrantAuthenticator")
             return
@@ -147,7 +147,7 @@ class LoginManagerTests: XCTestCase {
         loginManagerMock.executeLoginClosure = executeLoginClosure
         loginManagerMock.loggingIn = true
         
-        loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: nil, completion: loginCompletion)
+        loginManagerMock.login(requestedScopes: [.profile], presentingViewController: nil, completion: loginCompletion)
         
         waitForExpectations(timeout: 0.2, handler: nil)
     }
@@ -169,7 +169,7 @@ class LoginManagerTests: XCTestCase {
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
         
-        loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: nil, completion: loginCompletion)
+        loginManagerMock.login(requestedScopes: [.profile], presentingViewController: nil, completion: loginCompletion)
         
         XCTAssertNil(loginManagerMock.authenticator)
         XCTAssertFalse(loginManagerMock.loggingIn)
@@ -194,7 +194,7 @@ class LoginManagerTests: XCTestCase {
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
         
-        loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: nil, completion: loginCompletion)
+        loginManagerMock.login(requestedScopes: [.profile], presentingViewController: nil, completion: loginCompletion)
         
         XCTAssertNil(loginManagerMock.authenticator)
         XCTAssertFalse(loginManagerMock.loggingIn)
@@ -249,7 +249,7 @@ class LoginManagerTests: XCTestCase {
             return true
         }
         
-        let authenticatorMock = NativeAuthenticatorPartialMock(scopes: [.Profile])
+        let authenticatorMock = NativeAuthenticatorPartialMock(scopes: [.profile])
         authenticatorMock.handleRedirectClosure = handleRedirectClosure
         loginManager.authenticator = authenticatorMock
         
@@ -276,7 +276,7 @@ class LoginManagerTests: XCTestCase {
         let loginManager = LoginManager(loginType: .native)
         loginManager.loggingIn = true
         
-        let nativeAuthenticatorMock = NativeAuthenticatorPartialMock(scopes: [.Profile])
+        let nativeAuthenticatorMock = NativeAuthenticatorPartialMock(scopes: [.profile])
         nativeAuthenticatorMock.loginCompletion = loginCompletion
         loginManager.authenticator = nativeAuthenticatorMock
         loginManager.applicationDidBecomeActive()
@@ -304,7 +304,7 @@ class LoginManagerTests: XCTestCase {
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
         
-        loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: nil, completion: loginCompletion)
+        loginManagerMock.login(requestedScopes: [.profile], presentingViewController: nil, completion: loginCompletion)
         
         loginManagerMock.authenticator?.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest))
         
@@ -316,7 +316,7 @@ class LoginManagerTests: XCTestCase {
         let expectationAuthorizationCode = expectation(description: "executeLogin Authorization Code called")
         
         Configuration.shared.useFallback = true
-        let scopes = [RidesScope.Request]
+        let scopes = [RidesScope.request]
         
         let loginManagerMock = LoginManagerPartialMock(loginType: .native)
         
@@ -346,7 +346,7 @@ class LoginManagerTests: XCTestCase {
         let expectationNative = expectation(description: "executeLogin Native called")
         let expectationAuthorizationCode = expectation(description: "executeLogin Authorization Code called")
         
-        let scopes = [RidesScope.Profile]
+        let scopes = [RidesScope.profile]
         
         let loginManagerMock = LoginManagerPartialMock(loginType: .native)
         
@@ -406,7 +406,7 @@ class LoginManagerTests: XCTestCase {
         loginManagerMock.executeLoginClosure = executeLoginClosure
         
         
-        loginManagerMock.login(requestedScopes: [.Profile], presentingViewController: viewController, completion: loginCompletion)
+        loginManagerMock.login(requestedScopes: [.profile], presentingViewController: viewController, completion: loginCompletion)
         
         loginManagerMock.authenticator?.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest))
         

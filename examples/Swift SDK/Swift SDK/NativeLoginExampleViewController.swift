@@ -35,7 +35,8 @@ open class NativeLoginExampleViewController: ButtonExampleViewController, LoginB
     let whiteLoginButton: LoginButton
     
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        scopes = [.Profile, .Places, .Request]
+        scopes = [.profile, .places, .request]
+        
         loginManager = LoginManager(loginType: .native)
         blackLoginButton = LoginButton(frame: CGRect.zero, scopes: scopes, loginManager: loginManager)
         whiteLoginButton = LoginButton(frame: CGRect.zero, scopes: scopes, loginManager: loginManager)

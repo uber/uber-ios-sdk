@@ -84,7 +84,7 @@ class ImplicitGrantExampleViewController: AuthorizationBaseViewController {
     @IBAction func login(_ sender: AnyObject) {
         // Define which scopes we're requesting
         // Need to be authorized on your developer dashboard at developer.uber.com
-        let requestedScopes = [RidesScope.RideWidgets, RidesScope.Profile, RidesScope.Places, RidesScope.History, RidesScope.Places]
+        let requestedScopes = [RidesScope.rideWidgets, RidesScope.profile, RidesScope.places, RidesScope.history, RidesScope.places]
         // Use your loginManager to login with the requested scopes, viewcontroller to present over, and completion block
         loginManager.login(requestedScopes: requestedScopes, presentingViewController: self) { (accessToken, error) -> () in
             if accessToken != nil {

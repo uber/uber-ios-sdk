@@ -57,7 +57,7 @@ class AuthenticationDeeplinkTests: XCTestCase {
     }
     
     func testDeeplinkURL() {
-        let scopes = [RidesScope.AllTrips, RidesScope.Profile]
+        let scopes = [RidesScope.allTrips, RidesScope.profile]
         let authenticationDeeplink = AuthenticationDeeplink(scopes:scopes)
         let expectedURLPrefix = "uberauth://connect?"
         

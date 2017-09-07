@@ -54,7 +54,7 @@ class BaseAuthenticatorTests: XCTestCase {
     }
     
     func testBaseAuthenticator_correctlySavesScopes() {
-        let scopes = [RidesScope.Profile, RidesScope.AllTrips]
+        let scopes = [RidesScope.profile, RidesScope.allTrips]
         let baseAuthenticator = BaseAuthenticator(scopes: scopes)
         XCTAssertEqual(scopes, baseAuthenticator.scopes);
     }
