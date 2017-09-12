@@ -107,7 +107,6 @@ import MapKit
     
 }
 
-// TODO: fix
 /// Builder for a RideParameters object.
 @objc(UBSDKRideParametersBuilder) open class RideParametersBuilder : NSObject {
     

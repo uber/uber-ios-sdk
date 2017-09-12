@@ -96,7 +96,6 @@ import UIKit
 
 /**
  *  Object representing an access scope to the Uber API
- *  TODO: investigate why this is here
  */
 @objc(UBSDKRidesScope) open class RidesScope : NSObject {
     /// The RidesScopeType of this RidesScope
