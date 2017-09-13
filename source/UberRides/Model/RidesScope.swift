@@ -99,13 +99,13 @@ import UIKit
  */
 @objc(UBSDKRidesScope) open class RidesScope : NSObject {
     /// The RidesScopeType of this RidesScope
-    open let ridesScopeType: RidesScopeType
+    @objc open let ridesScopeType: RidesScopeType
     /// The ScopeType of this RidesScope (General / Privileged)
-    open let scopeType : ScopeType
+    @objc open let scopeType : ScopeType
     /// The String raw value of the scope
-    open let rawValue : String
+    @objc open let rawValue : String
     
-    public init(ridesScopeType: RidesScopeType) {
+    @objc public init(ridesScopeType: RidesScopeType) {
         self.ridesScopeType = ridesScopeType
         scopeType = ridesScopeType.type
         rawValue = ridesScopeType.toString()
@@ -124,28 +124,28 @@ import UIKit
     }
     
     /// Convenience variable for the AllTrips scope
-    public static let AllTrips = RidesScope(ridesScopeType: .allTrips)
+    @objc public static let AllTrips = RidesScope(ridesScopeType: .allTrips)
     
     /// Convenience variable for the History scope
-    public static let History = RidesScope(ridesScopeType: .history)
+    @objc public static let History = RidesScope(ridesScopeType: .history)
     
     /// Convenience variable for the HistoryLite scope
-    public static let HistoryLite = RidesScope(ridesScopeType: .historyLite)
+    @objc public static let HistoryLite = RidesScope(ridesScopeType: .historyLite)
     
     /// Convenience variable for the Places scope
-    public static let Places = RidesScope(ridesScopeType: .places)
+    @objc public static let Places = RidesScope(ridesScopeType: .places)
     
     /// Convenience variable for the Profile scope
-    public static let Profile = RidesScope(ridesScopeType: .profile)
+    @objc public static let Profile = RidesScope(ridesScopeType: .profile)
     
     /// Convenience variable for the Request scope
-    public static let Request = RidesScope(ridesScopeType: .request)
+    @objc public static let Request = RidesScope(ridesScopeType: .request)
     
     /// Convenience variable for the RequestReceipt scope
-    public static let RequestReceipt = RidesScope(ridesScopeType: .requestReceipt)
+    @objc public static let RequestReceipt = RidesScope(ridesScopeType: .requestReceipt)
     
     /// Convenience variable for the RideWidgets scope
-    public static let RideWidgets = RidesScope(ridesScopeType: .rideWidgets)
+    @objc public static let RideWidgets = RidesScope(ridesScopeType: .rideWidgets)
     
 }
 

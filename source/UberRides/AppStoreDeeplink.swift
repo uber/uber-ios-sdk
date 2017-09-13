@@ -34,7 +34,7 @@ import Foundation
      
      - returns: An initialized AppStoreDeeplink
      */
-    public init(userAgent: String?) {
+    @objc public init(userAgent: String?) {
         let scheme = "https"
         let domain = "m.uber.com"
         let path = "/sign-up"

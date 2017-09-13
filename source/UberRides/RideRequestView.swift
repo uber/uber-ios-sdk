@@ -41,13 +41,13 @@ import CoreLocation
 /// A view that shows the embedded Uber experience. 
 @objc(UBSDKRideRequestView) open class RideRequestView: UIView {
     /// The RideRequestViewDelegate of this view.
-    open var delegate: RideRequestViewDelegate?
+    @objc open var delegate: RideRequestViewDelegate?
     
     /// The access token used to authorize the web view
-    open var accessToken: AccessToken?
+    @objc open var accessToken: AccessToken?
     
     /// Ther RideParameters to use for prefilling the RideRequestView
-    open var rideParameters: RideParameters
+    @objc open var rideParameters: RideParameters
     
     var webView: WKWebView
     let redirectURL = "uberconnect://oauth"
@@ -144,7 +144,7 @@ import CoreLocation
      Load the Uber Ride Request Widget view.
      Requires that the access token has been retrieved.
      */
-    open func load() {
+    @objc open func load() {
         guard let accessToken = accessToken else {
             self.delegate?.rideRequestView(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
             return
@@ -171,7 +171,7 @@ import CoreLocation
      Stop loading the Ride Request Widget View and clears the view.
      If the view has already loaded, calling this still clears the view.
     */
-    open func cancelLoad() {
+    @objc open func cancelLoad() {
         webView.stopLoading()
         if let url = URL(string: "about:blank") {
             webView.load(URLRequest(url: url))
@@ -205,11 +205,11 @@ import CoreLocation
     
     // MARK: Keyboard Notifications
     
-    func keyboardWillAppear(_ notification: Notification) {
+    @objc func keyboardWillAppear(_ notification: Notification) {
         webView.scrollView.isScrollEnabled = false
     }
     
-    func keyboardDidAppear(_ notification: Notification) {
+    @objc func keyboardDidAppear(_ notification: Notification) {
         webView.scrollView.isScrollEnabled = true
     }
 }

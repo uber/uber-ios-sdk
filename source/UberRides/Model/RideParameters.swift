@@ -28,50 +28,50 @@ import MapKit
 @objc(UBSDKRideParameters) public class RideParameters : NSObject {
     
     /// ProductID to use for the ride
-    public var productID: String?
+    @objc public var productID: String?
     
     /// The pickup location to use for the ride
-    public let pickupLocation: CLLocation?
+    @objc public let pickupLocation: CLLocation?
 
     /// The nickname of the pickup location of the ride
-    public var pickupNickname: String?
+    @objc public var pickupNickname: String?
     
     /// The address of the pickup location of the ride
-    public var pickupAddress: String?
+    @objc public var pickupAddress: String?
     
     /// This is the name of an Uber saved place. Only “home” or “work” is acceptable.
-    public let pickupPlaceID: String?
+    @objc public let pickupPlaceID: String?
     
     /// The dropoff location to use for the ride
-    public let dropoffLocation: CLLocation?
+    @objc public let dropoffLocation: CLLocation?
     
     /// The nickname of the dropoff location for the ride
-    public var dropoffNickname: String?
+    @objc public var dropoffNickname: String?
     
     /// The adress of the dropoff location of the ride
-    public var dropoffAddress: String?
+    @objc public var dropoffAddress: String?
     
     /// This is the name of an Uber saved place. Only “home” or “work” is acceptable.
-    public let dropoffPlaceID: String?
+    @objc public let dropoffPlaceID: String?
     
     /// The unique identifier of the payment method selected by a user.
-    public var paymentMethod: String?
+    @objc public var paymentMethod: String?
     
     /// The unique identifier of the surge session for a user.
-    public var surgeConfirmationID: String?
+    @objc public var surgeConfirmationID: String?
 
     /// The source to use for attributing the ride
-    public var source: String?
+    @objc public var source: String?
 
     convenience public override init() {
         self.init(pickupLocation: nil, dropoffLocation: nil, pickupPlaceID: nil, dropoffPlaceID: nil)
     }
 
-    convenience public init(pickupLocation: CLLocation?, dropoffLocation: CLLocation?) {
+    @objc convenience public init(pickupLocation: CLLocation?, dropoffLocation: CLLocation?) {
         self.init(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation, pickupPlaceID: nil, dropoffPlaceID: nil)
     }
 
-    convenience public init(pickupPlaceID: String?, dropoffPlaceID: String?) {
+    @objc convenience public init(pickupPlaceID: String?, dropoffPlaceID: String?) {
         self.init(pickupLocation: nil, dropoffLocation: nil, pickupPlaceID: pickupPlaceID, dropoffPlaceID: dropoffPlaceID)
     }
 

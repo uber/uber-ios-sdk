@@ -67,9 +67,9 @@ Possible Styles for the ModalViewController
 /// Convenience to wrap a ViewController in a UINavigationController and add the appropriate buttons. Allows you to modally present a view controller w/ Uber branding.
 @objc(UBSDKModalViewController) open class ModalViewController : UIViewController {
     /// The ModalViewControllerDelegate
-    open var delegate: ModalViewControllerDelegate?
+    @objc open var delegate: ModalViewControllerDelegate?
     
-    open var colorStyle: ModalViewControllerColorStyle = .default {
+    @objc open var colorStyle: ModalViewControllerColorStyle = .default {
         didSet {
             setupStyle()
         }
@@ -143,7 +143,7 @@ Possible Styles for the ModalViewController
     /**
      Function to dimiss the modalViewController.
     */
-    open func dismiss() {
+    @objc open func dismiss() {
         self.delegate?.modalViewControllerWillDismiss(self)
         self.dismiss(animated: true, completion: nil)
     }
@@ -160,11 +160,11 @@ Possible Styles for the ModalViewController
     
     //MARK: Button Actions
     
-    func doneButtonPressed(_ button: UIButton) {
+    @objc func doneButtonPressed(_ button: UIButton) {
         dismiss()
     }
     
-    func backButtonPressed(_ button: UIButton) {
+    @objc func backButtonPressed(_ button: UIButton) {
         dismiss()
     }
     

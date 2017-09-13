@@ -25,7 +25,7 @@
 import UIKit
 
 @objc(UBSDKAuthorizationCodeGrantAuthenticator) open class AuthorizationCodeGrantAuthenticator: LoginViewAuthenticator {
-    open var state: String?
+    @objc open var state: String?
     
     @objc public init(presentingViewController: UIViewController, scopes: [RidesScope], state: String?) {
         self.state = state

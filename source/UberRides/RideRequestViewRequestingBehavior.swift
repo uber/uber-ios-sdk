@@ -27,14 +27,14 @@
 @objc(UBSDKRideRequestViewRequestingBehavior) open class RideRequestViewRequestingBehavior : NSObject {
     
     /// The UIViewController to present the RideRequestViewController over
-    unowned open var presentingViewController: UIViewController
+    @objc unowned open var presentingViewController: UIViewController
     
     /**
      The LoginManager to use with the RideRequestViewController. Uses the
      accessTokenIdentifier & keychainAccessGroup to get an AccessToken. Will be used
      to log a user in, if necessary
      */
-    open var loginManager: LoginManager {
+    @objc open var loginManager: LoginManager {
         get {
             return self.modalRideRequestViewController.rideRequestViewController.loginManager
         }
@@ -44,7 +44,7 @@
     }
     
     /// The ModalRideRequestViewController that is created by this behavior, only exists after requestRide() is called
-    open internal(set) var modalRideRequestViewController: ModalRideRequestViewController
+    @objc open internal(set) var modalRideRequestViewController: ModalRideRequestViewController
     
     /**
      Creates the RideRequestViewRequestingBehavior with the given presenting view controller.

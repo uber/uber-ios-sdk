@@ -62,7 +62,7 @@ import UIKit
      Function responsible for the initial setup of the button. 
      Calls addSubviews(), setContent(), and setConstraints()
      */
-    open func setup() {
+    @objc open func setup() {
         addSubviews()
         setContent()
         setConstraints()
@@ -72,7 +72,7 @@ import UIKit
      Function responsible for adding all the subviews to the button. Subclasses
      should override this method and add any necessary subviews.
      */
-    open func addSubviews() {
+    @objc open func addSubviews() {
         addSubview(uberImageView)
         addSubview(uberTitleLabel)
     }
@@ -81,7 +81,7 @@ import UIKit
      Function responsible for updating content on the button. Subclasses should
      override and do any necessary view setup
      */
-    open func setContent() {
+    @objc open func setContent() {
         clipsToBounds = true
         layer.cornerRadius = cornerRadius
     }
@@ -90,7 +90,7 @@ import UIKit
      Function responsible for adding autolayout constriants on the button. Subclasses
      should override and add any additional autolayout constraints
      */
-    open func setConstraints() {
+    @objc open func setConstraints() {
         
         uberTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         uberImageView.translatesAutoresizingMaskIntoConstraints = false

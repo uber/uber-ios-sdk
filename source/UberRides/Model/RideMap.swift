@@ -32,10 +32,10 @@ import ObjectMapper
 @objc(UBSDKRideMap) public class RideMap: NSObject {
     
     /// URL to a map representing the requested trip.
-    public fileprivate(set) var path: String?
+    @objc public private(set) var path: String?
     
     /// Unique identifier representing a ride request.
-    public fileprivate(set) var requestID: String?
+    @objc public private(set) var requestID: String?
     
     public required init?(map: Map) {
     }

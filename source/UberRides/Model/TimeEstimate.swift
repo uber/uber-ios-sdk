@@ -48,13 +48,13 @@ extension TimeEstimates: UberModel {
 */
 @objc(UBSDKTimeEstimate) public class TimeEstimate: NSObject {
     /// Unique identifier representing a specific product for a given latitude & longitude.
-    public fileprivate(set) var productID: String?
+    @objc public private(set) var productID: String?
     
     /// Display name of product. Ex: "UberBLACK".
-    public fileprivate(set) var name: String?
+    @objc public private(set) var name: String?
     
     /// ETA for the product (in seconds).
-    public fileprivate(set) var estimate: Int = 0
+    @objc public private(set) var estimate: Int = 0
     
     public required init?(map: Map) {
     }

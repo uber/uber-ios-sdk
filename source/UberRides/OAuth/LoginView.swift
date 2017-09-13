@@ -28,7 +28,7 @@ import WebKit
 /// Login Web View class. Wrapper around a WKWebView to handle Login flow for Implicit Grant
 @objc(UBSDKLoginView) open class LoginView: UIView {
     
-    open var loginAuthenticator: LoginViewAuthenticator
+    @objc open var loginAuthenticator: LoginViewAuthenticator
     
     var clientID = Configuration.shared.clientID
     let webView: WKWebView
@@ -90,7 +90,7 @@ import WebKit
     /**
     Loads the login page
     */
-    open func load() {
+    @objc open func load() {
         // Create URL for request
         guard let request = Request(session: nil, endpoint: loginAuthenticator.endpoint) else {
             loginAuthenticator.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType:.invalidRequest))
@@ -106,7 +106,7 @@ import WebKit
      Stops loading the login page and clears the view.
      If the login page has already loaded, calling this still clears the view.
      */
-    open func cancelLoad() {
+    @objc open func cancelLoad() {
         webView.stopLoading()
         if let url = URL(string: "about:blank") {
             webView.load(URLRequest(url: url))

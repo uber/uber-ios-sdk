@@ -30,16 +30,16 @@ import CoreLocation
     
     /// Application client ID. Required for every instance of RidesClient.
     var clientID: String = Configuration.shared.clientID
-    
+
     /// The Access Token Identifier. The identifier to use for looking up this client's accessToken
     let accessTokenIdentifier: String
-    
+
     /// The Keychain Access Group. The access group to use when looking up this client's accessToken
     let keychainAccessGroup: String
-    
+
     /// NSURLSession used to make requests to Uber API. Default session configuration unless otherwise initialized.
     var session: URLSession
-    
+
     /// Developer server token.
     private var serverToken: String? = Configuration.shared.serverToken
     
@@ -509,7 +509,7 @@ import CoreLocation
      - parameter requestID:  unique identifier representing a ride request
      - parameter completion: completion handler for receipt
      */
-    open func fetchRideReceipt(requestID: String, completion:@escaping (_ rideReceipt: RideReceipt?, _ response: Response) -> Void) {
+    @objc open func fetchRideReceipt(requestID: String, completion:@escaping (_ rideReceipt: RideReceipt?, _ response: Response) -> Void) {
         let endpoint = Requests.rideReceipt(requestID: requestID)
         apiCall(endpoint, completion: { response in
             var receipt: RideReceipt?
@@ -526,7 +526,7 @@ import CoreLocation
      - parameter requestID:  unique identifier representing a request
      - parameter completion: completion handler for map
      */
-    open func fetchRideMap(requestID: String, completion:@escaping (_ map: RideMap?, _ response: Response) -> Void) {
+    @objc open func fetchRideMap(requestID: String, completion:@escaping (_ map: RideMap?, _ response: Response) -> Void) {
         let endpoint = Requests.rideMap(requestID: requestID)
         apiCall(endpoint, completion: { response in
             var map: RideMap?
@@ -544,7 +544,7 @@ import CoreLocation
      - parameter refreshToken: The Refresh Token String from an SSO access token
      - parameter completion:   completion handler for the new access token
      */
-    open func refreshAccessToken(usingRefreshToken refreshToken: String, completion:@escaping (_ accessToken: AccessToken?, _ response: Response) -> Void) {
+    @objc open func refreshAccessToken(usingRefreshToken refreshToken: String, completion:@escaping (_ accessToken: AccessToken?, _ response: Response) -> Void) {
         let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
         apiCall(endpoint) { response in
             var accessToken: AccessToken?

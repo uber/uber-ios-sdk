@@ -31,22 +31,22 @@ import ObjectMapper
 */
 @objc(UBSDKUserProfile) public class UserProfile: NSObject {
     /// First name of the Uber user.
-    public fileprivate(set) var firstName: String?
+    @objc public private(set) var firstName: String?
     
     /// Last name of the Uber user.
-    public fileprivate(set) var lastName: String?
+    @objc public private(set) var lastName: String?
     
     /// Email address of the Uber user.
-    public fileprivate(set) var email: String?
+    @objc public private(set) var email: String?
     
     /// Image URL of the Uber user.
-    public fileprivate(set) var picturePath: String?
+    @objc public private(set) var picturePath: String?
     
     /// Promo code of the Uber user.
-    public fileprivate(set) var promoCode: String?
+    @objc public private(set) var promoCode: String?
     
     /// Unique identifier of the Uber user.
-    public fileprivate(set) var UUID: String?
+    @objc public private(set) var UUID: String?
     
     public required init?(map: Map) {
     }

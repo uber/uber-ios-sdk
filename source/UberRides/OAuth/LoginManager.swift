@@ -28,7 +28,7 @@
 @objc(UBSDKLoginManager) open class LoginManager: NSObject, LoginManaging {
     
     /// Optional state to use for explcit grant authorization
-    open var state: String?
+    @objc open var state: String?
     
     var accessTokenIdentifier: String
     var keychainAccessGroup: String
@@ -36,7 +36,7 @@
     var oauthViewController: OAuthViewController?
     var authenticator: UberAuthenticating?
     var loggingIn: Bool = false
-    
+
     /**
     Create instance of login manager to authenticate user and retreive access token.
     

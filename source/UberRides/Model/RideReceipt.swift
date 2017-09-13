@@ -32,40 +32,40 @@ import ObjectMapper
 @objc(UBSDKRideReceipt) public class RideReceipt: NSObject {
     
     /// Adjustments made to the charges such as promotions, and fees.
-    public fileprivate(set) var chargeAdjustments: [RideCharge]?
+    @objc public private(set) var chargeAdjustments: [RideCharge]?
     
     /// Describes the charges made against the rider.
-    public fileprivate(set) var charges: [RideCharge]?
+    @objc public private(set) var charges: [RideCharge]?
     
     /// ISO 4217
-    public fileprivate(set) var currencyCode: String?
+    @objc public private(set) var currencyCode: String?
     
     /// Distance of the trip charged.
-    public fileprivate(set) var distance: String?
+    @objc public private(set) var distance: String?
     
     /// The localized unit of distance.
-    public fileprivate(set) var distanceLabel: String?
+    @objc public private(set) var distanceLabel: String?
     
     /// Time duration of the trip in ISO 8601 HH:MM:SS format.
-    public fileprivate(set) var duration: String?
+    @objc public private(set) var duration: String?
     
     /// The summation of the charges array.
-    public fileprivate(set) var normalFare: String?
+    @objc public private(set) var normalFare: String?
     
     /// Unique identifier representing a Request.
-    public fileprivate(set) var requestID: String?
+    @objc public private(set) var requestID: String?
     
     /// The summation of the normal fare and surge charge amount.
-    public fileprivate(set) var subtotal: String?
+    @objc public private(set) var subtotal: String?
     
     /// Describes the surge charge. May be null if surge pricing was not in effect.
-    public fileprivate(set) var surgeCharge: RideCharge?
+    @objc public private(set) var surgeCharge: RideCharge?
     
     /// The total amount charged to the users payment method. This is the the subtotal (split if applicable) with taxes included.
-    public fileprivate(set) var totalCharged: String?
+    @objc public private(set) var totalCharged: String?
     
     /// The total amount still owed after attempting to charge the user. May be 0 if amount was paid in full.
-    public fileprivate(set) var totalOwed: Double = 0.0
+    @objc public private(set) var totalOwed: Double = 0.0
     
     public required init?(map: Map) {
     }

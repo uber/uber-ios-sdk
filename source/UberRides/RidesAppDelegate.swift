@@ -31,11 +31,11 @@
     
     //MARK: Class variables
     
-    open static let shared = RidesAppDelegate()
+    @objc open static let shared = RidesAppDelegate()
     
     //MARK: Public variables
     
-    open var loginManager : LoginManaging?
+    @objc open var loginManager : LoginManaging?
     
     //Mark: NSObject
     
@@ -67,7 +67,7 @@
      communicate information to the receiving app As passed to the corresponding AppDelegate method
      - returns: true if the URL was intended for the Rides SDK, false otherwise
      */
-    open func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+    @objc open func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         guard let manager = loginManager else {
             return false
         }
@@ -79,7 +79,7 @@
         return urlHandled
     }
     
-    open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+    @objc open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         guard let options = launchOptions, let launchURL = options[UIApplicationLaunchOptionsKey.url] as? URL else {
             return false
         }
@@ -94,7 +94,7 @@
     
     //MARK: Private Methods
     
-    @objc fileprivate func didBecomeActive(_ notification: Notification) {
+    @objc private func didBecomeActive(_ notification: Notification) {
         if let manager = loginManager {
             manager.applicationDidBecomeActive()
             loginManager = nil

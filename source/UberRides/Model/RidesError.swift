@@ -29,19 +29,19 @@ import ObjectMapper
 /// Base class for errors that can be mapped from HTTP responses.
 @objc(UBSDKRidesError) public class RidesError : NSObject {
     /// HTTP status code for error.
-    public internal(set) var status: Int = -1
+    @objc public internal(set) var status: Int = -1
     
     /// Human readable message which corresponds to the client error.
-    public internal(set) var title: String?
+    @objc public internal(set) var title: String?
     
     /// Underscore delimited string.
-    public internal(set) var code: String?
+    @objc public internal(set) var code: String?
     
     /// Additional information about errors. Can be "fields" or "meta" as the key.
-    public internal(set) var meta: [String: AnyObject]?
+    @objc public internal(set) var meta: [String: AnyObject]?
     
     /// List of additional errors. This can be populated instead of status/code/title.
-    public internal(set) var errors: [RidesError]?
+    @objc public internal(set) var errors: [RidesError]?
 
     override init() {
     }
@@ -51,7 +51,7 @@ import ObjectMapper
     /// - parameter status: The Status code to use for this error
     /// - parameter code:   The underscore delimited code string to use for this error
     /// - parameter title:  Human readable message which corresponds to this error
-    public convenience init(status: Int, code: String?, title: String?) {
+    @objc public convenience init(status: Int, code: String?, title: String?) {
         self.init()
         self.status = status
         self.code = code

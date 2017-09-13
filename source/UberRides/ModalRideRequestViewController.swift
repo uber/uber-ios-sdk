@@ -25,7 +25,7 @@
 /// Modal View Controller to use for presenting a RideRequestViewController. Handles errors & closing the modal for you
 @objc(UBSDKModalRideRequestViewController) open class ModalRideRequestViewController : ModalViewController {
     /// The RideRequestViewController this modal is wrapping
-    open internal(set) var rideRequestViewController : RideRequestViewController
+    @objc open internal(set) var rideRequestViewController : RideRequestViewController
     
     /**
      Initializer for the ModalRideRequestViewController. Wraps the provided RideRequestViewController

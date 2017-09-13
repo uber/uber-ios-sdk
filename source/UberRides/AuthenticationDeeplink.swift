@@ -36,7 +36,7 @@ import Foundation
      
      - returns: An initialized AuthenticationDeeplink
      */
-    public init(scopes: [RidesScope]) {
+    @objc public init(scopes: [RidesScope]) {
         let queryItems = AuthenticationURLUtility.buildQueryParameters(scopes)
         let scheme = "uberauth"
         let domain = "connect"

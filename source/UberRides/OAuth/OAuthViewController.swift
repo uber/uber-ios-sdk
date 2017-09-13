@@ -32,7 +32,7 @@ class OAuthViewController: UIViewController {
     
     var hasLoaded = false
     var loginView: LoginView
-    
+
     /**
      Initializes the web view controller with the necessary information.
      
@@ -68,7 +68,7 @@ class OAuthViewController: UIViewController {
         }
     }
     
-    func cancel() {
+    @objc func cancel() {
         self.loginView.loginAuthenticator.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .userCancelled))
         dismiss(animated: true, completion: nil)
     }

@@ -48,22 +48,22 @@ import CoreLocation
 /// RequestButton implements a button on the touch screen to request a ride.
 @objc(UBSDKRideRequestButton) open class RideRequestButton: UberButton {
     /// Delegate is informed of events that occur with request button.
-    open var delegate: RideRequestButtonDelegate?
+    @objc open var delegate: RideRequestButtonDelegate?
     
     /// The RideParameters object this button will use to make a request
-    open var rideParameters: RideParameters
+    @objc open var rideParameters: RideParameters
     
     /// The RideRequesting object the button will use to make a request
-    open var requestBehavior: RideRequesting
+    @objc open var requestBehavior: RideRequesting
     
     /// The RidesClient used for retrieving metadata for the button.
-    open var client: RidesClient?
+    @objc open var client: RidesClient?
     
     static let sourceString = "button"
     
     var metadata: ButtonMetadata = ButtonMetadata()
     var uberMetadataLabel: UILabel = UILabel()
-    
+
     private let opticalCorrection: CGFloat = 1.0
     
     /**
@@ -208,10 +208,10 @@ import CoreLocation
         let views = ["image": uberImageView, "titleLabel": uberTitleLabel, "metadataLabel": uberMetadataLabel]
         let metrics = ["edgePadding": horizontalEdgePadding, "verticalPadding": verticalPadding, "imageLabelPadding": imageLabelPadding, "middlePadding": horizontalEdgePadding*2]
         
-        uberImageView.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
-        uberTitleLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
-        uberTitleLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .vertical)
-        uberMetadataLabel.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
+        uberImageView.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        uberTitleLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        uberTitleLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
+        uberMetadataLabel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .horizontal)
         
         let horizontalConstraints: [NSLayoutConstraint] = NSLayoutConstraint.constraints(withVisualFormat: "H:|-edgePadding-[image]-imageLabelPadding-[titleLabel]-middlePadding-[metadataLabel]-edgePadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
         let verticalConstraints: [NSLayoutConstraint] = NSLayoutConstraint.constraints(withVisualFormat: "V:|-verticalPadding-[image]-verticalPadding-|", options: .alignAllLeading, metrics: metrics, views: views)
@@ -276,7 +276,7 @@ import CoreLocation
     /**
      Manual refresh for the ride information on the button. The product ID must be set in order to show any metadata.
      */
-    open func loadRideInformation() {
+    @objc open func loadRideInformation() {
         guard client != nil else {
             delegate?.rideRequestButton(self, didReceiveError: createValidationFailedError())
             return
@@ -294,7 +294,7 @@ import CoreLocation
     //Mark: Internal Interface
     
     // Initiate deeplink when button is tapped
-    func uberButtonTapped(_ sender: UIButton) {
+    @objc func uberButtonTapped(_ sender: UIButton) {
         rideParameters.source = RideRequestButton.sourceString
         requestBehavior.requestRide(parameters: rideParameters)
     }
@@ -332,14 +332,14 @@ import CoreLocation
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .right
                 paragraphStyle.maximumLineHeight = 16
-                attrString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
+                attrString.addAttribute(NSAttributedStringKey.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
             }
             
             attrString.append(NSAttributedString(string: "\(subtitle)"))
         }
         
-        attrString.addAttribute(NSFontAttributeName, value: metadataFont, range: (attrString.string as NSString).range(of: title))
-        attrString.addAttribute(NSFontAttributeName, value: metadataFont, range: (attrString.string as NSString).range(of: subtitle))
+        attrString.addAttribute(NSAttributedStringKey.font, value: metadataFont, range: (attrString.string as NSString).range(of: title))
+        attrString.addAttribute(NSAttributedStringKey.font, value: metadataFont, range: (attrString.string as NSString).range(of: subtitle))
 
         if attrString.string.isEmpty {
             uberTitleLabel.text = LocalizationUtil.localizedString(forKey: "Ride there with Uber", comment: "Request button description")

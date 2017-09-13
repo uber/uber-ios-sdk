@@ -30,7 +30,7 @@ import Foundation
 @objc(UBSSONativeAuthenticator) open class NativeAuthenticator: BaseAuthenticator {
     
     /// The completion block to call when the deeplink is completed. Bool indicates if the deeplink was successful
-    open var deeplinkCompletion: ((NSError?) -> ())?
+    @objc open var deeplinkCompletion: ((NSError?) -> ())?
 
     
     var deeplink: Deeplinking

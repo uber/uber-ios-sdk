@@ -32,31 +32,31 @@ import ObjectMapper
 @objc(UBSDKRide) public class Ride: NSObject {
     
     /// Contains the information about the destination of the trip, if one has been set.
-    public fileprivate(set) var destination: RideRequestLocation?
+    @objc public private(set) var destination: RideRequestLocation?
     
     /// The object that contains driver details. Only non-null during an ongoing trip.
-    public fileprivate(set) var driver: Driver?
+    @objc public private(set) var driver: Driver?
     
     /// The object that contains the location information of the vehicle and driver.
-    public fileprivate(set) var driverLocation: RideRequestLocation?
+    @objc public private(set) var driverLocation: RideRequestLocation?
     
     /// The estimated time of vehicle arrival in minutes.
-    public fileprivate(set) var eta: Int = 0
+    @objc public private(set) var eta: Int = 0
     
     /// The object containing the information about the pickup for the trip.
-    public fileprivate(set) var pickup: RideRequestLocation?
+    @objc public private(set) var pickup: RideRequestLocation?
     
     /// The unique ID of the Request.
-    public fileprivate(set) var requestID: String?
+    @objc public private(set) var requestID: String?
     
     /// The status of the Request indicating state.
-    public fileprivate(set) var status: RideStatus = .unknown
+    @objc public private(set) var status: RideStatus = .unknown
     
     /// The surge pricing multiplier used to calculate the increased price of a Request.
-    public fileprivate(set) var surgeMultiplier: Double = 1.0
+    @objc public private(set) var surgeMultiplier: Double = 1.0
     
     /// The object that contains vehicle details. Only non-null during an ongoing trip.
-    public fileprivate(set) var vehicle: Vehicle?
+    @objc public private(set) var vehicle: Vehicle?
     
     public required init?(map: Map) {
     }
