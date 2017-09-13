@@ -30,9 +30,9 @@ class AuthenticationURLUtilityTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
         versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
     }
     
@@ -41,7 +41,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
         super.tearDown()
     }
     
-    func testBuildQueryParameters_withDefaultRegion_withSingleScope() {
+    func testBuildQueryParameters_withSingleScope() {
         
         let scopes = [RidesScope.RideWidgets]
         
@@ -49,7 +49,6 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let expectedClientID = "testClientID"
         let expectedAppName = "My Awesome App"
         let expectedCallbackURI = "testURI://uberConnectNative"
-        let expectedLoginType = "default"
         let expectedSDK = "ios"
         let expectedSDKVersion = versionNumber
         
@@ -57,11 +56,10 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let clientIDQueryItem = URLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
         let appNameQueryItem = URLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
         let callbackURIQueryItem = URLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
-        let loginTypeQueryItem = URLQueryItem(name: AuthenticationURLUtility.loginTypeKey, value: expectedLoginType)
         let sdkQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
         let sdkVersionQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)
         
-        let expectedQueryItems = [scopeQueryItem, clientIDQueryItem, appNameQueryItem, callbackURIQueryItem, loginTypeQueryItem, sdkQueryItem, sdkVersionQueryItem]
+        let expectedQueryItems = [scopeQueryItem, clientIDQueryItem, appNameQueryItem, callbackURIQueryItem, sdkQueryItem, sdkVersionQueryItem]
         let comparisonSet = NSSet(array: expectedQueryItems)
         
         let testQueryItems = AuthenticationURLUtility.buildQueryParameters(scopes)
@@ -70,7 +68,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
         XCTAssertEqual(comparisonSet, testComparisonSet)
     }
     
-    func testBuildQueryParameters_withDefaultRegion_withMultipleScopes() {
+    func testBuildQueryParameters_withMultipleScopes() {
         
         let scopes = [RidesScope.RideWidgets, RidesScope.AllTrips, RidesScope.History]
         
@@ -78,7 +76,6 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let expectedClientID = "testClientID"
         let expectedAppName = "My Awesome App"
         let expectedCallbackURI = "testURI://uberConnectNative"
-        let expectedLoginType = "default"
         let expectedSDK = "ios"
         let expectedSDKVersion = versionNumber
         
@@ -86,11 +83,10 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let clientIDQueryItem = URLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
         let appNameQueryItem = URLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
         let callbackURIQueryItem = URLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
-        let loginTypeQueryItem = URLQueryItem(name: AuthenticationURLUtility.loginTypeKey, value: expectedLoginType)
         let sdkQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
         let sdkVersionQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)
         
-        let expectedQueryItems = [scopeQueryItem, clientIDQueryItem, appNameQueryItem, callbackURIQueryItem, loginTypeQueryItem, sdkQueryItem, sdkVersionQueryItem]
+        let expectedQueryItems = [scopeQueryItem, clientIDQueryItem, appNameQueryItem, callbackURIQueryItem, sdkQueryItem, sdkVersionQueryItem]
         let comparisonSet = NSSet(array: expectedQueryItems)
         
         let testQueryItems = AuthenticationURLUtility.buildQueryParameters(scopes)
@@ -105,14 +101,14 @@ class AuthenticationURLUtilityTests: XCTestCase {
             XCTFail()
             return
         }
-        Configuration.setCallbackURIString(testRedirectURLString, type: .implicit)
+        Configuration.shared.setCallbackURIString(testRedirectURLString, type: .implicit)
         XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .general))
         XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .native))
         XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .authorizationCode))
         
         XCTAssertTrue(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .implicit))
         
-        Configuration.setCallbackURIString(nil, type: .implicit)
+        Configuration.shared.setCallbackURIString(nil, type: .implicit)
         
         XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .implicit))
     }

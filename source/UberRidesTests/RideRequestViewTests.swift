@@ -33,10 +33,10 @@ class RideRequestViewTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setSandboxEnabled(true)
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.isSandbox = true
     }
     
     override func tearDown() {
@@ -99,7 +99,7 @@ class RideRequestViewTests: XCTestCase {
             XCTAssert(false)
             return
         }
-        _ = TokenManager.saveToken(token)
+        _ = TokenManager.save(accessToken: token)
         
         let view = RideRequestView()
         XCTAssertNotNil(view.accessToken)
@@ -162,14 +162,14 @@ class RideRequestViewTests: XCTestCase {
         }
         
         let testIdentifier = "testAccessTokenIdentifier"
-        _ = TokenManager.deleteToken(testIdentifier)
+        _ = TokenManager.deleteToken(identifier: testIdentifier)
         let testToken = AccessToken(JSON: ["access_token" : "testTokenString"])
-        _ = TokenManager.saveToken(testToken!, tokenIdentifier: testIdentifier)
+        _ = TokenManager.save(accessToken: testToken!, tokenIdentifier: testIdentifier)
         defer {
-            _ = TokenManager.deleteToken(testIdentifier)
+            _ = TokenManager.deleteToken(identifier: testIdentifier)
         }
         
-        let rideRequestView = RideRequestView(rideParameters: RideParametersBuilder().build(), accessToken: TokenManager.fetchToken(testIdentifier), frame: CGRect.zero)
+        let rideRequestView = RideRequestView(rideParameters: RideParametersBuilder().build(), accessToken: TokenManager.fetchToken(identifier: testIdentifier), frame: CGRect.zero)
         XCTAssertNotNil(rideRequestView)
         
         let webViewMock = WebViewMock(frame: CGRect.zero, configuration: WKWebViewConfiguration(), testClosure: expectationClosure)

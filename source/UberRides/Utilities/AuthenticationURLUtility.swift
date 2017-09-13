@@ -29,7 +29,6 @@ class AuthenticationURLUtility {
     static let appNameKey = "third_party_app_name"
     static let callbackURIKey = "callback_uri_string"
     static let clientIDKey = "client_id"
-    static let loginTypeKey = "login_type"
     static let scopesKey = "scope"
     static let sdkKey = "sdk"
     static let sdkVersionKey = "sdk_version"
@@ -39,20 +38,19 @@ class AuthenticationURLUtility {
     static func buildQueryParameters(_ scopes: [RidesScope]) -> [URLQueryItem] {
         var queryItems = [URLQueryItem]()
         
-        queryItems.append(URLQueryItem(name: appNameKey, value: Configuration.getAppDisplayName()))
-        queryItems.append(URLQueryItem(name: callbackURIKey, value: Configuration.getCallbackURIString(.native)))
-        queryItems.append(URLQueryItem(name: clientIDKey, value: Configuration.getClientID()))
-        queryItems.append(URLQueryItem(name: loginTypeKey, value: Configuration.regionString))
+        queryItems.append(URLQueryItem(name: appNameKey, value: Configuration.shared.appDisplayName))
+        queryItems.append(URLQueryItem(name: callbackURIKey, value: Configuration.shared.getCallbackURIString(for: .native)))
+        queryItems.append(URLQueryItem(name: clientIDKey, value: Configuration.shared.clientID))
         queryItems.append(URLQueryItem(name: scopesKey, value: scopes.toRidesScopeString()))
         queryItems.append(URLQueryItem(name: sdkKey, value: sdkValue))
-        queryItems.append(URLQueryItem(name: sdkVersionKey, value: Configuration.sdkVersion))
+        queryItems.append(URLQueryItem(name: sdkVersionKey, value: Configuration.shared.sdkVersion))
         
         return queryItems
     }
     
     static func shouldHandleRedirectURL(_ URL: Foundation.URL, type: CallbackURIType) -> Bool {
         guard let redirectURLComponents = URLComponents(url: URL, resolvingAgainstBaseURL: false),
-        let expectedURLComponents = URLComponents(string: Configuration.getCallbackURIString(type)) else {
+        let expectedURLComponents = URLComponents(string: Configuration.shared.getCallbackURIString(for: type)) else {
             return false
         }
 
@@ -60,7 +58,7 @@ class AuthenticationURLUtility {
             (redirectURLComponents.host?.lowercased() == expectedURLComponents.host?.lowercased())
         
         var isLoginError = false
-        if let loginURLComponents = URLComponents(string: OAuth.regionHostString()) {
+        if let loginURLComponents = URLComponents(string: OAuth.regionHost) {
             
             isLoginError = (loginURLComponents.host == redirectURLComponents.host) && redirectURLComponents.path.contains("errors")
         }

@@ -30,10 +30,10 @@ class LoginManagerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setSandboxEnabled(true)
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.isSandbox = true
     }
     
     override func tearDown() {
@@ -75,7 +75,7 @@ class LoginManagerTests: XCTestCase {
         }
         
         authenticator.deeplinkCompletion?(nil)
-        guard let ridesAppDelegateLoginManager = RidesAppDelegate.sharedInstance.loginManager as? LoginManagerPartialMock else {
+        guard let ridesAppDelegateLoginManager = RidesAppDelegate.shared.loginManager as? LoginManagerPartialMock else {
             XCTFail("Expected RidesAppDelegate to have loginManager instance")
             return
         }
@@ -212,7 +212,7 @@ class LoginManagerTests: XCTestCase {
         let testSourceApplication = "com.not.uber.app"
         let testAnnotation = "annotation"
         
-        XCTAssertFalse(loginManager.application(testApp, openURL: testURL, sourceApplication: testSourceApplication, annotation: testAnnotation))
+        XCTAssertFalse(loginManager.application(testApp, open: testURL, sourceApplication: testSourceApplication, annotation: testAnnotation))
     }
     
     func testOpenURLFails_whenNotNativeType() {
@@ -225,7 +225,7 @@ class LoginManagerTests: XCTestCase {
         let testSourceApplication = "com.ubercab.foo"
         let testAnnotation = "annotation"
         
-        XCTAssertFalse(loginManager.application(testApp, openURL: testURL, sourceApplication: testSourceApplication, annotation: testAnnotation))
+        XCTAssertFalse(loginManager.application(testApp, open: testURL, sourceApplication: testSourceApplication, annotation: testAnnotation))
     }
     
     func testOpenURLSuccess() {
@@ -253,7 +253,7 @@ class LoginManagerTests: XCTestCase {
         authenticatorMock.handleRedirectClosure = handleRedirectClosure
         loginManager.authenticator = authenticatorMock
         
-        XCTAssertTrue(loginManager.application(testApp, openURL: testURL, sourceApplication: testSourceApplication, annotation: testAnnotation))
+        XCTAssertTrue(loginManager.application(testApp, open: testURL, sourceApplication: testSourceApplication, annotation: testAnnotation))
         
         waitForExpectations(timeout: 0.2) { _ in
             XCTAssertFalse(loginManager.loggingIn)
@@ -315,7 +315,7 @@ class LoginManagerTests: XCTestCase {
         let expectationNative = expectation(description: "executeLogin Native called")
         let expectationAuthorizationCode = expectation(description: "executeLogin Authorization Code called")
         
-        Configuration.setFallbackEnabled(true)
+        Configuration.shared.useFallback = true
         let scopes = [RidesScope.Request]
         
         let loginManagerMock = LoginManagerPartialMock(loginType: .native)

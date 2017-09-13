@@ -157,7 +157,7 @@ class RequestURLUtil {
         
         var queryItems = [URLQueryItem]()
         queryItems.append(URLQueryItem(name: RequestURLUtil.actionKey, value: RequestURLUtil.setPickupValue))
-        queryItems.append(URLQueryItem(name: RequestURLUtil.clientIDKey, value: Configuration.getClientID()))
+        queryItems.append(URLQueryItem(name: RequestURLUtil.clientIDKey, value: Configuration.shared.clientID))
         
         if let productID = rideParameters.productID {
             queryItems.append(URLQueryItem(name: RequestURLUtil.productIDKey, value: productID))

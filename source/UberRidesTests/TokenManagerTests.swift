@@ -51,7 +51,7 @@ class TokenManagerTests: XCTestCase {
     func testSave() {
         let identifier = "testIdentifier"
 
-        XCTAssertTrue(TokenManager.saveToken(token!, tokenIdentifier:identifier))
+        XCTAssertTrue(TokenManager.save(accessToken: token!, tokenIdentifier:identifier))
 
         guard let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken else {
             XCTFail("Unable to fetch token")
@@ -67,9 +67,9 @@ class TokenManagerTests: XCTestCase {
     func testSave_firesNotification() {
         let identifier = "testIdentifier"
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleTokenManagerNotifications), name: NSNotification.Name(rawValue: TokenManager.TokenManagerDidSaveTokenNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTokenManagerNotifications), name: NSNotification.Name(rawValue: TokenManager.tokenManagerDidSaveTokenNotification), object: nil)
         
-        XCTAssertTrue(TokenManager.saveToken(token!, tokenIdentifier:identifier))
+        XCTAssertTrue(TokenManager.save(accessToken: token!, tokenIdentifier:identifier))
         
         NotificationCenter.default.removeObserver(self)
 
@@ -91,7 +91,7 @@ class TokenManagerTests: XCTestCase {
 
         XCTAssertTrue(keychain!.setObject(token!, key: identifier))
         
-        let actualToken = TokenManager.fetchToken(identifier)
+        let actualToken = TokenManager.fetchToken(identifier: identifier)
         XCTAssertNotNil(actualToken)
         
         XCTAssertEqual(actualToken?.tokenString, token?.tokenString)
@@ -102,7 +102,7 @@ class TokenManagerTests: XCTestCase {
     func testGet_nonExistent() {
         let identifer = "there.is.no.token.named.this.123412wfdasd3o"
         
-        XCTAssertNil(TokenManager.fetchToken(identifer))
+        XCTAssertNil(TokenManager.fetchToken(identifier: identifer))
     }
     
     func testDelete() {
@@ -110,7 +110,7 @@ class TokenManagerTests: XCTestCase {
 
         XCTAssertTrue(keychain!.setObject(token!, key: identifier))
         
-        XCTAssertTrue(TokenManager.deleteToken(identifier))
+        XCTAssertTrue(TokenManager.deleteToken(identifier: identifier))
         
         let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken
         guard actualToken == nil else {
@@ -123,7 +123,7 @@ class TokenManagerTests: XCTestCase {
     func testDelete_nonExistent() {
         let identifier = "there.is.no.token.named.this.123412wfdasd3o"
         
-        XCTAssertFalse(TokenManager.deleteToken(identifier))
+        XCTAssertFalse(TokenManager.deleteToken(identifier: identifier))
         
     }
     
@@ -133,9 +133,9 @@ class TokenManagerTests: XCTestCase {
 
         XCTAssertTrue(keychain!.setObject(token!, key: identifier))
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleTokenManagerNotifications), name: NSNotification.Name(rawValue: TokenManager.TokenManagerDidDeleteTokenNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTokenManagerNotifications), name: NSNotification.Name(rawValue: TokenManager.tokenManagerDidDeleteTokenNotification), object: nil)
         
-        XCTAssertTrue(TokenManager.deleteToken(identifier))
+        XCTAssertTrue(TokenManager.deleteToken(identifier: identifier))
         
         NotificationCenter.default.removeObserver(self)
         
@@ -152,9 +152,9 @@ class TokenManagerTests: XCTestCase {
     func testDelete_nonExistent_doesNotFireNotification() {
         let identifier = "there.is.no.token.named.this.123412wfdasd3o"
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleTokenManagerNotifications), name: NSNotification.Name(rawValue: TokenManager.TokenManagerDidDeleteTokenNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTokenManagerNotifications), name: NSNotification.Name(rawValue: TokenManager.tokenManagerDidDeleteTokenNotification), object: nil)
         
-        XCTAssertFalse(TokenManager.deleteToken(identifier))
+        XCTAssertFalse(TokenManager.deleteToken(identifier: identifier))
         
         NotificationCenter.default.removeObserver(self)
         
@@ -185,7 +185,7 @@ class TokenManagerTests: XCTestCase {
 
         _ = keychain?.setObject(token!, key: identifier)
         
-        XCTAssertTrue(TokenManager.deleteToken(identifier))
+        XCTAssertTrue(TokenManager.deleteToken(identifier: identifier))
         
         let actualToken = keychain?.getObjectForKey(identifier) as? AccessToken
         guard actualToken == nil else {

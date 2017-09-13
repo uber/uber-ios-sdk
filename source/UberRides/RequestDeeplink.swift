@@ -38,7 +38,7 @@ import UIKit
     
     @objc public init(rideParameters: RideParameters = RideParametersBuilder().build()) {
         parameters = rideParameters
-        clientID = Configuration.getClientID()
+        clientID = Configuration.shared.clientID
         
         if rideParameters.source == nil {
             rideParameters.source = RequestDeeplink.sourceString

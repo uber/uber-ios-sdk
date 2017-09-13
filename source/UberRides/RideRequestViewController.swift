@@ -106,7 +106,7 @@ import MapKit
         }
         
         rideRequestView.rideParameters = rideParameters
-        rideRequestView.accessToken = TokenManager.fetchToken(accessTokenIdentifier, accessGroup: keychainAccessGroup)
+        rideRequestView.accessToken = TokenManager.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup)
     }
     
     // MARK: View Lifecycle
@@ -141,7 +141,7 @@ import MapKit
     // MARK: Internal
 
     func load() {
-        if let accessToken = TokenManager.fetchToken(accessTokenIdentifier, accessGroup: keychainAccessGroup) {
+        if let accessToken = TokenManager.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup) {
             rideRequestView.accessToken = accessToken
             rideRequestView.isHidden = false
             loginView.isHidden = true
@@ -278,7 +278,7 @@ import MapKit
         }
         nativeAuthenticator.deeplinkCompletion = { error in
             if (error == nil) {
-                RidesAppDelegate.sharedInstance.loginManager = self.loginManager
+                RidesAppDelegate.shared.loginManager = self.loginManager
             }
         };
     }
@@ -311,20 +311,20 @@ extension RideRequestViewController : RideRequestViewDelegate {
     }
 
     private func attemptTokenRefresh(_ tokenIdentifier: String?, accessGroup: String?) {
-        let identifer = tokenIdentifier ?? Configuration.getDefaultAccessTokenIdentifier()
-        let group = accessGroup ?? Configuration.getDefaultKeychainAccessGroup()
-        guard let accessToken = TokenManager.fetchToken(identifer, accessGroup: group), let refreshToken = accessToken.refreshToken else {
+        let identifer = tokenIdentifier ?? Configuration.shared.defaultAccessTokenIdentifier
+        let group = accessGroup ?? Configuration.shared.defaultKeychainAccessGroup
+        guard let accessToken = TokenManager.fetchToken(identifier: identifer, accessGroup: group), let refreshToken = accessToken.refreshToken else {
             accessTokenWasUnauthorizedOnPreviousAttempt = true
-            _ = TokenManager.deleteToken(identifer, accessGroup: group)
+            _ = TokenManager.deleteToken(identifier: identifer, accessGroup: group)
             self.load()
             return
         }
-        _ = TokenManager.deleteToken(accessTokenIdentifier, accessGroup: keychainAccessGroup)
+        _ = TokenManager.deleteToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup)
 
         let ridesClient = RidesClient(accessTokenIdentifier: identifer, keychainAccessGroup: group)
-        ridesClient.refreshAccessToken(refreshToken) { (accessToken, response) in
+        ridesClient.refreshAccessToken(usingRefreshToken: refreshToken) { (accessToken, response) in
             if let token = accessToken {
-                _ = TokenManager.saveToken(token, tokenIdentifier: self.accessTokenIdentifier, accessGroup: self.keychainAccessGroup)
+                _ = TokenManager.save(accessToken: token, tokenIdentifier: self.accessTokenIdentifier, accessGroup: self.keychainAccessGroup)
             }
             self.load()
         }

@@ -35,11 +35,11 @@ class NativeAuthenticatorTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setSandboxEnabled(true)
-        redirectURI = Configuration.getCallbackURIString(.native)
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.isSandbox = true
+        redirectURI = Configuration.shared.getCallbackURIString(for: .native)
     }
     
     override func tearDown() {

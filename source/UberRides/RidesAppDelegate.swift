@@ -31,7 +31,7 @@
     
     //MARK: Class variables
     
-    open static let sharedInstance = RidesAppDelegate()
+    open static let shared = RidesAppDelegate()
     
     //MARK: Public variables
     
@@ -57,7 +57,7 @@
      application:openURL:sourceApplication:annotation: (iOS 8)
      OR
      app:openURL:options: (iOS 9+), passing in options[UIApplicationOpenURLOptionsSourceApplicationKey] as sourceApplication
-     
+
      - parameter application: Your singleton app object. As passed to the corresponding AppDelegate method
      - parameter url: The URL resource to open. As passed to the corresponding AppDelegate methods
      - parameter sourceApplication: The bundle ID of the app that is requesting
@@ -67,11 +67,11 @@
      communicate information to the receiving app As passed to the corresponding AppDelegate method
      - returns: true if the URL was intended for the Rides SDK, false otherwise
      */
-    open func application(_ application: UIApplication, openURL url: URL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    open func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         guard let manager = loginManager else {
             return false
         }
-        let urlHandled = manager.application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+        let urlHandled = manager.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
         if (urlHandled) {
             loginManager = nil
         }
@@ -86,8 +86,8 @@
         
         let manager = loginManager ?? LoginManager()
         let sourceApplication = options[UIApplicationLaunchOptionsKey.sourceApplication] as? String
-        let annotation = options[UIApplicationLaunchOptionsKey.annotation]
-        let urlHandled = manager.application(application, openURL: launchURL, sourceApplication: sourceApplication, annotation: annotation)
+        let annotation = options[UIApplicationLaunchOptionsKey.annotation] as Any
+        let urlHandled = manager.application(application, open: launchURL, sourceApplication: sourceApplication, annotation: annotation)
         loginManager = nil
         return urlHandled
     }

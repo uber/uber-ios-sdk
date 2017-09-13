@@ -33,6 +33,10 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
+    </array>
+    <key>UberClientID</key>
+    <string>UberTestClientID</string>
+    <key>UberDisplayName</key>
+    <string>UberTestDisplayName</string>
 </dict>
 </plist>

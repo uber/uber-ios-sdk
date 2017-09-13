@@ -77,7 +77,7 @@ import UIKit
     
     /// The current LoginButtonState of this button (signed in / signed out)
     open var buttonState: LoginButtonState {
-        if let _ = TokenManager.fetchToken(accessTokenIdentifier, accessGroup: keychainAccessGroup) {
+        if let _ = TokenManager.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup) {
             return .signedIn
         } else {
             return .signedOut
@@ -119,8 +119,8 @@ import UIKit
      */
     override open func setup() {
         super.setup()
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshContent), name: Notification.Name(rawValue: TokenManager.TokenManagerDidSaveTokenNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshContent), name: Notification.Name(rawValue: TokenManager.TokenManagerDidDeleteTokenNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshContent), name: Notification.Name(rawValue: TokenManager.tokenManagerDidSaveTokenNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshContent), name: Notification.Name(rawValue: TokenManager.tokenManagerDidDeleteTokenNotification), object: nil)
         addTarget(self, action: #selector(uberButtonTapped), for: .touchUpInside)
         loginCompletion = { token, error in
             self.delegate?.loginButton(self, didCompleteLoginWithToken: token, error: error)
@@ -201,7 +201,7 @@ import UIKit
     func uberButtonTapped(_ button: UIButton) {
         switch buttonState {
         case .signedIn:
-            let success = TokenManager.deleteToken(accessTokenIdentifier, accessGroup: keychainAccessGroup)
+            let success = TokenManager.deleteToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup)
             delegate?.loginButton(self, didLogoutWithSuccess: success)
             refreshContent()
         case .signedOut:

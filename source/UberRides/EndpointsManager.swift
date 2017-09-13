@@ -46,7 +46,7 @@ extension UberAPI {
     }
     
     var host: String {
-        if Configuration.getSandboxEnabled() {
+        if Configuration.shared.isSandbox {
             return "https://sandbox-api.uber.com"
         } else {
             return "https://api.uber.com"
@@ -145,7 +145,7 @@ enum Components: UberAPI {
     var query: [URLQueryItem] {
         switch self {
         case .rideRequestWidget(let rideParameters):
-            let environment = Configuration.getSandboxEnabled() ? "sandbox" : "production"
+            let environment = Configuration.shared.isSandbox ? "sandbox" : "production"
             var queryItems = queryBuilder( ("env", "\(environment)") )
             
             if let rideParameters = rideParameters {
@@ -181,7 +181,7 @@ enum OAuth: UberAPI {
     }
     
     var host: String {
-        return OAuth.regionHostString()
+        return OAuth.regionHost
     }
 
     var body: Data? {
@@ -198,8 +198,8 @@ enum OAuth: UberAPI {
             return nil
         }
     }
-    
-    static func regionHostString(_ region: Region = Configuration.getRegion()) -> String {
+
+    static var regionHost: String {
         return "https://login.uber.com"
     }
     

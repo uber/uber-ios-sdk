@@ -35,11 +35,11 @@ class OAuthTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setSandboxEnabled(true)
-        redirectURI = Configuration.getCallbackURIString()
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.isSandbox = true
+        redirectURI = Configuration.shared.getCallbackURIString()
     }
     
     override func tearDown() {
@@ -53,7 +53,7 @@ class OAuthTests: XCTestCase {
      */
     func testParseAccessTokenFromRedirect() {
         testExpectation = expectation(description: "success access token")
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: UIViewController(), scopes: [.Profile])
         loginBehavior.loginCompletion = loginCompletion()
         let loginView = LoginView(loginAuthenticator: loginBehavior)
@@ -76,7 +76,7 @@ class OAuthTests: XCTestCase {
      */
     func testParseEmptyAccessTokenFromRedirect() {
         testExpectation = expectation(description: "empty access token")
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: UIViewController(), scopes: [.Profile])
         loginBehavior.loginCompletion = loginCompletion()
         let loginView = LoginView(loginAuthenticator: loginBehavior)
@@ -100,7 +100,7 @@ class OAuthTests: XCTestCase {
      */
     func testMismatchingRedirectError() {
         testExpectation = expectation(description: "errors")
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: UIViewController(), scopes: [.Profile])
         loginBehavior.loginCompletion = loginCompletion()
         let loginView = LoginView(loginAuthenticator: loginBehavior)
@@ -125,7 +125,7 @@ class OAuthTests: XCTestCase {
      */
     func testInvalidRedirectError() {
         testExpectation = expectation(description: "errors")
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: UIViewController(), scopes: [.Profile])
         loginBehavior.loginCompletion = loginCompletion()
         let loginView = LoginView(loginAuthenticator: loginBehavior)
@@ -150,7 +150,7 @@ class OAuthTests: XCTestCase {
      */
     func testInvalidClientIDError() {
         testExpectation = expectation(description: "errors")
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: UIViewController(), scopes: [.Profile])
         loginBehavior.loginCompletion = loginCompletion()
         let loginView = LoginView(loginAuthenticator: loginBehavior)
@@ -175,7 +175,7 @@ class OAuthTests: XCTestCase {
      */
     func testInvalidScopeError() {
         testExpectation = expectation(description: "errors")
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: UIViewController(), scopes: [.Profile])
         loginBehavior.loginCompletion = loginCompletion()
         let loginView = LoginView(loginAuthenticator: loginBehavior)
@@ -200,7 +200,7 @@ class OAuthTests: XCTestCase {
      */
     func testInvalidParametersError() {
         testExpectation = expectation(description: "errors")
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: UIViewController(), scopes: [.Profile])
         loginBehavior.loginCompletion = loginCompletion()
         let loginView = LoginView(loginAuthenticator: loginBehavior)
@@ -225,7 +225,7 @@ class OAuthTests: XCTestCase {
      */
     func testServerError() {
         testExpectation = expectation(description: "errors")
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: UIViewController(), scopes: [.Profile])
         loginBehavior.loginCompletion = loginCompletion()
         let loginView = LoginView(loginAuthenticator: loginBehavior)
@@ -305,7 +305,7 @@ class OAuthTests: XCTestCase {
      Test that endpoint has correct query
      */
     func testImplicitGrantAuthenticator_withScopes_returnsCorrectEndpoint() {
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         let scopes = [RidesScope.Profile]
         let expectedPath = "/oauth/v2/authorize"
         let implicitGrantBehavior = ImplicitGrantAuthenticator(presentingViewController: UIViewController(), scopes: scopes)
@@ -324,29 +324,29 @@ class OAuthTests: XCTestCase {
     }
     
     func testImplicitGrantRedirect_shouldReturnFalse_forNonRedirectUrlRequest() {
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         let request = URLRequest(url: URL(string: "test://notRedirect")!)
         let implicitGrantBehavior = ImplicitGrantAuthenticator(presentingViewController: UIViewController(), scopes: [.Profile])
         implicitGrantBehavior.loginCompletion = { accessToken, error in
             XCTAssert(false)
         }
-        let result = implicitGrantBehavior.handleRedirectRequest(request)
+        let result = implicitGrantBehavior.handleRedirect(for: request)
         XCTAssertFalse(result)
     }
     
     func testAuthorizationCodeGrantRedirect_shouldReturnFalse_forNonRedirectUrlRequest() {
-        redirectURI = Configuration.getCallbackURIString(.authorizationCode)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .authorizationCode)
         let request = URLRequest(url: URL(string: "test://notRedirect")!)
         let authorizationCodeGrantAuthenticator = AuthorizationCodeGrantAuthenticator(presentingViewController: UIViewController(), scopes: [.Profile], state: "state")
         authorizationCodeGrantAuthenticator.loginCompletion = { accessToken, error in
             XCTAssert(false)
         }
-        let result = authorizationCodeGrantAuthenticator.handleRedirectRequest(request)
+        let result = authorizationCodeGrantAuthenticator.handleRedirect(for: request)
         XCTAssertFalse(result)
     }
     
     func testImplicitGrantRedirect_shouldReturnTrue_forCorrectRedirectRequest() {
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         let tokenString = "accessToken1234"
         guard let url = URL(string: "\(redirectURI)#access_token=\(tokenString)") else {
             XCTFail()
@@ -361,7 +361,7 @@ class OAuthTests: XCTestCase {
             XCTAssertEqual(accessToken?.tokenString, tokenString)
             self.testExpectation.fulfill()
         }
-        let result = implicitGrantBehavior.handleRedirectRequest(request)
+        let result = implicitGrantBehavior.handleRedirect(for: request)
         XCTAssertTrue(result)
         
         waitForExpectations(timeout: timeout, handler: { error in
@@ -370,7 +370,7 @@ class OAuthTests: XCTestCase {
     }
     
     func testAuthorizationCodeGrantRedirect_shouldReturnTrue_forCorrectRedirectRequest() {
-        redirectURI = Configuration.getCallbackURIString(.authorizationCode)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .authorizationCode)
         let request = URLRequest(url: URL(string: redirectURI)!)
         let loginCompletionExpectation = expectation(description: "call login completion")
         let executeLoginExpectation = expectation(description: "execute login")
@@ -380,7 +380,7 @@ class OAuthTests: XCTestCase {
             XCTAssertNil(accessToken)
             loginCompletionExpectation.fulfill()
         }
-        let result = authorizationCodeGrantAuthenticator.handleRedirectRequest(request)
+        let result = authorizationCodeGrantAuthenticator.handleRedirect(for: request)
         XCTAssertTrue(result)
         
         waitForExpectations(timeout: timeout, handler: { error in
@@ -389,7 +389,7 @@ class OAuthTests: XCTestCase {
     }
     
     func testAuthorizationCodeGrantRedirect_shouldReturnTrue_forCorrectRedirectRequest_withErrorParameter() {
-        redirectURI = Configuration.getCallbackURIString(.authorizationCode)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .authorizationCode)
         guard var urlComponents = URLComponents(string: redirectURI) else {
             XCTFail()
             return
@@ -412,7 +412,7 @@ class OAuthTests: XCTestCase {
             XCTAssertNil(accessToken)
             loginCompletionExpectation.fulfill()
         }
-        let result = authorizationCodeGrantAuthenticator.handleRedirectRequest(request)
+        let result = authorizationCodeGrantAuthenticator.handleRedirect(for: request)
         XCTAssertTrue(result)
         
         waitForExpectations(timeout: timeout, handler: { error in
@@ -421,7 +421,7 @@ class OAuthTests: XCTestCase {
     }
     
     func testImplicitGrantRedirect_shouldReturnError_forEmptyAccessToken() {
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         let request = URLRequest(url: URL(string: "\(redirectURI)?error=mismatching_redirect_uri")!)
         testExpectation = expectation(description: "call login completion with error")
         let implicitGrantBehavior = ImplicitGrantAuthenticator(presentingViewController: UIViewController(), scopes: [.Profile])
@@ -436,7 +436,7 @@ class OAuthTests: XCTestCase {
             
             self.testExpectation.fulfill()
         }
-        let result = implicitGrantBehavior.handleRedirectRequest(request)
+        let result = implicitGrantBehavior.handleRedirect(for: request)
         XCTAssertTrue(result)
         
         waitForExpectations(timeout: timeout, handler: { error in
@@ -445,7 +445,7 @@ class OAuthTests: XCTestCase {
     }
     
     func testImplicitGrantLogin_showsLogin() {
-        redirectURI = Configuration.getCallbackURIString(.implicit)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .implicit)
         testExpectation = expectation(description: "present login")
     
         let implicitGrantBehavior = ImplicitGrantAuthenticator(presentingViewController: UIViewControllerMock(expectation: testExpectation), scopes: [.Profile])
@@ -457,7 +457,7 @@ class OAuthTests: XCTestCase {
     }
     
     func testAuthorizationCodeGrantLogin_showsLogin() {
-        redirectURI = Configuration.getCallbackURIString(.authorizationCode)
+        redirectURI = Configuration.shared.getCallbackURIString(for: .authorizationCode)
         testExpectation = expectation(description: "present login")
         
         let implicitGrantBehavior = AuthorizationCodeGrantAuthenticator(presentingViewController: UIViewControllerMock(expectation: testExpectation), scopes: [.Profile], state: "state")

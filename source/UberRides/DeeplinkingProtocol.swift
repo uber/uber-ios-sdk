@@ -54,5 +54,5 @@
      - parameter completion: The completion block to execute once the deeplink has
      executed. Passes in True if the url was successfully opened, false otherwise.
      */
-    @objc func execute(_ completion: ((NSError?) -> ())?)
+    @objc func execute(completion: ((NSError?) -> ())?)
 }

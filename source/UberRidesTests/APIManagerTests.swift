@@ -61,7 +61,7 @@ class APIManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         Configuration.restoreDefaults()
-        Configuration.setSandboxEnabled(true)
+        Configuration.shared.isSandbox = true
     }
     
     override func tearDown() {

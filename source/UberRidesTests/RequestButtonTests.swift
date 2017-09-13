@@ -38,10 +38,10 @@ class RequestButtonTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setSandboxEnabled(true)
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.isSandbox = true
         client = RidesClient()
     }
     
@@ -84,9 +84,9 @@ class RequestButtonTests: XCTestCase {
         
         let testIdentifier = "testAccessTokenIdentifier"
         let testToken = AccessToken(JSON: ["access_token" : "testTokenString"])
-        _ = TokenManager.saveToken(testToken!, tokenIdentifier: testIdentifier)
+        _ = TokenManager.save(accessToken: testToken!, tokenIdentifier: testIdentifier)
         defer {
-            _ = TokenManager.deleteToken(testIdentifier)
+            _ = TokenManager.deleteToken(identifier: testIdentifier)
         }
         let baseViewController = UIViewControllerMock()
         let requestBehavior = RideRequestViewRequestingBehavior(presentingViewController: baseViewController)

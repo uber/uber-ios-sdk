@@ -33,10 +33,10 @@ class RefreshEndpointTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setSandboxEnabled(true)
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.isSandbox = true
         headers = ["Content-Type": "application/json"]
         client = RidesClient()
     }
@@ -55,7 +55,7 @@ class RefreshEndpointTests: XCTestCase {
             return OHHTTPStubsResponse(fileAtPath:OHPathForFile("refresh.json", type(of: self))!, statusCode:200, headers:self.headers)
         }
         let refreshToken = "ThisIsRefresh"
-        let clientID = Configuration.getClientID()
+        let clientID = Configuration.shared.clientID
         let expectation = self.expectation(description: "200 success response")
         let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
         guard let request = Request(session: client.session, endpoint: endpoint) else {

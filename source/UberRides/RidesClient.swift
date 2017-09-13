@@ -29,7 +29,7 @@ import CoreLocation
 @objc(UBSDKRidesClient) open class RidesClient: NSObject {
     
     /// Application client ID. Required for every instance of RidesClient.
-    var clientID: String = Configuration.getClientID()
+    var clientID: String = Configuration.shared.clientID
     
     /// The Access Token Identifier. The identifier to use for looking up this client's accessToken
     let accessTokenIdentifier: String
@@ -41,7 +41,7 @@ import CoreLocation
     var session: URLSession
     
     /// Developer server token.
-    private var serverToken: String? = Configuration.getServerToken()
+    private var serverToken: String? = Configuration.shared.serverToken
     
     /**
      Initializer for the RidesClient. The RidesClient handles making requests to the API
@@ -98,7 +98,7 @@ import CoreLocation
     @objc public convenience init(accessTokenIdentifier: String, sessionConfiguration: URLSessionConfiguration) {
         self.init(accessTokenIdentifier: accessTokenIdentifier,
                   sessionConfiguration: sessionConfiguration,
-                  keychainAccessGroup: Configuration.getDefaultKeychainAccessGroup())
+                  keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
     
     /**
@@ -115,7 +115,7 @@ import CoreLocation
     @objc public convenience init(accessTokenIdentifier: String) {
         self.init(accessTokenIdentifier: accessTokenIdentifier,
                   sessionConfiguration: URLSessionConfiguration.default,
-                  keychainAccessGroup: Configuration.getDefaultKeychainAccessGroup())
+                  keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
     
     /**
@@ -128,9 +128,9 @@ import CoreLocation
      - returns: An initialized RidesClient
      */
     @objc public convenience override init() {
-        self.init(accessTokenIdentifier: Configuration.getDefaultAccessTokenIdentifier(),
+        self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier,
                   sessionConfiguration: URLSessionConfiguration.default,
-                  keychainAccessGroup: Configuration.getDefaultKeychainAccessGroup())
+                  keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
     
     /**
@@ -141,7 +141,7 @@ import CoreLocation
      - returns: an AccessToken object, or nil if one can't be located
      */
     @objc open func fetchAccessToken() -> AccessToken? {
-        guard let accessToken = TokenManager.fetchToken(accessTokenIdentifier, accessGroup: keychainAccessGroup) else {
+        guard let accessToken = TokenManager.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup) else {
             return nil
         }
         return accessToken
@@ -152,7 +152,7 @@ import CoreLocation
      
      - returns: true if a server token exists, false otherwise.
      */
-    @objc open func hasServerToken() -> Bool {
+    @objc open var hasServerToken: Bool {
         return serverToken != nil
     }
     
@@ -246,7 +246,7 @@ import CoreLocation
      - parameter productID:  string representing product ID.
      - parameter completion: completion handler for returned product.
      */
-    @objc open func fetchProduct(_ productID: String, completion:@escaping (_ product: UberProduct?, _ response: Response) -> Void) {
+    @objc open func fetchProduct(productID: String, completion:@escaping (_ product: UberProduct?, _ response: Response) -> Void) {
         let endpoint = Products.getProduct(productID: productID)
         apiCall(endpoint, completion: { response in
             var product: UberProduct?
@@ -325,7 +325,7 @@ import CoreLocation
     
     - parameter completion: completion handler for returned user profile.
     */
-    @objc open func fetchUserProfile(_ completion:@escaping (_ profile: UserProfile?, _ response: Response) -> Void) {
+    @objc open func fetchUserProfile(completion:@escaping (_ profile: UserProfile?, _ response: Response) -> Void) {
         let endpoint = Me.userProfile
         apiCall(endpoint, completion: { response in
             var userProfile: UserProfile?
@@ -339,11 +339,11 @@ import CoreLocation
     /**
      Request a ride on behalf of Uber user.
      
-     - parameter rideParameters: RideParameters object containing paramaters for the request.
+     - parameter parameters: RideParameters object containing paramaters for the request.
      - parameter completion:  completion handler for returned request information.
      */
-    @objc open func requestRide(_ rideParameters: RideParameters, completion:@escaping (_ ride: Ride?, _ response: Response) -> Void) {
-        let endpoint = Requests.make(rideParameters: rideParameters)
+    @objc open func requestRide(parameters: RideParameters, completion:@escaping (_ ride: Ride?, _ response: Response) -> Void) {
+        let endpoint = Requests.make(rideParameters: parameters)
         apiCallForRideResponse(endpoint, completion: completion)
     }
     
@@ -352,7 +352,7 @@ import CoreLocation
      
      - parameter completion: completion handler for returned ride information.
      */
-    @objc open func fetchCurrentRide(_ completion: @escaping (_ ride: Ride?, _ response: Response) -> Void) {
+    @objc open func fetchCurrentRide(completion: @escaping (_ ride: Ride?, _ response: Response) -> Void) {
         let endpoint = Requests.getCurrent
         apiCallForRideResponse(endpoint, completion: completion)
     }
@@ -363,7 +363,7 @@ import CoreLocation
      - parameter requestID:  unique identifier representing a Request.
      - parameter completion: completion handler for returned trip information.
      */
-    @objc open func fetchRideDetails(_ requestID: String, completion:@escaping (_ ride: Ride? , _ response: Response) -> Void) {
+    @objc open func fetchRideDetails(requestID: String, completion:@escaping (_ ride: Ride? , _ response: Response) -> Void) {
         let endpoint = Requests.getRequest(requestID: requestID)
         apiCallForRideResponse(endpoint, completion: completion)
     }
@@ -374,8 +374,8 @@ import CoreLocation
      - parameter rideParameters: RideParameters object containing necessary information.
      - parameter completion:  completion handler for returned estimate.
      */
-    @objc open func fetchRideRequestEstimate(_ rideParameters: RideParameters, completion:@escaping (_ estimate: RideEstimate?, _ response: Response) -> Void) {
-        let endpoint = Requests.estimate(rideParameters: rideParameters)
+    @objc open func fetchRideRequestEstimate(parameters: RideParameters, completion:@escaping (_ estimate: RideEstimate?, _ response: Response) -> Void) {
+        let endpoint = Requests.estimate(rideParameters: parameters)
         apiCall(endpoint, completion: { response in
             var estimate: RideEstimate? = nil
             if response.error == nil {
@@ -390,7 +390,7 @@ import CoreLocation
      
      - parameter completion: completion handler for returned payment method list as well as last used payment method.
      */
-    @objc open func fetchPaymentMethods(_ completion:@escaping (_ methods: [PaymentMethod], _ lastUsed: PaymentMethod?, _ response: Response) -> Void) {
+    @objc open func fetchPaymentMethods(completion:@escaping (_ methods: [PaymentMethod], _ lastUsed: PaymentMethod?, _ response: Response) -> Void) {
         let endpoint = Payment.getMethods
         apiCall(endpoint, completion: { response in
             var paymentMethods = [PaymentMethod]()
@@ -412,7 +412,7 @@ import CoreLocation
      - parameter placeID:    the name of the place to retrieve. Only home and work are acceptable.
      - parameter completion: completion handler for returned place.
      */
-    @objc open func fetchPlace(_ placeID: String, completion:@escaping (_ place: Place?, _ response: Response) -> Void) {
+    @objc open func fetchPlace(placeID: String, completion:@escaping (_ place: Place?, _ response: Response) -> Void) {
         let endpoint = Places.getPlace(placeID: placeID)
         apiCall(endpoint, completion: { response in
             var place: Place? = nil
@@ -430,7 +430,7 @@ import CoreLocation
      - parameter address:    the address of the place that should be tied to the given placeID.
      - parameter completion: completion handler for response.
      */
-    @objc open func updatePlace(_ placeID: String, withAddress address: String, completion:@escaping (_ place: Place?, _ response: Response) -> Void) {
+    @objc open func updatePlace(placeID: String, withAddress address: String, completion:@escaping (_ place: Place?, _ response: Response) -> Void) {
         let endpoint = Places.putPlace(placeID: placeID, address: address)
         apiCall(endpoint, completion: { response in
             var place: Place?
@@ -448,9 +448,9 @@ import CoreLocation
      - parameter rideParameters: the RideParameters object containing the updated parameters.
      - parameter completion:  completion handler for response.
      */
-    @objc open func updateRideDetails(_ requestID: String?, rideParameters: RideParameters, completion:@escaping (_ response: Response) -> Void) {
+    @objc open func updateRideDetails(requestID: String?, rideParameters: RideParameters, completion:@escaping (_ response: Response) -> Void) {
         guard let requestID = requestID else {
-            updateCurrentRide(rideParameters, completion: completion)
+            updateCurrentRide(rideParameters: rideParameters, completion: completion)
             return
         }
         
@@ -466,7 +466,7 @@ import CoreLocation
      - parameter rideParameters: RideParameters object with updated ride parameters.
      - parameter completion:  completion handler for response.
      */
-    @objc open func updateCurrentRide(_ rideParameters: RideParameters, completion:@escaping (_ response: Response) -> Void) {
+    @objc open func updateCurrentRide(rideParameters: RideParameters, completion:@escaping (_ response: Response) -> Void) {
         let endpoint = Requests.patchCurrent(rideParameters: rideParameters)
         apiCall(endpoint, completion: { response in
             completion(response)
@@ -479,9 +479,9 @@ import CoreLocation
      - parameter requestID:  request ID of the ride. If nil, current ride will be canceled.
      - parameter completion: completion handler for response.
      */
-    @objc open func cancelRide(_ requestID: String?, completion:@escaping (_ response: Response) -> Void) {
+    @objc open func cancelRide(requestID: String?, completion:@escaping (_ response: Response) -> Void) {
         guard let requestID = requestID else {
-            cancelCurrentRide(completion)
+            cancelCurrentRide(completion: completion)
             return
         }
         
@@ -496,7 +496,7 @@ import CoreLocation
      
      - parameter completion: completion handler for response
      */
-    @objc open func cancelCurrentRide(_ completion:@escaping (_ response: Response) -> Void) {
+    @objc open func cancelCurrentRide(completion:@escaping (_ response: Response) -> Void) {
         let endpoint = Requests.deleteCurrent
         apiCall(endpoint, completion: { response in
             completion(response)
@@ -509,7 +509,7 @@ import CoreLocation
      - parameter requestID:  unique identifier representing a ride request
      - parameter completion: completion handler for receipt
      */
-    open func fetchRideReceipt(_ requestID: String, completion:@escaping (_ rideReceipt: RideReceipt?, _ response: Response) -> Void) {
+    open func fetchRideReceipt(requestID: String, completion:@escaping (_ rideReceipt: RideReceipt?, _ response: Response) -> Void) {
         let endpoint = Requests.rideReceipt(requestID: requestID)
         apiCall(endpoint, completion: { response in
             var receipt: RideReceipt?
@@ -526,7 +526,7 @@ import CoreLocation
      - parameter requestID:  unique identifier representing a request
      - parameter completion: completion handler for map
      */
-    open func fetchRideMap(_ requestID: String, completion:@escaping (_ map: RideMap?, _ response: Response) -> Void) {
+    open func fetchRideMap(requestID: String, completion:@escaping (_ map: RideMap?, _ response: Response) -> Void) {
         let endpoint = Requests.rideMap(requestID: requestID)
         apiCall(endpoint, completion: { response in
             var map: RideMap?
@@ -544,7 +544,7 @@ import CoreLocation
      - parameter refreshToken: The Refresh Token String from an SSO access token
      - parameter completion:   completion handler for the new access token
      */
-    open func refreshAccessToken(_ refreshToken: String, completion:@escaping (_ accessToken: AccessToken?, _ response: Response) -> Void) {
+    open func refreshAccessToken(usingRefreshToken refreshToken: String, completion:@escaping (_ accessToken: AccessToken?, _ response: Response) -> Void) {
         let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
         apiCall(endpoint) { response in
             var accessToken: AccessToken?

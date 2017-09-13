@@ -34,14 +34,14 @@ import UIKit
     }
     
     override var endpoint: UberAPI {
-        return OAuth.authorizationCodeLogin(clientID: Configuration.getClientID(), redirect: Configuration.getCallbackURIString(.authorizationCode), scopes: scopes, state: state)
+        return OAuth.authorizationCodeLogin(clientID: Configuration.shared.clientID, redirect: Configuration.shared.getCallbackURIString(for: .authorizationCode), scopes: scopes, state: state)
     }
     
     override public convenience init(presentingViewController: UIViewController, scopes: [RidesScope]) {
         self.init(presentingViewController: presentingViewController, scopes: scopes, state: nil)
     }
     
-    override func handleRedirectRequest(_ request: URLRequest) -> Bool {
+    override func handleRedirect(for request: URLRequest) -> Bool {
         var shouldHandle = false
         if let url = request.url, AuthenticationURLUtility.shouldHandleRedirectURL(url, type: callbackURIType) {
             if let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
@@ -56,7 +56,7 @@ import UIKit
             executeRedirect(request)
             loginCompletion?(nil, nil)
         } else {
-            shouldHandle = super.handleRedirectRequest(request)
+            shouldHandle = super.handleRedirect(for: request)
         }
         return shouldHandle
     }

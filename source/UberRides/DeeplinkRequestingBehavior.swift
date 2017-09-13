@@ -26,30 +26,30 @@
     /**
      Requests a ride using a RequestDeeplink that is constructed using the provided
      rideParameters
-     
+
      - parameter rideParameters: The RideParameters to use for building and executing 
      the deeplink
      */
-    @objc open func requestRide(_ rideParameters: RideParameters?) {
+    @objc open func requestRide(parameters rideParameters: RideParameters?) {
         guard let rideParameters = rideParameters else {
             return
         }
-        let deeplink = createDeeplink(rideParameters)
+        let deeplink = createDeeplink(rideParameters: rideParameters)
         
         let deeplinkCompletion: (NSError?) -> () = { error in
             if let error = error, error.code != DeeplinkErrorType.deeplinkNotFollowed.rawValue {
-                self.createAppStoreDeeplink(rideParameters).execute(nil)
+                self.createAppStoreDeeplink(rideParameters: rideParameters).execute(completion: nil)
             }
         }
         
-        deeplink.execute(deeplinkCompletion)
+        deeplink.execute(completion: deeplinkCompletion)
     }
     
-    func createDeeplink(_ rideParameters: RideParameters) -> RequestDeeplink {
+    func createDeeplink(rideParameters: RideParameters) -> RequestDeeplink {
         return RequestDeeplink(rideParameters: rideParameters)
     }
     
-    func createAppStoreDeeplink(_ rideParameters: RideParameters) -> Deeplinking {
+    func createAppStoreDeeplink(rideParameters: RideParameters) -> Deeplinking {
         return AppStoreDeeplink(userAgent: rideParameters.userAgent)
     }
 }

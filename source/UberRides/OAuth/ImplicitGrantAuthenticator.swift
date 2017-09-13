@@ -30,7 +30,7 @@ import UIKit
 @objc(UBSDKImplicitGrantAuthenticator) open class ImplicitGrantAuthenticator: LoginViewAuthenticator {
     
     override var endpoint: UberAPI {
-        return OAuth.implicitLogin(clientID: Configuration.getClientID(), scopes: self.scopes, redirect: Configuration.getCallbackURIString(.implicit))
+        return OAuth.implicitLogin(clientID: Configuration.shared.clientID, scopes: self.scopes, redirect: Configuration.shared.getCallbackURIString(for: .implicit))
     }
     
     override public init(presentingViewController: UIViewController, scopes: [RidesScope]) {

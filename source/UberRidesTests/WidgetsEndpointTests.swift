@@ -30,9 +30,9 @@ class WidgetsEndpointTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
     }
     
     override func tearDown() {
@@ -41,8 +41,7 @@ class WidgetsEndpointTests: XCTestCase {
     }
     
     func testERRC_withNoLocation() {
-        Configuration.setSandboxEnabled(true)
-        Configuration.setRegion(Region.default)
+        Configuration.shared.isSandbox = true
         
         let expectedHost = "https://components.uber.com"
         let expectedPath = "/rides/"
@@ -55,9 +54,8 @@ class WidgetsEndpointTests: XCTestCase {
         XCTAssertEqual(rideRequestWidget.query, expectedQueryItems)
     }
     
-    func testERRC_withRegionDefault_withSandboxEnabled() {
-        Configuration.setSandboxEnabled(true)
-        Configuration.setRegion(Region.default)
+    func testERRC_withSandboxEnabled() {
+        Configuration.shared.isSandbox = true
         
         let expectedLat = 33.2
         let expectedLong = -41.2
@@ -78,9 +76,8 @@ class WidgetsEndpointTests: XCTestCase {
         }
     }
 
-    func testERRC_withRegionDefault_withSandboxDisabled() {
-        Configuration.setSandboxEnabled(false)
-        Configuration.setRegion(Region.default)
+    func testERRC_withSandboxDisabled() {
+        Configuration.shared.isSandbox = false
         
         let expectedHost = "https://components.uber.com"
         let expectedPath = "/rides/"

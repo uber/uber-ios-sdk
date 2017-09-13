@@ -28,10 +28,10 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Configuration.restoreDefaults()
-        Configuration.plistName = "testInfo"
         Configuration.bundle = Bundle(for: type(of: self))
-        Configuration.setSandboxEnabled(true)
+        Configuration.plistName = "testInfo"
+        Configuration.restoreDefaults()
+        Configuration.shared.isSandbox = true
     }
     
     override func tearDown() {
@@ -66,7 +66,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
         XCTAssertNotNil(behavior.modalRideRequestViewController.rideRequestViewController)
         let pickupLocation = CLLocation(latitude: -32.0, longitude: 42.2)
         let newRideParams = RideParametersBuilder().setPickupLocation(pickupLocation).build()
-        behavior.requestRide(newRideParams)
+        behavior.requestRide(parameters: newRideParams)
         XCTAssertTrue(behavior.modalRideRequestViewController.rideRequestViewController.rideRequestView.rideParameters === newRideParams)
     }
     
@@ -97,7 +97,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
         let baseVC = UIViewControllerMock(testClosure: expectationClosure)
         let initialLoginManger = LoginManager(loginType: .native)
         let behavior = RideRequestViewRequestingBehavior(presentingViewController: baseVC, loginManager: initialLoginManger)
-        behavior.requestRide(RideParametersBuilder().build())
+        behavior.requestRide(parameters: RideParametersBuilder().build())
         waitForExpectations(timeout: 2.0) {error in
             XCTAssertNil(error)
         }
