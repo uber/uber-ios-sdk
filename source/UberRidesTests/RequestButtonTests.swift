@@ -90,10 +90,10 @@ class RequestButtonTests: XCTestCase {
         }
         let baseViewController = UIViewControllerMock()
         let requestBehavior = RideRequestViewRequestingBehavior(presentingViewController: baseViewController)
-        let button = RideRequestButton(rideParameters: RideParametersBuilder().build(), requestingBehavior: requestBehavior)
+        let button = RideRequestButton(rideParameters: RideParameters(), requestingBehavior: requestBehavior)
     
         let loginManger = LoginManager(accessTokenIdentifier: testIdentifier)
-        let rideRequestVC = RideRequestViewController(rideParameters: RideParametersBuilder().build(), loginManager: loginManger)
+        let rideRequestVC = RideRequestViewController(rideParameters: RideParameters(), loginManager: loginManger)
         XCTAssertNotNil(rideRequestVC.view)
         
         let webViewMock = WebViewMock(frame: CGRect.zero, configuration: WKWebViewConfiguration(), testClosure: expectationClosure)
@@ -135,7 +135,7 @@ class RequestButtonTests: XCTestCase {
         }
         
         let requestBehavior = DeeplinkRequestingBehaviorMock(testClosure: expectationClosure)
-        let button = RideRequestButton(rideParameters: RideParametersBuilder().build(), requestingBehavior: requestBehavior)
+        let button = RideRequestButton(rideParameters: RideParameters(), requestingBehavior: requestBehavior)
     
         button.uberButtonTapped(button)
         
@@ -148,7 +148,8 @@ class RequestButtonTests: XCTestCase {
      Test that product ID is set on metadata.
      */
     func testSetProductID() {
-        let rideParams = RideParametersBuilder().setProductID(productID).build()
+        let rideParams = RideParameters()
+        rideParams.productID = productID
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.loadRideInformation()
         XCTAssertEqual(button.metadata.productID, productID)
@@ -159,7 +160,7 @@ class RequestButtonTests: XCTestCase {
      */
     func testSetPickupLocation() {
         let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
-        let rideParams = RideParametersBuilder().setPickupLocation(location).build()
+        let rideParams = RideParameters(pickupLocation: location, dropoffLocation: nil)
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.loadRideInformation()
         XCTAssertEqual(button.metadata.pickupLatitude, pickupLat)
@@ -171,7 +172,7 @@ class RequestButtonTests: XCTestCase {
      */
     func testSetDropoffLocation() {
         let location = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setDropoffLocation(location).build()
+        let rideParams = RideParameters(pickupLocation: nil, dropoffLocation: location)
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.loadRideInformation()
         XCTAssertEqual(button.metadata.dropoffLatitude, dropoffLat)
@@ -189,7 +190,8 @@ class RequestButtonTests: XCTestCase {
         expectation = expectation(description: "information loaded")
         
         let location = CLLocation(latitude: dropoffLat, longitude: pickupLong)
-        let rideParams = RideParametersBuilder().setPickupLocation(location).setProductID(productID).build()
+        let rideParams = RideParameters(pickupLocation: location, dropoffLocation: nil)
+        rideParams.productID = productID
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
@@ -219,7 +221,8 @@ class RequestButtonTests: XCTestCase {
         expectation = expectation(description: "information loaded")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        let rideParams = RideParameters(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation)
+        rideParams.productID = productID
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
@@ -247,7 +250,8 @@ class RequestButtonTests: XCTestCase {
         errorExpectation = expectation(description: "price estimate error")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        let rideParams = RideParameters(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation)
+        rideParams.productID = productID
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
@@ -276,7 +280,8 @@ class RequestButtonTests: XCTestCase {
         errorExpectation = expectation(description: "time estimate error")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        let rideParams = RideParameters(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation)
+        rideParams.productID = productID
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
@@ -306,7 +311,8 @@ class RequestButtonTests: XCTestCase {
 
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        let rideParams = RideParameters(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation)
+        rideParams.productID = productID
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
@@ -333,7 +339,8 @@ class RequestButtonTests: XCTestCase {
         expectation = expectation(description: "information loaded")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        let rideParams = RideParameters(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation)
+        rideParams.productID = productID
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
@@ -360,7 +367,8 @@ class RequestButtonTests: XCTestCase {
         expectation = expectation(description: "information loaded")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        let rideParams = RideParameters(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation)
+        rideParams.productID = productID
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
@@ -376,7 +384,8 @@ class RequestButtonTests: XCTestCase {
         errorExpectation = expectation(description: "Expected to receive 422 error")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        let rideParams = RideParameters(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation)
+        rideParams.productID = productID
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.client = nil
@@ -396,7 +405,8 @@ class RequestButtonTests: XCTestCase {
     func testMissingPickupTriggersErrorDelegate() {
         errorExpectation = expectation(description: "Expected to receive 422 error")
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setProductID(productID).setDropoffLocation(dropoffLocation).build()
+        let rideParams = RideParameters(pickupLocation: nil, dropoffLocation: dropoffLocation)
+        rideParams.productID = productID
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
@@ -415,7 +425,8 @@ class RequestButtonTests: XCTestCase {
     func testUseCurrentLocationTriggersErrorDelegate() {
         errorExpectation = expectation(description: "Expected to receive 422 error")
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setProductID(productID).setDropoffLocation(dropoffLocation).setPickupToCurrentLocation().build()
+        let rideParams = RideParameters(pickupLocation: nil, dropoffLocation: dropoffLocation)
+        rideParams.productID = productID
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
@@ -437,7 +448,7 @@ class RequestButtonTests: XCTestCase {
     func testMetadataSimpleWithNoProductID() {
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setPickupLocation(pickupLocation).setDropoffLocation(dropoffLocation).build()
+        let rideParams = RideParameters(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation)
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
         button.loadRideInformation()
         

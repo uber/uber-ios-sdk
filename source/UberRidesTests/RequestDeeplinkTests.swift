@@ -105,7 +105,7 @@ class UberRidesDeeplinkTests: XCTestCase {
      */
     func testBuildDeeplinkWithPickupLatLng() {
         let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
-        let rideParams = RideParametersBuilder().setPickupLocation(location).build()
+        let rideParams = RideParameters(pickupLocation: location, dropoffLocation: nil)
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
         let components = URLComponents(url: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
@@ -124,7 +124,9 @@ class UberRidesDeeplinkTests: XCTestCase {
      */
     func testBuildDeeplinkWithAllPickupParameters() {
         let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
-        let rideParams = RideParametersBuilder().setPickupLocation(location, nickname: pickupNickname, address: pickupAddress).build()
+        let rideParams = RideParameters(pickupLocation: location, dropoffLocation: nil)
+        rideParams.pickupNickname = pickupNickname
+        rideParams.pickupAddress = pickupAddress
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
         let components = URLComponents(url: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
@@ -145,7 +147,7 @@ class UberRidesDeeplinkTests: XCTestCase {
      */
     func testBuildDeeplinkWithoutPickupParameters() {
         let location = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setDropoffLocation(location).build()
+        let rideParams = RideParameters(pickupLocation: nil, dropoffLocation: location)
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
         let components = URLComponents(url: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
@@ -166,8 +168,12 @@ class UberRidesDeeplinkTests: XCTestCase {
     func testBuildDeeplinkWithAllParameters() {
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParams = RideParametersBuilder().setProductID(productID).setPickupLocation(pickupLocation, nickname: pickupNickname, address: pickupAddress)
-            .setDropoffLocation(dropoffLocation, nickname: dropoffNickname, address: dropoffAddress).build()
+        let rideParams = RideParameters(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation)
+        rideParams.productID = productID
+        rideParams.pickupNickname = pickupNickname
+        rideParams.pickupAddress = pickupAddress
+        rideParams.dropoffNickname = dropoffNickname
+        rideParams.dropoffAddress = dropoffAddress
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
         let components = URLComponents(url: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
@@ -211,7 +217,7 @@ class UberRidesDeeplinkTests: XCTestCase {
             return false
         }
         
-        let deeplink = RequestDeeplinkMock(rideParameters: RideParametersBuilder().build(), testClosure: expectationClosure)
+        let deeplink = RequestDeeplinkMock(rideParameters: RideParameters(), testClosure: expectationClosure)
         
         deeplink.execute()
         

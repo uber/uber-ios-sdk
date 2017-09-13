@@ -36,7 +36,7 @@ import UIKit
     
     static let sourceString = "deeplink"
     
-    @objc public init(rideParameters: RideParameters = RideParametersBuilder().build()) {
+    @objc public init(rideParameters: RideParameters = RideParameters()) {
         parameters = rideParameters
         clientID = Configuration.shared.clientID
         

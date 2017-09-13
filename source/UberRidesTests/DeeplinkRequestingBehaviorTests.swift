@@ -52,8 +52,9 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
      */
     func testCreateAppStoreDeeplinkWithButtonSource() {
         let expectedUrlString = "https://m.uber.com/sign-up?client_id=\(clientID)&user-agent=\(expectedButtonUserAgent!)"
-        
-        let rideParameters = RideParametersBuilder().setSource(RideRequestButton.sourceString).build()
+
+        let rideParameters = RideParameters()
+        rideParameters.source = RideRequestButton.sourceString
         let requestingBehavior = DeeplinkRequestingBehavior()
         
         let appStoreDeeplink = requestingBehavior.createAppStoreDeeplink(rideParameters: rideParameters)
@@ -71,8 +72,9 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
      */
     func testCreateURLWithDeeplinkSource() {
         let expectedUrlString = "https://m.uber.com/sign-up?client_id=\(clientID)&user-agent=\(expectedDeeplinkUserAgent!)"
-        
-        let rideParameters = RideParametersBuilder().setSource(RequestDeeplink.sourceString).build()
+
+        let rideParameters = RideParameters()
+        rideParameters.source = RequestDeeplink.sourceString
         let requestingBehavior = DeeplinkRequestingBehavior()
         
         let appStoreDeeplink = requestingBehavior.createAppStoreDeeplink(rideParameters: rideParameters)
@@ -86,7 +88,8 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
     }
     
     func testRequestRideExecutesDeeplink() {
-        let rideParameters = RideParametersBuilder().setSource(RideRequestButton.sourceString).build()
+        let rideParameters = RideParameters()
+        rideParameters.source = RideRequestButton.sourceString
         let expectation = self.expectation(description: "Deeplink executed")
         let testClosure:((URL?) -> (Bool)) = { _ in
             expectation.fulfill()

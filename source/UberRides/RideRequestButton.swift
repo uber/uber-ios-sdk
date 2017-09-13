@@ -73,7 +73,7 @@ import CoreLocation
      */
     required public init?(coder aDecoder: NSCoder) {
         requestBehavior = DeeplinkRequestingBehavior()
-        rideParameters = RideParametersBuilder().build()
+        rideParameters = RideParameters()
         super.init(coder: aDecoder)
     }
     
@@ -116,7 +116,7 @@ import CoreLocation
      - returns: An initialized RideRequestButton
      */
     @objc public convenience init(client: RidesClient) {
-        self.init(client: client, rideParameters: RideParametersBuilder().build(), requestingBehavior: DeeplinkRequestingBehavior())
+        self.init(client: client, rideParameters: RideParameters(), requestingBehavior: DeeplinkRequestingBehavior())
     }
     
     /**
@@ -142,7 +142,7 @@ import CoreLocation
      - returns: An initialized RideRequestButton
      */
     @objc public convenience init(requestingBehavior: RideRequesting) {
-        self.init(client: RidesClient(), rideParameters: RideParametersBuilder().build(), requestingBehavior: requestingBehavior)
+        self.init(client: RidesClient(), rideParameters: RideParameters(), requestingBehavior: requestingBehavior)
     }
     
     //Mark: UberButton
@@ -156,7 +156,7 @@ import CoreLocation
      - returns: An initialized RideRequestButton
      */
     @objc public convenience init() {
-        self.init(client: RidesClient(), rideParameters: RideParametersBuilder().build(), requestingBehavior: DeeplinkRequestingBehavior())
+        self.init(client: RidesClient(), rideParameters: RideParameters(), requestingBehavior: DeeplinkRequestingBehavior())
     }
     
     /**
