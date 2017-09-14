@@ -92,7 +92,7 @@ struct PriceEstimates: Codable {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         currencyCode = try container.decodeIfPresent(String.self, forKey: .currencyCode)
-        distance = try container.decodeIfPresent(Double.self, forKey: .distance) ?? 0.0
+        distance = try container.decodeIfPresent(Double.self, forKey: .distance) ?? 0
         duration = try container.decodeIfPresent(Int.self, forKey: .duration) ?? 0
         estimate = try container.decodeIfPresent(String.self, forKey: .estimate)
         highEstimate = try container.decodeIfPresent(Int.self, forKey: .highEstimate) ?? 0

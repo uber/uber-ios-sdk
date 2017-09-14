@@ -29,22 +29,30 @@
 */
 @objc(UBSDKTripHistory) public class TripHistory: NSObject, Codable {
     /// Position in pagination.
-    @objc public private(set) var offset: Int = 0
+    @objc public private(set) var offset: Int
     
     /// Number of items retrieved.
-    @objc public private(set) var limit: Int = 0
+    @objc public private(set) var limit: Int
     
     /// Total number of items available.
-    @objc public private(set) var count: Int = 0
+    @objc public private(set) var count: Int
     
     /// Array of trip information.
-    @objc public private(set) var history: [UserActivity]?
+    @objc public private(set) var history: [UserActivity]
 
     enum CodingKeys: String, CodingKey {
         case offset  = "offset"
         case limit   = "limit"
         case count   = "count"
         case history = "history"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        offset = try container.decode(Int.self, forKey: .offset)
+        limit = try container.decode(Int.self, forKey: .limit)
+        count = try container.decode(Int.self, forKey: .count)
+        history = try container.decode([UserActivity].self, forKey: .history)
     }
 }
 
@@ -90,7 +98,7 @@
     }
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        distance = try container.decodeIfPresent(Double.self, forKey: .distance) ?? 0.0
+        distance = try container.decode(Double.self, forKey: .distance)
         requestTime = try container.decode(Date.self, forKey: .requestTime)
         startTime = try container.decode(Date.self, forKey: .startTime)
         endTime = try container.decode(Date.self, forKey: .endTime)
@@ -108,17 +116,24 @@
 */
 @objc(UBSDKTripCity) public class TripCity: NSObject, Codable {
     /// Latitude of city location.
-    @objc public private(set) var latitude: Float = 0.0
+    @objc public private(set) var latitude: Double
     
     /// Longitude of city location.
-    @objc public private(set) var longitude: Float = 0.0
+    @objc public private(set) var longitude: Double
     
     /// Display name of city.
-    @objc public private(set) var name: String = ""
+    @objc public private(set) var name: String
 
     enum CodingKeys: String, CodingKey {
         case latitude  = "latitude"
         case longitude = "longitude"
         case name      = "display_name"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        latitude = try container.decode(Double.self, forKey: .latitude)
+        longitude = try container.decode(Double.self, forKey: .longitude)
+        name = try container.decode(String.self, forKey: .name)
     }
 }

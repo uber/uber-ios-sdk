@@ -401,7 +401,9 @@ import CoreLocation
 
             var surge = false
             for estimate in self.metadata.priceEstimates {
-                if let price = estimate.estimate, let productName = estimate.name, estimate.productID == productID {
+                if let price = estimate.estimate,
+                    let productName = estimate.name,
+                    estimate.productID == productID {
                     if estimate.surgeMultiplier > 1.0 {
                         surge = true
                     }

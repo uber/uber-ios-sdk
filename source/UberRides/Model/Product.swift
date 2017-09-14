@@ -108,28 +108,28 @@ struct UberProducts: Codable {
 */
 @objc(UBSDKPriceDetails) public class PriceDetails: NSObject, Codable {
     /// Unit of distance used to calculate fare (mile or km).
-    @objc public private(set) var distanceUnit: String?
+    @objc public private(set) var distanceUnit: String
     
     /// ISO 4217 currency code.
-    @objc public private(set) var currencyCode: String?
+    @objc public private(set) var currencyCode: String
     
     /// The charge per minute (if applicable).
-    @objc public private(set) var costPerMinute: Double = -1
+    @objc public private(set) var costPerMinute: Double
     
     /// The charge per distance unit (if applicable).
-    @objc public private(set) var costPerDistance: Double = -1
+    @objc public private(set) var costPerDistance: Double
     
     /// The base price.
-    @objc public private(set) var baseFee: Double = 0
+    @objc public private(set) var baseFee: Double
     
     /// The minimum price of a trip.
-    @objc public private(set) var minimumFee: Double = 0
+    @objc public private(set) var minimumFee: Double
     
     /// The fee if a rider cancels the trip after a grace period.
-    @objc public private(set) var cancellationFee: Double = 0
+    @objc public private(set) var cancellationFee: Double
     
     /// Array containing additional fees added to the price. See `ServiceFee`.
-    @objc public private(set) var serviceFees: [ServiceFee]?
+    @objc public private(set) var serviceFees: [ServiceFee]
 
     enum CodingKeys: String, CodingKey {
         case distanceUnit    = "distance_unit"
@@ -141,6 +141,18 @@ struct UberProducts: Codable {
         case cancellationFee = "cancellation_fee"
         case serviceFees     = "service_fees"
     }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        distanceUnit = try container.decode(String.self, forKey: .distanceUnit)
+        currencyCode = try container.decode(String.self, forKey: .currencyCode)
+        costPerMinute = try container.decode(Double.self, forKey: .costPerMinute)
+        costPerDistance = try container.decode(Double.self, forKey: .costPerDistance)
+        baseFee = try container.decode(Double.self, forKey: .baseFee)
+        minimumFee = try container.decode(Double.self, forKey: .minimumFee)
+        cancellationFee = try container.decode(Double.self, forKey: .cancellationFee)
+        serviceFees = try container.decode([ServiceFee].self, forKey: .serviceFees)
+    }
 }
 
 // MARK: ServiceFee
@@ -150,14 +162,20 @@ struct UberProducts: Codable {
 */
 @objc(UBSDKServiceFee) public class ServiceFee: NSObject, Codable {
     /// The name of the service fee.
-    @objc public private(set) var name: String?
+    @objc public private(set) var name: String
     
     /// The amount of the service fee.
-    @objc public private(set) var fee: Double = 0.0
+    @objc public private(set) var fee: Double
 
     enum CodingKeys: String, CodingKey {
         case name = "name"
         case fee  = "fee"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        fee = try container.decode(Double.self, forKey: .fee)
     }
 }
 

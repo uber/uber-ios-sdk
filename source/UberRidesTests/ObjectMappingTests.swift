@@ -65,9 +65,9 @@ class ObjectMappingTests: XCTestCase {
                 
                 let serviceFees = priceDetails!.serviceFees
                 XCTAssertNotNil(serviceFees)
-                XCTAssertEqual(serviceFees!.count, 1)
-                XCTAssertEqual(serviceFees!.first!.name, "Booking fee")
-                XCTAssertEqual(serviceFees!.first!.fee, 2.0)
+                XCTAssertEqual(serviceFees.count, 1)
+                XCTAssertEqual(serviceFees.first!.name, "Booking fee")
+                XCTAssertEqual(serviceFees.first!.fee, 2.0)
             }
         }
     }
@@ -136,8 +136,8 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(uberX?.productGroup, ProductGroup.uberX)
                 XCTAssertEqual(uberX?.productDescription, "Everyday rides that are always smarter than a taxi")
 
-                XCTAssertEqual(uberX?.priceDetails?.serviceFees?.first?.fee, 0.55)
-                XCTAssertEqual(uberX?.priceDetails?.serviceFees?.first?.name, "Booking fee")
+                XCTAssertEqual(uberX?.priceDetails?.serviceFees.first?.fee, 0.55)
+                XCTAssertEqual(uberX?.priceDetails?.serviceFees.first?.name, "Booking fee")
                 XCTAssertEqual(uberX?.priceDetails?.costPerMinute, 0.4)
                 XCTAssertEqual(uberX?.priceDetails?.distanceUnit, "km")
                 XCTAssertEqual(uberX?.priceDetails?.minimumFee, 9)
@@ -284,7 +284,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(userActivity!.limit, 5)
                 XCTAssertEqual(userActivity!.offset, 0)
                 
-                let history = userActivity!.history!
+                let history = userActivity!.history
                 XCTAssertEqual(history.count, 1)
                 XCTAssertEqual(history[0].status, RideStatus.completed)
                 XCTAssertEqual(history[0].distance, 1.64691465)

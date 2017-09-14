@@ -24,10 +24,12 @@
 
 // MARK: Ride
 
+import CoreLocation
+
 /**
  *  Contains the status of an ongoing/completed trip created using the Ride Request endpoint
  */
-@objc(UBSDKRide) public class Ride: NSObject, Codable {
+@objc(UBSDKRide) public class Ride: NSObject, Decodable {
     
     /// Contains the information about the destination of the trip, if one has been set.
     @objc public private(set) var destination: RideRequestLocation?

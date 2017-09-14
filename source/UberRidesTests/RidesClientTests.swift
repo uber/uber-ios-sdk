@@ -188,8 +188,8 @@ class RidesClientTests: XCTestCase {
         client.fetchTripHistory(completion: { userActivity, response in
             XCTAssertNotNil(userActivity)
             XCTAssertNotNil(userActivity!.history)
-            XCTAssertEqual(userActivity!.history!.count, 1)
-            XCTAssertEqual(userActivity!.history![0].status, RideStatus.completed)
+            XCTAssertEqual(userActivity!.history.count, 1)
+            XCTAssertEqual(userActivity!.history[0].status, RideStatus.completed)
             
             expectation.fulfill()
         })

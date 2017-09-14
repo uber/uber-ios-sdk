@@ -46,8 +46,8 @@
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        distance = try container.decodeIfPresent(Double.self, forKey: .distance) ?? 0.0
-        distanceUnit = try container.decodeIfPresent(String.self, forKey: .distanceUnit) ?? ""
-        duration = try container.decodeIfPresent(Int.self, forKey: .duration) ?? 0
+        distance = try container.decode(Double.self, forKey: .distance)
+        distanceUnit = try container.decode(String.self, forKey: .distanceUnit)
+        duration = try container.decode(Int.self, forKey: .duration)
     }
 }

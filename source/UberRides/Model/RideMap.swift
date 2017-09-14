@@ -33,7 +33,7 @@
     @objc public private(set) var path: URL
     
     /// Unique identifier representing a ride request.
-    @objc public private(set) var requestID: String = ""
+    @objc public private(set) var requestID: String
 
     enum CodingKeys: String, CodingKey {
         case path      = "href"
