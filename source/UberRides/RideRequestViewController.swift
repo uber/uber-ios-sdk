@@ -79,10 +79,10 @@ import MapKit
         
         super.init(coder: aDecoder)
 
-        let defaultRideParameters = RideParameters()
+        let defaultRideParameters = RideParameters.Builder()
         defaultRideParameters.source = RideRequestViewController.sourceString
         
-        rideRequestView.rideParameters = defaultRideParameters
+        rideRequestView.rideParameters = defaultRideParameters.build()
     }
     
      /**
@@ -100,9 +100,7 @@ import MapKit
         
         super.init(nibName: nil, bundle: nil)
         
-        if rideParameters.source == nil {
-            rideParameters.source = RideRequestViewController.sourceString
-        }
+        rideParameters.source = rideParameters.source ?? RideRequestViewController.sourceString
         
         rideRequestView.rideParameters = rideParameters
         rideRequestView.accessToken = TokenManager.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup)

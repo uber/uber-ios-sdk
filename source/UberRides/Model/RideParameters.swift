@@ -26,18 +26,62 @@ import MapKit
 
 /// Object to represent the parameters needed to request a ride.
 @objc(UBSDKRideParameters) public class RideParameters: NSObject {
+    @objc(UBSDKRideParametersBuilder) public class Builder: NSObject {
+        /// ProductID to use for the ride
+        @objc public var productID: String?
+
+        /// The pickup location to use for the ride
+        @objc public var pickupLocation: CLLocation?
+
+        /// The nickname of the pickup location of the ride
+        @objc public var pickupNickname: String?
+
+        /// The address of the pickup location of the ride
+        @objc public var pickupAddress: String?
+
+        /// This is the name of an Uber saved place. Only “home” or “work” is acceptable.
+        @objc public var pickupPlaceID: String?
+
+        /// The dropoff location to use for the ride
+        @objc public var dropoffLocation: CLLocation?
+
+        /// The nickname of the dropoff location for the ride
+        @objc public var dropoffNickname: String?
+
+        /// The adress of the dropoff location of the ride
+        @objc public var dropoffAddress: String?
+
+        /// This is the name of an Uber saved place. Only “home” or “work” is acceptable.
+        @objc public var dropoffPlaceID: String?
+
+        /// The unique identifier of the payment method selected by a user.
+        @objc public var paymentMethod: String?
+
+        /// The unique identifier of the surge session for a user.
+        @objc public var surgeConfirmationID: String?
+
+        /// Upfront fare quote used to request a ride
+        @objc public var upfrontFare: UpfrontFare?
+
+        /// The source to use for attributing the ride. Used internal to the SDK.
+        @objc var source: String?
+
+        public func build() -> RideParameters {
+            return RideParameters(builder: self)
+        }
+    }
     
     /// ProductID to use for the ride
-    @objc public var productID: String?
+    @objc public let productID: String?
 
     /// The pickup location to use for the ride
     @objc public let pickupLocation: CLLocation?
 
     /// The nickname of the pickup location of the ride
-    @objc public var pickupNickname: String?
+    @objc public let pickupNickname: String?
     
     /// The address of the pickup location of the ride
-    @objc public var pickupAddress: String?
+    @objc public let pickupAddress: String?
     
     /// This is the name of an Uber saved place. Only “home” or “work” is acceptable.
     @objc public let pickupPlaceID: String?
@@ -46,48 +90,58 @@ import MapKit
     @objc public let dropoffLocation: CLLocation?
     
     /// The nickname of the dropoff location for the ride
-    @objc public var dropoffNickname: String?
+    @objc public let dropoffNickname: String?
     
     /// The adress of the dropoff location of the ride
-    @objc public var dropoffAddress: String?
+    @objc public let dropoffAddress: String?
     
     /// This is the name of an Uber saved place. Only “home” or “work” is acceptable.
     @objc public let dropoffPlaceID: String?
     
     /// The unique identifier of the payment method selected by a user.
-    @objc public var paymentMethod: String?
+    @objc public let paymentMethod: String?
     
     /// The unique identifier of the surge session for a user.
-    @objc public var surgeConfirmationID: String?
-
-    /// The source to use for attributing the ride
-    @objc public var source: String?
+    @objc public let surgeConfirmationID: String?
 
     /// Upfront fare quote used to request a ride
-    @objc public var upfrontFare: UpfrontFare?
+    @objc public let upfrontFare: UpfrontFare?
 
-    convenience public override init() {
-        self.init(pickupLocation: nil, dropoffLocation: nil, pickupPlaceID: nil, dropoffPlaceID: nil)
+    /// The source to use for attributing the ride. Used internal to the SDK.
+    @objc var source: String?
+
+    @objc public func builder() -> Builder {
+        let builder = Builder()
+        builder.productID = productID
+        builder.pickupLocation = pickupLocation
+        builder.pickupNickname = pickupNickname
+        builder.pickupAddress = pickupAddress
+        builder.pickupPlaceID = pickupPlaceID
+        builder.dropoffLocation = dropoffLocation
+        builder.dropoffNickname = dropoffNickname
+        builder.dropoffAddress = dropoffAddress
+        builder.dropoffPlaceID = dropoffPlaceID
+        builder.paymentMethod = paymentMethod
+        builder.surgeConfirmationID = surgeConfirmationID
+        builder.source = source
+        builder.upfrontFare = upfrontFare
+        return builder
     }
 
-    @objc convenience public init(pickupLocation: CLLocation?, dropoffLocation: CLLocation?) {
-        self.init(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation, pickupPlaceID: nil, dropoffPlaceID: nil)
-    }
-
-    @objc convenience public init(pickupPlaceID: String?, dropoffPlaceID: String?) {
-        self.init(pickupLocation: nil, dropoffLocation: nil, pickupPlaceID: pickupPlaceID, dropoffPlaceID: dropoffPlaceID)
-    }
-
-    private init(pickupLocation: CLLocation?,
-                 dropoffLocation: CLLocation?,
-                 pickupPlaceID: String?,
-                 dropoffPlaceID: String?) {
-        self.pickupLocation = pickupLocation
-        self.dropoffLocation = dropoffLocation
-        self.pickupPlaceID = pickupPlaceID
-        self.dropoffPlaceID = dropoffPlaceID
-
-        super.init()
+    private init(builder: Builder) {
+        productID = builder.productID
+        pickupLocation = builder.pickupLocation
+        pickupNickname = builder.pickupNickname
+        pickupAddress = builder.pickupAddress
+        pickupPlaceID = builder.pickupPlaceID
+        dropoffLocation = builder.dropoffLocation
+        dropoffNickname = builder.dropoffNickname
+        dropoffAddress = builder.dropoffAddress
+        dropoffPlaceID = builder.dropoffPlaceID
+        paymentMethod = builder.paymentMethod
+        surgeConfirmationID = builder.surgeConfirmationID
+        source = builder.source
+        upfrontFare = builder.upfrontFare
     }
 
     var userAgent: String {

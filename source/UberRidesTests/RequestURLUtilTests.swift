@@ -45,7 +45,7 @@ class RequestURLUtilTests: XCTestCase {
     }
     
     func testCreateQueryParameters_withDefaultRideParameters() {
-        let parameters = RideParameters()
+        let parameters = RideParameters.Builder().build()
         let locationQueryItem = URLQueryItem(name: "pickup", value: "my_location")
         let actionQueryItem = URLQueryItem(name: "action", value: "setPickup")
         let clientIdQueryItem = URLQueryItem(name: "client_id", value: "testClientID")
@@ -90,7 +90,9 @@ class RequestURLUtilTests: XCTestCase {
                                        dropoffLatitudeQueryItem, dropoffLongitudeQueryItem, dropoffNicknameQueryItem, dropoffAddressQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
         
-        let parameters = RideParameters(pickupLocation: testPickupLocation, dropoffLocation: testDropoffLocation)
+        let parameters = RideParameters.Builder()
+        parameters.pickupLocation = testPickupLocation
+        parameters.dropoffLocation = testDropoffLocation
         parameters.pickupNickname = testPickupNickname
         parameters.pickupAddress = testPickupAddress
         parameters.dropoffNickname = testDropoffNickname
@@ -100,7 +102,7 @@ class RequestURLUtilTests: XCTestCase {
         
         let comparisonSet = NSSet(array: expectedQueryParameters)
         
-        let testQueryParameters = RequestURLUtil.buildRequestQueryParameters(parameters)
+        let testQueryParameters = RequestURLUtil.buildRequestQueryParameters(parameters.build())
         let testComparisonSet = NSSet(array:testQueryParameters)
         
         XCTAssertEqual(comparisonSet, testComparisonSet)
@@ -132,8 +134,10 @@ class RequestURLUtilTests: XCTestCase {
         let expectedQueryParameters = [pickupLatitudeQueryItem, pickupLongitudeQueryItem, pickupAddressQueryItem,
                                        dropoffLatitudeQueryItem, dropoffLongitudeQueryItem, dropoffAddressQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
-        
-        let parameters = RideParameters(pickupLocation: testPickupLocation, dropoffLocation: testDropoffLocation)
+
+        let parameters = RideParameters.Builder()
+        parameters.pickupLocation = testPickupLocation
+        parameters.dropoffLocation = testDropoffLocation
         parameters.pickupAddress = testPickupAddress
         parameters.dropoffAddress = testDropoffAddress
         parameters.productID = testProductID
@@ -141,7 +145,7 @@ class RequestURLUtilTests: XCTestCase {
         
         let comparisonSet = NSSet(array: expectedQueryParameters)
         
-        let testQueryParameters = RequestURLUtil.buildRequestQueryParameters(parameters)
+        let testQueryParameters = RequestURLUtil.buildRequestQueryParameters(parameters.build())
         let testComparisonSet = NSSet(array:testQueryParameters)
         
         XCTAssertEqual(comparisonSet, testComparisonSet)
@@ -174,7 +178,9 @@ class RequestURLUtilTests: XCTestCase {
                                        dropoffLatitudeQueryItem, dropoffLongitudeQueryItem, dropoffNicknameQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
 
-        let parameters = RideParameters(pickupLocation: testPickupLocation, dropoffLocation: testDropoffLocation)
+        let parameters = RideParameters.Builder()
+        parameters.pickupLocation = testPickupLocation
+        parameters.dropoffLocation = testDropoffLocation
         parameters.pickupNickname = testPickupNickname
         parameters.dropoffNickname = testDropoffNickname
         parameters.productID = testProductID
@@ -182,7 +188,7 @@ class RequestURLUtilTests: XCTestCase {
         
         let comparisonSet = NSSet(array: expectedQueryParameters)
         
-        let testQueryParameters = RequestURLUtil.buildRequestQueryParameters(parameters)
+        let testQueryParameters = RequestURLUtil.buildRequestQueryParameters(parameters.build())
         let testComparisonSet = NSSet(array:testQueryParameters)
         
         XCTAssertEqual(comparisonSet, testComparisonSet)
@@ -210,7 +216,8 @@ class RequestURLUtilTests: XCTestCase {
         let expectedQueryParameters = [pickupLatitudeQueryItem, pickupLongitudeQueryItem, pickupNicknameQueryItem, pickupAddressQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
 
-        let parameters = RideParameters(pickupLocation: testPickupLocation, dropoffLocation: nil)
+        let parameters = RideParameters.Builder()
+        parameters.pickupLocation = testPickupLocation
         parameters.pickupNickname = testPickupNickname
         parameters.pickupAddress = testPickupAddress
         parameters.productID = testProductID
@@ -218,7 +225,7 @@ class RequestURLUtilTests: XCTestCase {
         
         let comparisonSet = NSSet(array: expectedQueryParameters)
         
-        let testQueryParameters = RequestURLUtil.buildRequestQueryParameters(parameters)
+        let testQueryParameters = RequestURLUtil.buildRequestQueryParameters(parameters.build())
         let testComparisonSet = NSSet(array:testQueryParameters)
         
         XCTAssertEqual(comparisonSet, testComparisonSet)
