@@ -236,7 +236,7 @@ class RidesClientTests: XCTestCase {
         
         let expectation = self.expectation(description: "make ride request")
 
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.pickupPlaceID = Place.home
         client.requestRide(parameters: rideParametersBuilder.build(), completion: { ride, response in
             XCTAssertNotNil(ride)
@@ -312,7 +312,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "get request estimate")
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.pickupPlaceID = Place.home
         
         client.fetchRideRequestEstimate(parameters: rideParametersBuilder.build(), completion:{ estimate, error in
@@ -428,7 +428,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.dropoffPlaceID = Place.work
         client.updateRideDetails(requestID: "requestID1234", rideParameters: rideParametersBuilder.build(), completion: { response in
             XCTAssertNil(response.error)
@@ -447,7 +447,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.dropoffPlaceID = Place.work
         client.updateRideDetails(requestID: "requestID1234", rideParameters: rideParametersBuilder.build(), completion: { response in
             guard let error = response.error else {
@@ -472,7 +472,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.dropoffPlaceID = Place.work
         client.updateRideDetails(requestID: "requestID1234", rideParameters: rideParametersBuilder.build(), completion: { response in
             guard let error = response.error else {
@@ -497,7 +497,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.dropoffPlaceID = Place.work
         client.updateRideDetails(requestID: "requestID1234", rideParameters: rideParametersBuilder.build(), completion: { response in
             guard let error = response.error else {
@@ -522,7 +522,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.dropoffPlaceID = Place.work
         client.updateCurrentRide(rideParameters: rideParametersBuilder.build(), completion: { response in
             XCTAssertNil(response.error)
@@ -541,7 +541,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.dropoffPlaceID = Place.work
         client.updateCurrentRide(rideParameters: rideParametersBuilder.build(), completion: { response in
             guard let error = response.error else {
@@ -566,7 +566,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.dropoffPlaceID = Place.work
         client.updateCurrentRide(rideParameters: rideParametersBuilder.build(), completion: { response in
             guard let error = response.error else {
@@ -591,7 +591,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.dropoffPlaceID = Place.work
         client.updateCurrentRide(rideParameters: rideParametersBuilder.build(), completion: { response in
             guard let error = response.error else {
@@ -616,7 +616,7 @@ class RidesClientTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "update ride")
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.dropoffPlaceID = Place.work
         client.updateCurrentRide(rideParameters: rideParametersBuilder.build(), completion: { response in
             guard let error = response.error else {

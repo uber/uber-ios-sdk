@@ -219,7 +219,7 @@ class APIManagerTests: XCTestCase {
     func testRequestBuilderAllParameters() {
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = pickupLocation
         builder.pickupNickname = pickupNickname
         builder.pickupAddress = pickupAddress
@@ -264,7 +264,7 @@ class APIManagerTests: XCTestCase {
      Test the POST /v1/requests endpoint.
      */
     func testPostRequest() {
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupPlaceID = Place.home
         builder.productID = productID
         let rideParameters = builder.build()
@@ -309,7 +309,7 @@ class APIManagerTests: XCTestCase {
      Tests the POST /v1/requests/estimate endpoint.
      */
     func testPostRequestEstimate() {
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupPlaceID = Place.home
         let request = buildRequestForEndpoint(Requests.estimate(rideParameters: builder.build()))
         XCTAssertEqual(request.httpMethod, "POST")
@@ -387,7 +387,7 @@ class APIManagerTests: XCTestCase {
      Tests the PATCH /v1/requests/curent endpoint.
      */
     func testPatchCurrentRequest() {
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupPlaceID = Place.home
         let rideParams = builder.build()
         let request = buildRequestForEndpoint(Requests.patchCurrent(rideParameters: rideParams))
@@ -428,7 +428,7 @@ class APIManagerTests: XCTestCase {
      Tests the PATCH /v1/requests/{request_id} endpoint.
      */
     func testPatchRequestByID() {
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupPlaceID = Place.home
         let rideParams = builder.build()
         let request = buildRequestForEndpoint(Requests.patchRequest(requestID: requestID, rideParameters: rideParams))

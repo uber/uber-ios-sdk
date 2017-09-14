@@ -90,10 +90,10 @@ class RequestButtonTests: XCTestCase {
         }
         let baseViewController = UIViewControllerMock()
         let requestBehavior = RideRequestViewRequestingBehavior(presentingViewController: baseViewController)
-        let button = RideRequestButton(rideParameters: RideParameters.Builder().build(), requestingBehavior: requestBehavior)
+        let button = RideRequestButton(rideParameters: RideParametersBuilder().build(), requestingBehavior: requestBehavior)
     
         let loginManger = LoginManager(accessTokenIdentifier: testIdentifier)
-        let rideRequestVC = RideRequestViewController(rideParameters: RideParameters.Builder().build(), loginManager: loginManger)
+        let rideRequestVC = RideRequestViewController(rideParameters: RideParametersBuilder().build(), loginManager: loginManger)
         XCTAssertNotNil(rideRequestVC.view)
         
         let webViewMock = WebViewMock(frame: CGRect.zero, configuration: WKWebViewConfiguration(), testClosure: expectationClosure)
@@ -135,7 +135,7 @@ class RequestButtonTests: XCTestCase {
         }
         
         let requestBehavior = DeeplinkRequestingBehaviorMock(testClosure: expectationClosure)
-        let button = RideRequestButton(rideParameters: RideParameters.Builder().build(), requestingBehavior: requestBehavior)
+        let button = RideRequestButton(rideParameters: RideParametersBuilder().build(), requestingBehavior: requestBehavior)
     
         button.uberButtonTapped(button)
         
@@ -148,7 +148,7 @@ class RequestButtonTests: XCTestCase {
      Test that product ID is set on metadata.
      */
     func testSetProductID() {
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.productID = productID
         let rideParams = builder.build()
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
@@ -161,7 +161,7 @@ class RequestButtonTests: XCTestCase {
      */
     func testSetPickupLocation() {
         let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = location
         let rideParams = builder.build()
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
@@ -175,7 +175,7 @@ class RequestButtonTests: XCTestCase {
      */
     func testSetDropoffLocation() {
         let location = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.dropoffLocation = location
         let rideParams = builder.build()
         button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
@@ -195,7 +195,7 @@ class RequestButtonTests: XCTestCase {
         expectation = expectation(description: "information loaded")
         
         let location = CLLocation(latitude: dropoffLat, longitude: pickupLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = location
         builder.productID = productID
         let rideParams = builder.build()
@@ -228,7 +228,7 @@ class RequestButtonTests: XCTestCase {
         expectation = expectation(description: "information loaded")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = pickupLocation
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
@@ -260,7 +260,7 @@ class RequestButtonTests: XCTestCase {
         errorExpectation = expectation(description: "price estimate error")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = pickupLocation
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
@@ -293,7 +293,7 @@ class RequestButtonTests: XCTestCase {
         errorExpectation = expectation(description: "time estimate error")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = pickupLocation
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
@@ -327,7 +327,7 @@ class RequestButtonTests: XCTestCase {
 
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = pickupLocation
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
@@ -358,7 +358,7 @@ class RequestButtonTests: XCTestCase {
         expectation = expectation(description: "information loaded")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = pickupLocation
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
@@ -389,7 +389,7 @@ class RequestButtonTests: XCTestCase {
         expectation = expectation(description: "information loaded")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = pickupLocation
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
@@ -409,7 +409,7 @@ class RequestButtonTests: XCTestCase {
         errorExpectation = expectation(description: "Expected to receive 422 error")
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = pickupLocation
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
@@ -433,7 +433,7 @@ class RequestButtonTests: XCTestCase {
     func testMissingPickupTriggersErrorDelegate() {
         errorExpectation = expectation(description: "Expected to receive 422 error")
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
         let rideParams = builder.build()
@@ -455,7 +455,7 @@ class RequestButtonTests: XCTestCase {
     func testUseCurrentLocationTriggersErrorDelegate() {
         errorExpectation = expectation(description: "Expected to receive 422 error")
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
         let rideParams = builder.build()
@@ -480,7 +480,7 @@ class RequestButtonTests: XCTestCase {
     func testMetadataSimpleWithNoProductID() {
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = pickupLocation
         builder.dropoffLocation = dropoffLocation
         let rideParams = builder.build()

@@ -32,7 +32,7 @@ import UIKit
 @objc(UBSDKRequestDeeplink) public class RequestDeeplink: BaseDeeplink {
     static let sourceString = "deeplink"
     
-    @objc public init(rideParameters: RideParameters = RideParameters.Builder().build()) {
+    @objc public init(rideParameters: RideParameters = RideParametersBuilder().build()) {
         rideParameters.source = rideParameters.source ?? RequestDeeplink.sourceString
         
         let queryItems = RequestURLUtil.buildRequestQueryParameters(rideParameters)

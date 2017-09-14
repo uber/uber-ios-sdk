@@ -105,7 +105,7 @@ class UberRidesDeeplinkTests: XCTestCase {
      */
     func testBuildDeeplinkWithPickupLatLng() {
         let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = location
         let rideParams = builder.build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
@@ -126,7 +126,7 @@ class UberRidesDeeplinkTests: XCTestCase {
      */
     func testBuildDeeplinkWithAllPickupParameters() {
         let location = CLLocation(latitude: pickupLat, longitude: pickupLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = location
         builder.pickupNickname = pickupNickname
         builder.pickupAddress = pickupAddress
@@ -151,7 +151,7 @@ class UberRidesDeeplinkTests: XCTestCase {
      */
     func testBuildDeeplinkWithoutPickupParameters() {
         let location = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.dropoffLocation = location
         let rideParams = builder.build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
@@ -174,7 +174,7 @@ class UberRidesDeeplinkTests: XCTestCase {
     func testBuildDeeplinkWithAllParameters() {
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = pickupLocation
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
@@ -226,7 +226,7 @@ class UberRidesDeeplinkTests: XCTestCase {
             return false
         }
         
-        let deeplink = RequestDeeplinkMock(rideParameters: RideParameters.Builder().build(), testClosure: expectationClosure)
+        let deeplink = RequestDeeplinkMock(rideParameters: RideParametersBuilder().build(), testClosure: expectationClosure)
         
         deeplink.execute()
         

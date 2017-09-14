@@ -45,7 +45,7 @@ class RequestURLUtilTests: XCTestCase {
     }
     
     func testCreateQueryParameters_withDefaultRideParameters() {
-        let parameters = RideParameters.Builder().build()
+        let parameters = RideParametersBuilder().build()
         let locationQueryItem = URLQueryItem(name: "pickup", value: "my_location")
         let actionQueryItem = URLQueryItem(name: "action", value: "setPickup")
         let clientIdQueryItem = URLQueryItem(name: "client_id", value: "testClientID")
@@ -90,7 +90,7 @@ class RequestURLUtilTests: XCTestCase {
                                        dropoffLatitudeQueryItem, dropoffLongitudeQueryItem, dropoffNicknameQueryItem, dropoffAddressQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
         
-        let parameters = RideParameters.Builder()
+        let parameters = RideParametersBuilder()
         parameters.pickupLocation = testPickupLocation
         parameters.dropoffLocation = testDropoffLocation
         parameters.pickupNickname = testPickupNickname
@@ -135,7 +135,7 @@ class RequestURLUtilTests: XCTestCase {
                                        dropoffLatitudeQueryItem, dropoffLongitudeQueryItem, dropoffAddressQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
 
-        let parameters = RideParameters.Builder()
+        let parameters = RideParametersBuilder()
         parameters.pickupLocation = testPickupLocation
         parameters.dropoffLocation = testDropoffLocation
         parameters.pickupAddress = testPickupAddress
@@ -178,7 +178,7 @@ class RequestURLUtilTests: XCTestCase {
                                        dropoffLatitudeQueryItem, dropoffLongitudeQueryItem, dropoffNicknameQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
 
-        let parameters = RideParameters.Builder()
+        let parameters = RideParametersBuilder()
         parameters.pickupLocation = testPickupLocation
         parameters.dropoffLocation = testDropoffLocation
         parameters.pickupNickname = testPickupNickname
@@ -216,7 +216,7 @@ class RequestURLUtilTests: XCTestCase {
         let expectedQueryParameters = [pickupLatitudeQueryItem, pickupLongitudeQueryItem, pickupNicknameQueryItem, pickupAddressQueryItem,
                                        productIdQueryItem, clientIdQueryItem, userAgentQueryItem, actionQueryItem]
 
-        let parameters = RideParameters.Builder()
+        let parameters = RideParametersBuilder()
         parameters.pickupLocation = testPickupLocation
         parameters.pickupNickname = testPickupNickname
         parameters.pickupAddress = testPickupAddress

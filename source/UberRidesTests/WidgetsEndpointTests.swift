@@ -66,7 +66,7 @@ class WidgetsEndpointTests: XCTestCase {
             ("pickup[longitude]", "\(expectedLong)")
         )
         let pickupLocation = CLLocation(latitude: expectedLat, longitude: expectedLong)
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.pickupLocation = pickupLocation
         let rideParameters = rideParametersBuilder.build()
         let rideRequestWidget = Components.rideRequestWidget(rideParameters: rideParameters)

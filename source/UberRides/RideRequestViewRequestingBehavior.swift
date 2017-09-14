@@ -58,7 +58,7 @@
      */
     @objc public init(presentingViewController: UIViewController, loginManager: LoginManager) {
         self.presentingViewController = presentingViewController
-        let rideRequestViewController = RideRequestViewController(rideParameters: RideParameters.Builder().build(), loginManager: loginManager)
+        let rideRequestViewController = RideRequestViewController(rideParameters: RideParametersBuilder().build(), loginManager: loginManager)
         modalRideRequestViewController = ModalRideRequestViewController(rideRequestViewController: rideRequestViewController)
     }
     

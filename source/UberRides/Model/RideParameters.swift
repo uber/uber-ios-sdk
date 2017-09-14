@@ -26,63 +26,6 @@ import MapKit
 
 /// Object to represent the parameters needed to request a ride.
 @objc(UBSDKRideParameters) public class RideParameters: NSObject {
-    @objc(UBSDKRideParametersBuilder) public class Builder: NSObject {
-        /// ProductID to use for the ride
-        @objc public var productID: String?
-
-        /// The pickup location to use for the ride
-        @objc public var pickupLocation: CLLocation?
-
-        /// The nickname of the pickup location of the ride
-        @objc public var pickupNickname: String?
-
-        /// The address of the pickup location of the ride
-        @objc public var pickupAddress: String?
-
-        /// This is the name of an Uber saved place. Only “home” or “work” is acceptable.
-        @objc public var pickupPlaceID: String?
-
-        /// The dropoff location to use for the ride
-        @objc public var dropoffLocation: CLLocation?
-
-        /// The nickname of the dropoff location for the ride
-        @objc public var dropoffNickname: String?
-
-        /// The adress of the dropoff location of the ride
-        @objc public var dropoffAddress: String?
-
-        /// This is the name of an Uber saved place. Only “home” or “work” is acceptable.
-        @objc public var dropoffPlaceID: String?
-
-        /// The unique identifier of the payment method selected by a user.
-        @objc public var paymentMethod: String?
-
-        /// The unique identifier of the surge session for a user.
-        @objc public var surgeConfirmationID: String?
-
-        /// Upfront fare quote used to request a ride
-        @objc public var upfrontFare: UpfrontFare?
-
-        /// The source to use for attributing the ride. Used internal to the SDK.
-        @objc var source: String?
-
-        public func build() -> RideParameters {
-            return RideParameters(productID: productID,
-                                  pickupLocation: pickupLocation,
-                                  pickupNickname: pickupNickname,
-                                  pickupAddress: pickupAddress,
-                                  pickupPlaceID: pickupPlaceID,
-                                  dropoffLocation: dropoffLocation,
-                                  dropoffNickname: dropoffNickname,
-                                  dropoffAddress: dropoffAddress,
-                                  dropoffPlaceID: dropoffPlaceID,
-                                  paymentMethod: paymentMethod,
-                                  surgeConfirmationID: surgeConfirmationID,
-                                  source: source,
-                                  upfrontFare: upfrontFare)
-        }
-    }
-    
     /// ProductID to use for the ride
     @objc public let productID: String?
 
@@ -122,8 +65,8 @@ import MapKit
     /// The source to use for attributing the ride. Used internal to the SDK.
     @objc var source: String?
 
-    @objc public func builder() -> Builder {
-        let builder = Builder()
+    @objc public func builder() -> RideParametersBuilder {
+        let builder = RideParametersBuilder()
         builder.productID = productID
         builder.pickupLocation = pickupLocation
         builder.pickupNickname = pickupNickname
@@ -140,7 +83,7 @@ import MapKit
         return builder
     }
 
-    private init(productID: String?,
+    fileprivate init(productID: String?,
                  pickupLocation: CLLocation?,
                  pickupNickname: String?,
                  pickupAddress: String?,
@@ -177,5 +120,63 @@ import MapKit
             }
         }
         return userAgentString
+    }
+}
+
+// Builder for RideParameters
+@objc(UBSDKRideParametersBuilder) public class RideParametersBuilder: NSObject {
+    /// ProductID to use for the ride
+    @objc public var productID: String?
+
+    /// The pickup location to use for the ride
+    @objc public var pickupLocation: CLLocation?
+
+    /// The nickname of the pickup location of the ride
+    @objc public var pickupNickname: String?
+
+    /// The address of the pickup location of the ride
+    @objc public var pickupAddress: String?
+
+    /// This is the name of an Uber saved place. Only “home” or “work” is acceptable.
+    @objc public var pickupPlaceID: String?
+
+    /// The dropoff location to use for the ride
+    @objc public var dropoffLocation: CLLocation?
+
+    /// The nickname of the dropoff location for the ride
+    @objc public var dropoffNickname: String?
+
+    /// The adress of the dropoff location of the ride
+    @objc public var dropoffAddress: String?
+
+    /// This is the name of an Uber saved place. Only “home” or “work” is acceptable.
+    @objc public var dropoffPlaceID: String?
+
+    /// The unique identifier of the payment method selected by a user.
+    @objc public var paymentMethod: String?
+
+    /// The unique identifier of the surge session for a user.
+    @objc public var surgeConfirmationID: String?
+
+    /// Upfront fare quote used to request a ride
+    @objc public var upfrontFare: UpfrontFare?
+
+    /// The source to use for attributing the ride. Used internal to the SDK.
+    @objc var source: String?
+
+    public func build() -> RideParameters {
+        return RideParameters(productID: productID,
+                              pickupLocation: pickupLocation,
+                              pickupNickname: pickupNickname,
+                              pickupAddress: pickupAddress,
+                              pickupPlaceID: pickupPlaceID,
+                              dropoffLocation: dropoffLocation,
+                              dropoffNickname: dropoffNickname,
+                              dropoffAddress: dropoffAddress,
+                              dropoffPlaceID: dropoffPlaceID,
+                              paymentMethod: paymentMethod,
+                              surgeConfirmationID: surgeConfirmationID,
+                              source: source,
+                              upfrontFare: upfrontFare)
     }
 }

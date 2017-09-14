@@ -65,7 +65,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
         XCTAssertNotNil(behavior.modalRideRequestViewController)
         XCTAssertNotNil(behavior.modalRideRequestViewController.rideRequestViewController)
         let pickupLocation = CLLocation(latitude: -32.0, longitude: 42.2)
-        let rideParametersBuilder = RideParameters.Builder()
+        let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.pickupLocation = pickupLocation
         let newRideParams = rideParametersBuilder.build()
         behavior.requestRide(parameters: newRideParams)
@@ -99,7 +99,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
         let baseVC = UIViewControllerMock(testClosure: expectationClosure)
         let initialLoginManger = LoginManager(loginType: .native)
         let behavior = RideRequestViewRequestingBehavior(presentingViewController: baseVC, loginManager: initialLoginManger)
-        behavior.requestRide(parameters: RideParameters.Builder().build())
+        behavior.requestRide(parameters: RideParametersBuilder().build())
         waitForExpectations(timeout: 2.0) {error in
             XCTAssertNil(error)
         }

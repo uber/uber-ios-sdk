@@ -79,7 +79,7 @@ import MapKit
         
         super.init(coder: aDecoder)
 
-        let defaultRideParameters = RideParameters.Builder()
+        let defaultRideParameters = RideParametersBuilder()
         defaultRideParameters.source = RideRequestViewController.sourceString
         
         rideRequestView.rideParameters = defaultRideParameters.build()

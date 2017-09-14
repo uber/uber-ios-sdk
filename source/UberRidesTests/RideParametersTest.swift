@@ -35,7 +35,7 @@ class RideParametersTest: XCTestCase {
     }
     
     func testBuilder_withNoParams() {
-        let params = RideParameters.Builder().build()
+        let params = RideParametersBuilder().build()
         XCTAssertNotNil(params)
         XCTAssertNil(params.pickupLocation)
         XCTAssertNil(params.pickupAddress)
@@ -49,7 +49,7 @@ class RideParametersTest: XCTestCase {
     
     func testBuilder_correctUseCurrentLocation() {
         let testPickup = CLLocation(latitude: 32.0, longitude: -32.0)
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = testPickup
         let params = builder.build()
         XCTAssertEqual(testPickup, params.pickupLocation)
@@ -75,7 +75,7 @@ class RideParametersTest: XCTestCase {
         let testPaymentID = "test payment id"
         let testSurgeConfirm = "test surge confirm"
         let expectedUserAgent = "\(baseUserAgent!)-\(testSource)"
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupLocation = testPickupLocation
         builder.pickupNickname = testPickupNickname
         builder.pickupAddress = testPickupAddress
@@ -108,7 +108,7 @@ class RideParametersTest: XCTestCase {
         let testPaymentID = "test payment id"
         let testSurgeConfirm = "test surge confirm"
         let expectedUserAgent = "\(baseUserAgent!)-\(testSource)"
-        let builder = RideParameters.Builder()
+        let builder = RideParametersBuilder()
         builder.pickupPlaceID = testPickupPlace
         builder.dropoffPlaceID = testDropoffPlace
         builder.paymentMethod = testPaymentID
