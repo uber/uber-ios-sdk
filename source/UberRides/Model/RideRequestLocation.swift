@@ -38,10 +38,20 @@
     @objc public private(set) var name: String?
     
     /// The current bearing in degrees for a moving location.
-    @objc public private(set) var bearing: Int
+    @nonobjc public private(set) var bearing: Int?
+
+    /// The current bearing in degrees for a moving location. -1 if not present.
+    @objc public var objc_bearing: Int {
+        return bearing ?? -1
+    }
     
-    /// ETA is only available when the trips is accepted or arriving. -1 if not available.
-    @objc public private(set) var eta: Int
+    /// ETA is only available when the trips is accepted or arriving.
+    @nonobjc public private(set) var eta: Int?
+
+    /// ETA is only available when the trips is accepted or arriving. -1 if not present.
+    @objc public var objc_eta: Int {
+        return eta ?? -1
+    }
     
     /// The latitude of the location.
     @objc public private(set) var latitude: Double
@@ -53,8 +63,9 @@
         let container = try decoder.container(keyedBy: CodingKeys.self)
         alias = try container.decodeIfPresent(String.self, forKey: .alias)
         name = try container.decodeIfPresent(String.self, forKey: .name)
-        bearing = try container.decodeIfPresent(Int.self, forKey: .bearing) ?? 0
-        eta = try container.decodeIfPresent(Int.self, forKey: .eta) ?? -1
+        bearing = try container.decodeIfPresent(Int.self, forKey: .bearing)
+        eta = try container.decodeIfPresent(Int.self, forKey: .eta)
+        eta = eta != -1 ? eta : nil // Since the API returns -1, converting to an optional. 
         latitude = try container.decode(Double.self, forKey: .latitude)
         longitude = try container.decode(Double.self, forKey: .longitude)
     }

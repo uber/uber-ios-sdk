@@ -35,8 +35,13 @@
     /// Details of the estimated distance.
     @objc public private(set) var distanceEstimate: DistanceEstimate?
 
+    /// The estimated time of vehicle arrival in minutes.
+    @nonobjc public private(set) var pickupEstimate: Int?
+
     /// The estimated time of vehicle arrival in minutes. -1 if there are no cars available.
-    @objc public private(set) var pickupEstimate: Int
+    @objc(pickupEstimate) public var objc_pickupEstimate: Int {
+        return pickupEstimate ?? -1
+    }
 
     /// Upfront Fare for the Ride Estimate. 
     @objc public private(set) var fare: UpfrontFare?
@@ -52,7 +57,8 @@
         let container = try decoder.container(keyedBy: CodingKeys.self)
         priceEstimate = try container.decodeIfPresent(PriceEstimate.self, forKey: .priceEstimate)
         distanceEstimate = try container.decodeIfPresent(DistanceEstimate.self, forKey: .distanceEstimate)
-        pickupEstimate = try container.decodeIfPresent(Int.self, forKey: .pickupEstimate) ?? -1
+        pickupEstimate = try container.decodeIfPresent(Int.self, forKey: .pickupEstimate)
+        pickupEstimate = pickupEstimate != -1 ? pickupEstimate : nil
         fare = try container.decodeIfPresent(UpfrontFare.self, forKey: .fare)
     }
 }

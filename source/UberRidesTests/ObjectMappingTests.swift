@@ -405,12 +405,12 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertNotNil(trip.pickup)
                 XCTAssertEqual(trip.pickup!.latitude, 37.7759792)
                 XCTAssertEqual(trip.pickup!.longitude, -122.41823)
-                XCTAssertEqual(trip.pickup!.eta, -1)
+                XCTAssertNil(trip.pickup!.eta)
 
                 XCTAssertNotNil(trip.destination)
                 XCTAssertEqual(trip.destination!.latitude, 37.7259792)
                 XCTAssertEqual(trip.destination!.longitude, -122.42823)
-                XCTAssertEqual(trip.destination!.eta, -1)
+                XCTAssertNil(trip.destination!.eta)
             }
         }
     }
@@ -550,7 +550,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertNotNil(trip.pickup)
                 XCTAssertEqual(trip.pickup!.latitude, 37.7759792)
                 XCTAssertEqual(trip.pickup!.longitude, -122.41823)
-                XCTAssertEqual(trip.pickup!.eta, -1)
+                XCTAssertNil(trip.pickup!.eta)
 
                 XCTAssertNotNil(trip.destination)
                 XCTAssertEqual(trip.destination!.latitude, 37.7259792)
@@ -650,7 +650,7 @@ class ObjectMappingTests: XCTestCase {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
                 let estimate = try? JSONDecoder.uberDecoder.decode(RideEstimate.self, from: jsonData)
                 XCTAssertNotNil(estimate)
-                XCTAssertEqual(estimate!.pickupEstimate, -1)
+                XCTAssertNil(estimate!.pickupEstimate)
 
                 XCTAssertNotNil(estimate!.priceEstimate)
                 XCTAssertEqual(estimate!.priceEstimate?.surgeConfirmationURL, URL(string: "https://api.uber.com/v1/surge-confirmations/7d604f5e"))

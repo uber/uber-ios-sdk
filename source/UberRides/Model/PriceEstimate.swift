@@ -44,21 +44,41 @@ struct PriceEstimates: Codable {
     
     /// ISO 4217 currency code.
     @objc public private(set) var currencyCode: String?
-    
+
     /// Expected activity distance (in miles).
-    @objc public private(set) var distance: Double
+    @nonobjc public private(set) var distance: Double?
+
+    /// Expected activity distance (in miles). -1 if not present.
+    @objc(distance) public var objc_distance: Double {
+        return distance ?? -1
+    }
     
     /// Expected activity duration (in seconds).
-    @objc public private(set) var duration: Int
+    @nonobjc public private(set) var duration: Int?
+
+    /// Expected activity duration (in seconds). -1 if not present.
+    @objc(duration) public var objc_duration: Int {
+        return duration ?? -1
+    }
     
     /// A formatted string representing the estimate in local currency. Could be range, single number, or "Metered" for TAXI.
     @objc public private(set) var estimate: String?
     
     /// Upper bound of the estimated price.
-    @objc public private(set) var highEstimate: Int
+    @nonobjc public private(set) var highEstimate: Int?
+
+    /// Upper bound of the estimated price. -1 if not present.
+    @objc(highEstimate) public var objc_highEstimate: Int {
+        return highEstimate ?? -1
+    }
     
     /// Lower bound of the estimated price.
-    @objc public private(set) var lowEstimate: Int
+    @nonobjc public private(set) var lowEstimate: Int?
+
+    /// Lower bound of the estimated price. -1 if not present.
+    @objc(lowEstimate) public var objc_lowEstimate: Int {
+        return lowEstimate ?? -1
+    }
     
     /// Display name of product. Ex: "UberBLACK".
     @objc public private(set) var name: String?
@@ -92,11 +112,11 @@ struct PriceEstimates: Codable {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         currencyCode = try container.decodeIfPresent(String.self, forKey: .currencyCode)
-        distance = try container.decodeIfPresent(Double.self, forKey: .distance) ?? 0
-        duration = try container.decodeIfPresent(Int.self, forKey: .duration) ?? 0
+        distance = try container.decodeIfPresent(Double.self, forKey: .distance)
+        duration = try container.decodeIfPresent(Int.self, forKey: .duration)
         estimate = try container.decodeIfPresent(String.self, forKey: .estimate)
-        highEstimate = try container.decodeIfPresent(Int.self, forKey: .highEstimate) ?? 0
-        lowEstimate = try container.decodeIfPresent(Int.self, forKey: .lowEstimate) ?? 0
+        highEstimate = try container.decodeIfPresent(Int.self, forKey: .highEstimate)
+        lowEstimate = try container.decodeIfPresent(Int.self, forKey: .lowEstimate)
         name = try container.decodeIfPresent(String.self, forKey: .name)
         productID = try container.decodeIfPresent(String.self, forKey: .productID)
         surgeConfirmationID = try container.decodeIfPresent(String.self, forKey: .surgeConfirmationID)
