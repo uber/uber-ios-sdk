@@ -29,11 +29,6 @@ import Foundation
 Factory class to build access tokens
 */
 @objc(UBSDKAccessTokenFactory) public class AccessTokenFactory: NSObject {
-    
-    @objc public static func createAccessToken(fromJSONString jsonString: String) -> AccessToken? {
-        return ModelMapper<AccessToken>().mapFromJSON(jsonString)
-    }
-    
     /**
      Builds an AccessToken from the provided redirect URL
      
@@ -59,26 +54,28 @@ Factory class to build access tokens
         guard let queryItems = components.queryItems else {
             throw RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
         }
-        var queryDictionary = [String : String]()
+        var queryDictionary = [String: Any]()
         for queryItem in queryItems {
             guard let value = queryItem.value else {
                 continue
             }
             queryDictionary[queryItem.name] = value
         }
-        if let error = queryDictionary["error"] {
+        if let error = queryDictionary["error"] as? String {
             guard let error = RidesAuthenticationErrorFactory.createRidesAuthenticationError(rawValue: error) else {
                 throw RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
             }
             throw error
         } else {
-            if let expiresInString = queryDictionary["expires_in"] as String? {
+            if let expiresInString = queryDictionary["expires_in"] as? String {
                 let expiresInSeconds =  TimeInterval(atof(expiresInString))
                 let expirationDateSeconds = Date().timeIntervalSince1970 + expiresInSeconds
-                queryDictionary["expiration_date"] = "\(expirationDateSeconds)"
+                queryDictionary["expiration_date"] = expirationDateSeconds
                 queryDictionary.removeValue(forKey: "expires_in")
             }
-            if let token = AccessToken(JSON: queryDictionary) {
+            
+            if let json = try? JSONSerialization.data(withJSONObject: queryDictionary, options: []),
+                let token = try? JSONDecoder.uberDecoder.decode(AccessToken.self, from: json) {
                 return token
             }
         }

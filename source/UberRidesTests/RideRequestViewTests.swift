@@ -81,9 +81,7 @@ class RideRequestViewTests: XCTestCase {
      Test that no exception is thrown for authorization if custom access token is passed.
      */
     func testAuthorizeWithCustomAccessToken() {
-        let tokenString = "accessToken1234"
-        let tokenData = ["access_token" : tokenString]
-        let token = AccessToken(JSON: tokenData)
+        let token = AccessToken(tokenString: "accessToken1234")
         let view = RideRequestView(rideParameters: RideParameters(), accessToken: token, frame: CGRect.zero)
         XCTAssertNotNil(view.accessToken)
         XCTAssertEqual(view.accessToken, token)
@@ -93,12 +91,7 @@ class RideRequestViewTests: XCTestCase {
      Test that authorization passes with token in token manager.
      */
     func testAuthorizeWithTokenManagerAccessToken() {
-        let tokenString = "accessToken1234"
-        let tokenData = ["access_token" : tokenString]
-        guard let token = AccessToken(JSON: tokenData) else {
-            XCTAssert(false)
-            return
-        }
+        let token = AccessToken(tokenString: "accessToken1234")
         _ = TokenManager.save(accessToken: token)
         
         let view = RideRequestView()
@@ -112,9 +105,7 @@ class RideRequestViewTests: XCTestCase {
      Test that load is successful when access token is set after initialization.
      */
     func testAuthorizeWithTokenSetAfterInitialization() {
-        let tokenString = "accessToken1234"
-        let tokenData = ["access_token" : tokenString]
-        let token = AccessToken(JSON: tokenData)
+        let token = AccessToken(tokenString: "accessToken1234")
         let view = RideRequestView()
         view.accessToken = token
         XCTAssertNotNil(view.accessToken)
@@ -163,8 +154,8 @@ class RideRequestViewTests: XCTestCase {
         
         let testIdentifier = "testAccessTokenIdentifier"
         _ = TokenManager.deleteToken(identifier: testIdentifier)
-        let testToken = AccessToken(JSON: ["access_token" : "testTokenString"])
-        _ = TokenManager.save(accessToken: testToken!, tokenIdentifier: testIdentifier)
+        let testToken = AccessToken(tokenString: "testTokenString")
+        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
         defer {
             _ = TokenManager.deleteToken(identifier: testIdentifier)
         }

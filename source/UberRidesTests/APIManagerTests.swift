@@ -29,7 +29,7 @@ import CoreLocation
 let offset = 1
 let limit = 25
 let requestID = "request1234"
-let placeID = Place.Home
+let placeID = Place.home
 
 struct ExpectedEndpoint {
     static let GetProducts = "https://sandbox-api.uber.com/v1/products?latitude=\(pickupLat)&longitude=\(pickupLong)"
@@ -331,7 +331,7 @@ class APIManagerTests: XCTestCase {
      Tests the GET /v1/places/{place_id} endpoint.
      */
     func testGetPlace() {
-        let placeID = Place.Home
+        let placeID = Place.home
         let request = buildRequestForEndpoint(Places.getPlace(placeID: placeID))
         XCTAssertEqual(request.httpMethod, Method.get.rawValue)
         if let url = request.url {
@@ -347,7 +347,7 @@ class APIManagerTests: XCTestCase {
      */
     func testPutPlace() {
         let testAddress = "testAddress"
-        let placeID = Place.Home
+        let placeID = Place.home
         let request = buildRequestForEndpoint(Places.putPlace(placeID: placeID, address: testAddress))
         XCTAssertEqual(request.httpMethod, Method.put.rawValue)
         if let url = request.url {
@@ -381,7 +381,7 @@ class APIManagerTests: XCTestCase {
      Tests the PATCH /v1/requests/curent endpoint.
      */
     func testPatchCurrentRequest() {
-        let rideParams = RideParameters(pickupPlaceID: Place.Home, dropoffPlaceID: nil)
+        let rideParams = RideParameters(pickupPlaceID: Place.home, dropoffPlaceID: nil)
         let request = buildRequestForEndpoint(Requests.patchCurrent(rideParameters: rideParams))
         XCTAssertEqual(request.httpMethod, "PATCH")
         if let url = request.url {
@@ -413,14 +413,14 @@ class APIManagerTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(dictionary["start_place_id"] as? String, Place.Home)
+        XCTAssertEqual(dictionary["start_place_id"] as? String, Place.home)
     }
     
     /**
      Tests the PATCH /v1/requests/{request_id} endpoint.
      */
     func testPatchRequestByID() {
-        let rideParams = RideParameters(pickupPlaceID: Place.Home, dropoffPlaceID: nil)
+        let rideParams = RideParameters(pickupPlaceID: Place.home, dropoffPlaceID: nil)
         let request = buildRequestForEndpoint(Requests.patchRequest(requestID: requestID, rideParameters: rideParams))
         XCTAssertEqual(request.httpMethod, "PATCH")
         if let url = request.url {
@@ -452,7 +452,7 @@ class APIManagerTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(dictionary["start_place_id"] as? String, Place.Home)
+        XCTAssertEqual(dictionary["start_place_id"] as? String, Place.home)
     }
     
     /**

@@ -22,36 +22,30 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: RideRequestLocation
 
 /**
  *  Location of a pickup or destination in a ride request.
  */
-@objc(UBSDKRideRequestLocation) public class RideRequestLocation: NSObject {
+@objc(UBSDKRideRequestLocation) public class RideRequestLocation: NSObject, Codable {
     
     /// The current bearing in degrees for a moving location.
-    @objc public private(set) var bearing: Int = 0
+    @objc public private(set) var bearing: Int
     
     /// ETA is only available when the trips is accepted or arriving.
-    @objc public private(set) var eta: Int = 0
+    @objc public private(set) var eta: Int
     
     /// The latitude of the location.
-    @objc public private(set) var latitude: Double = 0
+    @objc public private(set) var latitude: Double
     
     /// The longitude of the location.
-    @objc public private(set) var longitude: Double = 0
-    
-    public required init?(map: Map) {
-    }
-}
+    @objc public private(set) var longitude: Double
 
-extension RideRequestLocation: UberModel {
-    public func mapping(map: Map) {
-        bearing   <- map["bearing"]
-        eta       <- map["eta"]
-        latitude  <- map["latitude"]
-        longitude <- map["longitude"]
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        bearing = try container.decodeIfPresent(Int.self, forKey: .bearing) ?? 0
+        eta = try container.decodeIfPresent(Int.self, forKey: .eta) ?? 0
+        latitude = try container.decodeIfPresent(Double.self, forKey: .latitude) ?? 0
+        longitude = try container.decodeIfPresent(Double.self, forKey: .longitude) ?? 0
     }
 }

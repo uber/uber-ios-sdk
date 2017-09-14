@@ -134,7 +134,7 @@ class RequestLayerTests: XCTestCase {
             XCTAssertTrue(response.error is RidesClientError)
             XCTAssertNotNil(response.error!.meta)
             
-            let meta = response.error!.meta! as! [String: [String: String]]
+                let meta = response.error!.meta! as! [String: [String: String]]
             XCTAssertEqual(meta["surge_confirmation"]!["href"], "api.uber.com/v1/surge-confirmations/abc")
             XCTAssertEqual(meta["surge_confirmation"]!["surge_confirmation_id"], "abc")
             

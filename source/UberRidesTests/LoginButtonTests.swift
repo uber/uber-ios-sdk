@@ -36,8 +36,7 @@ class LoginButtonTests : XCTestCase {
         Configuration.restoreDefaults()
         Configuration.shared.isSandbox = true
         keychain = KeychainWrapper()
-        let tokenData = ["access_token" : "testTokenString"]
-        testToken = AccessToken(JSON: tokenData)
+        testToken = AccessToken(tokenString: "testTokenString")
     }
     
     override func tearDown() {

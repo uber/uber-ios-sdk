@@ -60,7 +60,7 @@ class AccessTokenFactoryTests: XCTestCase {
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertEqual(token.refreshToken, refreshTokenString)
-            XCTAssertEqual(token.grantedScopes?.toRidesScopeString(), allowedScopesString)
+            XCTAssertEqual(token.grantedScopes.toRidesScopeString(), allowedScopesString)
             
             guard let expiration = token.expirationDate?.timeIntervalSince1970 else {
                 XCTAssert(false)
@@ -129,7 +129,7 @@ class AccessTokenFactoryTests: XCTestCase {
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertNil(token.refreshToken)
             XCTAssertNil(token.expirationDate)
-            XCTAssertEqual(token.grantedScopes!, [RidesScope]())
+            XCTAssertEqual(token.grantedScopes, [RidesScope]())
         } catch _ as NSError {
             XCTAssert(false)
         } catch {
@@ -158,10 +158,9 @@ class AccessTokenFactoryTests: XCTestCase {
     }
     
     func testParseTokenFromURL_withFragmentAndQuery_withSuccess() {
-        var components = URLComponents()
+        var components = URLComponents(string: redirectURI)!
         components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)"
         components.query = "expires_in=\(expirationTime)&scope=\(allowedScopesString)"
-        components.host = redirectURI
         guard let url = components.url else {
             XCTAssert(false)
             return
@@ -173,7 +172,7 @@ class AccessTokenFactoryTests: XCTestCase {
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertEqual(token.refreshToken, refreshTokenString)
-            XCTAssertEqual(token.grantedScopes?.toRidesScopeString(), allowedScopesString)
+            XCTAssertEqual(token.grantedScopes.toRidesScopeString(), allowedScopesString)
             
             guard let expiration = token.expirationDate?.timeIntervalSince1970 else {
                 XCTAssert(false)
@@ -183,8 +182,6 @@ class AccessTokenFactoryTests: XCTestCase {
             let timeDiff = abs(expiration - expectedExpirationInterval)
             XCTAssertLessThanOrEqual(timeDiff, maxExpirationDifference)
             
-        } catch _ as NSError {
-            XCTAssert(false)
         } catch {
             XCTAssert(false)
         }
@@ -204,7 +201,7 @@ class AccessTokenFactoryTests: XCTestCase {
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertNil(token.refreshToken)
             XCTAssertNil(token.expirationDate)
-            XCTAssertEqual(token.grantedScopes!, [RidesScope]())
+            XCTAssertEqual(token.grantedScopes, [RidesScope]())
         } catch _ as NSError {
             XCTAssert(false)
         } catch {
@@ -215,7 +212,7 @@ class AccessTokenFactoryTests: XCTestCase {
     func testParseValidJsonStringToAccessToken() {
         let tokenString = "tokenString1234"
         let jsonString = "{\"access_token\": \"\(tokenString)\"}"
-        let accessToken = AccessTokenFactory.createAccessToken(fromJSONString: jsonString)
+        let accessToken = try? JSONDecoder.uberDecoder.decode(AccessToken.self, from: jsonString.data(using: .utf8)!)
         
         XCTAssertNotNil(accessToken)
         XCTAssertEqual(accessToken?.tokenString, tokenString)
@@ -224,7 +221,7 @@ class AccessTokenFactoryTests: XCTestCase {
     func testParseInvalidJsonStringToAccessToken() {
         let tokenString = "tokenString1234"
         let jsonString = "{\"access_token\": \"\(tokenString)\""
-        let accessToken = AccessTokenFactory.createAccessToken(fromJSONString: jsonString)
+        let accessToken = try? JSONDecoder.uberDecoder.decode(AccessToken.self, from: jsonString.data(using: .utf8)!)
         
         XCTAssertNil(accessToken)
     }

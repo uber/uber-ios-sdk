@@ -23,7 +23,6 @@
 //  THE SOFTWARE.
 
 import XCTest
-import ObjectMapper
 @testable import UberRides
 
 class ObjectMappingTests: XCTestCase {
@@ -46,14 +45,13 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getProductID", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
-                let product = ModelMapper<UberProduct>().mapFromJSON(JSONString)
+                let product = try? JSONDecoder.uberDecoder.decode(UberProduct.self, from: jsonData)
                 XCTAssertNotNil(product)
                 XCTAssertEqual(product!.productID, "d4abaae7-f4d6-4152-91cc-77523e8165a4")
                 XCTAssertEqual(product!.name, "UberBLACK")
                 XCTAssertEqual(product!.details, "The original Uber")
                 XCTAssertEqual(product!.capacity, 4)
-                XCTAssertEqual(product!.imagePath, "http://d1a3f4spazzrp4.cloudfront.net/car.jpg")
+                XCTAssertEqual(product!.imagePath, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car.jpg")!)
                 
                 let priceDetails = product!.priceDetails
                 XCTAssertNotNil(priceDetails)
@@ -81,12 +79,12 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getProductID", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                var JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
+                let JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
                 
                 // Represent some bad JSON
-                JSONString = JSONString.replacingOccurrences(of: "[", with: "")
-                
-                let product = ModelMapper<UberProducts>().mapFromJSON(JSONString)
+                let jsonData = JSONString.replacingOccurrences(of: "[", with: "").data(using: .utf8)!
+
+                let product = try? JSONDecoder.uberDecoder.decode(UberProducts.self, from: jsonData)
                 XCTAssertNil(product)
             }
         }
@@ -99,8 +97,7 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getProducts", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
-                let products = ModelMapper<UberProducts>().mapFromJSON(JSONString)
+                let products = try? JSONDecoder.uberDecoder.decode(UberProducts.self, from: jsonData)
                 XCTAssertNotNil(products)
                 XCTAssertNotNil(products!.list)
                 XCTAssertEqual(products!.list!.count, 5)
@@ -120,12 +117,12 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getProducts", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                var JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
+                let JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
                 
                 // Represent some bad JSON
-                JSONString = JSONString.replacingOccurrences(of: "[", with: "")
-                
-                let products = ModelMapper<UberProducts>().mapFromJSON(JSONString)
+                let jsonData = JSONString.replacingOccurrences(of: "[", with: "").data(using: .utf8)!
+
+                let products = try? JSONDecoder.uberDecoder.decode(UberProducts.self, from: jsonData)
                 XCTAssertNil(products)
             }
         }
@@ -138,8 +135,7 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getTimeEstimates", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
-                let timeEstimates = ModelMapper<TimeEstimates>().mapFromJSON(JSONString)
+                let timeEstimates = try? JSONDecoder.uberDecoder.decode(TimeEstimates.self, from: jsonData)
                 XCTAssertNotNil(timeEstimates)
                 XCTAssertNotNil(timeEstimates!.list)
                 
@@ -162,12 +158,12 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getTimeEstimates", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                var JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
+                let JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
                 
                 // Represent some bad JSON
-                JSONString = JSONString.replacingOccurrences(of: "[", with: "")
-                
-                let timeEstimates = ModelMapper<TimeEstimates>().mapFromJSON(JSONString)
+                let jsonData = JSONString.replacingOccurrences(of: "[", with: "").data(using: .utf8)!
+
+                let timeEstimates = try? JSONDecoder.uberDecoder.decode(TimeEstimates.self, from: jsonData)
                 XCTAssertNil(timeEstimates)
             }
         }
@@ -180,8 +176,12 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getPriceEstimates", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
-                let priceEstimates = ModelMapper<PriceEstimates>().mapFromJSON(JSONString)
+                var priceEstimates: PriceEstimates?
+                do {
+                    priceEstimates = try JSONDecoder.uberDecoder.decode(PriceEstimates.self, from: jsonData)
+                } catch let e {
+                    XCTFail(e.localizedDescription)
+                }
                 XCTAssertNotNil(priceEstimates)
                 XCTAssertNotNil(priceEstimates!.list)
                 
@@ -207,12 +207,12 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getPriceEstimates", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                var JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
+                let JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
                 
                 // Represent some bad JSON
-                JSONString = JSONString.replacingOccurrences(of: "[", with: "")
-                
-                let priceEstimates = ModelMapper<PriceEstimates>().mapFromJSON(JSONString)
+                let jsonData = JSONString.replacingOccurrences(of: "[", with: "").data(using: .utf8)!
+
+                let priceEstimates = try? JSONDecoder.uberDecoder.decode(PriceEstimates.self, from: jsonData)
                 XCTAssertNil(priceEstimates)
             }
         }
@@ -225,8 +225,7 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getHistory", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
-                let userActivity = ModelMapper<TripHistory>().mapFromJSON(JSONString)
+                let userActivity = try? JSONDecoder.uberDecoder.decode(TripHistory.self, from: jsonData)
                 XCTAssertNotNil(userActivity)
                 XCTAssertNotNil(userActivity!.history)
                 XCTAssertEqual(userActivity!.count, 1)
@@ -245,7 +244,7 @@ class ObjectMappingTests: XCTestCase {
                 
                 XCTAssertNotNil(history[0].startCity)
                 
-                let city = history[0].startCity!
+                let city = history[0].startCity
                 XCTAssertEqual(city.name, "San Francisco")
                 XCTAssertEqual(city.latitude, 37.7749295)
                 XCTAssertEqual(city.longitude, -122.4194155)
@@ -260,12 +259,12 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getHistory", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                var JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
+                let JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
                 
                 // Represent some bad JSON
-                JSONString = JSONString.replacingOccurrences(of: "[", with: "")
-                
-                let userActivity = ModelMapper<TripHistory>().mapFromJSON(JSONString)
+                let jsonData = JSONString.replacingOccurrences(of: "[", with: "").data(using: .utf8)!
+
+                let userActivity = try? JSONDecoder.uberDecoder.decode(TripHistory.self, from: jsonData)
                 XCTAssertNil(userActivity)
             }
         }
@@ -278,8 +277,7 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getMe", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding:  String.Encoding.utf8)!
-                let userProfile = ModelMapper<UserProfile>().mapFromJSON(JSONString)
+                let userProfile = try? JSONDecoder.uberDecoder.decode(UserProfile.self, from: jsonData)
                 XCTAssertNotNil(userProfile)
                 XCTAssertEqual(userProfile!.firstName, "Uber")
                 XCTAssertEqual(userProfile!.lastName, "Developer")
@@ -298,10 +296,10 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getMe", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                var JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
-                JSONString = JSONString.replacingOccurrences(of: "{", with: "")
-                
-                let userProfile = ModelMapper<UserProfile>().mapFromJSON(JSONString)
+                let JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
+                let jsonData = JSONString.replacingOccurrences(of: "{", with: "").data(using: .utf8)!
+
+                let userProfile = try? JSONDecoder.uberDecoder.decode(UserProfile.self, from: jsonData)
                 XCTAssertNil(userProfile)
             }
         }
@@ -314,8 +312,7 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "postRequests", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding:  String.Encoding.utf8)!
-                guard let trip = ModelMapper<Ride>().mapFromJSON(JSONString) else {
+                guard let trip = try? JSONDecoder.uberDecoder.decode(Ride.self, from: jsonData) else {
                     XCTAssert(false)
                     return
                 }
@@ -339,8 +336,7 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getRequest", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding:  String.Encoding.utf8)!
-                guard let trip = ModelMapper<Ride>().mapFromJSON(JSONString) else {
+                guard let trip = try? JSONDecoder.uberDecoder.decode(Ride.self, from: jsonData) else {
                     XCTAssert(false)
                     return
                 }
@@ -359,11 +355,11 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(trip.vehicle!.make, "Bugatti")
                 XCTAssertEqual(trip.vehicle!.model, "Veyron")
                 XCTAssertEqual(trip.vehicle!.licensePlate, "I<3Uber")
-                XCTAssertEqual(trip.vehicle!.pictureURL, "https://d1w2poirtb3as9.cloudfront.net/car.jpeg")
+                XCTAssertEqual(trip.vehicle!.pictureURL, URL(string: "https://d1w2poirtb3as9.cloudfront.net/car.jpeg")!)
                 
                 XCTAssertNotNil(trip.driver)
                 XCTAssertEqual(trip.driver!.name, "Bob")
-                XCTAssertEqual(trip.driver!.pictureURL, "https://d1w2poirtb3as9.cloudfront.net/img.jpeg")
+                XCTAssertEqual(trip.driver!.pictureURL, URL(string: "https://d1w2poirtb3as9.cloudfront.net/img.jpeg")!)
                 XCTAssertEqual(trip.driver!.phoneNumber, "(555)555-5555")
                 XCTAssertEqual(trip.driver!.rating, 5)
                 
@@ -387,14 +383,13 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "requestEstimate", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding:  String.Encoding.utf8)!
-                let estimate = ModelMapper<RideEstimate>().mapFromJSON(JSONString)
+                let estimate = try? JSONDecoder.uberDecoder.decode(RideEstimate.self, from: jsonData)
                 XCTAssertNotNil(estimate)
                 XCTAssertEqual(estimate!.pickupEstimate, 2)
                 
                 XCTAssertNotNil(estimate!.priceEstimate)
-                XCTAssertEqual(estimate!.priceEstimate!.surgeConfirmationURL, "https://api.uber.com/v1/surge-confirmations/7d604f5e")
-                XCTAssertEqual(estimate!.priceEstimate!.surgeConfirmationID, "7d604f5e")
+                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationURL, "https://api.uber.com/v1/surge-confirmations/7d604f5e")
+                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationID, "7d604f5e")
                 
                 XCTAssertNotNil(estimate!.distanceEstimate)
                 XCTAssertEqual(estimate!.distanceEstimate!.distance, 2.1)
@@ -408,14 +403,13 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "requestEstimateNoCars", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding: String.Encoding.utf8)!
-                let estimate = ModelMapper<RideEstimate>().mapFromJSON(JSONString)
+                let estimate = try? JSONDecoder.uberDecoder.decode(RideEstimate.self, from: jsonData)
                 XCTAssertNotNil(estimate)
                 XCTAssertEqual(estimate!.pickupEstimate, -1)
                 
                 XCTAssertNotNil(estimate!.priceEstimate)
-                XCTAssertEqual(estimate!.priceEstimate!.surgeConfirmationURL, "https://api.uber.com/v1/surge-confirmations/7d604f5e")
-                XCTAssertEqual(estimate!.priceEstimate!.surgeConfirmationID, "7d604f5e")
+                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationURL, "https://api.uber.com/v1/surge-confirmations/7d604f5e")
+                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationID, "7d604f5e")
                 
                 XCTAssertNotNil(estimate!.distanceEstimate)
                 XCTAssertEqual(estimate!.distanceEstimate!.distance, 2.1)
@@ -432,8 +426,7 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "place", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding:  String.Encoding.utf8)!
-                guard let place = ModelMapper<Place>().mapFromJSON(JSONString) else {
+                guard let place = try? JSONDecoder.uberDecoder.decode(Place.self, from: jsonData) else {
                     XCTAssert(false)
                     return
                 }
@@ -453,8 +446,7 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getPaymentMethods", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding:  String.Encoding.utf8)!
-                guard let paymentMethods = ModelMapper<PaymentMethods>().mapFromJSON(JSONString) else {
+                guard let paymentMethods = try? JSONDecoder.uberDecoder.decode(PaymentMethods.self, from: jsonData) else {
                     XCTAssert(false)
                     return
                 }
@@ -496,19 +488,14 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "rideReceipt", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding:  String.Encoding.utf8)!
-                guard let receipt = ModelMapper<RideReceipt>().mapFromJSON(JSONString) else {
+                guard let receipt = try? JSONDecoder.uberDecoder.decode(RideReceipt.self, from: jsonData) else {
                     XCTAssert(false)
                     return
                 }
                 
                 XCTAssertEqual(receipt.requestID, "b5512127-a134-4bf4-b1ba-fe9f48f56d9d")
                 
-                guard let charges = receipt.charges else {
-                    XCTAssert(false)
-                    return
-                }
-                
+                let charges = receipt.charges
                 XCTAssertEqual(charges.count, 3)
                 XCTAssertEqual(charges[0].name, "Base Fare")
                 XCTAssertEqual(charges[0].amount, 2.20)
@@ -529,10 +516,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(surgeCharge.amount, 4.26)
                 XCTAssertEqual(surgeCharge.type, "surge")
                 
-                guard let chargeAdjustments = receipt.chargeAdjustments else {
-                    XCTAssert(false)
-                    return
-                }
+                let chargeAdjustments = receipt.chargeAdjustments
                 
                 XCTAssertEqual(chargeAdjustments.count, 3)
                 XCTAssertEqual(chargeAdjustments[0].name, "Promotion")
@@ -565,18 +549,14 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "rideReceiptNullSurgeTotalOwed", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding:  String.Encoding.utf8)!
-                guard let receipt = ModelMapper<RideReceipt>().mapFromJSON(JSONString) else {
+                guard let receipt = try? JSONDecoder.uberDecoder.decode(RideReceipt.self, from: jsonData) else {
                     XCTAssert(false)
                     return
                 }
                 
                 XCTAssertEqual(receipt.requestID, "b5512127-a134-4bf4-b1ba-fe9f48f56d9d")
                 
-                guard let charges = receipt.charges else {
-                    XCTAssert(false)
-                    return
-                }
+                let charges = receipt.charges
                 
                 XCTAssertEqual(charges.count, 3)
                 XCTAssertEqual(charges[0].name, "Base Fare")
@@ -591,10 +571,7 @@ class ObjectMappingTests: XCTestCase {
                 
                 XCTAssertNil(receipt.surgeCharge)
                 
-                guard let chargeAdjustments = receipt.chargeAdjustments else {
-                    XCTAssert(false)
-                    return
-                }
+                let chargeAdjustments = receipt.chargeAdjustments
                 
                 XCTAssertEqual(chargeAdjustments.count, 3)
                 XCTAssertEqual(chargeAdjustments[0].name, "Promotion")
@@ -630,9 +607,9 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "rideReceipt", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                var JSONString = String(data: jsonData, encoding:  String.Encoding.utf8)!
-                JSONString = JSONString.replacingOccurrences(of: "[", with: "")
-                let receipt = ModelMapper<RideReceipt>().mapFromJSON(JSONString)
+                let JSONString = String(data: jsonData, encoding:  String.Encoding.utf8)!
+                let jsonData = JSONString.replacingOccurrences(of: "[", with: "").data(using: .utf8)!
+                let receipt = try? JSONDecoder.uberDecoder.decode(RideReceipt.self, from: jsonData)
                 XCTAssertNil(receipt)
                 return
             }
@@ -648,13 +625,12 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "rideMap", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let JSONString = String(data: jsonData, encoding:  String.Encoding.utf8)!
-                guard let map = ModelMapper<RideMap>().mapFromJSON(JSONString) else {
+                guard let map = try? JSONDecoder.uberDecoder.decode(RideMap.self, from: jsonData) else {
                     XCTAssert(false)
                     return
                 }
                 
-                XCTAssertEqual(map.path, "https://trip.uber.com/abc123")
+                XCTAssertEqual(map.path, URL(string: "https://trip.uber.com/abc123")!)
                 XCTAssertEqual(map.requestID, "b5512127-a134-4bf4-b1ba-fe9f48f56d9d")
                 
                 return

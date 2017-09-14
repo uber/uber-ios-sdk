@@ -1,8 +1,8 @@
 //
-//  ModelMapper.swift
+//  Codable+Uber.swift
 //  UberRides
 //
-//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
-protocol UberModel: Mappable {
-    init?(map: Map)
-    mutating func mapping(map: Map)
-}
-
-/**
- *  Layer between models and external callers mapping JSON to and from models.
- */
-struct ModelMapper<U> where U:UberModel {
-    /**
-     Map a JSON string representation to a model that conforms to the Mappable protocol.
-     
-     - parameter json: string representing the JSON information.
-     - returns: an object that conforms to the Mappable protocol.
-     */
-    func mapFromJSON(_ json: String) -> U? {
-        return Mapper<U>().map(JSONString: json)
+extension JSONDecoder {
+    /// JSON Decoder tailored to the Uber API JSON
+    static var uberDecoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .secondsSince1970
+        return decoder
     }
 }

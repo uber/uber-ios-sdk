@@ -23,7 +23,6 @@
 //  THE SOFTWARE.
 
 import CoreLocation
-import ObjectMapper
 
 // MARK: RideRequestDataBuilder
 

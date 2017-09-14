@@ -23,22 +23,17 @@
 //  THE SOFTWARE.
 
 import UIKit
-import ObjectMapper
 
 // MARK: UberProducts
 
 /**
 *  Internal object that contains a list of Uber products.
 */
-struct UberProducts {
+struct UberProducts: Codable {
     var list: [UberProduct]?
-    init?(map: Map){
-    }
-}
 
-extension UberProducts: UberModel {
-    mutating func mapping(map: Map) {
-        list <- map["products"]
+    enum CodingKeys: String, CodingKey {
+        case list = "products"
     }
 }
 
@@ -47,41 +42,42 @@ extension UberProducts: UberModel {
 /**
 *  Contains information for a single Uber product.
 */
-@objc(UBSDKUberProduct) public class UberProduct: NSObject {
+@objc(UBSDKUberProduct) public class UberProduct: NSObject, Codable {
     /// Unique identifier representing a specific product for a given latitude & longitude.
-    @objc public private(set) var productID: String?
+    @objc public private(set) var productID: String
     
     /// Display name of product. Ex: "UberBLACK".
-    @objc public private(set) var name: String?
+    @objc public private(set) var name: String
     
     /// Description of product. Ex: "The original Uber".
-    @objc public private(set) var details: String?
+    @objc public private(set) var details: String
     
     /// Capacity of product. Ex: 4, for a product that fits 4.
-    @objc public private(set) var capacity: Int = 0
+    @objc public private(set) var capacity: Int
     
     /// Path of image URL representing the product.
-    @objc public private(set) var imagePath: String?
+    @objc public private(set) var imagePath: URL
     
     /// The basic price details. See `PriceDetails` for structure.
     @objc public private(set) var priceDetails: PriceDetails?
-    
-    /// Specifies whether this product allows for the pickup and dropoff of other riders during the trip.
-    public fileprivate(set) var shared: Bool = false
-    
-    public required init?(map: Map) {
-    }
-}
 
-extension UberProduct : UberModel {
-    public func mapping(map: Map) {
-        productID    <- map["product_id"]
-        name         <- map["display_name"]
-        details      <- map["description"]
-        capacity     <- map["capacity"]
-        imagePath    <- map["image"]
-        priceDetails <- map["price_details"]
-        shared       <- map["shared"]
+    enum CodingKeys: String, CodingKey {
+        case productID    = "product_id"
+        case name         = "display_name"
+        case details      = "description"
+        case capacity     = "capacity"
+        case imagePath    = "image"
+        case priceDetails = "price_details"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        productID = try container.decode(String.self, forKey: .productID)
+        name = try container.decode(String.self, forKey: .name)
+        details = try container.decode(String.self, forKey: .details)
+        capacity = try container.decode(Int.self, forKey: .capacity)
+        imagePath = try container.decode(URL.self, forKey: .imagePath)
+        priceDetails = try container.decodeIfPresent(PriceDetails.self, forKey: .priceDetails)
     }
 }
 
@@ -90,7 +86,7 @@ extension UberProduct : UberModel {
 /**
 *  Contains basic price details for an Uber product.
 */
-@objc(UBSDKPriceDetails) public class PriceDetails : NSObject {
+@objc(UBSDKPriceDetails) public class PriceDetails: NSObject, Codable {
     /// Unit of distance used to calculate fare (mile or km).
     @objc public private(set) var distanceUnit: String?
     
@@ -114,21 +110,16 @@ extension UberProduct : UberModel {
     
     /// Array containing additional fees added to the price. See `ServiceFee`.
     @objc public private(set) var serviceFees: [ServiceFee]?
-    
-    public required init?(map: Map) {
-    }
-}
 
-extension PriceDetails : Mappable {
-    public func mapping(map: Map) {
-        distanceUnit    <- map["distance_unit"]
-        currencyCode    <- map["currency_code"]
-        costPerMinute   <- map["cost_per_minute"]
-        costPerDistance <- map["cost_per_distance"]
-        baseFee         <- map["base"]
-        minimumFee      <- map["minimum"]
-        cancellationFee <- map["cancellation_fee"]
-        serviceFees     <- map["service_fees"]
+    enum CodingKeys: String, CodingKey {
+        case distanceUnit    = "distance_unit"
+        case currencyCode    = "currency_code"
+        case costPerMinute   = "cost_per_minute"
+        case costPerDistance = "cost_per_distance"
+        case baseFee         = "base"
+        case minimumFee      = "minimum"
+        case cancellationFee = "cancellation_fee"
+        case serviceFees     = "service_fees"
     }
 }
 
@@ -137,20 +128,15 @@ extension PriceDetails : Mappable {
 /**
 *  Contains information for additional fees that can be added to the price of an Uber product.
 */
-public class ServiceFee : NSObject {
+public class ServiceFee: NSObject, Codable {
     /// The name of the service fee.
     @objc public private(set) var name: String?
     
     /// The amount of the service fee.
     @objc public private(set) var fee: Double = 0.0
-    
-    public required init?(map: Map) {
-    }
-}
 
-extension ServiceFee: Mappable {
-    public func mapping(map: Map) {
-        name <- map["name"]
-        fee  <- map["fee"]
+    enum CodingKeys: String, CodingKey {
+        case name = "name"
+        case fee  = "fee"
     }
 }

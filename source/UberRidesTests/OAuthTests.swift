@@ -267,7 +267,7 @@ class OAuthTests: XCTestCase {
         let result = keychain.getObjectForKey(key) as! AccessToken
         XCTAssertEqual(result.tokenString, token.tokenString)
         XCTAssertEqual(result.refreshToken, token.refreshToken)
-        XCTAssertEqual(result.grantedScopes!, token.grantedScopes!)
+        XCTAssertEqual(result.grantedScopes, token.grantedScopes)
         
         XCTAssertTrue(keychain.deleteObjectForKey(key))
         
@@ -293,7 +293,7 @@ class OAuthTests: XCTestCase {
         let result = keychain.getObjectForKey(key) as! AccessToken
         XCTAssertEqual(result.tokenString, newToken.tokenString)
         XCTAssertEqual(result.refreshToken, newToken.refreshToken)
-        XCTAssertEqual(result.grantedScopes!, newToken.grantedScopes!)
+        XCTAssertEqual(result.grantedScopes, newToken.grantedScopes)
         
         XCTAssertTrue(keychain.deleteObjectForKey(key))
         
@@ -512,10 +512,11 @@ private class UIViewControllerMock : UIViewController {
 
 func tokenFixture(_ accessToken: String = "token") -> AccessToken?
 {
-    var jsonDictionary = [String : AnyObject]()
-    jsonDictionary["access_token"] = accessToken as AnyObject?
-    jsonDictionary["refresh_token"] = "refresh" as AnyObject?
-    jsonDictionary["expires_in"] = "10030.23" as AnyObject?
-    jsonDictionary["scope"] = "profile history" as AnyObject?
-    return AccessToken(JSON: jsonDictionary)
+    var jsonDictionary = [String: String]()
+    jsonDictionary["access_token"] = accessToken
+    jsonDictionary["refresh_token"] = "refresh"
+    jsonDictionary["expires_in"] = "10030.23"
+    jsonDictionary["scope"] = "profile history"
+    let jsonData = try! JSONEncoder().encode(jsonDictionary)
+    return try? JSONDecoder.uberDecoder.decode(AccessToken.self, from: jsonData)
 }

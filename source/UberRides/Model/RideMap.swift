@@ -22,28 +22,27 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: RideMap
 
 /**
  *  Visual representation of a ride request, only available after a request is accepted.
  */
-@objc(UBSDKRideMap) public class RideMap: NSObject {
+@objc(UBSDKRideMap) public class RideMap: NSObject, Codable {
     
     /// URL to a map representing the requested trip.
-    @objc public private(set) var path: String?
+    @objc public private(set) var path: URL
     
     /// Unique identifier representing a ride request.
-    @objc public private(set) var requestID: String?
-    
-    public required init?(map: Map) {
-    }
-}
+    @objc public private(set) var requestID: String = ""
 
-extension RideMap: UberModel {
-    public func mapping(map: Map) {
-        path      <- map["href"]
-        requestID <- map["request_id"]
+    enum CodingKeys: String, CodingKey {
+        case path      = "href"
+        case requestID = "request_id"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        path = try container.decode(URL.self, forKey: .path)
+        requestID = try container.decode(String.self, forKey: .requestID)
     }
 }

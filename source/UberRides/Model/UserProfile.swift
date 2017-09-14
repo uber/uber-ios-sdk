@@ -22,14 +22,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import ObjectMapper
-
 // MARK: UserProfile
 
 /**
 *  Information regarding an Uber user.
 */
-@objc(UBSDKUserProfile) public class UserProfile: NSObject {
+@objc(UBSDKUserProfile) public class UserProfile: NSObject, Codable {
     /// First name of the Uber user.
     @objc public private(set) var firstName: String?
     
@@ -46,19 +44,24 @@ import ObjectMapper
     @objc public private(set) var promoCode: String?
     
     /// Unique identifier of the Uber user.
-    @objc public private(set) var UUID: String?
-    
-    public required init?(map: Map) {
-    }
-}
+    @objc public private(set) var UUID: String
 
-extension UserProfile: UberModel {
-    public func mapping(map: Map) {
-        firstName   <- map["first_name"]
-        lastName    <- map["last_name"]
-        email       <- map["email"]
-        picturePath <- map["picture"]
-        promoCode   <- map["promo_code"]
-        UUID        <- map["uuid"]
+    enum CodingKeys: String, CodingKey {
+        case firstName   = "first_name"
+        case lastName    = "last_name"
+        case email       = "email"
+        case picturePath = "picture"
+        case promoCode   = "promo_code"
+        case UUID        = "uuid"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
+        lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
+        email = try container.decodeIfPresent(String.self, forKey: .email)
+        picturePath = try container.decodeIfPresent(String.self, forKey: .picturePath)
+        promoCode = try container.decodeIfPresent(String.self, forKey: .promoCode)
+        UUID = try container.decode(String.self, forKey: .UUID)
     }
 }
