@@ -65,11 +65,11 @@ Possible Styles for the ModalViewController
 }
 
 /// Convenience to wrap a ViewController in a UINavigationController and add the appropriate buttons. Allows you to modally present a view controller w/ Uber branding.
-@objc(UBSDKModalViewController) open class ModalViewController : UIViewController {
+@objc(UBSDKModalViewController) public class ModalViewController : UIViewController {
     /// The ModalViewControllerDelegate
-    @objc open var delegate: ModalViewControllerDelegate?
+    @objc public var delegate: ModalViewControllerDelegate?
     
-    @objc open var colorStyle: ModalViewControllerColorStyle = .default {
+    @objc public var colorStyle: ModalViewControllerColorStyle = .default {
         didSet {
             setupStyle()
         }
@@ -124,7 +124,7 @@ Possible Styles for the ModalViewController
     
     //MARK: View Lifecycle
     
-    open override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         self.addChildViewController(wrappedNavigationController)
@@ -133,7 +133,7 @@ Possible Styles for the ModalViewController
         self.wrappedNavigationController.didMove(toParentViewController: self)
     }
     
-    open override func viewDidDisappear(_ animated: Bool) {
+    public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.delegate?.modalViewControllerDidDismiss(self)
     }
@@ -143,12 +143,12 @@ Possible Styles for the ModalViewController
     /**
      Function to dimiss the modalViewController.
     */
-    @objc open func dismiss() {
+    @objc public func dismiss() {
         self.delegate?.modalViewControllerWillDismiss(self)
         self.dismiss(animated: true, completion: nil)
     }
     
-    open override var preferredStatusBarStyle : UIStatusBarStyle {
+    public override var preferredStatusBarStyle : UIStatusBarStyle {
         switch colorStyle {
         case .light:
             return UIStatusBarStyle.default

@@ -53,30 +53,30 @@ import UIKit
 }
 
 /// Button to handle logging in to Uber
-@objc(UBSDKLoginButton) open class LoginButton: UberButton {
+@objc(UBSDKLoginButton) public class LoginButton: UberButton {
     
     let horizontalCenterPadding: CGFloat = 50
     let loginVerticalPadding: CGFloat = 15
     let loginHorizontalEdgePadding: CGFloat = 15
 
     /// The LoginButtonDelegate for this button
-    @objc open weak var delegate: LoginButtonDelegate?
+    @objc public weak var delegate: LoginButtonDelegate?
     
     /// The LoginManager to use for log in
-    @objc open var loginManager: LoginManager {
+    @objc public var loginManager: LoginManager {
         didSet {
             refreshContent()
         }
     }
     
     /// The RidesScopes to request
-    @objc open var scopes: [RidesScope]
+    @objc public var scopes: [RidesScope]
     
     /// The view controller to present login over. Used
-    @objc open var presentingViewController: UIViewController?
+    @objc public var presentingViewController: UIViewController?
     
     /// The current LoginButtonState of this button (signed in / signed out)
-    @objc open var buttonState: LoginButtonState {
+    @objc public var buttonState: LoginButtonState {
         if let _ = TokenManager.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup) {
             return .signedIn
         } else {
@@ -117,7 +117,7 @@ import UIKit
     /**
      Setup the LoginButton by adding  a target to the button and setting the login completion block
      */
-    override open func setup() {
+    override public func setup() {
         super.setup()
         NotificationCenter.default.addObserver(self, selector: #selector(refreshContent), name: Notification.Name(rawValue: TokenManager.tokenManagerDidSaveTokenNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(refreshContent), name: Notification.Name(rawValue: TokenManager.tokenManagerDidDeleteTokenNotification), object: nil)
@@ -131,7 +131,7 @@ import UIKit
     /**
      Updates the content of the button. Sets the image icon and font, as well as the text
      */
-    override open func setContent() {
+    override public func setContent() {
         super.setContent()
         
         let buttonFont = UIFont.systemFont(ofSize: 13)
@@ -149,7 +149,7 @@ import UIKit
     /**
      Adds the layout constraints for the Login button.
      */
-    override open func setConstraints() {
+    override public func setConstraints() {
         
         uberTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         uberImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -177,7 +177,7 @@ import UIKit
     
     //Mark: UIView
     
-    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+    override public func sizeThatFits(_ size: CGSize) -> CGSize {
         let sizeThatFits = super.sizeThatFits(size)
         
         let iconSizeThatFits = uberImageView.image?.size ?? CGSize.zero
@@ -191,7 +191,7 @@ import UIKit
         return CGSize(width: sizeThatFits.width + horizontalCenterPadding, height: height)
     }
     
-    override open func updateConstraints() {
+    override public func updateConstraints() {
         refreshContent()
         super.updateConstraints()
     }

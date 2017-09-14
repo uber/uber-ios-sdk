@@ -46,18 +46,18 @@ import CoreLocation
 }
 
 /// RequestButton implements a button on the touch screen to request a ride.
-@objc(UBSDKRideRequestButton) open class RideRequestButton: UberButton {
+@objc(UBSDKRideRequestButton) public class RideRequestButton: UberButton {
     /// Delegate is informed of events that occur with request button.
-    @objc open var delegate: RideRequestButtonDelegate?
+    @objc public var delegate: RideRequestButtonDelegate?
     
     /// The RideParameters object this button will use to make a request
-    @objc open var rideParameters: RideParameters
+    @objc public var rideParameters: RideParameters
     
     /// The RideRequesting object the button will use to make a request
-    @objc open var requestBehavior: RideRequesting
+    @objc public var requestBehavior: RideRequesting
     
     /// The RidesClient used for retrieving metadata for the button.
-    @objc open var client: RidesClient?
+    @objc public var client: RidesClient?
     
     static let sourceString = "button"
     
@@ -162,7 +162,7 @@ import CoreLocation
     /**
      Setup the RideRequestButton by adding  a target to the button and setting the login completion block
      */
-    override open func setup() {
+    override public func setup() {
         super.setup()
         addTarget(self, action: #selector(uberButtonTapped(_:)), for: .touchUpInside)
         sizeToFit()
@@ -171,7 +171,7 @@ import CoreLocation
     /**
      Adds the Metadata Label to the button
      */
-    override open func addSubviews() {
+    override public func addSubviews() {
         super.addSubviews()
         addSubview(uberMetadataLabel)
     }
@@ -179,7 +179,7 @@ import CoreLocation
     /**
      Updates the content of the button. Sets the image icon and font, as well as the text
      */
-    override open func setContent() {
+    override public func setContent() {
         super.setContent()
         
         uberMetadataLabel.numberOfLines = 2
@@ -199,7 +199,7 @@ import CoreLocation
     /**
      Adds the layout constraints for the ride request button.
      */
-    override open func setConstraints() {
+    override public func setConstraints() {
         
         uberTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         uberImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -256,7 +256,7 @@ import CoreLocation
     
     //Mark: UIView
     
-    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+    override public func sizeThatFits(_ size: CGSize) -> CGSize {
         let logoSize = uberImageView.image?.size ?? CGSize.zero
         let titleSize = uberTitleLabel.intrinsicContentSize
         let metadataSize = uberMetadataLabel.intrinsicContentSize
@@ -276,7 +276,7 @@ import CoreLocation
     /**
      Manual refresh for the ride information on the button. The product ID must be set in order to show any metadata.
      */
-    @objc open func loadRideInformation() {
+    @objc public func loadRideInformation() {
         guard client != nil else {
             delegate?.rideRequestButton(self, didReceiveError: createValidationFailedError())
             return

@@ -27,7 +27,7 @@ import UIKit
 /**
  *  Defines the implicit grant authorization flow where access token is extracted from redirect fragment.
  */
-@objc(UBSDKImplicitGrantAuthenticator) open class ImplicitGrantAuthenticator: LoginViewAuthenticator {
+@objc(UBSDKImplicitGrantAuthenticator) public class ImplicitGrantAuthenticator: LoginViewAuthenticator {
     
     override var endpoint: UberAPI {
         return OAuth.implicitLogin(clientID: Configuration.shared.clientID, scopes: self.scopes, redirect: Configuration.shared.getCallbackURIString(for: .implicit))

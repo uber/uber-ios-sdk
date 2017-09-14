@@ -82,17 +82,17 @@ private let callbackURIStringKey = "URIString"
  default values for Application-wide configuration properties. All properties are 
  configurable via the respective setter method
 */
-@objc(UBSDKConfiguration) open class Configuration : NSObject {
+@objc(UBSDKConfiguration) public class Configuration : NSObject {
     // MARK : Variables
-    @objc open static var shared: Configuration = Configuration()
+    @objc public static var shared: Configuration = Configuration()
     
     /// The .plist file to use, default is Info.plist
-    @objc open static var plistName = "Info"
+    @objc public static var plistName = "Info"
     
     /// The bundle that contains the .plist file. Default is the mainBundle()
-    @objc open static var bundle = Bundle.main
+    @objc public static var bundle = Bundle.main
     
-    @objc open var processPool = WKProcessPool()
+    @objc public var processPool = WKProcessPool()
 
     /**
      Gets the client ID of this app. Defaults to the value stored in your Application's
@@ -100,7 +100,7 @@ private let callbackURIStringKey = "URIString"
 
      - returns: The string to use for the Client ID
      */
-    @objc open var clientID: String
+    @objc public var clientID: String
 
     private var callbackURIs = [CallbackURIType: String]()
 
@@ -110,7 +110,7 @@ private let callbackURIStringKey = "URIString"
 
      - returns: The app's name
      */
-    @objc open var appDisplayName: String
+    @objc public var appDisplayName: String
 
     /**
      Gets the Server Token of this app. Defaults to the value stored in your Appication's
@@ -120,7 +120,7 @@ private let callbackURIStringKey = "URIString"
 
      - returns: The string Representing your app's server token
      */
-    @objc open var serverToken: String?
+    @objc public var serverToken: String?
 
     /**
      Gets the default keychain access group to save access tokens to. Advanced setting
@@ -128,7 +128,7 @@ private let callbackURIStringKey = "URIString"
 
      - returns: The default keychain access group to use
      */
-    @objc open var defaultKeychainAccessGroup: String = ""
+    @objc public var defaultKeychainAccessGroup: String = ""
 
     /**
      Gets the default key to use when saving access tokens to the keychain. Defaults
@@ -136,14 +136,14 @@ private let callbackURIStringKey = "URIString"
 
      - returns: The default access token identifier to use
      */
-    @objc open var defaultAccessTokenIdentifier: String = "RidesAccessTokenKey"
+    @objc public var defaultAccessTokenIdentifier: String = "RidesAccessTokenKey"
 
     /**
      Returns if sandbox is enabled or not
 
      - returns: true if Sandbox is enabled, false otherwise
      */
-    @objc open var isSandbox: Bool = false
+    @objc public var isSandbox: Bool = false
 
     /**
      Returns if the fallback to use Authorization Code Grant is enabled. If true,
@@ -152,7 +152,7 @@ private let callbackURIStringKey = "URIString"
 
      - returns: true if fallback enabled, false otherwise
      */
-    @objc open var useFallback: Bool = true
+    @objc public var useFallback: Bool = true
 
     public override init() {
         self.clientID = ""
@@ -174,7 +174,7 @@ private let callbackURIStringKey = "URIString"
     }
     
     /// The current version of the SDK as a string
-    @objc open var sdkVersion: String {
+    @objc public var sdkVersion: String {
         guard let version = Bundle(for: Configuration.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String else {
             return "Unknown"
         }
@@ -184,7 +184,7 @@ private let callbackURIStringKey = "URIString"
     /**
      Resets all of the Configuration's values to default
      */
-    @objc open static func restoreDefaults() {
+    @objc public static func restoreDefaults() {
         shared = Configuration()
     }
     
@@ -196,7 +196,7 @@ private let callbackURIStringKey = "URIString"
      
      - returns: The string to use for the Callback URI
     */
-    @objc open func getCallbackURIString() -> String {
+    @objc public func getCallbackURIString() -> String {
         return getCallbackURIString(for: .general)
     }
     
@@ -211,7 +211,7 @@ private let callbackURIStringKey = "URIString"
      
      - returns: The callbackURIString for the the requested type
      */
-    @objc open func getCallbackURIString(for type: CallbackURIType) -> String {
+    @objc public func getCallbackURIString(for type: CallbackURIType) -> String {
         if callbackURIs[type] == nil {
             let defaultCallbacks = parseCallbackURIs()
             var fallback = defaultCallbacks[type] ?? callbackURIs[.general]
@@ -235,7 +235,7 @@ private let callbackURIStringKey = "URIString"
      
      - parameter callbackURIString: The callback URI String to use
     */
-    @objc open func setCallbackURIString(_ callbackURIString: String?) {
+    @objc public func setCallbackURIString(_ callbackURIString: String?) {
         setCallbackURIString(callbackURIString, type: .general)
     }
     
@@ -249,7 +249,7 @@ private let callbackURIStringKey = "URIString"
      - parameter callbackURIString: The callback URI String to use
      - parameter type:              The Callback URI Type to use
      */
-    @objc open func setCallbackURIString(_ callbackURIString: String?, type: CallbackURIType) {
+    @objc public func setCallbackURIString(_ callbackURIString: String?, type: CallbackURIType) {
         var callbackURIs = self.callbackURIs
         callbackURIs[type] = callbackURIString
         self.callbackURIs = callbackURIs

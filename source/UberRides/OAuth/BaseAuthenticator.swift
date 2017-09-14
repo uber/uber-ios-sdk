@@ -25,22 +25,22 @@
 import UIKit
 
 /// Base class for authorization flows that use the LoginView.
-@objc(UBSDKBaseAuthenticator) open class BaseAuthenticator: NSObject, UberAuthenticating {
+@objc(UBSDKBaseAuthenticator) public class BaseAuthenticator: NSObject, UberAuthenticating {
     
     /// Optional identifier for saving the access token in keychain
-    @objc open var accessTokenIdentifier: String?
+    @objc public var accessTokenIdentifier: String?
     
     /// Optional access group for saving the access token in keychain
-    @objc open var keychainAccessGroup: String?
+    @objc public var keychainAccessGroup: String?
     
     /// Completion block for when login has completed
-    @objc open var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
+    @objc public var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
     
     /// Scopes to request during login
-    @objc open var scopes: [RidesScope]
+    @objc public var scopes: [RidesScope]
     
     /// The Callback URL Type to use for this authentication method
-    @objc open var callbackURIType: CallbackURIType = .general
+    @objc public var callbackURIType: CallbackURIType = .general
     
     @objc init(scopes: [RidesScope]) {
         self.scopes = scopes

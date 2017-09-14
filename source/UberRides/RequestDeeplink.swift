@@ -29,7 +29,7 @@ import UIKit
 /**
  *  Builds and executes a deeplink to the native Uber app to request a ride.
  */
-@objc(UBSDKRequestDeeplink) open class RequestDeeplink: BaseDeeplink {
+@objc(UBSDKRequestDeeplink) public class RequestDeeplink: BaseDeeplink {
     
     private let parameters: RideParameters
     private let clientID: String

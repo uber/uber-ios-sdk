@@ -27,7 +27,7 @@
  Designed to mimic methods from your application's AppDelegate and should
  be called inside their corresponding methods
  */
-@objc(UBSDKRidesAppDelegate) open class RidesAppDelegate : NSObject {
+@objc(UBSDKRidesAppDelegate) public class RidesAppDelegate : NSObject {
     
     //MARK: Class variables
     
@@ -35,7 +35,7 @@
     
     //MARK: Public variables
     
-    @objc open var loginManager : LoginManaging?
+    @objc public var loginManager : LoginManaging?
     
     //Mark: NSObject
     
@@ -67,7 +67,7 @@
      communicate information to the receiving app As passed to the corresponding AppDelegate method
      - returns: true if the URL was intended for the Rides SDK, false otherwise
      */
-    @objc open func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+    @objc public func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         guard let manager = loginManager else {
             return false
         }
@@ -79,7 +79,7 @@
         return urlHandled
     }
     
-    @objc open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+    @objc public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         guard let options = launchOptions, let launchURL = options[UIApplicationLaunchOptionsKey.url] as? URL else {
             return false
         }

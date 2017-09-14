@@ -25,7 +25,7 @@
 import UIKit
 
 /// Base class for Uber buttons that sets up colors and some constraints.
-@objc(UBSDKUberButton) open class UberButton: UIButton {
+@objc(UBSDKUberButton) public class UberButton: UIButton {
     let cornerRadius: CGFloat = 8
     let horizontalEdgePadding: CGFloat = 16
     let imageLabelPadding: CGFloat = 8
@@ -34,13 +34,13 @@ import UIKit
     let uberImageView: UIImageView = UIImageView()
     let uberTitleLabel: UILabel = UILabel()
     
-    open var colorStyle: RequestButtonColorStyle = .black {
+    public var colorStyle: RequestButtonColorStyle = .black {
         didSet {
             colorStyleDidUpdate(colorStyle)
         }
     }
     
-    override open var isHighlighted: Bool {
+    override public var isHighlighted: Bool {
         didSet {
             updateColors(isHighlighted)
         }
@@ -62,7 +62,7 @@ import UIKit
      Function responsible for the initial setup of the button. 
      Calls addSubviews(), setContent(), and setConstraints()
      */
-    @objc open func setup() {
+    @objc public func setup() {
         addSubviews()
         setContent()
         setConstraints()
@@ -72,7 +72,7 @@ import UIKit
      Function responsible for adding all the subviews to the button. Subclasses
      should override this method and add any necessary subviews.
      */
-    @objc open func addSubviews() {
+    @objc public func addSubviews() {
         addSubview(uberImageView)
         addSubview(uberTitleLabel)
     }
@@ -81,7 +81,7 @@ import UIKit
      Function responsible for updating content on the button. Subclasses should
      override and do any necessary view setup
      */
-    @objc open func setContent() {
+    @objc public func setContent() {
         clipsToBounds = true
         layer.cornerRadius = cornerRadius
     }
@@ -90,7 +90,7 @@ import UIKit
      Function responsible for adding autolayout constriants on the button. Subclasses
      should override and add any additional autolayout constraints
      */
-    @objc open func setConstraints() {
+    @objc public func setConstraints() {
         
         uberTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         uberImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -105,7 +105,7 @@ import UIKit
         addConstraints(verticalContraints)
     }
     
-    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+    override public func sizeThatFits(_ size: CGSize) -> CGSize {
         let logoSize = uberImageView.image?.size ?? CGSize.zero
         let titleSize = uberTitleLabel.intrinsicContentSize
         

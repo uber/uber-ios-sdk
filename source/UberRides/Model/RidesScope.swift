@@ -97,13 +97,13 @@ import UIKit
 /**
  *  Object representing an access scope to the Uber API
  */
-@objc(UBSDKRidesScope) open class RidesScope : NSObject {
+@objc(UBSDKRidesScope) public class RidesScope : NSObject {
     /// The RidesScopeType of this RidesScope
-    @objc open let ridesScopeType: RidesScopeType
+    @objc public let ridesScopeType: RidesScopeType
     /// The ScopeType of this RidesScope (General / Privileged)
-    @objc open let scopeType : ScopeType
+    @objc public let scopeType : ScopeType
     /// The String raw value of the scope
-    @objc open let rawValue : String
+    @objc public let rawValue : String
     
     @objc public init(ridesScopeType: RidesScopeType) {
         self.ridesScopeType = ridesScopeType
@@ -111,7 +111,7 @@ import UIKit
         rawValue = ridesScopeType.toString()
     }
     
-    override open func isEqual(_ object: Any?) -> Bool {
+    override public func isEqual(_ object: Any?) -> Bool {
         if let object = object as? RidesScope {
             return self.ridesScopeType == object.ridesScopeType
         } else {
@@ -119,7 +119,7 @@ import UIKit
         }
     }
     
-    override open var hash: Int {
+    override public var hash: Int {
         return ridesScopeType.rawValue.hashValue
     }
     

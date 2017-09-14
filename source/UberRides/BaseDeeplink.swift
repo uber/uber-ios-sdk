@@ -27,21 +27,21 @@ import Foundation
 /**
  *  A Deeplinking object for authenticating a user via the native Uber app
  */
-@objc(UBSDKBaseDeeplink) open class BaseDeeplink: NSObject, Deeplinking {
+@objc(UBSDKBaseDeeplink) public class BaseDeeplink: NSObject, Deeplinking {
     
     /// The scheme for the auth deeplink
-    open var scheme: String
+    public var scheme: String
     
     /// The domain for the auth deeplink
-    open var domain: String
+    public var domain: String
     
     /// The path for the auth deeplink
-    open var path: String
+    public var path: String
     
     /// The array of query items the deeplink will include
-    open var queryItems: [URLQueryItem]?
+    public var queryItems: [URLQueryItem]?
     
-    open let deeplinkURL: URL
+    public let deeplinkURL: URL
     
     private var waitingOnSystemPromptResponse = false
     private var checkingSystemPromptResponse = false
@@ -74,7 +74,7 @@ import Foundation
      - parameter completion: The completion block to execute once the deeplink has
      executed. Passes in True if the url was successfully opened, false otherwise.
      */
-    @objc open func execute(completion: ((NSError?) -> ())? = nil) {
+    @objc public func execute(completion: ((NSError?) -> ())? = nil) {
 
         let usingIOS9 = ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 9, minorVersion: 0, patchVersion: 0))
         
