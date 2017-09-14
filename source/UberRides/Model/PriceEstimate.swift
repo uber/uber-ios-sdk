@@ -50,15 +50,15 @@ struct PriceEstimates: Codable {
 
     /// Expected activity distance (in miles). -1 if not present.
     @objc(distance) public var objc_distance: Double {
-        return distance ?? -1
+        return distance ?? UBSDKDistanceUnavailable
     }
     
     /// Expected activity duration (in seconds).
     @nonobjc public private(set) var duration: Int?
 
-    /// Expected activity duration (in seconds). -1 if not present.
+    /// Expected activity duration (in seconds). UBSDKEstimateUnavailable if not present.
     @objc(duration) public var objc_duration: Int {
-        return duration ?? -1
+        return duration ?? UBSDKEstimateUnavailable
     }
     
     /// A formatted string representing the estimate in local currency. Could be range, single number, or "Metered" for TAXI.
@@ -67,17 +67,17 @@ struct PriceEstimates: Codable {
     /// Upper bound of the estimated price.
     @nonobjc public private(set) var highEstimate: Int?
 
-    /// Upper bound of the estimated price. -1 if not present.
+    /// Upper bound of the estimated price. UBSDKEstimateUnavailable if not present.
     @objc(highEstimate) public var objc_highEstimate: Int {
-        return highEstimate ?? -1
+        return highEstimate ?? UBSDKEstimateUnavailable
     }
     
     /// Lower bound of the estimated price.
     @nonobjc public private(set) var lowEstimate: Int?
 
-    /// Lower bound of the estimated price. -1 if not present.
+    /// Lower bound of the estimated price. UBSDKEstimateUnavailable if not present.
     @objc(lowEstimate) public var objc_lowEstimate: Int {
-        return lowEstimate ?? -1
+        return lowEstimate ?? UBSDKEstimateUnavailable
     }
     
     /// Display name of product. Ex: "UberBLACK".

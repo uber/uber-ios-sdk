@@ -1,7 +1,4 @@
 //
-//  UberRides.h
-//  UberRides
-//
 //  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,15 +19,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+#import <Foundation/Foundation.h>
 
-#import <UIKit/UIKit.h>
-
-//! Project version number for UberRides.
-FOUNDATION_EXPORT double UberRidesVersionNumber;
-
-//! Project version string for UberRides.
-FOUNDATION_EXPORT const unsigned char UberRidesVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <UberRides/PublicHeader.h>
-
-#import "UBSDKConstants.h"
+double UBSDKDistanceUnavailable = -INFINITY;
+NSInteger UBSDKEstimateUnavailable = NSIntegerMin;
+NSInteger UBSDKBearingUnavailable = NSIntegerMin;

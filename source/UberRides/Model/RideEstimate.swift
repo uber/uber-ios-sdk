@@ -38,9 +38,9 @@
     /// The estimated time of vehicle arrival in minutes.
     @nonobjc public private(set) var pickupEstimate: Int?
 
-    /// The estimated time of vehicle arrival in minutes. -1 if there are no cars available.
+    /// The estimated time of vehicle arrival in minutes. UBSDKEstimateUnavailable if there are no cars available.
     @objc(pickupEstimate) public var objc_pickupEstimate: Int {
-        return pickupEstimate ?? -1
+        return pickupEstimate ?? UBSDKEstimateUnavailable
     }
 
     /// Upfront Fare for the Ride Estimate. 

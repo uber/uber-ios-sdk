@@ -40,9 +40,9 @@
     /// The current bearing in degrees for a moving location.
     @nonobjc public private(set) var bearing: Int?
 
-    /// The current bearing in degrees for a moving location. -1 if not present.
+    /// The current bearing in degrees for a moving location. UBSDKBearingUnavailable if not present.
     @objc public var objc_bearing: Int {
-        return bearing ?? -1
+        return bearing ?? UBSDKBearingUnavailable
     }
     
     /// ETA is only available when the trips is accepted or arriving.
@@ -50,7 +50,7 @@
 
     /// ETA is only available when the trips is accepted or arriving. -1 if not present.
     @objc public var objc_eta: Int {
-        return eta ?? -1
+        return eta ?? UBSDKEstimateUnavailable
     }
     
     /// The latitude of the location.
