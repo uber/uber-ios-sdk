@@ -1,8 +1,5 @@
 //
-//  RideCharge.swift
-//  UberRides
-//
-//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,26 +19,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-// MARK: RideCharge
+#import <Foundation/Foundation.h>
 
-/**
- *  Describes the charges made against the rider in a ride receipt.
- */
-@objc(UBSDKRideCharge) public class RideCharge: NSObject, Codable {
-    
-    /// The amount of the charge.
-    @objc public private(set) var amount: Double
-    
-    /// The name of the charge.
-    @objc public private(set) var name: String
-    
-    /// The type of the charge.
-    @objc public private(set) var type: String
-
-    public required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        amount = try Double(container.decode(String.self, forKey: .amount)) ?? 0.0
-        name = try container.decode(String.self, forKey: .name)
-        type = try container.decode(String.self, forKey: .type)
-    }
-}
+double UBSDKDistanceUnavailable = -INFINITY;
+NSInteger UBSDKEstimateUnavailable = NSIntegerMin;
+NSInteger UBSDKBearingUnavailable = NSIntegerMin;

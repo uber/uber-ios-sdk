@@ -25,11 +25,11 @@
 import MapKit
 
 /// Object to represent the parameters needed to request a ride.
-@objc(UBSDKRideParameters) public class RideParameters : NSObject {
+@objc(UBSDKRideParameters) public class RideParameters: NSObject {
     
     /// ProductID to use for the ride
     @objc public var productID: String?
-    
+
     /// The pickup location to use for the ride
     @objc public let pickupLocation: CLLocation?
 
@@ -62,6 +62,9 @@ import MapKit
 
     /// The source to use for attributing the ride
     @objc public var source: String?
+
+    /// Upfront fare quote used to request a ride
+    @objc public var upfrontFare: UpfrontFare?
 
     convenience public override init() {
         self.init(pickupLocation: nil, dropoffLocation: nil, pickupPlaceID: nil, dropoffPlaceID: nil)

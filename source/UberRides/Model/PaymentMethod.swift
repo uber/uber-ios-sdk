@@ -41,17 +41,24 @@ struct PaymentMethods: Codable {
 @objc(UBSDKPaymentMethod) public class PaymentMethod: NSObject, Codable {
     
     /// The account identification or description associated with the payment method.
-    @objc public private(set) var paymentDescription: String = ""
+    @objc public private(set) var paymentDescription: String?
     
     /// Unique identifier of the payment method.
-    @objc public private(set) var methodID: String = ""
+    @objc public private(set) var methodID: String
     
     /// The type of the payment method. See https://developer.uber.com/docs/v1-payment-methods.
-    @objc public private(set) var type: String = ""
+    @objc public private(set) var type: String
 
     enum CodingKeys: String, CodingKey {
         case paymentDescription = "description"
         case methodID           = "payment_method_id"
         case type               = "type"
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        paymentDescription = try container.decodeIfPresent(String.self, forKey: .paymentDescription)
+        methodID = try container.decode(String.self, forKey: .methodID)
+        type = try container.decode(String.self, forKey: .type)
     }
 }

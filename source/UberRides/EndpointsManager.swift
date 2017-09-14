@@ -74,13 +74,13 @@ private enum Resources: String {
     
     private var version: String {
         switch self {
-        case .estimates: return "v1"
+        case .estimates: return "v1.2"
         case .history: return "v1.2"
-        case .me: return "v1"
-        case .paymentMethod: return "v1"
-        case .places: return "v1"
-        case .products: return "v1"
-        case .request: return "v1"
+        case .me: return "v1.2"
+        case .paymentMethod: return "v1.2"
+        case .places: return "v1.2"
+        case .products: return "v1.2"
+        case .request: return "v1.2"
         }
     }
     
@@ -534,7 +534,7 @@ enum Places: UberAPI {
             return nil
         case .putPlace(_, let address):
             do {
-                let data = try JSONSerialization.data(withJSONObject: ["address": address], options: .prettyPrinted)
+                let data = try JSONSerialization.data(withJSONObject: ["address": address], options: [])
                 return data
             } catch { }
             return nil

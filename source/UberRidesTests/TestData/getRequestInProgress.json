@@ -1,0 +1,40 @@
+{
+    "status": "in_progress",
+    "product_id": "a1111c8c-c720-46c3-8534-2fcdd730040d",
+    "destination": {
+        "latitude": 37.7259792,
+        "eta": 16,
+        "longitude": -122.42823
+    },
+    "driver": {
+        "phone_number": "+16504886027",
+        "rating": 5,
+        "picture_url": "https://d1w2poirtb3as9.cloudfront.net/4615701cdfbb033148d4.jpeg",
+        "name": "Edward",
+        "sms_number": "+16504886027"
+    },
+    "pickup": {
+        "latitude": 37.7759792,
+        "region": {
+            "latitude": 37.7749295,
+            "country_name": "United States",
+            "country_code": "US",
+            "name": "San Francisco",
+            "longitude": -122.4194155
+        },
+        "longitude": -122.41823
+    },
+    "request_id": "a274f565-cdb7-4a64-947d-042dfd185eed",
+    "location": {
+        "latitude": 37.7751956968,
+        "bearing": 310,
+        "longitude": -122.4174361781
+    },
+    "vehicle": {
+        "make": "Oldsmobile",
+        "picture_url": null,
+        "model": "Alero",
+        "license_plate": "123-XYZ"
+    },
+    "shared": false
+}

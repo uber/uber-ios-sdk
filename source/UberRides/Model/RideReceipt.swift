@@ -32,9 +32,6 @@
     /// Adjustments made to the charges such as promotions, and fees.
     @objc public private(set) var chargeAdjustments: [RideCharge]
     
-    /// Describes the charges made against the rider.
-    @objc public private(set) var charges: [RideCharge]
-    
     /// ISO 4217
     @objc public private(set) var currencyCode: String
     
@@ -44,11 +41,8 @@
     /// The localized unit of distance.
     @objc public private(set) var distanceLabel: String
     
-    /// Time duration of the trip in ISO 8601 HH:MM:SS format.
-    @objc public private(set) var duration: String // TODO
-    
-    /// The summation of the charges array.
-    @objc public private(set) var normalFare: String
+    /// Time duration of the trip. Use only the hour, minute, and second components.
+    @objc public private(set) var duration: DateComponents
     
     /// Unique identifier representing a Request.
     @objc public private(set) var requestID: String
@@ -56,43 +50,45 @@
     /// The summation of the normal fare and surge charge amount.
     @objc public private(set) var subtotal: String
     
-    /// Describes the surge charge. May be null if surge pricing was not in effect.
-    @objc public private(set) var surgeCharge: RideCharge?
-    
     /// The total amount charged to the users payment method. This is the the subtotal (split if applicable) with taxes included.
     @objc public private(set) var totalCharged: String
     
     /// The total amount still owed after attempting to charge the user. May be 0 if amount was paid in full.
     @objc public private(set) var totalOwed: Double
 
+    /// The fare after credits and refunds have been applied.
+    @objc public private(set) var totalFare: String
+
     enum CodingKeys: String, CodingKey {
         case chargeAdjustments = "charge_adjustments"
-        case charges           = "charges"
         case currencyCode      = "currency_code"
         case distance          = "distance"
         case distanceLabel     = "distance_label"
         case duration          = "duration"
-        case normalFare        = "normal_fare"
         case requestID         = "request_id"
         case subtotal          = "subtotal"
-        case surgeCharge       = "surge_charge"
         case totalCharged      = "total_charged"
         case totalOwed         = "total_owed"
+        case totalFare         = "total_fare"
     }
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         chargeAdjustments = try container.decode([RideCharge].self, forKey: .chargeAdjustments)
-        charges = try container.decode([RideCharge].self, forKey: .charges)
         currencyCode = try container.decode(String.self, forKey: .currencyCode)
         distance = try container.decode(String.self, forKey: .distance)
         distanceLabel = try container.decode(String.self, forKey: .distanceLabel)
-        duration = try container.decode(String.self, forKey: .duration)
-        normalFare = try container.decode(String.self, forKey: .normalFare)
         requestID = try container.decode(String.self, forKey: .requestID)
         subtotal = try container.decode(String.self, forKey: .subtotal)
-        surgeCharge = try container.decodeIfPresent(RideCharge.self, forKey: .surgeCharge)
         totalCharged = try container.decode(String.self, forKey: .totalCharged)
         totalOwed = try container.decodeIfPresent(Double.self, forKey: .totalOwed) ?? 0.0
+        totalFare = try container.decode(String.self, forKey: .totalFare)
+
+        let durationString = try container.decode(String.self, forKey: .duration)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss"
+        dateFormatter.calendar = Calendar.current
+        let date = dateFormatter.date(from: durationString) ?? Date(timeIntervalSince1970: 0)
+        duration = Calendar.current.dateComponents(in: TimeZone.current, from: date)
     }
 }

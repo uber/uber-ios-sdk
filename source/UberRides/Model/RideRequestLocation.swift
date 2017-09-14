@@ -28,12 +28,30 @@
  *  Location of a pickup or destination in a ride request.
  */
 @objc(UBSDKRideRequestLocation) public class RideRequestLocation: NSObject, Codable {
+    /**
+      The alias from an Uber user’s profile mapped to the pickup address (if available).
+      Can be either work or home. Only exposed with a valid access token for places scope.
+     */
+    @objc public private(set) var alias: String?
+
+    /// The name of the pickup place (if available). Not exposed in sandbox.
+    @objc public private(set) var name: String?
     
     /// The current bearing in degrees for a moving location.
-    @objc public private(set) var bearing: Int
+    @nonobjc public private(set) var bearing: Int?
+
+    /// The current bearing in degrees for a moving location. UBSDKBearingUnavailable if not present.
+    @objc public var objc_bearing: Int {
+        return bearing ?? UBSDKBearingUnavailable
+    }
     
     /// ETA is only available when the trips is accepted or arriving.
-    @objc public private(set) var eta: Int
+    @nonobjc public private(set) var eta: Int?
+
+    /// ETA is only available when the trips is accepted or arriving. -1 if not present.
+    @objc public var objc_eta: Int {
+        return eta ?? UBSDKEstimateUnavailable
+    }
     
     /// The latitude of the location.
     @objc public private(set) var latitude: Double
@@ -43,9 +61,12 @@
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        bearing = try container.decodeIfPresent(Int.self, forKey: .bearing) ?? 0
-        eta = try container.decodeIfPresent(Int.self, forKey: .eta) ?? 0
-        latitude = try container.decodeIfPresent(Double.self, forKey: .latitude) ?? 0
-        longitude = try container.decodeIfPresent(Double.self, forKey: .longitude) ?? 0
+        alias = try container.decodeIfPresent(String.self, forKey: .alias)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        bearing = try container.decodeIfPresent(Int.self, forKey: .bearing)
+        eta = try container.decodeIfPresent(Int.self, forKey: .eta)
+        eta = eta != -1 ? eta : nil // Since the API returns -1, converting to an optional. 
+        latitude = try container.decode(Double.self, forKey: .latitude)
+        longitude = try container.decode(Double.self, forKey: .longitude)
     }
 }

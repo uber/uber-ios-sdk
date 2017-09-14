@@ -1,18 +1,22 @@
 {
-    "price":{
-        "surge_confirmation_href": "https://api.uber.com/v1/surge-confirmations/7d604f5e",
-        "high_estimate": 6,
-        "surge_confirmation_id": "7d604f5e",
-        "minimum": 5,
-        "low_estimate": 5,
-        "surge_multiplier": 1.2,
-        "display": "$5-6",
+    "fare": {
+        "breakdown": [
+                      {
+                      "type": "base_fare",
+                      "name": "Base Fare",
+                      "value": 11.95
+                      }
+                      ],
+        "value": 11.95,
+        "fare_id": "3d957d6ab84e88209b6778d91bd4df3c12d17b60796d89793d6ed01650cbabfe",
+        "expires_at": 1503702982,
+        "display": "$11.95",
         "currency_code": "USD"
     },
-    "trip":{
+    "trip": {
         "distance_unit": "mile",
-        "duration_estimate": 540,
-        "distance_estimate": 2.1
+        "duration_estimate": 840,
+        "distance_estimate": 5.35
     },
-    "pickup_estimate":2
+    "pickup_estimate": 2
 }

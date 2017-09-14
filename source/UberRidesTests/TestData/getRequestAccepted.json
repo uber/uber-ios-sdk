@@ -1,5 +1,6 @@
 {
     "request_id":"17cb78a7-b672-4d34-a288-a6c6e44d5315",
+    "product_id": "a1111c8c-c720-46c3-8534-2fcdd730040d",
     "status":"accepted",
     "location":{
         "latitude":37.7886532015,
@@ -9,7 +10,14 @@
     "pickup":{
         "latitude":37.7872486012,
         "longitude":-122.4026315287,
-        "eta":5
+        "eta":5,
+        "region": {
+            "latitude": 37.7749295,
+            "country_name": "United States",
+            "country_code": "US",
+            "name": "San Francisco",
+            "longitude": -122.4194155
+        },
     },
     "destination":{
         "latitude":37.7766874,
@@ -17,7 +25,8 @@
         "eta":19
     },
     "driver": {
-        "phone_number": "(555)555-5555",
+        "phone_number": "+14155550000",
+        "sms_number": "+14155550000",
         "rating": 5,
         "picture_url": "https://d1w2poirtb3as9.cloudfront.net/img.jpeg",
         "name": "Bob"
@@ -29,5 +38,5 @@
         "picture_url": "https://d1w2poirtb3as9.cloudfront.net/car.jpeg"
     },
     "surge_multiplier":1.0,
-    "eta": 5
+    "shared": false
 }

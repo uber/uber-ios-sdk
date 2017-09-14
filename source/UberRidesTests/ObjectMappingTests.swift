@@ -45,29 +45,29 @@ class ObjectMappingTests: XCTestCase {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "getProductID", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                let product = try? JSONDecoder.uberDecoder.decode(UberProduct.self, from: jsonData)
+                let product = try? JSONDecoder.uberDecoder.decode(Product.self, from: jsonData)
                 XCTAssertNotNil(product)
-                XCTAssertEqual(product!.productID, "d4abaae7-f4d6-4152-91cc-77523e8165a4")
-                XCTAssertEqual(product!.name, "UberBLACK")
-                XCTAssertEqual(product!.details, "The original Uber")
+                XCTAssertEqual(product!.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
+                XCTAssertEqual(product!.name, "uberX")
+                XCTAssertEqual(product!.productDescription, "THE LOW-COST UBER")
                 XCTAssertEqual(product!.capacity, 4)
-                XCTAssertEqual(product!.imagePath, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car.jpg")!)
+                XCTAssertEqual(product!.imageURL, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png")!)
                 
                 let priceDetails = product!.priceDetails
                 XCTAssertNotNil(priceDetails)
                 XCTAssertEqual(priceDetails!.distanceUnit, "mile")
-                XCTAssertEqual(priceDetails!.costPerMinute, 0.65)
-                XCTAssertEqual(priceDetails!.minimumFee, 15.0)
-                XCTAssertEqual(priceDetails!.costPerDistance, 3.75)
-                XCTAssertEqual(priceDetails!.baseFee, 8.0)
-                XCTAssertEqual(priceDetails!.cancellationFee, 10.0)
+                XCTAssertEqual(priceDetails!.costPerMinute, 0.22)
+                XCTAssertEqual(priceDetails!.minimumFee, 7.0)
+                XCTAssertEqual(priceDetails!.costPerDistance, 1.15)
+                XCTAssertEqual(priceDetails!.baseFee, 2.0)
+                XCTAssertEqual(priceDetails!.cancellationFee, 5.0)
                 XCTAssertEqual(priceDetails!.currencyCode, "USD")
                 
                 let serviceFees = priceDetails!.serviceFees
                 XCTAssertNotNil(serviceFees)
-                XCTAssertEqual(serviceFees!.count, 1)
-                XCTAssertEqual(serviceFees!.first!.name, "Safe Rides Fee")
-                XCTAssertEqual(serviceFees!.first!.fee, 1.0)
+                XCTAssertEqual(serviceFees.count, 1)
+                XCTAssertEqual(serviceFees.first!.name, "Booking fee")
+                XCTAssertEqual(serviceFees.first!.fee, 2.0)
             }
         }
     }
@@ -100,12 +100,64 @@ class ObjectMappingTests: XCTestCase {
                 let products = try? JSONDecoder.uberDecoder.decode(UberProducts.self, from: jsonData)
                 XCTAssertNotNil(products)
                 XCTAssertNotNil(products!.list)
-                XCTAssertEqual(products!.list!.count, 5)
-                XCTAssertEqual(products!.list![0].name, "uberX")
+                XCTAssertEqual(products!.list!.count, 9)
+                XCTAssertEqual(products!.list![0].name, "SELECT")
                 XCTAssertEqual(products!.list![1].name, "uberXL")
-                XCTAssertEqual(products!.list![2].name, "UberBLACK")
-                XCTAssertEqual(products!.list![3].name, "UberSUV")
-                XCTAssertEqual(products!.list![4].name, "uberTAXI")
+                XCTAssertEqual(products!.list![2].name, "BLACK")
+                XCTAssertEqual(products!.list![3].name, "SUV")
+                XCTAssertEqual(products!.list![4].name, "ASSIST")
+                XCTAssertEqual(products!.list![5].name, "WAV")
+                XCTAssertEqual(products!.list![6].name, "POOL")
+                XCTAssertEqual(products!.list![7].name, "uberX")
+                XCTAssertEqual(products!.list![8].name, "TAXI")
+
+                /// Assert upfront fare product, POOL
+                let uberPool = products?.list?[6]
+                XCTAssertEqual(uberPool?.upfrontFareEnabled, true)
+                XCTAssertEqual(uberPool?.capacity, 2)
+                XCTAssertEqual(uberPool?.productID, "26546650-e557-4a7b-86e7-6a3942445247")
+                XCTAssertNil(uberPool?.priceDetails)
+                XCTAssertEqual(uberPool?.imageURL, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png")!)
+                XCTAssertEqual(uberPool?.cashEnabled, false)
+                XCTAssertEqual(uberPool?.isShared, true)
+                XCTAssertEqual(uberPool?.name, "POOL")
+                XCTAssertEqual(uberPool?.productGroup, ProductGroup.rideshare)
+                XCTAssertEqual(uberPool?.productDescription, "Share the ride, split the cost.")
+
+                /// Assert time+distance product, uberX (pulled from Sydney)
+                let uberX = products?.list?[7]
+                XCTAssertEqual(uberX?.upfrontFareEnabled, false)
+                XCTAssertEqual(uberX?.capacity, 4)
+                XCTAssertEqual(uberX?.productID, "2d1d002b-d4d0-4411-98e1-673b244878b2")
+                XCTAssertEqual(uberX?.imageURL, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png")!)
+                XCTAssertEqual(uberX?.cashEnabled, false)
+                XCTAssertEqual(uberX?.isShared, false)
+                XCTAssertEqual(uberX?.name, "uberX")
+                XCTAssertEqual(uberX?.productGroup, ProductGroup.uberX)
+                XCTAssertEqual(uberX?.productDescription, "Everyday rides that are always smarter than a taxi")
+
+                XCTAssertEqual(uberX?.priceDetails?.serviceFees.first?.fee, 0.55)
+                XCTAssertEqual(uberX?.priceDetails?.serviceFees.first?.name, "Booking fee")
+                XCTAssertEqual(uberX?.priceDetails?.costPerMinute, 0.4)
+                XCTAssertEqual(uberX?.priceDetails?.distanceUnit, "km")
+                XCTAssertEqual(uberX?.priceDetails?.minimumFee, 9)
+                XCTAssertEqual(uberX?.priceDetails?.costPerDistance, 1.45)
+                XCTAssertEqual(uberX?.priceDetails?.baseFee, 2.5)
+                XCTAssertEqual(uberX?.priceDetails?.cancellationFee, 10)
+                XCTAssertEqual(uberX?.priceDetails?.currencyCode, "AUD")
+
+                /// Assert hail product, TAXI
+                let taxi = products?.list?[8]
+                XCTAssertEqual(taxi?.upfrontFareEnabled, false)
+                XCTAssertEqual(taxi?.capacity, 4)
+                XCTAssertEqual(taxi?.productID, "3ab64887-4842-4c8e-9780-ccecd3a0391d")
+                XCTAssertNil(uberPool?.priceDetails)
+                XCTAssertEqual(taxi?.imageURL, URL(string: "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-taxi.png")!)
+                XCTAssertEqual(taxi?.cashEnabled, false)
+                XCTAssertEqual(taxi?.isShared, false)
+                XCTAssertEqual(taxi?.name, "TAXI")
+                XCTAssertEqual(taxi?.productGroup, ProductGroup.taxi)
+                XCTAssertEqual(taxi?.productDescription, "TAXI WITHOUT THE HASSLE")
             }
         }
     }
@@ -129,7 +181,7 @@ class ObjectMappingTests: XCTestCase {
     }
     
     /**
-     Tests mapping result of GET /v1/estimates/time
+     Tests mapping result of GET /v1.2/estimates/time
      */
     func testGetTimeEstimates() {
         let bundle = Bundle(for: ObjectMappingTests.self)
@@ -152,7 +204,7 @@ class ObjectMappingTests: XCTestCase {
     }
     
     /**
-     Tests mapping of malformed result of GET /v1/estimates/time
+     Tests mapping of malformed result of GET /v1.2/estimates/time
      */
     func testGetTimeEstimatesBadJSON() {
         let bundle = Bundle(for: ObjectMappingTests.self)
@@ -170,7 +222,7 @@ class ObjectMappingTests: XCTestCase {
     }
     
     /**
-     Tests mapping result of GET /v1/estimates/price endpoint.
+     Tests mapping result of GET /v1.2/estimates/price endpoint.
      */
     func testGetPriceEstimates() {
         let bundle = Bundle(for: ObjectMappingTests.self)
@@ -201,7 +253,7 @@ class ObjectMappingTests: XCTestCase {
     }
 
     /**
-     Tests mapping of malformed result of GET /v1/estimates/price endpoint.
+     Tests mapping of malformed result of GET /v1.2/estimates/price endpoint.
      */
     func testGetPriceEstimatesBadJSON() {
         let bundle = Bundle(for: ObjectMappingTests.self)
@@ -232,7 +284,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(userActivity!.limit, 5)
                 XCTAssertEqual(userActivity!.offset, 0)
                 
-                let history = userActivity!.history!
+                let history = userActivity!.history
                 XCTAssertEqual(history.count, 1)
                 XCTAssertEqual(history[0].status, RideStatus.completed)
                 XCTAssertEqual(history[0].distance, 1.64691465)
@@ -285,6 +337,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(userProfile!.picturePath, "https://profile-picture.jpg")
                 XCTAssertEqual(userProfile!.promoCode, "teypo")
                 XCTAssertEqual(userProfile!.UUID, "91d81273-45c2-4b57-8124-d0165f8240c0")
+                XCTAssertEqual(userProfile!.riderID, "kIN8tMqcXMSJt1VC3HWNF0H4VD1JKlJkY==")
             }
         }
     }
@@ -320,7 +373,6 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertNotNil(trip)
                 XCTAssertEqual(trip.requestID, "852b8fdd-4369-4659-9628-e122662ad257")
                 XCTAssertEqual(trip.status, RideStatus.processing)
-                XCTAssertEqual(trip.eta, 5)
                 XCTAssertNil(trip.vehicle)
                 XCTAssertNil(trip.driver)
                 XCTAssertNil(trip.driverLocation)
@@ -328,46 +380,82 @@ class ObjectMappingTests: XCTestCase {
             }
         }
     }
-    
+
     /**
      Tests mapping result of GET /v1/requests/current or /v1/requests/{request_id}
      */
-    func testGetRequest() {
+    func testGetRequestProcessing() {
         let bundle = Bundle(for: ObjectMappingTests.self)
-        if let path = bundle.path(forResource: "getRequest", ofType: "json") {
+        if let path = bundle.path(forResource: "getRequestProcessing", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
                 guard let trip = try? JSONDecoder.uberDecoder.decode(Ride.self, from: jsonData) else {
                     XCTAssert(false)
                     return
                 }
-                
+
+                XCTAssertEqual(trip.requestID, "43faeac4-1634-4a0c-9826-783e3a3d1668")
+                XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
+                XCTAssertEqual(trip.status, RideStatus.processing)
+                XCTAssertFalse(trip.isShared)
+
+                XCTAssertNil(trip.driverLocation)
+                XCTAssertNil(trip.vehicle)
+                XCTAssertNil(trip.driver)
+
+                XCTAssertNotNil(trip.pickup)
+                XCTAssertEqual(trip.pickup!.latitude, 37.7759792)
+                XCTAssertEqual(trip.pickup!.longitude, -122.41823)
+                XCTAssertNil(trip.pickup!.eta)
+
+                XCTAssertNotNil(trip.destination)
+                XCTAssertEqual(trip.destination!.latitude, 37.7259792)
+                XCTAssertEqual(trip.destination!.longitude, -122.42823)
+                XCTAssertNil(trip.destination!.eta)
+            }
+        }
+    }
+
+    /**
+     Tests mapping result of GET /v1/requests/current or /v1/requests/{request_id}
+     */
+    func testGetRequestAccepted() {
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getRequestAccepted", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                guard let trip = try? JSONDecoder.uberDecoder.decode(Ride.self, from: jsonData) else {
+                    XCTAssert(false)
+                    return
+                }
+
                 XCTAssertEqual(trip.requestID, "17cb78a7-b672-4d34-a288-a6c6e44d5315")
+                XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
                 XCTAssertEqual(trip.status, RideStatus.accepted)
-                XCTAssertEqual(trip.eta, 5)
+                XCTAssertFalse(trip.isShared)
                 XCTAssertEqual(trip.surgeMultiplier, 1.0)
-                
+
                 XCTAssertNotNil(trip.driverLocation)
                 XCTAssertEqual(trip.driverLocation!.latitude, 37.7886532015)
                 XCTAssertEqual(trip.driverLocation!.longitude, -122.3961987534)
                 XCTAssertEqual(trip.driverLocation!.bearing, 135)
-                
+
                 XCTAssertNotNil(trip.vehicle)
                 XCTAssertEqual(trip.vehicle!.make, "Bugatti")
                 XCTAssertEqual(trip.vehicle!.model, "Veyron")
                 XCTAssertEqual(trip.vehicle!.licensePlate, "I<3Uber")
                 XCTAssertEqual(trip.vehicle!.pictureURL, URL(string: "https://d1w2poirtb3as9.cloudfront.net/car.jpeg")!)
-                
+
                 XCTAssertNotNil(trip.driver)
                 XCTAssertEqual(trip.driver!.name, "Bob")
                 XCTAssertEqual(trip.driver!.pictureURL, URL(string: "https://d1w2poirtb3as9.cloudfront.net/img.jpeg")!)
-                XCTAssertEqual(trip.driver!.phoneNumber, "(555)555-5555")
+                XCTAssertEqual(trip.driver!.phoneNumber, "+14155550000")
+                XCTAssertEqual(trip.driver!.smsNumber, "+14155550000")
                 XCTAssertEqual(trip.driver!.rating, 5)
-                
+
                 XCTAssertNotNil(trip.pickup)
                 XCTAssertEqual(trip.pickup!.latitude, 37.7872486012)
                 XCTAssertEqual(trip.pickup!.longitude, -122.4026315287)
                 XCTAssertEqual(trip.pickup!.eta, 5)
-                
+
                 XCTAssertNotNil(trip.destination)
                 XCTAssertEqual(trip.destination!.latitude, 37.7766874)
                 XCTAssertEqual(trip.destination!.longitude, -122.394857)
@@ -375,25 +463,182 @@ class ObjectMappingTests: XCTestCase {
             }
         }
     }
-    
+
     /**
-     Tests mapping of POST /v1/requests/estimate endpoint.
+     Tests mapping result of GET /v1/requests/current or /v1/requests/{request_id}
+     */
+    func testGetRequestArriving() {
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getRequestArriving", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                guard let trip = try? JSONDecoder.uberDecoder.decode(Ride.self, from: jsonData) else {
+                    XCTAssert(false)
+                    return
+                }
+
+                XCTAssertEqual(trip.requestID, "a274f565-cdb7-4a64-947d-042dfd185eed")
+                XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
+                XCTAssertEqual(trip.status, RideStatus.arriving)
+                XCTAssertFalse(trip.isShared)
+
+                XCTAssertNotNil(trip.driverLocation)
+                XCTAssertEqual(trip.driverLocation?.latitude, 37.7751956968)
+                XCTAssertEqual(trip.driverLocation?.longitude, -122.4174361781)
+                XCTAssertEqual(trip.driverLocation?.bearing, 310)
+
+                XCTAssertNotNil(trip.vehicle)
+                XCTAssertEqual(trip.vehicle?.make, "Oldsmobile")
+                XCTAssertNil(trip.vehicle?.pictureURL)
+                XCTAssertEqual(trip.vehicle?.model, "Alero")
+                XCTAssertEqual(trip.vehicle?.licensePlate, "123-XYZ")
+
+                XCTAssertNotNil(trip.driver)
+                XCTAssertEqual(trip.driver?.phoneNumber, "+16504886027")
+                XCTAssertEqual(trip.driver?.rating, 5)
+                XCTAssertEqual(trip.driver?.pictureURL, URL(string: "https://d1w2poirtb3as9.cloudfront.net/4615701cdfbb033148d4.jpeg")!)
+                XCTAssertEqual(trip.driver?.name, "Edward")
+                XCTAssertEqual(trip.driver?.smsNumber, "+16504886027")
+
+                XCTAssertNotNil(trip.pickup)
+                XCTAssertEqual(trip.pickup!.latitude, 37.7759792)
+                XCTAssertEqual(trip.pickup!.longitude, -122.41823)
+                XCTAssertEqual(trip.pickup!.eta, 1)
+
+                XCTAssertNotNil(trip.destination)
+                XCTAssertEqual(trip.destination!.latitude, 37.7259792)
+                XCTAssertEqual(trip.destination!.longitude, -122.42823)
+                XCTAssertEqual(trip.destination!.eta, 16)
+            }
+        }
+    }
+
+    /**
+     Tests mapping result of GET /v1/requests/current or /v1/requests/{request_id}
+     */
+    func testGetRequestInProgress() {
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getRequestInProgress", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                guard let trip = try? JSONDecoder.uberDecoder.decode(Ride.self, from: jsonData) else {
+                    XCTAssert(false)
+                    return
+                }
+
+                XCTAssertEqual(trip.requestID, "a274f565-cdb7-4a64-947d-042dfd185eed")
+                XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
+                XCTAssertEqual(trip.status, RideStatus.inProgress)
+                XCTAssertFalse(trip.isShared)
+
+                XCTAssertNotNil(trip.driverLocation)
+                XCTAssertEqual(trip.driverLocation?.latitude, 37.7751956968)
+                XCTAssertEqual(trip.driverLocation?.longitude, -122.4174361781)
+                XCTAssertEqual(trip.driverLocation?.bearing, 310)
+
+                XCTAssertNotNil(trip.vehicle)
+                XCTAssertEqual(trip.vehicle?.make, "Oldsmobile")
+                XCTAssertNil(trip.vehicle?.pictureURL)
+                XCTAssertEqual(trip.vehicle?.model, "Alero")
+                XCTAssertEqual(trip.vehicle?.licensePlate, "123-XYZ")
+
+                XCTAssertNotNil(trip.driver)
+                XCTAssertEqual(trip.driver?.phoneNumber, "+16504886027")
+                XCTAssertEqual(trip.driver?.rating, 5)
+                XCTAssertEqual(trip.driver?.pictureURL, URL(string: "https://d1w2poirtb3as9.cloudfront.net/4615701cdfbb033148d4.jpeg")!)
+                XCTAssertEqual(trip.driver?.name, "Edward")
+                XCTAssertEqual(trip.driver?.smsNumber, "+16504886027")
+
+                XCTAssertNotNil(trip.pickup)
+                XCTAssertEqual(trip.pickup!.latitude, 37.7759792)
+                XCTAssertEqual(trip.pickup!.longitude, -122.41823)
+                XCTAssertNil(trip.pickup!.eta)
+
+                XCTAssertNotNil(trip.destination)
+                XCTAssertEqual(trip.destination!.latitude, 37.7259792)
+                XCTAssertEqual(trip.destination!.longitude, -122.42823)
+                XCTAssertEqual(trip.destination!.eta, 16)
+            }
+        }
+    }
+
+    /**
+     Tests mapping result of GET /v1/requests/current or /v1/requests/{request_id}
+     */
+    func testGetRequestCompleted() {
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "getRequestCompleted", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                guard let trip = try? JSONDecoder.uberDecoder.decode(Ride.self, from: jsonData) else {
+                    XCTAssert(false)
+                    return
+                }
+
+                XCTAssertEqual(trip.requestID, "a274f565-cdb7-4a64-947d-042dfd185eed")
+                XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
+                XCTAssertEqual(trip.status, RideStatus.completed)
+                XCTAssertFalse(trip.isShared)
+
+                XCTAssertNil(trip.driverLocation)
+                XCTAssertNil(trip.vehicle)
+                XCTAssertNil(trip.driver)
+                XCTAssertNil(trip.pickup)
+                XCTAssertNil(trip.destination)
+            }
+        }
+    }
+
+    /**
+     Tests mapping of POST /v1.2/requests/estimate endpoint.
      */
     func testGetRequestEstimate() {
         let bundle = Bundle(for: ObjectMappingTests.self)
         if let path = bundle.path(forResource: "requestEstimate", ofType: "json") {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                var estimate: RideEstimate?
+                do {
+                    estimate = try JSONDecoder.uberDecoder.decode(RideEstimate.self, from: jsonData)
+                }
+                catch let e {
+                    XCTFail(e.localizedDescription)
+                }
+                XCTAssertNotNil(estimate)
+                XCTAssertEqual(estimate!.pickupEstimate, 2)
+
+                XCTAssertNotNil(estimate?.fare)
+                XCTAssertEqual(estimate?.fare?.breakdown.first?.name, "Base Fare")
+                XCTAssertEqual(estimate?.fare?.breakdown.first?.type, UpfrontFareComponentType.baseFare)
+                XCTAssertEqual(estimate?.fare?.breakdown.first?.value, 11.95)
+                XCTAssertEqual(estimate?.fare?.value, 11.95)
+                XCTAssertEqual(estimate?.fare?.fareID, "3d957d6ab84e88209b6778d91bd4df3c12d17b60796d89793d6ed01650cbabfe")
+                XCTAssertEqual(estimate?.fare?.expiresAt, Date(timeIntervalSince1970: 1503702982))
+                XCTAssertEqual(estimate?.fare?.display, "$11.95")
+                XCTAssertEqual(estimate?.fare?.currencyCode, "USD")
+
+                XCTAssertNotNil(estimate!.distanceEstimate)
+                XCTAssertEqual(estimate!.distanceEstimate!.distance, 5.35)
+                XCTAssertEqual(estimate!.distanceEstimate!.duration, 840)
+                XCTAssertEqual(estimate!.distanceEstimate!.distanceUnit, "mile")
+            }
+        }
+    }
+
+    /**
+     Tests mapping of POST /v1.2/requests/estimate endpoint for a city w/o upfront pricing.
+     */
+    func testGetRequestEstimateNoUpfront() {
+        let bundle = Bundle(for: ObjectMappingTests.self)
+        if let path = bundle.path(forResource: "requestEstimateNoUpfront", ofType: "json") {
+            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
                 let estimate = try? JSONDecoder.uberDecoder.decode(RideEstimate.self, from: jsonData)
                 XCTAssertNotNil(estimate)
                 XCTAssertEqual(estimate!.pickupEstimate, 2)
-                
+
                 XCTAssertNotNil(estimate!.priceEstimate)
-                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationURL, "https://api.uber.com/v1/surge-confirmations/7d604f5e")
-                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationID, "7d604f5e")
-                
+                XCTAssertEqual(estimate!.priceEstimate?.surgeConfirmationURL, URL(string: "https://api.uber.com/v1/surge-confirmations/7d604f5e"))
+                XCTAssertEqual(estimate!.priceEstimate?.surgeConfirmationID, "7d604f5e")
+
                 XCTAssertNotNil(estimate!.distanceEstimate)
-                XCTAssertEqual(estimate!.distanceEstimate!.distance, 2.1)
-                XCTAssertEqual(estimate!.distanceEstimate!.duration, 540)
+                XCTAssertEqual(estimate!.distanceEstimate!.distance, 4.87)
+                XCTAssertEqual(estimate!.distanceEstimate!.duration, 660)
                 XCTAssertEqual(estimate!.distanceEstimate!.distanceUnit, "mile")
             }
         }
@@ -405,15 +650,15 @@ class ObjectMappingTests: XCTestCase {
             if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
                 let estimate = try? JSONDecoder.uberDecoder.decode(RideEstimate.self, from: jsonData)
                 XCTAssertNotNil(estimate)
-                XCTAssertEqual(estimate!.pickupEstimate, -1)
-                
+                XCTAssertNil(estimate!.pickupEstimate)
+
                 XCTAssertNotNil(estimate!.priceEstimate)
-                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationURL, "https://api.uber.com/v1/surge-confirmations/7d604f5e")
-                XCTAssertEqual(estimate!.priceEstimate.surgeConfirmationID, "7d604f5e")
-                
+                XCTAssertEqual(estimate!.priceEstimate?.surgeConfirmationURL, URL(string: "https://api.uber.com/v1/surge-confirmations/7d604f5e"))
+                XCTAssertEqual(estimate!.priceEstimate?.surgeConfirmationID, "7d604f5e")
+
                 XCTAssertNotNil(estimate!.distanceEstimate)
-                XCTAssertEqual(estimate!.distanceEstimate!.distance, 2.1)
-                XCTAssertEqual(estimate!.distanceEstimate!.duration, 540)
+                XCTAssertEqual(estimate!.distanceEstimate!.distance, 4.87)
+                XCTAssertEqual(estimate!.distanceEstimate!.duration, 660)
                 XCTAssertEqual(estimate!.distanceEstimate!.distanceUnit, "mile")
             }
         }
@@ -493,104 +738,23 @@ class ObjectMappingTests: XCTestCase {
                     return
                 }
                 
-                XCTAssertEqual(receipt.requestID, "b5512127-a134-4bf4-b1ba-fe9f48f56d9d")
-                
-                let charges = receipt.charges
-                XCTAssertEqual(charges.count, 3)
-                XCTAssertEqual(charges[0].name, "Base Fare")
-                XCTAssertEqual(charges[0].amount, 2.20)
-                XCTAssertEqual(charges[0].type, "base_fare")
-                XCTAssertEqual(charges[1].name, "Distance")
-                XCTAssertEqual(charges[1].amount, 2.75)
-                XCTAssertEqual(charges[1].type, "distance")
-                XCTAssertEqual(charges[2].name, "Time")
-                XCTAssertEqual(charges[2].amount, 3.57)
-                XCTAssertEqual(charges[2].type, "time")
-                
-                guard let surgeCharge = receipt.surgeCharge else {
-                    XCTAssert(false)
-                    return
-                }
-                
-                XCTAssertEqual(surgeCharge.name, "Surge x1.5")
-                XCTAssertEqual(surgeCharge.amount, 4.26)
-                XCTAssertEqual(surgeCharge.type, "surge")
+                XCTAssertEqual(receipt.requestID, "f590713c-fe6b-438b-9da1-8aeeea430657")
                 
                 let chargeAdjustments = receipt.chargeAdjustments
                 
-                XCTAssertEqual(chargeAdjustments.count, 3)
-                XCTAssertEqual(chargeAdjustments[0].name, "Promotion")
-                XCTAssertEqual(chargeAdjustments[0].amount, -2.43)
-                XCTAssertEqual(chargeAdjustments[0].type, "promotion")
-                XCTAssertEqual(chargeAdjustments[1].name, "Booking Fee")
-                XCTAssertEqual(chargeAdjustments[1].amount, 1.00)
-                XCTAssertEqual(chargeAdjustments[1].type, "booking_fee")
-                XCTAssertEqual(chargeAdjustments[2].name, "Rounding Down")
-                XCTAssertEqual(chargeAdjustments[2].amount, 0.78)
-                XCTAssertEqual(chargeAdjustments[2].type, "rounding_down")
-                
-                XCTAssertEqual(receipt.normalFare, "$8.52")
+                XCTAssertEqual(chargeAdjustments.count, 1)
+                XCTAssertEqual(chargeAdjustments.first?.name, "Booking Fee")
+                XCTAssertEqual(chargeAdjustments.first?.type, "booking_fee")
+
                 XCTAssertEqual(receipt.subtotal, "$12.78")
                 XCTAssertEqual(receipt.totalCharged, "$5.92")
+                XCTAssertEqual(receipt.totalFare, "$12.79")
                 XCTAssertEqual(receipt.totalOwed, 0.0)
                 XCTAssertEqual(receipt.currencyCode, "USD")
-                XCTAssertEqual(receipt.duration, "00:11:35")
-                XCTAssertEqual(receipt.distance, "1.49")
-                XCTAssertEqual(receipt.distanceLabel, "miles")
-                
-                return
-            }
-        }
-        
-        XCTAssert(false)
-    }
-    
-    func testGetRideReceipt_withNullSurge_withTotalOwed() {
-        let bundle = Bundle(for: ObjectMappingTests.self)
-        if let path = bundle.path(forResource: "rideReceiptNullSurgeTotalOwed", ofType: "json") {
-            if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                guard let receipt = try? JSONDecoder.uberDecoder.decode(RideReceipt.self, from: jsonData) else {
-                    XCTAssert(false)
-                    return
-                }
-                
-                XCTAssertEqual(receipt.requestID, "b5512127-a134-4bf4-b1ba-fe9f48f56d9d")
-                
-                let charges = receipt.charges
-                
-                XCTAssertEqual(charges.count, 3)
-                XCTAssertEqual(charges[0].name, "Base Fare")
-                XCTAssertEqual(charges[0].amount, 2.20)
-                XCTAssertEqual(charges[0].type, "base_fare")
-                XCTAssertEqual(charges[1].name, "Distance")
-                XCTAssertEqual(charges[1].amount, 2.75)
-                XCTAssertEqual(charges[1].type, "distance")
-                XCTAssertEqual(charges[2].name, "Time")
-                XCTAssertEqual(charges[2].amount, 3.57)
-                XCTAssertEqual(charges[2].type, "time")
-                
-                XCTAssertNil(receipt.surgeCharge)
-                
-                let chargeAdjustments = receipt.chargeAdjustments
-                
-                XCTAssertEqual(chargeAdjustments.count, 3)
-                XCTAssertEqual(chargeAdjustments[0].name, "Promotion")
-                XCTAssertEqual(chargeAdjustments[0].amount, -2.43)
-                XCTAssertEqual(chargeAdjustments[0].type, "promotion")
-                XCTAssertEqual(chargeAdjustments[1].name, "Booking Fee")
-                XCTAssertEqual(chargeAdjustments[1].amount, 1.00)
-                XCTAssertEqual(chargeAdjustments[1].type, "booking_fee")
-                XCTAssertEqual(chargeAdjustments[2].name, "Rounding Down")
-                XCTAssertEqual(chargeAdjustments[2].amount, 0.78)
-                XCTAssertEqual(chargeAdjustments[2].type, "rounding_down")
-                
-                XCTAssertEqual(receipt.normalFare, "$8.52")
-                XCTAssertEqual(receipt.subtotal, "$12.78")
-                XCTAssertEqual(receipt.totalCharged, "$5.92")
-                XCTAssertEqual(receipt.totalOwed, 0.50)
-                XCTAssertEqual(receipt.currencyCode, "USD")
-                XCTAssertEqual(receipt.duration, "00:11:35")
-                XCTAssertEqual(receipt.distance, "1.49")
+                XCTAssertEqual(receipt.duration.hour, 0)
+                XCTAssertEqual(receipt.duration.minute, 11)
+                XCTAssertEqual(receipt.duration.second, 32)
+                XCTAssertEqual(receipt.distance, "1.87")
                 XCTAssertEqual(receipt.distanceLabel, "miles")
                 
                 return
