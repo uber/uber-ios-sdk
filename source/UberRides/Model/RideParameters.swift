@@ -67,7 +67,19 @@ import MapKit
         @objc var source: String?
 
         public func build() -> RideParameters {
-            return RideParameters(builder: self)
+            return RideParameters(productID: productID,
+                                  pickupLocation: pickupLocation,
+                                  pickupNickname: pickupNickname,
+                                  pickupAddress: pickupAddress,
+                                  pickupPlaceID: pickupPlaceID,
+                                  dropoffLocation: dropoffLocation,
+                                  dropoffNickname: dropoffNickname,
+                                  dropoffAddress: dropoffAddress,
+                                  dropoffPlaceID: dropoffPlaceID,
+                                  paymentMethod: paymentMethod,
+                                  surgeConfirmationID: surgeConfirmationID,
+                                  source: source,
+                                  upfrontFare: upfrontFare)
         }
     }
     
@@ -128,20 +140,32 @@ import MapKit
         return builder
     }
 
-    private init(builder: Builder) {
-        productID = builder.productID
-        pickupLocation = builder.pickupLocation
-        pickupNickname = builder.pickupNickname
-        pickupAddress = builder.pickupAddress
-        pickupPlaceID = builder.pickupPlaceID
-        dropoffLocation = builder.dropoffLocation
-        dropoffNickname = builder.dropoffNickname
-        dropoffAddress = builder.dropoffAddress
-        dropoffPlaceID = builder.dropoffPlaceID
-        paymentMethod = builder.paymentMethod
-        surgeConfirmationID = builder.surgeConfirmationID
-        source = builder.source
-        upfrontFare = builder.upfrontFare
+    private init(productID: String?,
+                 pickupLocation: CLLocation?,
+                 pickupNickname: String?,
+                 pickupAddress: String?,
+                 pickupPlaceID: String?,
+                 dropoffLocation: CLLocation?,
+                 dropoffNickname: String?,
+                 dropoffAddress: String?,
+                 dropoffPlaceID: String?,
+                 paymentMethod: String?,
+                 surgeConfirmationID: String?,
+                 source: String?,
+                 upfrontFare: UpfrontFare?) {
+        self.productID = productID
+        self.pickupLocation = pickupLocation
+        self.pickupNickname = pickupNickname
+        self.pickupAddress = pickupAddress
+        self.pickupPlaceID = pickupPlaceID
+        self.dropoffLocation = dropoffLocation
+        self.dropoffNickname = dropoffNickname
+        self.dropoffAddress = dropoffAddress
+        self.dropoffPlaceID = dropoffPlaceID
+        self.paymentMethod = paymentMethod
+        self.surgeConfirmationID = surgeConfirmationID
+        self.source = source
+        self.upfrontFare = upfrontFare
     }
 
     var userAgent: String {
