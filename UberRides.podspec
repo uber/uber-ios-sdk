@@ -9,12 +9,12 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/uber/rides-ios-sdk"
   s.screenshots  = "https://raw.githubusercontent.com/uber/rides-ios-sdk/master/img/example_app.png"
   s.license      = { :type => "MIT", :file => "LICENSE" }
-  s.authors      = { "Christine Kim" => "christinek@uber.com", "Farwa Naqi" => "farwa@uber.com", "John Brophy" => "jbrophy@uber.com" }
+  s.authors      = { "Edward Jiang" => "edjiang@uber.com", "Jay Bobzin" => "jbobzin@uber.com", "Ty Smith" => "tys@uber.com" }
   s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/uber/rides-ios-sdk.git", :tag => 'v' + s.version.to_s }
-  s.source_files = ["source/UberRides/*.swift", "source/UberRides/Model/*.swift", "source/UberRides/OAuth/*.swift", "source/UberRides/Utilities/*.swift"]
+  s.source_files = ["source/UberRides/**/*.{swift,h,m}"]
   s.resource     = "source/UberRides/Resources/**"
   s.requires_arc = true
-  s.dependency 'ObjectMapper', '~> 2.0'
+  s.ios.deployment_target = '8.0'
 
 end
