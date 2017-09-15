@@ -25,10 +25,10 @@
 
 
 /// Manages user login via SSO, authorization code grant, or implicit grant.
-@objc(UBSDKLoginManager) open class LoginManager: NSObject, LoginManaging {
+@objc(UBSDKLoginManager) public class LoginManager: NSObject, LoginManaging {
     
     /// Optional state to use for explcit grant authorization
-    @objc open var state: String?
+    @objc public var state: String?
     
     var accessTokenIdentifier: String
     var keychainAccessGroup: String
@@ -114,7 +114,7 @@
      - parameter presentingViewController: The presenting view controller present the login view controller over.
      - parameter completion:               The LoginManagerRequestTokenHandler completion handler for login success/failure.
      */
-    @objc open func login(requestedScopes scopes: [RidesScope], presentingViewController: UIViewController? = nil, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)? = nil) {
+    @objc public func login(requestedScopes scopes: [RidesScope], presentingViewController: UIViewController? = nil, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)? = nil) {
         guard !loggingIn else {
             completion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
             return
@@ -167,7 +167,7 @@
      
      - returns: true if the url was meant to be handled by the SDK, false otherwise
      */
-    open func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+    public func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         guard let source = sourceApplication, source.hasPrefix("com.ubercab"),
         let nativeAuthenticator = authenticator as? NativeAuthenticator else {
             return false
@@ -190,7 +190,7 @@
      - returns: true if the url was meant to be handled by the SDK, false otherwise
      */
     @available(iOS 9.0, *)
-    open func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+    public func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
         let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String
         let annotation = options[.annotation] as Any
 
@@ -201,7 +201,7 @@
      Called via the RidesAppDelegate when the application becomes active. Used to determine
      if a user abandons Native login without getting an access token.
      */
-    open func applicationDidBecomeActive() {
+    public func applicationDidBecomeActive() {
         if loggingIn {
             self.handleLoginCanceled()
         }

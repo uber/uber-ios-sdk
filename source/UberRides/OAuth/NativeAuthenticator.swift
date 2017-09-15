@@ -27,10 +27,10 @@ import Foundation
 /**
  * UberAuthenticating object for authenticating a user via the Native Uber app
  */
-@objc(UBSSONativeAuthenticator) open class NativeAuthenticator: BaseAuthenticator {
+@objc(UBSSONativeAuthenticator) public class NativeAuthenticator: BaseAuthenticator {
     
     /// The completion block to call when the deeplink is completed. Bool indicates if the deeplink was successful
-    @objc open var deeplinkCompletion: ((NSError?) -> ())?
+    @objc public var deeplinkCompletion: ((NSError?) -> ())?
 
     
     var deeplink: Deeplinking

@@ -25,10 +25,10 @@
 import UIKit
 
 /// Base class for authorization flows that use the LoginView.
-@objc open class LoginViewAuthenticator: BaseAuthenticator {
+@objc public class LoginViewAuthenticator: BaseAuthenticator {
     
     /// View controller that will present the login
-    @objc open var presentingViewController: UIViewController
+    @objc public var presentingViewController: UIViewController
     
     /// Endpoint to hit for authorization request.
     var endpoint: UberAPI {

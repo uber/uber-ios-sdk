@@ -41,12 +41,12 @@ import MapKit
 }
 
 // View controller to wrap the RideRequestView
-@objc (UBSDKRideRequestViewController) open class RideRequestViewController: UIViewController {
+@objc (UBSDKRideRequestViewController) public class RideRequestViewController: UIViewController {
     /// The RideRequestViewControllerDelegate to handle the errors
-    @objc open var delegate: RideRequestViewControllerDelegate?
+    @objc public var delegate: RideRequestViewControllerDelegate?
     
     /// The LoginManager to use for managing the login process
-    @objc open var loginManager: LoginManager {
+    @objc public var loginManager: LoginManager {
         didSet {
             accessTokenIdentifier = loginManager.accessTokenIdentifier
             keychainAccessGroup = loginManager.keychainAccessGroup
@@ -110,7 +110,7 @@ import MapKit
     
     // MARK: View Lifecycle
     
-    open override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         self.edgesForExtendedLayout = UIRectEdge()
         self.view.backgroundColor = UIColor.white
@@ -119,13 +119,13 @@ import MapKit
         setupLoginView()
     }
     
-    open override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         self.load()
     }
     
-    open override func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopLoading()
         accessTokenWasUnauthorizedOnPreviousAttempt = false
@@ -133,7 +133,7 @@ import MapKit
     
     // MARK: UIViewController
     
-    open override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+    public override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return [.portrait, .portraitUpsideDown]
     }
     

@@ -26,7 +26,7 @@
 import CoreLocation
 
 /// API client for the Uber Rides API.
-@objc(UBSDKRidesClient) open class RidesClient: NSObject {
+@objc(UBSDKRidesClient) public class RidesClient: NSObject {
     
     /// Application client ID. Required for every instance of RidesClient.
     var clientID: String = Configuration.shared.clientID
@@ -140,7 +140,7 @@ import CoreLocation
      
      - returns: an AccessToken object, or nil if one can't be located
      */
-    @objc open func fetchAccessToken() -> AccessToken? {
+    @objc public func fetchAccessToken() -> AccessToken? {
         guard let accessToken = TokenManager.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup) else {
             return nil
         }
@@ -152,7 +152,7 @@ import CoreLocation
      
      - returns: true if a server token exists, false otherwise.
      */
-    @objc open var hasServerToken: Bool {
+    @objc public var hasServerToken: Bool {
         return serverToken != nil
     }
     
@@ -203,7 +203,7 @@ import CoreLocation
      - parameter location:  coordinates of pickup location
      - parameter completion: completion handler for returned products.
      */
-    @objc open func fetchProducts(pickupLocation location: CLLocation, completion:@escaping (_ products: [Product], _ response: Response) -> Void) {
+    @objc public func fetchProducts(pickupLocation location: CLLocation, completion:@escaping (_ products: [Product], _ response: Response) -> Void) {
         let endpoint = Products.getAll(location: location)
         apiCall(endpoint, completion: { response in
             var products: UberProducts?
@@ -225,7 +225,7 @@ import CoreLocation
      - parameter productID:  string representing product ID.
      - parameter completion: completion handler for returned product.
      */
-    @objc open func fetchProduct(productID: String, completion:@escaping (_ product: Product?, _ response: Response) -> Void) {
+    @objc public func fetchProduct(productID: String, completion:@escaping (_ product: Product?, _ response: Response) -> Void) {
         let endpoint = Products.getProduct(productID: productID)
         apiCall(endpoint, completion: { response in
             var product: Product?
@@ -244,7 +244,7 @@ import CoreLocation
      - parameter productID:  optional string representing the productID.
      - parameter completion: completion handler for returned estimates.
      */
-    @objc open func fetchTimeEstimates(pickupLocation location: CLLocation, productID: String? = nil, completion:@escaping (_ timeEstimates: [TimeEstimate], _ response: Response) -> Void) {
+    @objc public func fetchTimeEstimates(pickupLocation location: CLLocation, productID: String? = nil, completion:@escaping (_ timeEstimates: [TimeEstimate], _ response: Response) -> Void) {
         let endpoint = Estimates.time(location: location, productID: productID)
         apiCall(endpoint, completion: { response in
             var timeEstimates: TimeEstimates?
@@ -267,7 +267,7 @@ import CoreLocation
      - parameter dropoffLocation:  coordinates of dropoff location
      - parameter completion:       completion handler for returned estimates.
      */
-    @objc open func fetchPriceEstimates(pickupLocation: CLLocation, dropoffLocation: CLLocation, completion:@escaping (_ priceEstimates: [PriceEstimate], _ response: Response) -> Void) {
+    @objc public func fetchPriceEstimates(pickupLocation: CLLocation, dropoffLocation: CLLocation, completion:@escaping (_ priceEstimates: [PriceEstimate], _ response: Response) -> Void) {
         let endpoint = Estimates.price(startLocation: pickupLocation,
                                        endLocation: dropoffLocation)
         apiCall(endpoint, completion: { response in
@@ -291,7 +291,7 @@ import CoreLocation
      - parameter limit:      number of items to retrieve. Default is 5, maximum is 50.
      - parameter completion: completion handler for returned user trip history.
      */
-    @objc open func fetchTripHistory(offset: Int = 0, limit: Int = 5, completion:@escaping (_ tripHistory: TripHistory?, _ response: Response) -> Void) {
+    @objc public func fetchTripHistory(offset: Int = 0, limit: Int = 5, completion:@escaping (_ tripHistory: TripHistory?, _ response: Response) -> Void) {
         let endpoint = History.get(offset: offset, limit: limit)
         apiCall(endpoint, completion: { response in
             var history: TripHistory?
@@ -308,7 +308,7 @@ import CoreLocation
     
     - parameter completion: completion handler for returned user profile.
     */
-    @objc open func fetchUserProfile(completion:@escaping (_ profile: UserProfile?, _ response: Response) -> Void) {
+    @objc public func fetchUserProfile(completion:@escaping (_ profile: UserProfile?, _ response: Response) -> Void) {
         let endpoint = Me.userProfile
         apiCall(endpoint, completion: { response in
             var userProfile: UserProfile?
@@ -326,7 +326,7 @@ import CoreLocation
      - parameter parameters: RideParameters object containing paramaters for the request.
      - parameter completion:  completion handler for returned request information.
      */
-    @objc open func requestRide(parameters: RideParameters, completion:@escaping (_ ride: Ride?, _ response: Response) -> Void) {
+    @objc public func requestRide(parameters: RideParameters, completion:@escaping (_ ride: Ride?, _ response: Response) -> Void) {
         let endpoint = Requests.make(rideParameters: parameters)
         apiCallForRideResponse(endpoint, completion: completion)
     }
@@ -336,7 +336,7 @@ import CoreLocation
      
      - parameter completion: completion handler for returned ride information.
      */
-    @objc open func fetchCurrentRide(completion: @escaping (_ ride: Ride?, _ response: Response) -> Void) {
+    @objc public func fetchCurrentRide(completion: @escaping (_ ride: Ride?, _ response: Response) -> Void) {
         let endpoint = Requests.getCurrent
         apiCallForRideResponse(endpoint, completion: completion)
     }
@@ -347,7 +347,7 @@ import CoreLocation
      - parameter requestID:  unique identifier representing a Request.
      - parameter completion: completion handler for returned trip information.
      */
-    @objc open func fetchRideDetails(requestID: String, completion:@escaping (_ ride: Ride? , _ response: Response) -> Void) {
+    @objc public func fetchRideDetails(requestID: String, completion:@escaping (_ ride: Ride? , _ response: Response) -> Void) {
         let endpoint = Requests.getRequest(requestID: requestID)
         apiCallForRideResponse(endpoint, completion: completion)
     }
@@ -358,7 +358,7 @@ import CoreLocation
      - parameter rideParameters: RideParameters object containing necessary information.
      - parameter completion:  completion handler for returned estimate.
      */
-    @objc open func fetchRideRequestEstimate(parameters: RideParameters, completion:@escaping (_ estimate: RideEstimate?, _ response: Response) -> Void) {
+    @objc public func fetchRideRequestEstimate(parameters: RideParameters, completion:@escaping (_ estimate: RideEstimate?, _ response: Response) -> Void) {
         let endpoint = Requests.estimate(rideParameters: parameters)
         apiCall(endpoint, completion: { response in
             var estimate: RideEstimate? = nil
@@ -375,7 +375,7 @@ import CoreLocation
      
      - parameter completion: completion handler for returned payment method list as well as last used payment method.
      */
-    @objc open func fetchPaymentMethods(completion:@escaping (_ methods: [PaymentMethod], _ lastUsed: PaymentMethod?, _ response: Response) -> Void) {
+    @objc public func fetchPaymentMethods(completion:@escaping (_ methods: [PaymentMethod], _ lastUsed: PaymentMethod?, _ response: Response) -> Void) {
         let endpoint = Payment.getMethods
         apiCall(endpoint, completion: { response in
             var paymentMethods = [PaymentMethod]()
@@ -398,7 +398,7 @@ import CoreLocation
      - parameter placeID:    the name of the place to retrieve. Only home and work are acceptable.
      - parameter completion: completion handler for returned place.
      */
-    @objc open func fetchPlace(placeID: String, completion:@escaping (_ place: Place?, _ response: Response) -> Void) {
+    @objc public func fetchPlace(placeID: String, completion:@escaping (_ place: Place?, _ response: Response) -> Void) {
         let endpoint = Places.getPlace(placeID: placeID)
         apiCall(endpoint, completion: { response in
             var place: Place? = nil
@@ -417,7 +417,7 @@ import CoreLocation
      - parameter address:    the address of the place that should be tied to the given placeID.
      - parameter completion: completion handler for response.
      */
-    @objc open func updatePlace(placeID: String, withAddress address: String, completion:@escaping (_ place: Place?, _ response: Response) -> Void) {
+    @objc public func updatePlace(placeID: String, withAddress address: String, completion:@escaping (_ place: Place?, _ response: Response) -> Void) {
         let endpoint = Places.putPlace(placeID: placeID, address: address)
         apiCall(endpoint, completion: { response in
             var place: Place?
@@ -436,7 +436,7 @@ import CoreLocation
      - parameter rideParameters: the RideParameters object containing the updated parameters.
      - parameter completion:  completion handler for response.
      */
-    @objc open func updateRideDetails(requestID: String?, rideParameters: RideParameters, completion:@escaping (_ response: Response) -> Void) {
+    @objc public func updateRideDetails(requestID: String?, rideParameters: RideParameters, completion:@escaping (_ response: Response) -> Void) {
         guard let requestID = requestID else {
             updateCurrentRide(rideParameters: rideParameters, completion: completion)
             return
@@ -454,7 +454,7 @@ import CoreLocation
      - parameter rideParameters: RideParameters object with updated ride parameters.
      - parameter completion:  completion handler for response.
      */
-    @objc open func updateCurrentRide(rideParameters: RideParameters, completion:@escaping (_ response: Response) -> Void) {
+    @objc public func updateCurrentRide(rideParameters: RideParameters, completion:@escaping (_ response: Response) -> Void) {
         let endpoint = Requests.patchCurrent(rideParameters: rideParameters)
         apiCall(endpoint, completion: { response in
             completion(response)
@@ -467,7 +467,7 @@ import CoreLocation
      - parameter requestID:  request ID of the ride. If nil, current ride will be canceled.
      - parameter completion: completion handler for response.
      */
-    @objc open func cancelRide(requestID: String?, completion:@escaping (_ response: Response) -> Void) {
+    @objc public func cancelRide(requestID: String?, completion:@escaping (_ response: Response) -> Void) {
         guard let requestID = requestID else {
             cancelCurrentRide(completion: completion)
             return
@@ -484,7 +484,7 @@ import CoreLocation
      
      - parameter completion: completion handler for response
      */
-    @objc open func cancelCurrentRide(completion:@escaping (_ response: Response) -> Void) {
+    @objc public func cancelCurrentRide(completion:@escaping (_ response: Response) -> Void) {
         let endpoint = Requests.deleteCurrent
         apiCall(endpoint, completion: { response in
             completion(response)
@@ -497,7 +497,7 @@ import CoreLocation
      - parameter requestID:  unique identifier representing a ride request
      - parameter completion: completion handler for receipt
      */
-    @objc open func fetchRideReceipt(requestID: String, completion:@escaping (_ rideReceipt: RideReceipt?, _ response: Response) -> Void) {
+    @objc public func fetchRideReceipt(requestID: String, completion:@escaping (_ rideReceipt: RideReceipt?, _ response: Response) -> Void) {
         let endpoint = Requests.rideReceipt(requestID: requestID)
         apiCall(endpoint, completion: { response in
             var receipt: RideReceipt?
@@ -515,7 +515,7 @@ import CoreLocation
      - parameter requestID:  unique identifier representing a request
      - parameter completion: completion handler for map
      */
-    @objc open func fetchRideMap(requestID: String, completion:@escaping (_ map: RideMap?, _ response: Response) -> Void) {
+    @objc public func fetchRideMap(requestID: String, completion:@escaping (_ map: RideMap?, _ response: Response) -> Void) {
         let endpoint = Requests.rideMap(requestID: requestID)
         apiCall(endpoint, completion: { response in
             var map: RideMap?
@@ -534,7 +534,7 @@ import CoreLocation
      - parameter refreshToken: The Refresh Token String from an SSO access token
      - parameter completion:   completion handler for the new access token
      */
-    @objc open func refreshAccessToken(usingRefreshToken refreshToken: String, completion:@escaping (_ accessToken: AccessToken?, _ response: Response) -> Void) {
+    @objc public func refreshAccessToken(usingRefreshToken refreshToken: String, completion:@escaping (_ accessToken: AccessToken?, _ response: Response) -> Void) {
         let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
         apiCall(endpoint) { response in
             var accessToken: AccessToken?

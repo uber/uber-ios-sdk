@@ -27,7 +27,7 @@ import Foundation
 /**
  *  A Deeplinking object for authenticating a user via the native Uber app
  */
-@objc(UBSDKAppStoreDeeplink) open class AppStoreDeeplink: BaseDeeplink {
+@objc(UBSDKAppStoreDeeplink) public class AppStoreDeeplink: BaseDeeplink {
     
     /**
      Initializes an App Store Deeplink to bring the user to the appstore

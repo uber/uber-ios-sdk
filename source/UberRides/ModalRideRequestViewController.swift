@@ -23,9 +23,9 @@
 //  THE SOFTWARE.
 
 /// Modal View Controller to use for presenting a RideRequestViewController. Handles errors & closing the modal for you
-@objc(UBSDKModalRideRequestViewController) open class ModalRideRequestViewController : ModalViewController {
+@objc(UBSDKModalRideRequestViewController) public class ModalRideRequestViewController : ModalViewController {
     /// The RideRequestViewController this modal is wrapping
-    @objc open internal(set) var rideRequestViewController : RideRequestViewController
+    @objc public internal(set) var rideRequestViewController : RideRequestViewController
     
     /**
      Initializer for the ModalRideRequestViewController. Wraps the provided RideRequestViewController
@@ -48,7 +48,7 @@
 
     // MARK: UIViewController
 
-    open override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+    public override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return [.portrait, .portraitUpsideDown]
     }
 }

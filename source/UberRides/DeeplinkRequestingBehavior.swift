@@ -21,7 +21,7 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-@objc(UBSDKDeeplinkRequestingBehavior) open class DeeplinkRequestingBehavior : NSObject, RideRequesting {
+@objc(UBSDKDeeplinkRequestingBehavior) public class DeeplinkRequestingBehavior : NSObject, RideRequesting {
         
     /**
      Requests a ride using a RequestDeeplink that is constructed using the provided
@@ -30,7 +30,7 @@
      - parameter rideParameters: The RideParameters to use for building and executing 
      the deeplink
      */
-    @objc open func requestRide(parameters rideParameters: RideParameters?) {
+    @objc public func requestRide(parameters rideParameters: RideParameters?) {
         guard let rideParameters = rideParameters else {
             return
         }
