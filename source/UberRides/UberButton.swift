@@ -34,7 +34,7 @@ import UIKit
     let uberImageView: UIImageView = UIImageView()
     let uberTitleLabel: UILabel = UILabel()
     
-    public var colorStyle: RequestButtonColorStyle = .black {
+    @objc public var colorStyle: RequestButtonColorStyle = .black {
         didSet {
             colorStyleDidUpdate(colorStyle)
         }

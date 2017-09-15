@@ -93,7 +93,6 @@
 
 - (UBSDKRideParameters *)_buildRideParameters {
     UBSDKRideParametersBuilder *parameterBuilder = [[UBSDKRideParametersBuilder alloc] init];
-    [parameterBuilder setPickupToCurrentLocation];
     return [parameterBuilder build];
 }
 

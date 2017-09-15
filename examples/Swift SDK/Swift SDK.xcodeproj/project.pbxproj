@@ -261,6 +261,7 @@
 				TargetAttributes = {
 					AC0404A31BFAD0C800AC1501 = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = 5F83KRY2FH;
 						LastSwiftMigration = 0900;
 					};
 					AC0404B71BFAD0C800AC1501 = {
@@ -509,6 +510,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 5F83KRY2FH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -528,6 +530,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 5F83KRY2FH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",

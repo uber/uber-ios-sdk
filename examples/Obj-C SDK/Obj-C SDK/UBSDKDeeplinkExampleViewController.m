@@ -96,10 +96,12 @@
     [builder setProductID:@"a1111c8c-c720-46c3-8534-2fcdd730040d"];
     
     CLLocation *pickupLocation = [[CLLocation alloc] initWithLatitude:37.770 longitude:-122.466];
-    [builder setPickupLocation:pickupLocation nickname:@"California Academy of Sciences"];
+    [builder setPickupLocation:pickupLocation];
+    [builder setPickupNickname:@"California Academy of Sciences"];
     
     CLLocation *dropoffLocation = [[CLLocation alloc] initWithLatitude:37.791 longitude:-122.405];
-    [builder setDropoffLocation:dropoffLocation nickname:@"Pier 39"];
+    [builder setDropoffLocation:dropoffLocation];
+    [builder setDropoffNickname:@"Pier 39"];
     
     return [builder build];
 }

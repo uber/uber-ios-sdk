@@ -70,7 +70,7 @@ static NSString *const historyCellReuseIdentifier = @"HistoryCell";
     [self.view addSubview:tableView];
     _tableView = tableView;
     
-    NSArray<UBSDKRidesScope *> *requestedScopes = @[ UBSDKRidesScope.RideWidgets, UBSDKRidesScope.Profile, UBSDKRidesScope.Places, UBSDKRidesScope.History ];
+    NSArray<UBSDKRidesScope *> *requestedScopes = @[ UBSDKRidesScope.rideWidgets, UBSDKRidesScope.profile, UBSDKRidesScope.places, UBSDKRidesScope.history ];
     
     UBSDKLoginButtonView *loginButtonView = [[UBSDKLoginButtonView alloc] initWithFrame:self.view.frame
                                                                                        scopes:requestedScopes
@@ -107,7 +107,7 @@ static NSString *const historyCellReuseIdentifier = @"HistoryCell";
     // Examples of various data that can be retrieved
     
     // Retrieves a user profile for the current logged in user
-    [self.ridesClient fetchUserProfile:^(UBSDKUserProfile * _Nullable profile, UBSDKResponse *response) {
+    [self.ridesClient fetchUserProfileWithCompletion:^(UBSDKUserProfile * _Nullable profile, UBSDKResponse *response) {
         if (response.statusCode == 401) {
             [self resetAccessToken];
         } else if (profile) {
@@ -119,24 +119,24 @@ static NSString *const historyCellReuseIdentifier = @"HistoryCell";
     }];
     
     // Gets the address assigned as the "home" address for current user
-    [self.ridesClient fetchPlace:UBSDKPlace.Home completion:^(UBSDKPlace * _Nullable place, UBSDKResponse *response) {
+    [self.ridesClient fetchPlaceWithPlaceID:UBSDKPlace.home completion:^(UBSDKPlace * _Nullable place, UBSDKResponse *response) {
         if (response.statusCode == 401) {
             [self resetAccessToken];
-        } else {
+        } else if (place) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.places setObject:place forKey:UBSDKPlace.Home];
+                [self.places setObject:place forKey:UBSDKPlace.home];
                 [self.tableView reloadData];
             });
         }
     }];
     
     // Gets the address assigned as the "work" address for current user
-    [self.ridesClient fetchPlace:UBSDKPlace.Work completion:^(UBSDKPlace * _Nullable place, UBSDKResponse *response) {
+    [self.ridesClient fetchPlaceWithPlaceID:UBSDKPlace.work completion:^(UBSDKPlace * _Nullable place, UBSDKResponse *response) {
         if (response.statusCode == 401) {
             [self resetAccessToken];
-        } else {
+        } else if (place) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.places setObject:place forKey:UBSDKPlace.Work];
+                [self.places setObject:place forKey:UBSDKPlace.work];
                 [self.tableView reloadData];
             });
         }
@@ -210,14 +210,14 @@ static NSString *const historyCellReuseIdentifier = @"HistoryCell";
             UBSDKPlace *place;
             switch (indexPath.row) {
                 case 0:
-                    if ([self.places objectForKey:UBSDKPlace.Home]) {
-                        place = [self.places objectForKey:UBSDKPlace.Home];
-                        placeText = UBSDKPlace.Home.capitalizedString;
+                    if ([self.places objectForKey:UBSDKPlace.home]) {
+                        place = [self.places objectForKey:UBSDKPlace.home];
+                        placeText = UBSDKPlace.home.capitalizedString;
                         break;
                     }
                 case 1:
-                    place = [self.places objectForKey:UBSDKPlace.Work];
-                    placeText = UBSDKPlace.Work.capitalizedString;
+                    place = [self.places objectForKey:UBSDKPlace.work];
+                    placeText = UBSDKPlace.work.capitalizedString;
                     break;
             }
             
@@ -281,12 +281,12 @@ static NSString *const historyCellReuseIdentifier = @"HistoryCell";
     NSString *placeID;
     switch (indexPath.row) {
         case 0:
-            if ([self.places objectForKey:UBSDKPlace.Home]) {
-                placeID = UBSDKPlace.Home;
+            if ([self.places objectForKey:UBSDKPlace.home]) {
+                placeID = UBSDKPlace.home;
                 break;
             }
         case 1:
-            placeID = UBSDKPlace.Work;
+            placeID = UBSDKPlace.work;
             break;
     }
     
@@ -305,8 +305,8 @@ static NSString *const historyCellReuseIdentifier = @"HistoryCell";
         if (!addressTextField || !addressTextField.text) {
             return;
         }
-        
-        [self.ridesClient updatePlace:placeID withAddress:addressTextField.text completion:^(UBSDKPlace * _Nullable place, UBSDKResponse * _Nonnull response) {
+
+        [self.ridesClient updatePlaceWithPlaceID:placeID withAddress:addressTextField.text completion:^(UBSDKPlace * _Nullable place, UBSDKResponse * _Nonnull response) {
             [self.places setObject:place forKey:placeID];
             [self.tableView reloadData];
         }];

@@ -23,8 +23,6 @@
 		DCD806081CFE35EF00EF6EB1 /* UBSDKLoginButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCD806071CFE35EF00EF6EB1 /* UBSDKLoginButtonView.m */; };
 		DCEB80921D078DE300899810 /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB80911D078DE300899810 /* UberRides.framework */; };
 		DCEB80931D078DE300899810 /* UberRides.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB80911D078DE300899810 /* UberRides.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		DCEB80951D078DE800899810 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB80941D078DE800899810 /* ObjectMapper.framework */; };
-		DCEB80961D078DE800899810 /* ObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB80941D078DE800899810 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DCEC0CAA1CB5D7780086C6D7 /* UBSDKExampleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEC0CA91CB5D7780086C6D7 /* UBSDKExampleTableViewController.m */; };
 		DCEC0CAD1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEC0CAC1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.m */; };
 		DCEC0CB01CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEC0CAF1CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.m */; };
@@ -54,7 +52,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DCEB80961D078DE800899810 /* ObjectMapper.framework in Embed Frameworks */,
 				DCEB80931D078DE300899810 /* UberRides.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -100,7 +97,6 @@
 		DCD806061CFE35EF00EF6EB1 /* UBSDKLoginButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKLoginButtonView.h; sourceTree = "<group>"; };
 		DCD806071CFE35EF00EF6EB1 /* UBSDKLoginButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSDKLoginButtonView.m; sourceTree = "<group>"; };
 		DCEB80911D078DE300899810 /* UberRides.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UberRides.framework; path = Carthage/Build/iOS/UberRides.framework; sourceTree = "<group>"; };
-		DCEB80941D078DE800899810 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
 		DCEC0CA81CB5D7780086C6D7 /* UBSDKExampleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKExampleTableViewController.h; sourceTree = "<group>"; };
 		DCEC0CA91CB5D7780086C6D7 /* UBSDKExampleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSDKExampleTableViewController.m; sourceTree = "<group>"; };
 		DCEC0CAB1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKRideRequestWidgetExampleViewController.h; sourceTree = "<group>"; };
@@ -114,7 +110,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCEB80951D078DE800899810 /* ObjectMapper.framework in Frameworks */,
 				DCEB80921D078DE300899810 /* UberRides.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -139,7 +134,6 @@
 		28A6CFC4B4A38C240D740F18 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DCEB80941D078DE800899810 /* ObjectMapper.framework */,
 				DCEB80911D078DE300899810 /* UberRides.framework */,
 			);
 			name = Frameworks;
@@ -329,6 +323,7 @@
 				TargetAttributes = {
 					AC0404EC1BFB82CC00AC1501 = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = 5F83KRY2FH;
 					};
 					AC0405051BFB82CC00AC1501 = {
 						CreatedOnToolsVersion = 7.1;
@@ -398,7 +393,6 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/UberRides.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/ObjectMapper.framework",
 			);
 			name = "Copy Carthage Frameworks";
 			outputPaths = (
@@ -571,6 +565,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 5F83KRY2FH;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -590,6 +585,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 5F83KRY2FH;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

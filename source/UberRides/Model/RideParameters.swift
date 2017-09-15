@@ -164,7 +164,7 @@ import MapKit
     /// The source to use for attributing the ride. Used internal to the SDK.
     @objc var source: String?
 
-    public func build() -> RideParameters {
+    @objc public func build() -> RideParameters {
         return RideParameters(productID: productID,
                               pickupLocation: pickupLocation,
                               pickupNickname: pickupNickname,

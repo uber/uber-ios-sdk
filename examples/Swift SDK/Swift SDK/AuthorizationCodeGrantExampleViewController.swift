@@ -121,13 +121,15 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
         let pickupLocation = CLLocation(latitude: 37.770, longitude: -122.466)
         let dropoffLocation = CLLocation(latitude: 37.791, longitude: -122.405)
 
-        let parameters = RideParameters(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation)
-        parameters.pickupNickname = "California Academy of Sciences"
-        parameters.dropoffNickname = "Pier 39"
-        parameters.productID = "a1111c8c-c720-46c3-8534-2fcdd730040d"
+        let builder = RideParametersBuilder()
+        builder.pickupLocation = pickupLocation
+        builder.pickupNickname = "California Academy of Sciences"
+        builder.dropoffLocation = dropoffLocation
+        builder.dropoffNickname = "Pier 39"
+        builder.productID = "a1111c8c-c720-46c3-8534-2fcdd730040d"
 
         // Use the POST /v1/requests endpoint to make a ride request (in sandbox)
-        ridesClient.requestRide(parameters: parameters, completion: { ride, response in
+        ridesClient.requestRide(parameters: builder.build(), completion: { ride, response in
             DispatchQueue.main.async(execute: {
                 self.checkError(response)
                 if let ride = ride {

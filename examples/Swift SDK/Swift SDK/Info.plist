@@ -25,7 +25,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>callback</string>
+				<string>com.uber.sdk.Swift-SDK</string>
 			</array>
 		</dict>
 	</array>
@@ -58,15 +58,9 @@
 	<array>
 		<dict>
 			<key>URIString</key>
-			<string>callback://your_callback_uri</string>
+			<string>com.uber.sdk.Swift-SDK://oauth/consumer</string>
 			<key>UberCallbackURIType</key>
 			<string>General</string>
-		</dict>
-		<dict>
-			<key>URIString</key>
-			<string>callback://optional_authorization_code_uri</string>
-			<key>UberCallbackURIType</key>
-			<string>AuthorizationCode</string>
 		</dict>
 	</array>
 	<key>UberClientID</key>

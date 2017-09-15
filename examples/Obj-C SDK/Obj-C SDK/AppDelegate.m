@@ -36,14 +36,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    // Uncomment if your app is registered in China
-    //[UBSDKConfiguration setRegion:RegionChina];
-    
     //Make requests to sandbox for development
-    [UBSDKConfiguration setSandboxEnabled:YES];
-    
-    //Handle incoming SSO Requests
-    [[UBSDKRidesAppDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+    [[UBSDKConfiguration shared] setIsSandbox:YES];
     
     return YES;
 }
@@ -70,9 +64,10 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
     //Check & handle incoming SSO URL
-    BOOL handledUberURL = [[UBSDKRidesAppDelegate sharedInstance] application:app openURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+    BOOL handledUberURL = [[UBSDKRidesAppDelegate shared] application:app open:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
     
     return handledUberURL;
 }
