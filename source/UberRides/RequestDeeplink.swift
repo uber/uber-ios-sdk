@@ -30,19 +30,10 @@ import UIKit
  *  Builds and executes a deeplink to the native Uber app to request a ride.
  */
 @objc(UBSDKRequestDeeplink) public class RequestDeeplink: BaseDeeplink {
-    
-    private let parameters: RideParameters
-    private let clientID: String
-    
     static let sourceString = "deeplink"
     
-    @objc public init(rideParameters: RideParameters = RideParameters()) {
-        parameters = rideParameters
-        clientID = Configuration.shared.clientID
-        
-        if rideParameters.source == nil {
-            rideParameters.source = RequestDeeplink.sourceString
-        }
+    @objc public init(rideParameters: RideParameters = RideParametersBuilder().build()) {
+        rideParameters.source = rideParameters.source ?? RequestDeeplink.sourceString
         
         let queryItems = RequestURLUtil.buildRequestQueryParameters(rideParameters)
         let scheme = "uber"

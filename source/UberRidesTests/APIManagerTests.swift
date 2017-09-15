@@ -219,14 +219,17 @@ class APIManagerTests: XCTestCase {
     func testRequestBuilderAllParameters() {
         let pickupLocation = CLLocation(latitude: pickupLat, longitude: pickupLong)
         let dropoffLocation = CLLocation(latitude: dropoffLat, longitude: dropoffLong)
-        let rideParameters = RideParameters(pickupLocation: pickupLocation, dropoffLocation: dropoffLocation)
-        rideParameters.pickupNickname = pickupNickname
-        rideParameters.pickupAddress = pickupAddress
-        rideParameters.dropoffNickname = dropoffNickname
-        rideParameters.dropoffAddress = dropoffAddress
-        rideParameters.productID = productID
-        rideParameters.surgeConfirmationID = surgeConfirm
-        rideParameters.paymentMethod = paymentMethod
+        let builder = RideParametersBuilder()
+        builder.pickupLocation = pickupLocation
+        builder.pickupNickname = pickupNickname
+        builder.pickupAddress = pickupAddress
+        builder.dropoffLocation = dropoffLocation
+        builder.dropoffNickname = dropoffNickname
+        builder.dropoffAddress = dropoffAddress
+        builder.productID = productID
+        builder.surgeConfirmationID = surgeConfirm
+        builder.paymentMethod = paymentMethod
+        let rideParameters = builder.build()
         
         guard let data = RideRequestDataBuilder(rideParameters: rideParameters).build() else {
             XCTAssert(false)
@@ -261,8 +264,10 @@ class APIManagerTests: XCTestCase {
      Test the POST /v1/requests endpoint.
      */
     func testPostRequest() {
-        let rideParameters = RideParameters(pickupPlaceID: "home", dropoffPlaceID: nil)
-        rideParameters.productID = productID
+        let builder = RideParametersBuilder()
+        builder.pickupPlaceID = Place.home
+        builder.productID = productID
+        let rideParameters = builder.build()
         let request = buildRequestForEndpoint(Requests.make(rideParameters: rideParameters))
         XCTAssertEqual(request.httpMethod, Method.post.rawValue)
         if let url = request.url {
@@ -304,8 +309,9 @@ class APIManagerTests: XCTestCase {
      Tests the POST /v1/requests/estimate endpoint.
      */
     func testPostRequestEstimate() {
-        let rideParameters = RideParameters(pickupPlaceID: "home", dropoffPlaceID: nil)
-        let request = buildRequestForEndpoint(Requests.estimate(rideParameters: rideParameters))
+        let builder = RideParametersBuilder()
+        builder.pickupPlaceID = Place.home
+        let request = buildRequestForEndpoint(Requests.estimate(rideParameters: builder.build()))
         XCTAssertEqual(request.httpMethod, "POST")
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.PostRequestEstimate)
@@ -381,7 +387,9 @@ class APIManagerTests: XCTestCase {
      Tests the PATCH /v1/requests/curent endpoint.
      */
     func testPatchCurrentRequest() {
-        let rideParams = RideParameters(pickupPlaceID: Place.home, dropoffPlaceID: nil)
+        let builder = RideParametersBuilder()
+        builder.pickupPlaceID = Place.home
+        let rideParams = builder.build()
         let request = buildRequestForEndpoint(Requests.patchCurrent(rideParameters: rideParams))
         XCTAssertEqual(request.httpMethod, "PATCH")
         if let url = request.url {
@@ -420,7 +428,9 @@ class APIManagerTests: XCTestCase {
      Tests the PATCH /v1/requests/{request_id} endpoint.
      */
     func testPatchRequestByID() {
-        let rideParams = RideParameters(pickupPlaceID: Place.home, dropoffPlaceID: nil)
+        let builder = RideParametersBuilder()
+        builder.pickupPlaceID = Place.home
+        let rideParams = builder.build()
         let request = buildRequestForEndpoint(Requests.patchRequest(requestID: requestID, rideParameters: rideParams))
         XCTAssertEqual(request.httpMethod, "PATCH")
         if let url = request.url {

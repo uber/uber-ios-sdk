@@ -49,7 +49,7 @@ class RideRequestViewTests: XCTestCase {
      */
     func testAccessTokenExpired() {
         testExpectation = expectation(description: "access token expired delegate call")
-        let view = RideRequestView(rideParameters: RideParameters())
+        let view = RideRequestView(rideParameters: RideParametersBuilder().build())
         view.delegate = self
         let request = URLRequest(url: URL(string: "uberConnect://oauth#error=unauthorized")!)
         view.webView.load(request)
@@ -82,7 +82,7 @@ class RideRequestViewTests: XCTestCase {
      */
     func testAuthorizeWithCustomAccessToken() {
         let token = AccessToken(tokenString: "accessToken1234")
-        let view = RideRequestView(rideParameters: RideParameters(), accessToken: token, frame: CGRect.zero)
+        let view = RideRequestView(rideParameters: RideParametersBuilder().build(), accessToken: token, frame: CGRect.zero)
         XCTAssertNotNil(view.accessToken)
         XCTAssertEqual(view.accessToken, token)
     }
@@ -160,7 +160,7 @@ class RideRequestViewTests: XCTestCase {
             _ = TokenManager.deleteToken(identifier: testIdentifier)
         }
         
-        let rideRequestView = RideRequestView(rideParameters: RideParameters(), accessToken: TokenManager.fetchToken(identifier: testIdentifier), frame: CGRect.zero)
+        let rideRequestView = RideRequestView(rideParameters: RideParametersBuilder().build(), accessToken: TokenManager.fetchToken(identifier: testIdentifier), frame: CGRect.zero)
         XCTAssertNotNil(rideRequestView)
         
         let webViewMock = WebViewMock(frame: CGRect.zero, configuration: WKWebViewConfiguration(), testClosure: expectationClosure)
@@ -179,7 +179,7 @@ class RideRequestViewTests: XCTestCase {
         testExpectation = expectation(description: "Delegate called")
         let cancelRequestExpectation = expectation(description: "Request was cancelled")
         
-        let rideRequestView = RideRequestView(rideParameters: RideParameters(), accessToken:nil, frame:CGRect.zero)
+        let rideRequestView = RideRequestView(rideParameters: RideParametersBuilder().build(), accessToken:nil, frame:CGRect.zero)
         rideRequestView.delegate = self
         let telURLString = "tel:5555555555"
         guard let telURL = URL(string: telURLString) else {

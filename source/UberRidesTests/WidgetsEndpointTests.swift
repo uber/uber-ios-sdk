@@ -65,7 +65,10 @@ class WidgetsEndpointTests: XCTestCase {
             ("pickup[latitude]", "\(expectedLat)" ),
             ("pickup[longitude]", "\(expectedLong)")
         )
-        let rideParameters = RideParameters(pickupLocation: CLLocation(latitude: expectedLat, longitude: expectedLong), dropoffLocation: nil)
+        let pickupLocation = CLLocation(latitude: expectedLat, longitude: expectedLong)
+        let rideParametersBuilder = RideParametersBuilder()
+        rideParametersBuilder.pickupLocation = pickupLocation
+        let rideParameters = rideParametersBuilder.build()
         let rideRequestWidget = Components.rideRequestWidget(rideParameters: rideParameters)
         
         XCTAssertEqual(rideRequestWidget.host, expectedHost)
