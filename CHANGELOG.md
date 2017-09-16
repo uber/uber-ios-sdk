@@ -1,4 +1,25 @@
 # Change Log
+
+## [0.7.0] 2017-09-15
+
+0.7 makes the Uber Rides iOS SDK compatible with iOS 11 and Swift 4.
+
+### Added
+* Brazil and Russian localizations
+* Moved to GitHub-first development.
+* Support for Travis CI
+
+### Fixed
+* Migrated the SDK to Swift 4
+* Changed APIs to be more idiomatic with Swift
+* Use the api.uber.com V1.2 endpoints
+* Updated the Sample Apps to use the current SDK
+
+### Removed
+* China support is now removed
+* `RidesClient.fetchCheapestProduct` is removed since the Ride RequestAPI no longer supports it with upfront fares.
+* `UberRides` no longer depends on `ObjectMapper`
+
 ## [0.6.0] 2016-11-22
 
 ### Added
