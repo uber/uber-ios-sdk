@@ -124,28 +124,28 @@ import UIKit
     }
     
     /// Convenience variable for the AllTrips scope
-    @objc public static let AllTrips = RidesScope(ridesScopeType: .allTrips)
+    @objc public static let allTrips = RidesScope(ridesScopeType: .allTrips)
     
     /// Convenience variable for the History scope
-    @objc public static let History = RidesScope(ridesScopeType: .history)
+    @objc public static let history = RidesScope(ridesScopeType: .history)
     
     /// Convenience variable for the HistoryLite scope
-    @objc public static let HistoryLite = RidesScope(ridesScopeType: .historyLite)
+    @objc public static let historyLite = RidesScope(ridesScopeType: .historyLite)
     
     /// Convenience variable for the Places scope
-    @objc public static let Places = RidesScope(ridesScopeType: .places)
+    @objc public static let places = RidesScope(ridesScopeType: .places)
     
     /// Convenience variable for the Profile scope
-    @objc public static let Profile = RidesScope(ridesScopeType: .profile)
+    @objc public static let profile = RidesScope(ridesScopeType: .profile)
     
     /// Convenience variable for the Request scope
-    @objc public static let Request = RidesScope(ridesScopeType: .request)
+    @objc public static let request = RidesScope(ridesScopeType: .request)
     
     /// Convenience variable for the RequestReceipt scope
-    @objc public static let RequestReceipt = RidesScope(ridesScopeType: .requestReceipt)
+    @objc public static let requestReceipt = RidesScope(ridesScopeType: .requestReceipt)
     
     /// Convenience variable for the RideWidgets scope
-    @objc public static let RideWidgets = RidesScope(ridesScopeType: .rideWidgets)
+    @objc public static let rideWidgets = RidesScope(ridesScopeType: .rideWidgets)
     
 }
 

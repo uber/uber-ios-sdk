@@ -58,14 +58,17 @@ open class DeeplinkExampleViewController: ButtonExampleViewController {
         whiteRequestButton.requestBehavior = deeplinkBehavior
         
         whiteRequestButton.colorStyle = .white
-        var parameterBuilder = RideParametersBuilder()
-        parameterBuilder = parameterBuilder.setProductID("a1111c8c-c720-46c3-8534-2fcdd730040d")
         let pickupLocation = CLLocation(latitude: 37.770, longitude: -122.466)
-        parameterBuilder = parameterBuilder.setPickupLocation(pickupLocation, nickname: "California Academy of Sciences")
         let dropoffLocation = CLLocation(latitude: 37.791, longitude: -122.405)
-        parameterBuilder = parameterBuilder.setDropoffLocation(dropoffLocation, nickname: "Pier 39")
+
+        let builder = RideParametersBuilder()
+        builder.pickupLocation = pickupLocation
+        builder.pickupNickname = "California Academy of Sciences"
+        builder.dropoffLocation = dropoffLocation
+        builder.dropoffNickname = "Pier 39"
+        builder.productID = "a1111c8c-c720-46c3-8534-2fcdd730040d"
         
-        whiteRequestButton.rideParameters = parameterBuilder.build()
+        whiteRequestButton.rideParameters = builder.build()
     }
     
     fileprivate func addBlackRequestButtonConstraints() {

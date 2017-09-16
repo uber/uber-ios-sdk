@@ -45,7 +45,7 @@ class OauthEndpointTests: XCTestCase {
     func testLogin_withSandboxEnabled() {
         Configuration.shared.isSandbox = true
         
-        let scopes = [ RidesScope.Profile, RidesScope.History ]
+        let scopes = [ RidesScope.profile, RidesScope.history ]
         let expectedHost = "https://login.uber.com"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toRidesScopeString()
@@ -70,7 +70,7 @@ class OauthEndpointTests: XCTestCase {
     func testLogin_withSandboxDisabled() {
         Configuration.shared.isSandbox = false
         
-        let scopes = [ RidesScope.Profile, RidesScope.History ]
+        let scopes = [ RidesScope.profile, RidesScope.history ]
         let expectedHost = "https://login.uber.com"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toRidesScopeString()
@@ -93,7 +93,7 @@ class OauthEndpointTests: XCTestCase {
     }
 
     func testLogin_forAuthorizationCodeGrant_defaultSettings() {
-        let scopes = [ RidesScope.AllTrips, RidesScope.History ]
+        let scopes = [ RidesScope.allTrips, RidesScope.history ]
         let expectedHost = "https://login.uber.com"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toRidesScopeString()

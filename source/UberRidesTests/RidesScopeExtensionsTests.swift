@@ -29,9 +29,9 @@ class RidesScopeExtensionsTests: XCTestCase {
 
     func testRidesScopeToString_withValidScopes()
     {
-        let scopes : [RidesScope] = Array(arrayLiteral: RidesScope.Profile, RidesScope.Places)
+        let scopes : [RidesScope] = Array(arrayLiteral: RidesScope.profile, RidesScope.places)
         
-        let expectedString = "\(RidesScope.Profile.rawValue) \(RidesScope.Places.rawValue)"
+        let expectedString = "\(RidesScope.profile.rawValue) \(RidesScope.places.rawValue)"
         let scopeString = scopes.toRidesScopeString()
         
         XCTAssertEqual(expectedString, scopeString)
@@ -49,7 +49,7 @@ class RidesScopeExtensionsTests: XCTestCase {
     
     func testRidesScopeToString_withValidScopesUsingSet()
     {
-        let scopes : Set<RidesScope> = Set<RidesScope>(arrayLiteral: RidesScope.Profile, RidesScope.Places)
+        let scopes : Set<RidesScope> = Set<RidesScope>(arrayLiteral: RidesScope.profile, RidesScope.places)
         
         let scopeString = scopes.toRidesScopeString()
         
@@ -76,9 +76,9 @@ class RidesScopeExtensionsTests: XCTestCase {
     
     func testStringToRidesScope_withValidScopes()
     {
-        let expectedScopes : [RidesScope] = Array(arrayLiteral: RidesScope.Profile, RidesScope.Places)
+        let expectedScopes : [RidesScope] = Array(arrayLiteral: RidesScope.profile, RidesScope.places)
         
-        let scopeString = "\(RidesScope.Profile.rawValue) \(RidesScope.Places.rawValue)"
+        let scopeString = "\(RidesScope.profile.rawValue) \(RidesScope.places.rawValue)"
 
         let scopes = scopeString.toRidesScopesArray()
         
@@ -109,9 +109,9 @@ class RidesScopeExtensionsTests: XCTestCase {
     
     func testStringToRidesScope_withInvalidAndValidScopes()
     {
-        let expectedScopes : [RidesScope] = Array(arrayLiteral: RidesScope.Places)
+        let expectedScopes : [RidesScope] = Array(arrayLiteral: RidesScope.places)
         
-        let scopeString = "not actual values \(RidesScope.Places.rawValue)"
+        let scopeString = "not actual values \(RidesScope.places.rawValue)"
         
         let scopes = scopeString.toRidesScopesArray()
         
@@ -120,7 +120,7 @@ class RidesScopeExtensionsTests: XCTestCase {
     
     func testStringToRidesScope_caseInsensitive()
     {
-        let expectedScopes : [RidesScope] = Array(arrayLiteral: RidesScope.Places, RidesScope.History)
+        let expectedScopes : [RidesScope] = Array(arrayLiteral: RidesScope.places, RidesScope.history)
         
         let scopeString = "plAcEs HISTORY"
         

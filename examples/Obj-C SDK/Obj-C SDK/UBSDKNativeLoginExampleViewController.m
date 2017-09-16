@@ -67,7 +67,7 @@
 - (void)_initialSetup {
     _loginManager = [[UBSDKLoginManager alloc] initWithLoginType:UBSDKLoginTypeNative];
     
-    NSArray<UBSDKRidesScope *> *scopes = @[UBSDKRidesScope.Profile, UBSDKRidesScope.Places, UBSDKRidesScope.Request];
+    NSArray<UBSDKRidesScope *> *scopes = @[UBSDKRidesScope.profile, UBSDKRidesScope.places, UBSDKRidesScope.request];
     
     _blackLoginButton = ({
         UBSDKLoginButton *loginButton = [[UBSDKLoginButton alloc] initWithFrame:CGRectZero scopes:scopes loginManager:_loginManager];
@@ -153,7 +153,7 @@
 #pragma mark - Actions
 
 - (void)_loginButtonAction:(UIButton *)button {
-    NSArray<UBSDKRidesScope *> *requestedScopes = @[ UBSDKRidesScope.RideWidgets, UBSDKRidesScope.Profile, UBSDKRidesScope.Places ];
+    NSArray<UBSDKRidesScope *> *requestedScopes = @[ UBSDKRidesScope.rideWidgets, UBSDKRidesScope.profile, UBSDKRidesScope.places ];
     
     [self.loginManager loginWithRequestedScopes:requestedScopes presentingViewController:self completion:^(UBSDKAccessToken * _Nullable accessToken, NSError * _Nullable error) {
         if (accessToken) {

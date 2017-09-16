@@ -54,8 +54,8 @@ import MapKit
     }
     
     lazy var rideRequestView: RideRequestView = RideRequestView()
-    lazy var loginView: LoginView = LoginView(loginAuthenticator: ImplicitGrantAuthenticator(presentingViewController: self, scopes: [.RideWidgets]))
-    lazy var nativeAuthenticator = NativeAuthenticator(scopes: [.RideWidgets])
+    lazy var loginView: LoginView = LoginView(loginAuthenticator: ImplicitGrantAuthenticator(presentingViewController: self, scopes: [.rideWidgets]))
+    lazy var nativeAuthenticator = NativeAuthenticator(scopes: [.rideWidgets])
 
     static let sourceString = "ride_request_widget"
 
@@ -221,7 +221,7 @@ import MapKit
     }
     
     private func setupImplicitLoginView() {
-        let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: self, scopes: [.RideWidgets])
+        let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: self, scopes: [.rideWidgets])
         loginBehavior.loginCompletion = { token, error in
             guard let token = token, error == nil else {
                 if error?.code == RidesAuthenticationErrorType.networkError.rawValue {

@@ -68,6 +68,17 @@ class RideRequestWidgetExampleViewController: ButtonExampleViewController {
         requestBehavior.modalRideRequestViewController.delegate = self
         
         let rideParameters = RideParametersBuilder().build()
+
+        let accessTokenString = "access_token_string"
+        let token = AccessToken(tokenString: accessTokenString)
+        if TokenManager.save(accessToken: token){
+            // Success
+        } else {
+            // Unable to save
+        }
+
+        TokenManager.fetchToken()
+        TokenManager.deleteToken()
         
         return RideRequestButton(rideParameters: rideParameters, requestingBehavior: requestBehavior)
     }

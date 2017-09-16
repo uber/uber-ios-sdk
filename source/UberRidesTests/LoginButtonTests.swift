@@ -90,7 +90,7 @@ class LoginButtonTests : XCTestCase {
         loginManager.executeLoginClosure = {
             expectation.fulfill()
         }
-        let loginButton = LoginButton(frame: CGRect.zero, scopes: [.Profile], loginManager: loginManager)
+        let loginButton = LoginButton(frame: CGRect.zero, scopes: [.profile], loginManager: loginManager)
         
         loginButton.presentingViewController = UIViewController()
         XCTAssertNotNil(loginButton)
@@ -112,7 +112,7 @@ class LoginButtonTests : XCTestCase {
         XCTAssertTrue(keychain.setObject(token, key: identifier))
         
         let loginManager = LoginManager(accessTokenIdentifier: identifier, keychainAccessGroup: nil, loginType: .implicit)
-        let loginButton = LoginButton(frame: CGRect.zero, scopes: [.Profile], loginManager: loginManager)
+        let loginButton = LoginButton(frame: CGRect.zero, scopes: [.profile], loginManager: loginManager)
         
         loginButton.presentingViewController = UIViewController()
         XCTAssertNotNil(loginButton)

@@ -18,6 +18,17 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.uber.sdk.Obj-C-SDK</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -47,20 +58,14 @@
 	<array>
 		<dict>
 			<key>URIString</key>
-			<string>callback://your_callback_uri</string>
+			<string>com.uber.sdk.Obj-C-SDK://oauth/consumer</string>
 			<key>UberCallbackURIType</key>
 			<string>General</string>
 		</dict>
-		<dict>
-			<key>URIString</key>
-			<string>callback://optional_authorization_code_uri</string>
-			<key>UberCallbackURIType</key>
-			<string>AuthorizationCode</string>
-		</dict>
 	</array>
 	<key>UberClientID</key>
-	<string>YOUR_CLIENT_ID</string>
+	<string>fNuupfZ-F6YinKzoGLSo_ktxipTx0M-5</string>
 	<key>UberDisplayName</key>
-	<string>YOUR_APP_NAME</string>
+	<string>Rides SDK Demo App</string>
 </dict>
 </plist>

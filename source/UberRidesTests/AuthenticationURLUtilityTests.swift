@@ -43,7 +43,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
     
     func testBuildQueryParameters_withSingleScope() {
         
-        let scopes = [RidesScope.RideWidgets]
+        let scopes = [RidesScope.rideWidgets]
         
         let expectedScopes = scopes.toRidesScopeString()
         let expectedClientID = "testClientID"
@@ -70,7 +70,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
     
     func testBuildQueryParameters_withMultipleScopes() {
         
-        let scopes = [RidesScope.RideWidgets, RidesScope.AllTrips, RidesScope.History]
+        let scopes = [RidesScope.rideWidgets, RidesScope.allTrips, RidesScope.history]
         
         let expectedScopes = scopes.toRidesScopeString()
         let expectedClientID = "testClientID"
