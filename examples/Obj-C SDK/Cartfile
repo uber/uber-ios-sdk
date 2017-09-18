@@ -1,1 +1,1 @@
-github "https://github.com/uber/rides-ios-sdk.git" ~> "swift-3-dev"
+github "uber/rides-ios-sdk" ~> 0.7
