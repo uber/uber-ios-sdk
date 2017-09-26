@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.7.1] 2017-09-26
+
+### Fixed
+* [Pull #188](https://github.com/uber/rides-ios-sdk/pull/188) - Driver SMS number can be optional
+* [Pull #189](https://github.com/uber/rides-ios-sdk/pull/189) - Make decoding nested objects more lenient
+
 ## [0.7.0] 2017-09-15
 
 0.7 makes the Uber Rides iOS SDK compatible with iOS 11 and Swift 4.
