@@ -39,7 +39,7 @@
     @objc public private(set) var phoneNumber: String
 
     /// The formatted phone number for sending a SMS to the driver.
-    @objc public private(set) var smsNumber: String
+    @objc public private(set) var smsNumber: String?
     
     /// The driver's star rating out of 5 stars.
     @objc public private(set) var rating: Double
@@ -48,7 +48,7 @@
         case name        = "name"
         case pictureURL  = "picture_url"
         case phoneNumber = "phone_number"
-        case smsNumber = "sms_number"
+        case smsNumber   = "sms_number"
         case rating      = "rating"
     }
 
@@ -57,7 +57,7 @@
         name = try container.decode(String.self, forKey: .name)
         pictureURL = try container.decode(URL.self, forKey: .pictureURL)
         phoneNumber = try container.decode(String.self, forKey: .phoneNumber)
-        smsNumber = try container.decode(String.self, forKey: .smsNumber)
+        smsNumber = try container.decodeIfPresent(String.self, forKey: .smsNumber)
         rating = try container.decode(Double.self, forKey: .rating)
     }
 }
