@@ -55,10 +55,10 @@
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        priceEstimate = try container.decodeIfPresent(PriceEstimate.self, forKey: .priceEstimate)
-        distanceEstimate = try container.decodeIfPresent(DistanceEstimate.self, forKey: .distanceEstimate)
+        priceEstimate = try? container.decode(PriceEstimate.self, forKey: .priceEstimate)
+        distanceEstimate = try? container.decode(DistanceEstimate.self, forKey: .distanceEstimate)
         pickupEstimate = try container.decodeIfPresent(Int.self, forKey: .pickupEstimate)
         pickupEstimate = pickupEstimate != -1 ? pickupEstimate : nil
-        fare = try container.decodeIfPresent(UpfrontFare.self, forKey: .fare)
+        fare = try? container.decode(UpfrontFare.self, forKey: .fare)
     }
 }

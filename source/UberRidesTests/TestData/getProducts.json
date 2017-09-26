@@ -4,6 +4,21 @@
                  "upfront_fare_enabled": true,
                  "capacity": 4,
                  "product_id": "57c0ff4e-1493-4ef9-a4df-6b961525cf92",
+                 "price_details": {
+                 "service_fees": [
+                                  {
+                                  "fee": 2.25,
+                                  "name": "Booking fee"
+                                  }
+                                  ],
+                 "cost_per_minute": 0.5,
+                 "distance_unit": "mile",
+                 "minimum": 11.25,
+                 "cost_per_distance": 2.75,
+                 "base": 5,
+                 "cancellation_fee": 5,
+                 "currency_code": "USD"
+                 },
                  "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberselect.png",
                  "cash_enabled": false,
                  "shared": false,
@@ -16,6 +31,21 @@
                  "upfront_fare_enabled": true,
                  "capacity": 6,
                  "product_id": "821415d8-3bd5-4e27-9604-194e4359a449",
+                 "price_details": {
+                 "service_fees": [
+                                  {
+                                  "fee": 2.25,
+                                  "name": "Booking fee"
+                                  }
+                                  ],
+                 "cost_per_minute": 0.3,
+                 "distance_unit": "mile",
+                 "minimum": 9.25,
+                 "cost_per_distance": 2,
+                 "base": 3,
+                 "cancellation_fee": 5,
+                 "currency_code": "USD"
+                 },
                  "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberxl2.png",
                  "cash_enabled": false,
                  "shared": false,
@@ -28,6 +58,16 @@
                  "upfront_fare_enabled": true,
                  "capacity": 4,
                  "product_id": "d4abaae7-f4d6-4152-91cc-77523e8165a4",
+                 "price_details": {
+                 "service_fees": [],
+                 "cost_per_minute": 0.65,
+                 "distance_unit": "mile",
+                 "minimum": 15,
+                 "cost_per_distance": 3.75,
+                 "base": 8,
+                 "cancellation_fee": 10,
+                 "currency_code": "USD"
+                 },
                  "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png",
                  "cash_enabled": false,
                  "shared": false,
@@ -40,6 +80,16 @@
                  "upfront_fare_enabled": true,
                  "capacity": 6,
                  "product_id": "8920cb5e-51a4-4fa4-acdf-dd86c5e18ae0",
+                 "price_details": {
+                 "service_fees": [],
+                 "cost_per_minute": 0.9,
+                 "distance_unit": "mile",
+                 "minimum": 25,
+                 "cost_per_distance": 3.75,
+                 "base": 15,
+                 "cancellation_fee": 10,
+                 "currency_code": "USD"
+                 },
                  "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-suv.png",
                  "cash_enabled": false,
                  "shared": false,
@@ -52,6 +102,21 @@
                  "upfront_fare_enabled": true,
                  "capacity": 4,
                  "product_id": "ff5ed8fe-6585-4803-be13-3ca541235de3",
+                 "price_details": {
+                 "service_fees": [
+                                  {
+                                  "fee": 2,
+                                  "name": "Booking fee"
+                                  }
+                                  ],
+                 "cost_per_minute": 0.22,
+                 "distance_unit": "mile",
+                 "minimum": 7,
+                 "cost_per_distance": 1.15,
+                 "base": 2,
+                 "cancellation_fee": 5,
+                 "currency_code": "USD"
+                 },
                  "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png",
                  "cash_enabled": false,
                  "shared": false,
@@ -64,6 +129,21 @@
                  "upfront_fare_enabled": true,
                  "capacity": 4,
                  "product_id": "2832a1f5-cfc0-48bb-ab76-7ea7a62060e7",
+                 "price_details": {
+                 "service_fees": [
+                                  {
+                                  "fee": 2,
+                                  "name": "Booking fee"
+                                  }
+                                  ],
+                 "cost_per_minute": 0.22,
+                 "distance_unit": "mile",
+                 "minimum": 7,
+                 "cost_per_distance": 1.15,
+                 "base": 2,
+                 "cancellation_fee": 5,
+                 "currency_code": "USD"
+                 },
                  "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-wheelchair.png",
                  "cash_enabled": false,
                  "shared": false,
@@ -76,6 +156,21 @@
                  "upfront_fare_enabled": true,
                  "capacity": 2,
                  "product_id": "26546650-e557-4a7b-86e7-6a3942445247",
+                 "price_details": {
+                 "service_fees": [
+                                  {
+                                  "fee": 2,
+                                  "name": "Booking fee"
+                                  }
+                                  ],
+                 "cost_per_minute": 0.15,
+                 "distance_unit": "mile",
+                 "minimum": 7.45,
+                 "cost_per_distance": 1.1,
+                 "base": 2,
+                 "cancellation_fee": 5,
+                 "currency_code": "USD"
+                 },
                  "image": "http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png",
                  "cash_enabled": false,
                  "shared": true,

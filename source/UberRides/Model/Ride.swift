@@ -76,14 +76,14 @@ import CoreLocation
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        destination = try container.decodeIfPresent(RideRequestLocation.self, forKey: .destination)
-        driver = try container.decodeIfPresent(Driver.self, forKey: .driver)
-        driverLocation = try container.decodeIfPresent(RideRequestLocation.self, forKey: .driverLocation)
-        pickup = try container.decodeIfPresent(RideRequestLocation.self, forKey: .pickup)
+        destination = try? container.decode(RideRequestLocation.self, forKey: .destination)
+        driver = try? container.decode(Driver.self, forKey: .driver)
+        driverLocation = try? container.decode(RideRequestLocation.self, forKey: .driverLocation)
+        pickup = try? container.decode(RideRequestLocation.self, forKey: .pickup)
         requestID = try container.decode(String.self, forKey: .requestID)
         productID = try container.decode(String.self, forKey: .productID)
         surgeMultiplier = try container.decodeIfPresent(Double.self, forKey: .surgeMultiplier) ?? 1.0
-        vehicle = try container.decodeIfPresent(Vehicle.self, forKey: .vehicle)
+        vehicle = try? container.decode(Vehicle.self, forKey: .vehicle)
         status = try container.decodeIfPresent(RideStatus.self, forKey: .status) ?? .unknown
         isShared = try container.decode(Bool.self, forKey: .isShared)
     }

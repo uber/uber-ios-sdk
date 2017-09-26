@@ -93,7 +93,7 @@ struct UberProducts: Codable {
         productDescription = try container.decode(String.self, forKey: .productDescription)
         capacity = try container.decode(Int.self, forKey: .capacity)
         imageURL = try container.decode(URL.self, forKey: .imageURL)
-        priceDetails = try container.decodeIfPresent(PriceDetails.self, forKey: .priceDetails)
+        priceDetails = try? container.decode(PriceDetails.self, forKey: .priceDetails)
         upfrontFareEnabled = try container.decode(Bool.self, forKey: .upfrontFareEnabled)
         cashEnabled = try container.decode(Bool.self, forKey: .cashEnabled)
         isShared = try container.decode(Bool.self, forKey: .isShared)
