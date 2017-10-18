@@ -122,6 +122,7 @@
 		DCF87E7B1CF3995C0081894C /* BaseAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF87E7A1CF3995C0081894C /* BaseAuthenticator.swift */; };
 		DCF87E7D1CF3A9D40081894C /* BaseAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF87E7C1CF3A9D40081894C /* BaseAuthenticatorTests.swift */; };
 		DCF87E7F1CF3DD010081894C /* NativeAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF87E7E1CF3DD010081894C /* NativeAuthenticatorTests.swift */; };
+		DF137B731F981EAB00B954A7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DF137B6E1F981E5400B954A7 /* Localizable.strings */; };
 		DF3ABF0A1F6A3E0400091106 /* UBSDKConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = DF3ABF091F6A3E0400091106 /* UBSDKConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DF3ABF111F6A41E900091106 /* UBSDKConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = DF3ABF101F6A41E900091106 /* UBSDKConstants.m */; };
 		DFF443881F50DF9200525F7A /* UpfrontFare.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF443871F50DF9200525F7A /* UpfrontFare.swift */; };
@@ -294,8 +295,6 @@
 		DC8E2AD31C9B268600EDD74B /* testInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testInfo.plist; sourceTree = "<group>"; };
 		DC8FC3621CBDF4D000D58839 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DC8FC3641CBDF4E800D58839 /* hi-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-IN"; path = "Resources/hi-IN.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		DC8FC3651CBDF52200D58839 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Resources/zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		DC8FC3661CBDF52C00D58839 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "Resources/zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		DC8FC3751CBE137A00D58839 /* LoginManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginManagerTests.swift; sourceTree = "<group>"; };
 		DC92DBFA1CA20D1C001A0DCC /* TokenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		DC92DBFC1CA21379001A0DCC /* TokenManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenManagerTests.swift; sourceTree = "<group>"; };
@@ -325,6 +324,10 @@
 		DCF87E7A1CF3995C0081894C /* BaseAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseAuthenticator.swift; path = OAuth/BaseAuthenticator.swift; sourceTree = "<group>"; };
 		DCF87E7C1CF3A9D40081894C /* BaseAuthenticatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseAuthenticatorTests.swift; sourceTree = "<group>"; };
 		DCF87E7E1CF3DD010081894C /* NativeAuthenticatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeAuthenticatorTests.swift; sourceTree = "<group>"; };
+		DF137B6F1F981E5400B954A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DF137B701F981E5400B954A7 /* hi-In */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-In"; path = "hi-In.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		DF137B711F981E5400B954A7 /* pt-br */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-br"; path = "pt-br.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		DF137B721F981E5400B954A7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DF3ABF091F6A3E0400091106 /* UBSDKConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UBSDKConstants.h; sourceTree = "<group>"; };
 		DF3ABF101F6A41E900091106 /* UBSDKConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UBSDKConstants.m; sourceTree = "<group>"; };
 		DFCA38F41F4F575300131FF0 /* Codable+Uber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+Uber.swift"; sourceTree = "<group>"; };
@@ -602,9 +605,18 @@
 			path = TestAppShim;
 			sourceTree = "<group>";
 		};
+		DF137B6D1F981E5400B954A7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DF137B6E1F981E5400B954A7 /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		DFFCA8AD1F96A4800032E6BA /* UberCore */ = {
 			isa = PBXGroup;
 			children = (
+				DF137B6D1F981E5400B954A7 /* Resources */,
 				DFFCA8D01F96B9520032E6BA /* Networking */,
 				DFFCA8CE1F96AB590032E6BA /* Deeplinks */,
 				DC8E2ACF1C9AA17400EDD74B /* Configuration.swift */,
@@ -832,11 +844,11 @@
 			knownRegions = (
 				en,
 				"hi-IN",
-				"zh-Hans",
-				"zh-Hant",
 				ru,
 				Base,
 				"pt-BR",
+				"hi-In",
+				"pt-br",
 			);
 			mainGroup = AC04046B1BFACD1D00AC1501;
 			productRefGroup = AC0404761BFACD1D00AC1501 /* Products */;
@@ -909,6 +921,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DFFCA8DD1F97FD030032E6BA /* testInfoMissingCallbacks.plist in Resources */,
+				DF137B731F981EAB00B954A7 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1110,8 +1123,6 @@
 			children = (
 				DC8FC3621CBDF4D000D58839 /* en */,
 				DC8FC3641CBDF4E800D58839 /* hi-IN */,
-				DC8FC3651CBDF52200D58839 /* zh-Hans */,
-				DC8FC3661CBDF52C00D58839 /* zh-Hant */,
 				028E44771DF4ACC400734E84 /* ru */,
 				DFD7096F1F159865007550C8 /* pt-BR */,
 			);
@@ -1132,6 +1143,17 @@
 				DCDD15471D99A7F20053BC8F /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		DF137B6E1F981E5400B954A7 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DF137B6F1F981E5400B954A7 /* en */,
+				DF137B701F981E5400B954A7 /* hi-In */,
+				DF137B711F981E5400B954A7 /* pt-br */,
+				DF137B721F981E5400B954A7 /* ru */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

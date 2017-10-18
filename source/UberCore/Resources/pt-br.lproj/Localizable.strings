@@ -1,0 +1,11 @@
+"Invalid Client ID provided." = "Client ID inválido";
+"Invalid Redirect URI provided." = "URL de redirecionamento inválida";
+"The server was unable to understand your request." = "Nosso servidor não entendeu seu pedido.";
+"Unable to interpret the response from the server." = "Impossível de interpretar a resposta do servidor.";
+"Your app is not authorized for the requested scopes." = "Seu aplicativo não está autorizado a fazer chamadas neste escopo.";
+"The Redirect URI provided did not match what was expected." = "A URI fornecida não corresponde ao esperado.";
+"A server error occurred." = "Erro inesperado de servidor.";
+"Unable to present the login view." = "Impossível de apresentar a tela de login.";
+"Unable to save the access token." = "Impossível de salvar token de acesso.";
+"Login is temporarily unavailable." = "Login temporariamente indisponível.";
+"User cancelled the login process." = "Usuário cancelou processo de login.";

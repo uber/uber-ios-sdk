@@ -254,7 +254,7 @@
         case .invalidRedirect:
             return "Invalid Redirect URI provided."
         case .invalidRefreshToken:
-            return "Invalid Refresh TOken provided."
+            return "Invalid Refresh Token provided."
         case .invalidRequest:
             return "The server was unable to understand your request."
         case .invalidResponse:

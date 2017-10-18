@@ -1,0 +1,11 @@
+"Invalid Client ID provided." = "Invalid Client ID provided.";
+"Invalid Redirect URI provided." = "Invalid Redirect URI provided.";
+"The server was unable to understand your request." = "The server was unable to understand your request.";
+"Unable to interpret the response from the server." = "Unable to interpret the response from the server.";
+"Your app is not authorized for the requested scopes." = "Your app is not authorized for the requested scopes.";
+"The Redirect URI provided did not match what was expected." = "The Redirect URI provided did not match what was expected.";
+"A server error occurred." = "A server error occurred.";
+"Unable to present the login view." = "Unable to present the login view.";
+"Unable to save the access token." = "Unable to save the access token.";
+"Login is temporarily unavailable." = "Login is temporarily unavailable.";
+"User cancelled the login process." = "User cancelled the login process.";
