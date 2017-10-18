@@ -219,9 +219,9 @@ import UIKit
         var titleText: String!
         switch buttonState {
         case .signedIn:
-            titleText = LocalizationUtil.localizedString(forKey: "Sign Out", comment: "Login Button Sign Out Description").uppercased()
+            titleText = NSLocalizedString("Sign Out", bundle: Bundle(for: type(of: self)), comment: "Login Button Sign Out Description").uppercased()
         case .signedOut:
-            titleText = LocalizationUtil.localizedString(forKey: "Sign In", comment: "Login Button Sign In Description").uppercased()
+            titleText = NSLocalizedString("Sign In", bundle: Bundle(for: type(of: self)), comment: "Login Button Sign In Description").uppercased()
         }
         return titleText
     }

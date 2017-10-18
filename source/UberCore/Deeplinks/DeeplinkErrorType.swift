@@ -1,8 +1,8 @@
 //
-//  Codable+Uber.swift
+//  DeeplinkErrorType.swift
 //  UberRides
 //
-//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,11 +22,15 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-extension JSONDecoder {
-    /// JSON Decoder tailored to the Uber API JSON
-    static var uberDecoder: JSONDecoder {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .secondsSince1970
-        return decoder
-    }
+/**
+ Possible deeplink error types
+ 
+ - DeeplinkNotFollowed: The user declined a prompt to follow the deeplink (iOS 9+ only)
+ - UnableToFollow:      The deeplink attempted to open the url, but failed
+ - UnableToOpen:        The application either is unable to open the URL or was unable to query for the provided deeplink scheme (iOS 9+ only). The latter requires you to add it to your application's plist file under LSQpplicationQueriesSchemes
+ */
+@objc(UBSDKDeeplinkErrorType) public enum DeeplinkErrorType: Int {
+    case deeplinkNotFollowed
+    case unableToFollow
+    case unableToOpen
 }

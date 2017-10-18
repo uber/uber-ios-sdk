@@ -23,7 +23,7 @@
 //  THE SOFTWARE.
 
 import Foundation
-
+import UberCore
 
 /**
 Factory class to build access tokens

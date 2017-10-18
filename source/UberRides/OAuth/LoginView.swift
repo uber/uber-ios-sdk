@@ -24,6 +24,7 @@
 
 import Foundation
 import WebKit
+import UberCore
 
 /// Login Web View class. Wrapper around a WKWebView to handle Login flow for Implicit Grant
 @objc(UBSDKLoginView) public class LoginView: UIView {
@@ -138,3 +139,7 @@ extension LoginView : WKNavigationDelegate {
     }
 }
 
+
+private enum RidesWebViewErrors: Int {
+    case frameLoadInterruptError = 102
+}

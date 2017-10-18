@@ -23,44 +23,7 @@
 //  THE SOFTWARE.
 
 import CoreLocation
-
-/**
- *  Protocol for all endpoints to conform to.
- */
-protocol UberAPI {
-    var body: Data? { get }
-    var headers: [String: String]? { get }
-    var host: String { get}
-    var method: Method { get }
-    var path: String { get }
-    var query: [URLQueryItem] { get }
-}
-
-extension UberAPI {
-    var body: Data? {
-        return nil
-    }
-    
-    var headers: [String: String]? {
-        return nil
-    }
-    
-    var host: String {
-        if Configuration.shared.isSandbox {
-            return "https://sandbox-api.uber.com"
-        } else {
-            return "https://api.uber.com"
-        }
-    }
-}
-
-/**
- Enum for HTTPHeaders.
- */
-enum Header: String {
-    case Authorization = "Authorization"
-    case ContentType = "Content-Type"
-}
+import UberCore
 
 /// Convenience enum for managing versions of resources.
 private enum Resources: String {
@@ -90,17 +53,6 @@ private enum Resources: String {
 }
 
 /**
- Enum for HTTPMethods
- */
-enum Method: String {
-    case get = "GET"
-    case post = "POST"
-    case put = "PUT"
-    case patch = "PATCH"
-    case delete = "DELETE"
-}
-
-/**
  Helper function to build array of NSURLQueryItems. A key-value pair with an empty string value is ignored.
  
  - parameter queries: tuples of key-value pairs
@@ -121,10 +73,10 @@ func queryBuilder(_ queries: (name: String, value: String)...) -> [URLQueryItem]
  Endpoints related to components.
  - RideRequestWidget: Ride Request Widget endpoint.
  */
-enum Components: UberAPI {
+enum Components: APIEndpoint {
     case rideRequestWidget(rideParameters: RideParameters?)
     
-    var method: Method {
+    var method: HTTPMethod {
         switch self {
         case .rideRequestWidget:
             return .get
@@ -164,12 +116,12 @@ enum Components: UberAPI {
  - AuthorizationCodeLogin: Used to login user and request access to specified scopes via authorization code grant.
  - Refresh: Used to refresh an access token that has been aquired via SSO
  */
-enum OAuth: UberAPI {
+enum OAuth: APIEndpoint {
     case implicitLogin(clientID: String, scopes: [RidesScope], redirect: String)
     case authorizationCodeLogin(clientID: String, redirect: String, scopes: [RidesScope], state: String?)
     case refresh(clientID: String, refreshToken: String)
     
-    var method: Method {
+    var method: HTTPMethod {
         switch self {
         case .implicitLogin:
             fallthrough
@@ -259,11 +211,11 @@ enum OAuth: UberAPI {
  - GetAll:     Returns information about the Uber products offered at a given location (lat, long).
  - GetProduct: Returns information about the Uber product specified by product ID.
  */
-enum Products: UberAPI {
+enum Products: APIEndpoint {
     case getAll(location: CLLocation)
     case getProduct(productID: String)
     
-    var method: Method {
+    var method: HTTPMethod {
         switch self {
         case .getAll:
             fallthrough
@@ -299,11 +251,11 @@ enum Products: UberAPI {
  - Price: Returns an estimated range for each product offered between two locations (lat, long).
  - Time:  Returns ETAs for all products offered at a given location (lat, long).
  */
-enum Estimates: UberAPI {
+enum Estimates: APIEndpoint {
     case price(startLocation: CLLocation, endLocation: CLLocation)
     case time(location: CLLocation, productID: String?)
     
-    var method: Method {
+    var method: HTTPMethod {
         switch self {
         case .price:
             fallthrough
@@ -343,10 +295,10 @@ enum Estimates: UberAPI {
  
  - Get: Returns limited data about a user's lifetime activity with Uber.
  */
-enum History: UberAPI {
+enum History: APIEndpoint {
     case get(offset: Int?, limit: Int?)
     
-    var method: Method {
+    var method: HTTPMethod {
         switch self {
         case .get:
             return .get
@@ -375,10 +327,10 @@ enum History: UberAPI {
  
  - UserProfile: Returns information about the Uber user that has authorized the application.
  */
-enum Me: UberAPI {
+enum Me: APIEndpoint {
     case userProfile
     
-    var method: Method {
+    var method: HTTPMethod {
         switch self {
         case .userProfile:
             return .get
@@ -408,7 +360,7 @@ enum Me: UberAPI {
  - GetRequest: Get the status of an ongoing or completed trip that was created using the Ride Request endpoint.
  - Estimate:   Gets an estimate for a ride given the desired product, start, and end locations.
  */
-enum Requests: UberAPI {
+enum Requests: APIEndpoint {
     case deleteCurrent
     case deleteRequest(requestID: String)
     case estimate(rideParameters: RideParameters)
@@ -446,10 +398,10 @@ enum Requests: UberAPI {
     }
     
     var headers: [String : String]? {
-        return [Header.ContentType.rawValue: "application/json"]
+        return [HTTPHeader.ContentType.rawValue: "application/json"]
     }
     
-    var method: Method {
+    var method: HTTPMethod {
         switch self {
         case .deleteCurrent:
             fallthrough
@@ -504,14 +456,14 @@ enum Requests: UberAPI {
     }
 }
 
-enum Payment: UberAPI {
+enum Payment: APIEndpoint {
     case getMethods
     
     var body: Data? {
         return nil
     }
     
-    var method: Method {
+    var method: HTTPMethod {
         return .get
     }
     
@@ -524,7 +476,7 @@ enum Payment: UberAPI {
     }
 }
 
-enum Places: UberAPI {
+enum Places: APIEndpoint {
     case getPlace(placeID: String)
     case putPlace(placeID: String, address: String)
     
@@ -546,11 +498,11 @@ enum Places: UberAPI {
         case .getPlace:
             return nil
         case .putPlace:
-            return [Header.ContentType.rawValue: "application/json"]
+            return [HTTPHeader.ContentType.rawValue: "application/json"]
         }
     }
     
-    var method: Method {
+    var method: HTTPMethod {
         switch self {
         case .getPlace:
             return .get

@@ -285,15 +285,11 @@
     }
     
     func toLocalizedDescription() -> String {
-        return LocalizationUtil.localizedString(forKey: self.localizedDescriptionKey, comment: self.toString())
+        return NSLocalizedString(localizedDescriptionKey, bundle: Bundle(for: RidesError.self), comment: toString())
     }
 }
 
-enum RidesWebViewErrors: Int {
-    case frameLoadInterruptError = 102
-}
-
-class RidesAuthenticationErrorFactory : NSObject {
+public class RidesAuthenticationErrorFactory : NSObject {
     
     static let errorDomain = "com.uber.rides-ios-sdk.ridesAuthenticationError"
     
@@ -304,11 +300,11 @@ class RidesAuthenticationErrorFactory : NSObject {
      
      - returns: An initialized RidesAuthenticationError
      */
-    static func errorForType(ridesAuthenticationErrorType : RidesAuthenticationErrorType) -> NSError {
+    public static func errorForType(ridesAuthenticationErrorType : RidesAuthenticationErrorType) -> NSError {
         return NSError(domain: errorDomain, code: ridesAuthenticationErrorType.rawValue, userInfo: [NSLocalizedDescriptionKey : ridesAuthenticationErrorType.toLocalizedDescription()])
     }
     
-    static func createRidesAuthenticationError(rawValue: String) -> NSError? {
+    public static func createRidesAuthenticationError(rawValue: String) -> NSError? {
         guard let ridesAuthenticationErrorType = ridesAuthenticationErrorType(rawValue) else {
             return nil
         }

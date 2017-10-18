@@ -1,8 +1,8 @@
 //
-//  AppStoreDeeplink.swift
+//  Codable+Uber.swift
 //  UberRides
 //
-//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,32 +22,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
-import UberCore
-
-/**
- *  A Deeplinking object for authenticating a user via the native Uber app
- */
-@objc(UBSDKAppStoreDeeplink) public class AppStoreDeeplink: BaseDeeplink {
-    
-    /**
-     Initializes an App Store Deeplink to bring the user to the appstore
-     
-     - returns: An initialized AppStoreDeeplink
-     */
-    @objc public init(userAgent: String?) {
-        let scheme = "https"
-        let domain = "m.uber.com"
-        let path = "/sign-up"
-        
-        let clientIDQueryItem = URLQueryItem(name: "client_id", value: Configuration.shared.clientID)
-        
-        let userAgent = userAgent ?? "rides-ios-v\(Configuration.shared.sdkVersion)"
-        
-        let userAgentQueryItem = URLQueryItem(name: "user-agent", value: userAgent)
-        
-        let queryItems = [clientIDQueryItem, userAgentQueryItem]
-        
-        super.init(scheme: scheme, domain: domain, path: path, queryItems: queryItems)!
+extension JSONDecoder {
+    /// JSON Decoder tailored to the Uber API JSON
+    public static var uberDecoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .secondsSince1970
+        return decoder
     }
 }

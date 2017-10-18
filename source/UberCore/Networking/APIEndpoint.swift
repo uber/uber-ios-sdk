@@ -1,5 +1,5 @@
 //
-//  DeeplinkErrorType.swift
+//  APIEndpoint.swift
 //  UberRides
 //
 //  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
@@ -23,14 +23,50 @@
 //  THE SOFTWARE.
 
 /**
- Possible deeplink error types
- 
- - DeeplinkNotFollowed: The user declined a prompt to follow the deeplink (iOS 9+ only)
- - UnableToFollow:      The deeplink attempted to open the url, but failed
- - UnableToOpen:        The application either is unable to open the URL or was unable to query for the provided deeplink scheme (iOS 9+ only). The latter requires you to add it to your application's plist file under LSQpplicationQueriesSchemes
+ *  Protocol for all endpoints to conform to.
  */
-@objc enum DeeplinkErrorType : Int {
-    case deeplinkNotFollowed
-    case unableToFollow
-    case unableToOpen
+public protocol APIEndpoint {
+    var body: Data? { get }
+    var headers: [String: String]? { get }
+    var host: String { get}
+    var method: HTTPMethod { get }
+    var path: String { get }
+    var query: [URLQueryItem] { get }
+}
+
+public extension APIEndpoint {
+    var body: Data? {
+        return nil
+    }
+
+    var headers: [String: String]? {
+        return nil
+    }
+
+    var host: String {
+        if Configuration.shared.isSandbox {
+            return "https://sandbox-api.uber.com"
+        } else {
+            return "https://api.uber.com"
+        }
+    }
+}
+
+/**
+ Enum for HTTPHeaders.
+ */
+public enum HTTPHeader: String {
+    case Authorization = "Authorization"
+    case ContentType = "Content-Type"
+}
+
+/**
+ Enum for HTTPMethods
+ */
+public enum HTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+    case put = "PUT"
+    case patch = "PATCH"
+    case delete = "DELETE"
 }

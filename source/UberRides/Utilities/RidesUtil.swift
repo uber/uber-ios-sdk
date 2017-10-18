@@ -25,6 +25,7 @@
 
 import Foundation
 import CoreLocation
+import UberCore
 
 @objc enum UberButtonColor: Int {
     case uberBlack
@@ -80,16 +81,6 @@ class FontUtil {
             }
         }
         return false
-    }
-}
-
-class LocalizationUtil {
-    static func localizedString(forKey key: String, comment: String) -> String {
-        var localizationBundle = Bundle(for: self)
-        if let frameworkPath = Bundle.main.privateFrameworksPath, let frameworkBundle = Bundle(path: "\(frameworkPath)/UberRides.framework") {
-            localizationBundle = frameworkBundle
-        }
-        return NSLocalizedString(key, bundle: localizationBundle, comment: comment)
     }
 }
 

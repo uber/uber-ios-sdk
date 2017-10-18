@@ -45,7 +45,7 @@
      - parameter response: Provides response metadata, such as HTTP headers and status code.
      - parameter error:    Indicates why the request failed, or nil if the request was successful.
      */
-    @objc init(data: Data?, statusCode: Int, response: HTTPURLResponse?, error: RidesError?) {
+    @objc public init(data: Data?, statusCode: Int, response: HTTPURLResponse?, error: RidesError?) {
         self.data = data
         self.response = response
         self.statusCode = statusCode
@@ -65,10 +65,10 @@
 }
 
 /// Class to create and execute NSURLRequests.
-class Request: NSObject {
+public class Request {
     let session: URLSession?
-    let endpoint: UberAPI
-    var urlRequest: URLRequest
+    let endpoint: APIEndpoint
+    private(set) public var urlRequest: URLRequest
     let serverToken: String?
     let bearerToken: String?
     
@@ -80,7 +80,7 @@ class Request: NSObject {
      - parameter endpoint:    UberAPI conforming endpoint.
      - parameter serverToken: Developer's server token.
      */
-    init?(session: URLSession?, endpoint: UberAPI, serverToken: String? = nil, bearerToken: String? = nil) {
+    public init?(session: URLSession?, endpoint: APIEndpoint, serverToken: String? = nil, bearerToken: String? = nil) {
         guard var components = URLComponents(string: endpoint.host) else {
             return nil
         }
@@ -106,9 +106,9 @@ class Request: NSObject {
     private func addHeaders() {
         urlRequest.setValue("gzip, deflate", forHTTPHeaderField: "Accept-Encoding")
         if let token = bearerToken {
-            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: Header.Authorization.rawValue)
+            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: HTTPHeader.Authorization.rawValue)
         } else if let token = serverToken {
-            urlRequest.setValue("Token \(token)", forHTTPHeaderField: Header.Authorization.rawValue)
+            urlRequest.setValue("Token \(token)", forHTTPHeaderField: HTTPHeader.Authorization.rawValue)
         }
         if let headers = endpoint.headers {
             for (header,value) in headers {
@@ -120,7 +120,7 @@ class Request: NSObject {
     /**
      Prepares the NSURLRequest by adding necessary fields.
      */
-    func prepare() {
+    public func prepare() {
         addHeaders()
     }
     
@@ -129,7 +129,7 @@ class Request: NSObject {
      
      - parameter completion: completion handler for returned Response.
      */
-    func execute(_ completion: @escaping (_ response: Response) -> Void) {
+    public func execute(_ completion: @escaping (_ response: Response) -> Void) {
         guard let session = session else {
             return
         }

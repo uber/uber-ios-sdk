@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import Foundation
+import UberCore
 
 /// Manager class for saving and deleting AccessTokens. Allows you to manage tokens based on token identifier & keychain access group
 @objc(UBSDKTokenManager) public class TokenManager: NSObject {

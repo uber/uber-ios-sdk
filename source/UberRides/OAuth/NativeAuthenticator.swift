@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import Foundation
+import UberCore
 
 /**
  * UberAuthenticating object for authenticating a user via the Native Uber app

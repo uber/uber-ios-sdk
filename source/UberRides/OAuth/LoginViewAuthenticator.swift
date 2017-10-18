@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UberCore
 
 /// Base class for authorization flows that use the LoginView.
 @objc public class LoginViewAuthenticator: BaseAuthenticator {
@@ -31,7 +32,7 @@ import UIKit
     @objc public var presentingViewController: UIViewController
     
     /// Endpoint to hit for authorization request.
-    var endpoint: UberAPI {
+    var endpoint: APIEndpoint {
         fatalError("Must initialize subclass")
     }
     

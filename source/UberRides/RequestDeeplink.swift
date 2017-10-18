@@ -25,6 +25,7 @@
 
 import CoreLocation
 import UIKit
+import UberCore
 
 /**
  *  Builds and executes a deeplink to the native Uber app to request a ride.
