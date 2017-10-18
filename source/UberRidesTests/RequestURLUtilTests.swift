@@ -23,6 +23,7 @@
 import XCTest
 import CoreLocation
 
+import UberCore
 @testable import UberRides
 
 class RequestURLUtilTests: XCTestCase {
@@ -32,7 +33,6 @@ class RequestURLUtilTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
         versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String

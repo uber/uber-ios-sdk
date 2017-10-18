@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import XCTest
+import UberCore
 @testable import UberRides
 
 class BaseAuthenticatorTests: XCTestCase {
@@ -35,7 +36,6 @@ class BaseAuthenticatorTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
         Configuration.shared.isSandbox = true

@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import XCTest
+@testable   import UberCore
 @testable import UberRides
 
 class AccessTokenFactoryTests: XCTestCase {

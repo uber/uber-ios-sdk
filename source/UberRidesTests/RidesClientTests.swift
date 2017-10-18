@@ -25,6 +25,7 @@
 import XCTest
 import OHHTTPStubs
 import CoreLocation
+import UberCore
 @testable import UberRides
 
 class RidesClientTests: XCTestCase {
@@ -45,6 +46,7 @@ class RidesClientTests: XCTestCase {
     override func tearDown() {
         OHHTTPStubs.removeAllStubs()
         Configuration.restoreDefaults()
+        Configuration.bundle = Bundle.main
         super.tearDown()
     }
     

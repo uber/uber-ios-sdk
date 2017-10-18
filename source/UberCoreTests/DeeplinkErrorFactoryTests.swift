@@ -21,7 +21,7 @@
 //  THE SOFTWARE.
 
 import XCTest
-@testable import UberRides
+@testable import UberCore
 
 class DeeplinkErrorFactoryTests: XCTestCase {
     let expectedErrorToValueMapping = [

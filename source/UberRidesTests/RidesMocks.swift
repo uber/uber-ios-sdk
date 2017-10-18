@@ -21,6 +21,7 @@
 //  THE SOFTWARE.
 
 import WebKit
+@testable import UberCore
 @testable import UberRides
 
 class RideRequestViewMock : RideRequestView {

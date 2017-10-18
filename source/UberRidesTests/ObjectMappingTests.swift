@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import XCTest
+import UberCore
 @testable import UberRides
 
 class ObjectMappingTests: XCTestCase {

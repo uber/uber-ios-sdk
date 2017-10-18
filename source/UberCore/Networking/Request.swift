@@ -177,7 +177,7 @@ public class Request {
     /**
      *  Cancel data tasks if needed.
      */
-    func cancelTasks() {
+    public func cancelTasks() {
         guard let session = session else {
             return
         }

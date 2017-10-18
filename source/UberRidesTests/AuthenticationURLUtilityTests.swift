@@ -22,6 +22,7 @@
 
 import XCTest
 
+import UberCore
 @testable import UberRides
 
 class AuthenticationURLUtilityTests: XCTestCase {
@@ -30,7 +31,6 @@ class AuthenticationURLUtilityTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
         versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
@@ -81,7 +81,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
         
         let scopeQueryItem = URLQueryItem(name: AuthenticationURLUtility.scopesKey, value: expectedScopes)
         let clientIDQueryItem = URLQueryItem(name: AuthenticationURLUtility.clientIDKey, value: expectedClientID)
-        let appNameQueryItem = URLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)
+        let appNameQueryItem = URLQueryItem(name: AuthenticationURLUtility.appNameKey, value: expectedAppName)  
         let callbackURIQueryItem = URLQueryItem(name: AuthenticationURLUtility.callbackURIKey, value: expectedCallbackURI)
         let sdkQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkKey, value: expectedSDK)
         let sdkVersionQueryItem = URLQueryItem(name: AuthenticationURLUtility.sdkVersionKey, value: expectedSDKVersion)

@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import XCTest
+import UberCore
 @testable import UberRides
 
 class TokenManagerTests: XCTestCase {
@@ -34,7 +35,6 @@ class TokenManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         Configuration.plistName = "testInfo"
-        Configuration.bundle = Bundle(for: type(of: self))
         keychain = KeychainWrapper()
         notificationFired = false
         token = AccessToken(tokenString: "testTokenString")
