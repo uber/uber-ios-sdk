@@ -59,14 +59,14 @@ import UberCore
                 var error: NSError?
                 let success = TokenManager.save(accessToken: accessToken, tokenIdentifier: tokenIdentifier, accessGroup: accessGroup)
                 if !success {
-                    error = RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken)
+                    error = UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken)
                     print("Error: access token failed to save to keychain")
                 }
                 loginCompletion?(accessToken, error)
             } catch let ridesError as NSError {
                 loginCompletion?(nil, ridesError)
             } catch {
-                loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse))
+                loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse))
             }
             didHandleRedirect = true
         }

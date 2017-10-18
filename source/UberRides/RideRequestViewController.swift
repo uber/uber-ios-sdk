@@ -225,7 +225,7 @@ import UberCore
         let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: self, scopes: [.rideWidgets])
         loginBehavior.loginCompletion = { token, error in
             guard let token = token, error == nil else {
-                if error?.code == RidesAuthenticationErrorType.networkError.rawValue {
+                if error?.code == UberAuthenticationErrorType.networkError.rawValue {
                     self.displayNetworkErrorAlert()
                 } else {
                     self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
@@ -257,9 +257,9 @@ import UberCore
         
         nativeAuthenticator.loginCompletion = { token, error in
             guard let token = token, error == nil else {
-                if error?.code == RidesAuthenticationErrorType.networkError.rawValue {
+                if error?.code == UberAuthenticationErrorType.networkError.rawValue {
                     self.displayNetworkErrorAlert()
-                } else if error?.code == RidesAuthenticationErrorType.unavailable.rawValue {
+                } else if error?.code == UberAuthenticationErrorType.unavailable.rawValue {
                     self.loginManager.loginType = .implicit
                     self.setupLoginView()
                     self.load()

@@ -1,5 +1,5 @@
 //
-//  RidesError.swift
+//  UberError.swift
 //  UberRides
 //
 //  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
@@ -22,10 +22,10 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-// MARK: RidesError
+// MARK: UberError
 
 /// Base class for errors that can be mapped from HTTP responses.
-@objc(UBSDKRidesError) public class RidesError: NSObject, Decodable {
+@objc(UBSDKError) public class UberError: NSObject, Decodable {
     /// HTTP status code for error.
     @objc public internal(set) var status: Int
     
@@ -39,7 +39,7 @@
     @objc public internal(set) var meta: [String: Any]?
     
     /// List of additional errors. This can be populated instead of status/code/title.
-    @objc public internal(set) var errors: [RidesError]?
+    @objc public internal(set) var errors: [UberError]?
 
     /// Convenience initializer.
     ///
@@ -59,7 +59,7 @@
         title = try title ?? container.decodeIfPresent(String.self, forKey: .message)
         title = try title ?? container.decodeIfPresent(String.self, forKey: .title)
         code = try container.decodeIfPresent(String.self, forKey: .code)
-        errors = try container.decodeIfPresent([RidesError].self, forKey: .errors)
+        errors = try container.decodeIfPresent([UberError].self, forKey: .errors)
         meta = try? container.decode([String: [String]].self, forKey: .fields)
         meta = try? meta ?? container.decode([String: [String: String]].self, forKey: .meta)
     }
@@ -75,10 +75,10 @@
         case error   = "error"
     }
 }
-// MARK: RidesError subclasses
+// MARK: UberError subclasses
 
 /// Client error 4xx.
-@objc(UBSDKRidesClientError) public class RidesClientError: RidesError {
+@objc(UBSDKClientError) public class UberClientError: UberError {
     public required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
     }
@@ -89,7 +89,7 @@
 }
 
 /// Server error 5xx.
-@objc(UBSDKRidesServerError) public class RidesServerError: RidesError {
+@objc(UBSDKServerError) public class UberServerError: UberError {
     public required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
     }
@@ -100,7 +100,7 @@
 }
 
 /// Unknown error type.
-@objc(UBSDKRidesUnknownError) public class RidesUnknownError: RidesError {
+@objc(UBSDKUnknownError) public class UberUnknownError: UberError {
     public required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
     }
@@ -142,7 +142,7 @@
  - Unavailable:             Authentication services temporarily unavailable.
  - UserCancelled:           User cancelled the auth process
  */
-@objc public enum RidesAuthenticationErrorType: Int {
+@objc(UBSDKAuthenticationErrorType) public enum UberAuthenticationErrorType: Int {
     case accessDenied
     case expiredJWT
     case generalError
@@ -285,22 +285,22 @@
     }
     
     func toLocalizedDescription() -> String {
-        return NSLocalizedString(localizedDescriptionKey, bundle: Bundle(for: RidesError.self), comment: toString())
+        return NSLocalizedString(localizedDescriptionKey, bundle: Bundle(for: UberError.self), comment: toString())
     }
 }
 
-public class RidesAuthenticationErrorFactory : NSObject {
+public class UberAuthenticationErrorFactory {
     
     static let errorDomain = "com.uber.rides-ios-sdk.ridesAuthenticationError"
     
     /**
-     Creates a RidesAuthenticationError for the provided RidesAuthenticationErrorType
+     Creates a RidesAuthenticationError for the provided UberAuthenticationErrorType
      
-     - parameter ridesAuthenticationErrorType: the RidesAuthenticationErrorType of error to create
+     - parameter ridesAuthenticationErrorType: the UberAuthenticationErrorType of error to create
      
      - returns: An initialized RidesAuthenticationError
      */
-    public static func errorForType(ridesAuthenticationErrorType : RidesAuthenticationErrorType) -> NSError {
+    public static func errorForType(ridesAuthenticationErrorType : UberAuthenticationErrorType) -> NSError {
         return NSError(domain: errorDomain, code: ridesAuthenticationErrorType.rawValue, userInfo: [NSLocalizedDescriptionKey : ridesAuthenticationErrorType.toLocalizedDescription()])
     }
     
@@ -308,10 +308,10 @@ public class RidesAuthenticationErrorFactory : NSObject {
         guard let ridesAuthenticationErrorType = ridesAuthenticationErrorType(rawValue) else {
             return nil
         }
-        return RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: ridesAuthenticationErrorType)
+        return UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: ridesAuthenticationErrorType)
     }
     
-    static func ridesAuthenticationErrorType(_ rawValue: String) -> RidesAuthenticationErrorType? {
+    static func ridesAuthenticationErrorType(_ rawValue: String) -> UberAuthenticationErrorType? {
         switch rawValue {
         case "access_denied":
             return .accessDenied

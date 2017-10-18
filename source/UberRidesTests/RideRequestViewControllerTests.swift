@@ -54,7 +54,7 @@ class RideRequestViewControllerTests: XCTestCase {
         let rideRequestVCDelegateMock = RideRequestViewControllerDelegateMock(testClosure: expectationClosure)
         rideRequestVC.delegate = rideRequestVCDelegateMock
         XCTAssertNotNil(rideRequestVC.view)
-        rideRequestVC.loginView.loginAuthenticator.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken))
+        rideRequestVC.loginView.loginAuthenticator.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken))
         
         XCTAssertTrue(expectation)
     }
@@ -143,7 +143,7 @@ class RideRequestViewControllerTests: XCTestCase {
         
         rideRequestVC.executeNativeClosure = {
             rideRequestVC.loadClosure = expectationClosure
-            rideRequestVC.nativeAuthenticator.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: RidesAuthenticationErrorType.unavailable))
+            rideRequestVC.nativeAuthenticator.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: UberAuthenticationErrorType.unavailable))
         }
         
         XCTAssertNotNil(rideRequestVC.view)
@@ -511,7 +511,7 @@ class RideRequestViewControllerTests: XCTestCase {
         rideRequestVC.delegate = mock
 
         let accessToken = AccessToken(tokenString: "testToken")
-        let error = RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken)
+        let error = UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken)
 
         XCTAssertNotNil(rideRequestVC.view)
 
@@ -531,7 +531,7 @@ class RideRequestViewControllerTests: XCTestCase {
         rideRequestVC.delegate = mock
 
         let accessToken = AccessToken(tokenString: "testToken")
-        let error = RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken)
+        let error = UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken)
 
         XCTAssertNotNil(rideRequestVC.view)
 

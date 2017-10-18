@@ -38,7 +38,7 @@ Factory class to build access tokens
      */
     static func createAccessToken(fromRedirectURL redirectURL: URL) throws -> AccessToken {
         guard var components = URLComponents(url: redirectURL, resolvingAgainstBaseURL: false) else {
-            throw RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
+            throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
         }
 
         var finalQueryArray = [String]()
@@ -52,7 +52,7 @@ Factory class to build access tokens
         components.query = finalQueryArray.joined(separator: "&")
         
         guard let queryItems = components.queryItems else {
-            throw RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
+            throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
         }
         var queryDictionary = [String: Any]()
         for queryItem in queryItems {
@@ -62,8 +62,8 @@ Factory class to build access tokens
             queryDictionary[queryItem.name] = value
         }
         if let error = queryDictionary["error"] as? String {
-            guard let error = RidesAuthenticationErrorFactory.createRidesAuthenticationError(rawValue: error) else {
-                throw RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
+            guard let error = UberAuthenticationErrorFactory.createRidesAuthenticationError(rawValue: error) else {
+                throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
             }
             throw error
         } else {
@@ -79,6 +79,6 @@ Factory class to build access tokens
                 return token
             }
         }
-        throw RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
+        throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
     }
 }

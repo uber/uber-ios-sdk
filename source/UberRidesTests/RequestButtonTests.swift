@@ -34,7 +34,7 @@ class RequestButtonTests: XCTestCase {
     var button: RideRequestButton!
     weak var expectation: XCTestExpectation?
     weak var errorExpectation: XCTestExpectation?
-    var rideButtonError: RidesError!
+    var rideButtonError: UberError!
     let timeout: Double = 5
     
     override func setUp() {
@@ -512,7 +512,7 @@ extension RequestButtonTests: RideRequestButtonDelegate {
         expectation?.fulfill()
     }
     
-    func rideRequestButton(_ button: RideRequestButton, didReceiveError error: RidesError) {
+    func rideRequestButton(_ button: RideRequestButton, didReceiveError error: UberError) {
         self.rideButtonError = error
         errorExpectation?.fulfill()
     }

@@ -169,7 +169,7 @@ import UberCore
         let accessTokenString = fetchAccessToken()?.tokenString
         
         guard let request = Request(session: session, endpoint: endpoint, serverToken: serverToken, bearerToken: accessTokenString) else {
-            let response = Response(data: nil, statusCode: 400, response: nil, error: RidesError(status: 400, code: "bad_request", title: "Unable to create request"))
+            let response = Response(data: nil, statusCode: 400, response: nil, error: UberError(status: 400, code: "bad_request", title: "Unable to create request"))
             completion(response)
             return
         }

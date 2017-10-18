@@ -94,7 +94,7 @@ import UberCore
     @objc public func load() {
         // Create URL for request
         guard let request = Request(session: nil, endpoint: loginAuthenticator.endpoint) else {
-            loginAuthenticator.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType:.invalidRequest))
+            loginAuthenticator.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType:.invalidRequest))
             
             return
         }
@@ -128,13 +128,13 @@ extension LoginView : WKNavigationDelegate {
     
     public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         if (error as NSError).code != RidesWebViewErrors.frameLoadInterruptError.rawValue && (error as NSError).code != NSURLErrorCancelled {
-            loginAuthenticator.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .networkError))
+            loginAuthenticator.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .networkError))
         }
     }
     
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         if (error as NSError).code != RidesWebViewErrors.frameLoadInterruptError.rawValue && (error as NSError).code != NSURLErrorCancelled {
-            loginAuthenticator.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .networkError))
+            loginAuthenticator.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .networkError))
         }
     }
 }

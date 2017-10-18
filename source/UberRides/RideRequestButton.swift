@@ -43,7 +43,7 @@ import UberCore
      - parameter button: the RideRequestButton
      - parameter error:  the error that it encountered
      */
-    @objc func rideRequestButton(_ button: RideRequestButton, didReceiveError error: RidesError)
+    @objc func rideRequestButton(_ button: RideRequestButton, didReceiveError error: UberError)
 }
 
 /// RequestButton implements a button on the touch screen to request a ride.
@@ -364,8 +364,8 @@ import UberCore
         return attachment
     }
 
-    private func createValidationFailedError() -> RidesError {
-        return RidesError(status: 422, code: "validation_failed", title: "Invalid Request")
+    private func createValidationFailedError() -> UberError {
+        return UberError(status: 422, code: "validation_failed", title: "Invalid Request")
     }
 
     /**
@@ -382,7 +382,7 @@ import UberCore
         
         let downloadGroup = DispatchGroup()
         downloadGroup.enter()
-        var errors = [RidesError]()
+        var errors = [UberError]()
         let pickupLocation = CLLocation(latitude: pickupLatitude, longitude: pickupLongitude)
         
         // Set the information on the button label once all information is retrieved.

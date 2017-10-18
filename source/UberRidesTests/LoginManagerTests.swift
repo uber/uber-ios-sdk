@@ -139,7 +139,7 @@ class LoginManagerTests: XCTestCase {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.unavailable.rawValue)
+            XCTAssertEqual(error.code, UberAuthenticationErrorType.unavailable.rawValue)
             expectation.fulfill()
         }
         
@@ -161,7 +161,7 @@ class LoginManagerTests: XCTestCase {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.unableToPresentLogin.rawValue)
+            XCTAssertEqual(error.code, UberAuthenticationErrorType.unableToPresentLogin.rawValue)
             expectation.fulfill()
         }
         
@@ -186,7 +186,7 @@ class LoginManagerTests: XCTestCase {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.unableToPresentLogin.rawValue)
+            XCTAssertEqual(error.code, UberAuthenticationErrorType.unableToPresentLogin.rawValue)
             expectation.fulfill()
         }
         
@@ -269,7 +269,7 @@ class LoginManagerTests: XCTestCase {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.userCancelled.rawValue)
+            XCTAssertEqual(error.code, UberAuthenticationErrorType.userCancelled.rawValue)
             expectation.fulfill()
         }
         
@@ -296,7 +296,7 @@ class LoginManagerTests: XCTestCase {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
+            XCTAssertEqual(error.code, UberAuthenticationErrorType.invalidRequest.rawValue)
             expectation.fulfill()
         }
         
@@ -306,7 +306,7 @@ class LoginManagerTests: XCTestCase {
         
         loginManagerMock.login(requestedScopes: [.profile], presentingViewController: nil, completion: loginCompletion)
         
-        loginManagerMock.authenticator?.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest))
+        loginManagerMock.authenticator?.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest))
         
         waitForExpectations(timeout: 0.2, handler: nil)
     }
@@ -335,7 +335,7 @@ class LoginManagerTests: XCTestCase {
         
         loginManagerMock.login(requestedScopes: scopes, presentingViewController: viewController, completion: nil)
         
-        loginManagerMock.authenticator?.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
+        loginManagerMock.authenticator?.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
         
         waitForExpectations(timeout: 0.2) { _ in
             XCTAssertEqual(loginManagerMock.loginType, LoginType.authorizationCode)
@@ -365,7 +365,7 @@ class LoginManagerTests: XCTestCase {
         
         loginManagerMock.login(requestedScopes: scopes, presentingViewController: viewController, completion: nil)
         
-        loginManagerMock.authenticator?.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
+        loginManagerMock.authenticator?.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
         
         waitForExpectations(timeout: 0.2) { _ in
             XCTAssertEqual(loginManagerMock.loginType, LoginType.implicit)
@@ -396,7 +396,7 @@ class LoginManagerTests: XCTestCase {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
+            XCTAssertEqual(error.code, UberAuthenticationErrorType.invalidRequest.rawValue)
             expectation.fulfill()
         }
         
@@ -408,7 +408,7 @@ class LoginManagerTests: XCTestCase {
         
         loginManagerMock.login(requestedScopes: [.profile], presentingViewController: viewController, completion: loginCompletion)
         
-        loginManagerMock.authenticator?.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest))
+        loginManagerMock.authenticator?.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest))
         
         XCTAssertFalse(loginManagerMock.loggingIn)
         waitForExpectations(timeout: 0.2, handler: nil)

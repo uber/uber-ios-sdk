@@ -1,5 +1,5 @@
 //
-//  RidesAuthenticationErrorFactoryTests.swift
+//  UberAuthenticationErrorFactoryTests.swift
 //  UberRides
 //
 //  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
@@ -26,64 +26,64 @@ import XCTest
 @testable import UberCore
 @testable import UberRides
 
-class RidesAuthenticationErrorFactoryTests: XCTestCase {
+class UberAuthenticationErrorFactoryTests: XCTestCase {
     
     let expectedErrorToStringMapping = [
-        RidesAuthenticationErrorType.accessDenied : "access_denied",
-        RidesAuthenticationErrorType.expiredJWT : "expired_jwt",
-        RidesAuthenticationErrorType.generalError : "general_error",
-        RidesAuthenticationErrorType.internalServerError : "internal_server_error",
-        RidesAuthenticationErrorType.invalidAppSignature : "invalid_app_signature",
-        RidesAuthenticationErrorType.invalidAuthCode : "invalid_auth_code",
-        RidesAuthenticationErrorType.invalidClientID : "invalid_client_id",
-        RidesAuthenticationErrorType.invalidFlowError : "invalid_flow_error",
-        RidesAuthenticationErrorType.invalidJWT : "invalid_jwt",
-        RidesAuthenticationErrorType.invalidJWTSignature : "invalid_jwt_signature",
-        RidesAuthenticationErrorType.invalidNonce : "invalid_nonce",
-        RidesAuthenticationErrorType.invalidRedirect : "invalid_redirect_uri",
-        RidesAuthenticationErrorType.invalidRefreshToken: "invalid_refresh_token",
-        RidesAuthenticationErrorType.invalidRequest : "invalid_parameters",
-        RidesAuthenticationErrorType.invalidResponse : "invalid_response",
-        RidesAuthenticationErrorType.invalidScope : "invalid_scope",
-        RidesAuthenticationErrorType.invalidSSOResponse : "invalid_sso_response",
-        RidesAuthenticationErrorType.invalidUserID : "invalid_user_id",
-        RidesAuthenticationErrorType.malformedRequest : "malformed_request",
-        RidesAuthenticationErrorType.mismatchingRedirect : "mismatching_redirect_uri",
-        RidesAuthenticationErrorType.networkError : "network_error",
-        RidesAuthenticationErrorType.serverError : "server_error",
-        RidesAuthenticationErrorType.unableToPresentLogin : "present_login_failed",
-        RidesAuthenticationErrorType.unableToSaveAccessToken : "token_not_saved",
-        RidesAuthenticationErrorType.unavailable : "temporarily_unavailable",
-        RidesAuthenticationErrorType.userCancelled : "cancelled",
+        UberAuthenticationErrorType.accessDenied : "access_denied",
+        UberAuthenticationErrorType.expiredJWT : "expired_jwt",
+        UberAuthenticationErrorType.generalError : "general_error",
+        UberAuthenticationErrorType.internalServerError : "internal_server_error",
+        UberAuthenticationErrorType.invalidAppSignature : "invalid_app_signature",
+        UberAuthenticationErrorType.invalidAuthCode : "invalid_auth_code",
+        UberAuthenticationErrorType.invalidClientID : "invalid_client_id",
+        UberAuthenticationErrorType.invalidFlowError : "invalid_flow_error",
+        UberAuthenticationErrorType.invalidJWT : "invalid_jwt",
+        UberAuthenticationErrorType.invalidJWTSignature : "invalid_jwt_signature",
+        UberAuthenticationErrorType.invalidNonce : "invalid_nonce",
+        UberAuthenticationErrorType.invalidRedirect : "invalid_redirect_uri",
+        UberAuthenticationErrorType.invalidRefreshToken: "invalid_refresh_token",
+        UberAuthenticationErrorType.invalidRequest : "invalid_parameters",
+        UberAuthenticationErrorType.invalidResponse : "invalid_response",
+        UberAuthenticationErrorType.invalidScope : "invalid_scope",
+        UberAuthenticationErrorType.invalidSSOResponse : "invalid_sso_response",
+        UberAuthenticationErrorType.invalidUserID : "invalid_user_id",
+        UberAuthenticationErrorType.malformedRequest : "malformed_request",
+        UberAuthenticationErrorType.mismatchingRedirect : "mismatching_redirect_uri",
+        UberAuthenticationErrorType.networkError : "network_error",
+        UberAuthenticationErrorType.serverError : "server_error",
+        UberAuthenticationErrorType.unableToPresentLogin : "present_login_failed",
+        UberAuthenticationErrorType.unableToSaveAccessToken : "token_not_saved",
+        UberAuthenticationErrorType.unavailable : "temporarily_unavailable",
+        UberAuthenticationErrorType.userCancelled : "cancelled",
     ]
     
     func testCreateErrorsByErrorType() {
         
         for errorType in expectedErrorToStringMapping.keys {
-            let ridesAuthenticationError = RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: errorType)
+            let ridesAuthenticationError = UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: errorType)
             
             XCTAssertNotNil(ridesAuthenticationError)
             XCTAssertEqual(ridesAuthenticationError.code , errorType.rawValue)
-            XCTAssertEqual(ridesAuthenticationError.domain , RidesAuthenticationErrorFactory.errorDomain)
+            XCTAssertEqual(ridesAuthenticationError.domain , UberAuthenticationErrorFactory.errorDomain)
             XCTAssertEqual(ridesAuthenticationError.localizedDescription, errorType.localizedDescriptionKey)
         }
     }
     
     func testCreateErrorsByRawValue() {
         for (errorType, rawValue) in expectedErrorToStringMapping {
-            let ridesAuthenticationError = RidesAuthenticationErrorFactory.createRidesAuthenticationError(rawValue: rawValue)
+            let ridesAuthenticationError = UberAuthenticationErrorFactory.createRidesAuthenticationError(rawValue: rawValue)
             
             XCTAssertNotNil(ridesAuthenticationError)
             if let ridesAuthenticationError = ridesAuthenticationError {
                 XCTAssertEqual(ridesAuthenticationError.code , errorType.rawValue)
-                XCTAssertEqual(ridesAuthenticationError.domain, RidesAuthenticationErrorFactory.errorDomain)
+                XCTAssertEqual(ridesAuthenticationError.domain, UberAuthenticationErrorFactory.errorDomain)
                 XCTAssertEqual(ridesAuthenticationError.localizedDescription, errorType.localizedDescriptionKey)
             }
         }
     }
     
     func testCreateErrorByRawValue_withUnknownValue() {
-        let ridesAuthenticationError = RidesAuthenticationErrorFactory.createRidesAuthenticationError(rawValue: "not.real.error")
+        let ridesAuthenticationError = UberAuthenticationErrorFactory.createRidesAuthenticationError(rawValue: "not.real.error")
         
         XCTAssertNil(ridesAuthenticationError)
     }

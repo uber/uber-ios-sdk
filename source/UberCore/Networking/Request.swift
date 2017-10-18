@@ -36,7 +36,7 @@
     @objc public var response: HTTPURLResponse?
     
     /// NSError representing an optional error.
-    @objc public var error: RidesError?
+    @objc public var error: UberError?
     
     /**
      Initialize a Response object.
@@ -45,7 +45,7 @@
      - parameter response: Provides response metadata, such as HTTP headers and status code.
      - parameter error:    Indicates why the request failed, or nil if the request was successful.
      */
-    @objc public init(data: Data?, statusCode: Int, response: HTTPURLResponse?, error: RidesError?) {
+    @objc public init(data: Data?, statusCode: Int, response: HTTPURLResponse?, error: UberError?) {
         self.data = data
         self.response = response
         self.statusCode = statusCode
@@ -138,7 +138,7 @@ public class Request {
         let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
             let httpResponse: HTTPURLResponse? = response as? HTTPURLResponse
             var statusCode: Int = 0
-            var ridesError: RidesError?
+            var ridesError: UberError?
             
             // Handle HTTP errors.
             errorCheck: if httpResponse != nil {
@@ -149,11 +149,11 @@ public class Request {
                 }
                 
                 if statusCode >= 400 && statusCode <= 499 {
-                    ridesError = try? JSONDecoder.uberDecoder.decode(RidesClientError.self, from: data!)
+                    ridesError = try? JSONDecoder.uberDecoder.decode(UberClientError.self, from: data!)
                 } else if (statusCode >= 500 && statusCode <= 599) {
-                    ridesError = try? JSONDecoder.uberDecoder.decode(RidesServerError.self, from: data!)
+                    ridesError = try? JSONDecoder.uberDecoder.decode(UberServerError.self, from: data!)
                 } else {
-                    ridesError = try? JSONDecoder.uberDecoder.decode(RidesUnknownError.self, from: data!)
+                    ridesError = try? JSONDecoder.uberDecoder.decode(UberUnknownError.self, from: data!)
                 }
                 
                 ridesError?.status = statusCode
@@ -162,9 +162,9 @@ public class Request {
             // Any other errors.
             if response == nil || error != nil {
                 if let error = error as NSError? {
-                    ridesError = RidesUnknownError(status: error.code, code: nil, title: error.domain)
+                    ridesError = UberUnknownError(status: error.code, code: nil, title: error.domain)
                 } else {
-                    ridesError = RidesUnknownError(status: -1, code: "request_error", title: "Request could not complete")
+                    ridesError = UberUnknownError(status: -1, code: "request_error", title: "Request could not complete")
                 }
             }
           

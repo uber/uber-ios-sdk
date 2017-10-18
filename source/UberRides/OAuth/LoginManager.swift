@@ -116,7 +116,7 @@ import UberCore
      */
     @objc public func login(requestedScopes scopes: [RidesScope], presentingViewController: UIViewController? = nil, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)? = nil) {
         guard !loggingIn else {
-            completion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
+            completion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
             return
         }
         
@@ -125,13 +125,13 @@ import UberCore
         switch loginType {
         case .authorizationCode:
             guard let presentingViewController = presentingViewController else {
-                completion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
+                completion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
                 return
             }
             loginAuthenticator = AuthorizationCodeGrantAuthenticator(presentingViewController: presentingViewController, scopes: scopes, state: state)
         case .implicit:
             guard let presentingViewController = presentingViewController else {
-                completion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
+                completion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
                 return
             }
             loginAuthenticator = ImplicitGrantAuthenticator(presentingViewController: presentingViewController, scopes: scopes)
@@ -217,7 +217,7 @@ import UberCore
     
     private func handleLoginCanceled() {
         loggingIn = false
-        authenticator?.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .userCancelled))
+        authenticator?.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .userCancelled))
         authenticator = nil
     }
     
@@ -228,7 +228,7 @@ import UberCore
         case .native:
             loginCompletion = { token, error in
                 self.loggingIn = false
-                if let error = error, error.code == RidesAuthenticationErrorType.unavailable.rawValue {
+                if let error = error, error.code == UberAuthenticationErrorType.unavailable.rawValue {
                     self.handleNativeFallback(error, presentingViewController: presentingViewController, completion: completion)
                 } else {
                     completion?(token, error)

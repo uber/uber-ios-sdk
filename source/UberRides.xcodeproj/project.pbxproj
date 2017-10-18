@@ -141,7 +141,7 @@
 		DFFCA8D11F96B95A0032E6BA /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8E2ACF1C9AA17400EDD74B /* Configuration.swift */; };
 		DFFCA8D31F96BAAE0032E6BA /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFCA8D21F96BAAE0032E6BA /* APIEndpoint.swift */; };
 		DFFCA8D41F96BFF70032E6BA /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = D844751A1C5B01FB00B03456 /* Request.swift */; };
-		DFFCA8D51F96C1160032E6BA /* RidesError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81A9EC81C6A6C3A000F33F9 /* RidesError.swift */; };
+		DFFCA8D51F96C1160032E6BA /* UberError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81A9EC81C6A6C3A000F33F9 /* UberError.swift */; };
 		DFFCA8D61F96C1C10032E6BA /* Codable+Uber.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFCA38F41F4F575300131FF0 /* Codable+Uber.swift */; };
 		DFFCA8D91F97D6450032E6BA /* ConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8E2AD11C9B19ED00EDD74B /* ConfigurationTests.swift */; };
 		DFFCA8DA1F97D7250032E6BA /* BaseDeeplinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE7A0001CF5238A003AC3BD /* BaseDeeplinkTests.swift */; };
@@ -201,7 +201,7 @@
 		D81A8B151C658A2800339C13 /* TimeEstimate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeEstimate.swift; path = Model/TimeEstimate.swift; sourceTree = "<group>"; };
 		D81A8B171C658A4F00339C13 /* getTimeEstimates.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getTimeEstimates.json; sourceTree = "<group>"; };
 		D81A8B191C69186B00339C13 /* RequestLayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestLayerTests.swift; sourceTree = "<group>"; };
-		D81A9EC81C6A6C3A000F33F9 /* RidesError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesError.swift; sourceTree = "<group>"; };
+		D81A9EC81C6A6C3A000F33F9 /* UberError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberError.swift; sourceTree = "<group>"; };
 		D81C85251CC74F0200DC82EE /* LoginViewAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewAuthenticator.swift; path = OAuth/LoginViewAuthenticator.swift; sourceTree = "<group>"; };
 		D81C85271CC74F4B00DC82EE /* ImplicitGrantAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImplicitGrantAuthenticator.swift; path = OAuth/ImplicitGrantAuthenticator.swift; sourceTree = "<group>"; };
 		D81C852B1CC801B500DC82EE /* RideRequestDataBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RideRequestDataBuilder.swift; path = Model/RideRequestDataBuilder.swift; sourceTree = "<group>"; };
@@ -643,7 +643,7 @@
 			children = (
 				D844751A1C5B01FB00B03456 /* Request.swift */,
 				DFFCA8D21F96BAAE0032E6BA /* APIEndpoint.swift */,
-				D81A9EC81C6A6C3A000F33F9 /* RidesError.swift */,
+				D81A9EC81C6A6C3A000F33F9 /* UberError.swift */,
 				DFCA38F41F4F575300131FF0 /* Codable+Uber.swift */,
 			);
 			path = Networking;
@@ -1061,7 +1061,7 @@
 				DFFCA8D31F96BAAE0032E6BA /* APIEndpoint.swift in Sources */,
 				DFFCA8D11F96B95A0032E6BA /* Configuration.swift in Sources */,
 				DFFCA8CA1F96AADE0032E6BA /* BaseDeeplink.swift in Sources */,
-				DFFCA8D51F96C1160032E6BA /* RidesError.swift in Sources */,
+				DFFCA8D51F96C1160032E6BA /* UberError.swift in Sources */,
 				DFFCA8D41F96BFF70032E6BA /* Request.swift in Sources */,
 				DFFCA8CD1F96AB4E0032E6BA /* DeeplinkErrorType.swift in Sources */,
 				DFFCA8CB1F96AB400032E6BA /* DeeplinkErrorFactory.swift in Sources */,
