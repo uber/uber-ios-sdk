@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		AC0404791BFACD1D00AC1501 /* UberRides.h in Headers */ = {isa = PBXBuildFile; fileRef = AC0404781BFACD1D00AC1501 /* UberRides.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AC0404801BFACD1D00AC1501 /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC0404751BFACD1D00AC1501 /* UberRides.framework */; };
-		AC0404851BFACD1D00AC1501 /* UberRidesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404841BFACD1D00AC1501 /* UberRidesTests.swift */; };
 		AC0404941BFACDAF00AC1501 /* RequestDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404931BFACDAF00AC1501 /* RequestDeeplink.swift */; };
 		AC0404961BFACDC900AC1501 /* RidesClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404951BFACDC900AC1501 /* RidesClient.swift */; };
 		AC04049A1BFACE5400AC1501 /* RequestDeeplinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404991BFACE5400AC1501 /* RequestDeeplinkTests.swift */; };
@@ -132,7 +131,6 @@
 		DFF443901F54EFD700525F7A /* getRequestInProgress.json in Resources */ = {isa = PBXBuildFile; fileRef = DFF4438F1F54EFD700525F7A /* getRequestInProgress.json */; };
 		DFF443921F54EFF800525F7A /* getRequestCompleted.json in Resources */ = {isa = PBXBuildFile; fileRef = DFF443911F54EFF800525F7A /* getRequestCompleted.json */; };
 		DFFCA8B51F96A4800032E6BA /* UberCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFFCA8AC1F96A4800032E6BA /* UberCore.framework */; };
-		DFFCA8BC1F96A4800032E6BA /* UberCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFCA8BB1F96A4800032E6BA /* UberCoreTests.swift */; };
 		DFFCA8BE1F96A4800032E6BA /* UberCore.h in Headers */ = {isa = PBXBuildFile; fileRef = DFFCA8AE1F96A4800032E6BA /* UberCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DFFCA8CA1F96AADE0032E6BA /* BaseDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC673D0F1CF5084000F36E2B /* BaseDeeplink.swift */; };
 		DFFCA8CB1F96AB400032E6BA /* DeeplinkErrorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3F740C1CF63DAA00A713AA /* DeeplinkErrorFactory.swift */; };
@@ -192,7 +190,6 @@
 		AC0404781BFACD1D00AC1501 /* UberRides.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UberRides.h; sourceTree = "<group>"; };
 		AC04047A1BFACD1D00AC1501 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC04047F1BFACD1D00AC1501 /* UberRidesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UberRidesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AC0404841BFACD1D00AC1501 /* UberRidesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberRidesTests.swift; sourceTree = "<group>"; };
 		AC0404861BFACD1D00AC1501 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC0404931BFACDAF00AC1501 /* RequestDeeplink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDeeplink.swift; sourceTree = "<group>"; };
 		AC0404951BFACDC900AC1501 /* RidesClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesClient.swift; sourceTree = "<group>"; };
@@ -342,7 +339,6 @@
 		DFFCA8AE1F96A4800032E6BA /* UberCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UberCore.h; sourceTree = "<group>"; };
 		DFFCA8AF1F96A4800032E6BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DFFCA8B41F96A4800032E6BA /* UberCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UberCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DFFCA8BB1F96A4800032E6BA /* UberCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberCoreTests.swift; sourceTree = "<group>"; };
 		DFFCA8BD1F96A4800032E6BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DFFCA8D21F96BAAE0032E6BA /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
 		EA01FB909C9A04DC5D83A4D9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -454,7 +450,6 @@
 			isa = PBXGroup;
 			children = (
 				D8874F2C1C5AC52B0098DF99 /* Test Data */,
-				AC0404841BFACD1D00AC1501 /* UberRidesTests.swift */,
 				AC0404991BFACE5400AC1501 /* RequestDeeplinkTests.swift */,
 				D8874F2A1C5AC4DB0098DF99 /* ObjectMappingTests.swift */,
 				D8505CF81C598FE1007DC576 /* APIManagerTests.swift */,
@@ -633,7 +628,6 @@
 				DC8E2AD11C9B19ED00EDD74B /* ConfigurationTests.swift */,
 				DCE7A0001CF5238A003AC3BD /* BaseDeeplinkTests.swift */,
 				DC3F740E1CF6424A00A713AA /* DeeplinkErrorFactoryTests.swift */,
-				DFFCA8BB1F96A4800032E6BA /* UberCoreTests.swift */,
 				DFFCA8BD1F96A4800032E6BA /* Info.plist */,
 			);
 			path = UberCoreTests;
@@ -1028,7 +1022,6 @@
 				DC75E0341CAAEA5700071417 /* ModalViewControllerTests.swift in Sources */,
 				DCF87E7D1CF3A9D40081894C /* BaseAuthenticatorTests.swift in Sources */,
 				D8B757841CA3485600D5025C /* RideRequestViewTests.swift in Sources */,
-				AC0404851BFACD1D00AC1501 /* UberRidesTests.swift in Sources */,
 				DC1039731C96B1CE004854E3 /* RidesScopeExtensionsTests.swift in Sources */,
 				DC92DBFD1CA21379001A0DCC /* TokenManagerTests.swift in Sources */,
 				DC3F74111CF6669000A713AA /* DeeplinkRequestingBehaviorTests.swift in Sources */,
@@ -1086,7 +1079,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DFFCA8D91F97D6450032E6BA /* ConfigurationTests.swift in Sources */,
-				DFFCA8BC1F96A4800032E6BA /* UberCoreTests.swift in Sources */,
 				DFFCA8DA1F97D7250032E6BA /* BaseDeeplinkTests.swift in Sources */,
 				DFFCA8DB1F97D72E0032E6BA /* DeeplinkErrorFactoryTests.swift in Sources */,
 			);
