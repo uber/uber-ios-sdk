@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import Foundation
+import UberCore
 
 /**
  *  A Deeplinking object for authenticating a user via the native Uber app

@@ -63,20 +63,20 @@ extension ModalRideRequestViewController : RideRequestViewControllerDelegate {
     public func rideRequestViewController(_ rideRequestViewController: RideRequestViewController, didReceiveError error: NSError) {
         let errorType = RideRequestViewErrorType(rawValue: error.code) ?? RideRequestViewErrorType.unknown
         var errorString: String?
-        navigationItem.title = LocalizationUtil.localizedString(forKey: "Sign in with Uber", comment: "Title of navigation bar during OAuth")
+        navigationItem.title = NSLocalizedString("Sign in with Uber", bundle: Bundle(for: type(of: self)), comment: "Title of navigation bar during OAuth")
         switch errorType {
         case .accessTokenExpired:
             fallthrough
         case .accessTokenMissing:
-            errorString = LocalizationUtil.localizedString(forKey: "There was a problem authenticating you. Please try again.", comment: "RideRequestView error text for authentication error")
+            errorString = NSLocalizedString("There was a problem authenticating you. Please try again.", bundle: Bundle(for: type(of: self)), comment: "RideRequestView error text for authentication error")
         case .networkError:
             break
         default:
-            errorString = LocalizationUtil.localizedString(forKey: "The Ride Request Widget encountered a problem. Please try again.", comment: "RideRequestView error text for a generic error")
+            errorString = NSLocalizedString("The Ride Request Widget encountered a problem. Please try again.", bundle: Bundle(for: type(of: self)), comment: "RideRequestView error text for a generic error")
         }
         
         if let errorString = errorString {
-            let actionString = LocalizationUtil.localizedString(forKey: "OK", comment: "OK button title")
+            let actionString = NSLocalizedString("OK", bundle: Bundle(for: type(of: self)), comment: "OK button title")
             let alert = UIAlertController(title: nil, message: errorString, preferredStyle: UIAlertControllerStyle.alert)
             let okayAction = UIAlertAction(title: actionString, style: UIAlertActionStyle.default, handler: { (_) -> Void in
                 self.dismiss()

@@ -23,7 +23,7 @@
 //  THE SOFTWARE.
 
 import XCTest
-@testable import UberRides
+@testable import UberCore
 
 class ConfigurationTests: XCTestCase {
 
@@ -40,7 +40,7 @@ class ConfigurationTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.bundle = Bundle(for: type(of: self))
+        Configuration.bundle = Bundle.main
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
     }
@@ -80,7 +80,7 @@ class ConfigurationTests: XCTestCase {
         Configuration.restoreDefaults()
         
         Configuration.plistName = "testInfo"
-        Configuration.bundle = Bundle(for: type(of: self))
+        Configuration.bundle = Bundle.main
         
         XCTAssertEqual(Configuration.shared.clientID, defaultClientID)
         XCTAssertEqual(defaultGeneralCallbackString, Configuration.shared.getCallbackURIString())
@@ -182,7 +182,9 @@ class ConfigurationTests: XCTestCase {
     }
     
     func testCallbackURIStringFallback_whenCallbackURIsMissing() {
+        Configuration.bundle = Bundle(for: Configuration.self)
         Configuration.plistName = "testInfoMissingCallbacks"
+        Configuration.restoreDefaults()
         XCTAssertEqual(defaultCallbackString, Configuration.shared.getCallbackURIString(for: .general))
         XCTAssertEqual(defaultCallbackString, Configuration.shared.getCallbackURIString(for: .authorizationCode))
         XCTAssertEqual(defaultCallbackString, Configuration.shared.getCallbackURIString(for: .implicit))
@@ -190,7 +192,9 @@ class ConfigurationTests: XCTestCase {
     }
     
     func testCallbackURIStringFallbackUsesGeneralOverride_whenCallbackURIsMissing() {
+        Configuration.bundle = Bundle(for: Configuration.self)
         Configuration.plistName = "testInfoMissingCallbacks"
+        Configuration.restoreDefaults()
         let override = "testURI://override"
         Configuration.shared.setCallbackURIString(override, type: .general)
         XCTAssertEqual(override, Configuration.shared.getCallbackURIString(for: .general))

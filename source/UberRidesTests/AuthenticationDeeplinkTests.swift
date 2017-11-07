@@ -22,6 +22,7 @@
 
 import XCTest
 
+import UberCore
 @testable import UberRides
 
 class AuthenticationDeeplinkTests: XCTestCase {
@@ -30,7 +31,6 @@ class AuthenticationDeeplinkTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
         versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String

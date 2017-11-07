@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import XCTest
+@testable   import UberCore
 @testable import UberRides
 
 class AccessTokenFactoryTests: XCTestCase {
@@ -89,8 +90,8 @@ class AccessTokenFactoryTests: XCTestCase {
             _ = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTFail("Didn't parse out error")
         } catch let error as NSError {
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
-            XCTAssertEqual(error.domain, RidesAuthenticationErrorFactory.errorDomain)
+            XCTAssertEqual(error.code, UberAuthenticationErrorType.invalidRequest.rawValue)
+            XCTAssertEqual(error.domain, UberAuthenticationErrorFactory.errorDomain)
         } catch {
             XCTAssert(false)
         }
@@ -108,8 +109,8 @@ class AccessTokenFactoryTests: XCTestCase {
             _ = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTFail("Didn't parse out error")
         } catch let error as NSError {
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
-            XCTAssertEqual(error.domain, RidesAuthenticationErrorFactory.errorDomain)
+            XCTAssertEqual(error.code, UberAuthenticationErrorType.invalidRequest.rawValue)
+            XCTAssertEqual(error.domain, UberAuthenticationErrorFactory.errorDomain)
         } catch  {
             XCTAssert(false)
         }
@@ -150,8 +151,8 @@ class AccessTokenFactoryTests: XCTestCase {
             _ = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTFail("Didn't parse out error")
         } catch let error as NSError {
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
-            XCTAssertEqual(error.domain, RidesAuthenticationErrorFactory.errorDomain)
+            XCTAssertEqual(error.code, UberAuthenticationErrorType.invalidRequest.rawValue)
+            XCTAssertEqual(error.domain, UberAuthenticationErrorFactory.errorDomain)
         } catch {
             XCTAssert(false)
         }

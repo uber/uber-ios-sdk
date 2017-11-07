@@ -22,8 +22,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-
 import CoreLocation
+import UberCore
 
 /// API client for the Uber Rides API.
 @objc(UBSDKRidesClient) public class RidesClient: NSObject {
@@ -161,15 +161,15 @@ import CoreLocation
     /**
     Helper function to execute request. All endpoints should use this function.
     
-    - parameter endpoint:   endpoint that conforms to UberAPI.
+    - parameter endpoint:   endpoint that conforms to APIEndpoint.
     - parameter completion: completion block for when request is completed.
     */
-    private func apiCall(_ endpoint: UberAPI, completion: @escaping (_ response: Response) -> Void) {
+    private func apiCall(_ endpoint: APIEndpoint, completion: @escaping (_ response: Response) -> Void) {
         
         let accessTokenString = fetchAccessToken()?.tokenString
         
         guard let request = Request(session: session, endpoint: endpoint, serverToken: serverToken, bearerToken: accessTokenString) else {
-            let response = Response(data: nil, statusCode: 400, response: nil, error: RidesError(status: 400, code: "bad_request", title: "Unable to create request"))
+            let response = Response(data: nil, statusCode: 400, response: nil, error: UberError(status: 400, code: "bad_request", title: "Unable to create request"))
             completion(response)
             return
         }
@@ -181,10 +181,10 @@ import CoreLocation
     /**
      Helper function to execute request that will return a Ride object.
      
-     - parameter endpoint:   endpoint that conforms to UberAPI.
+     - parameter endpoint:   endpoint that conforms to APIEndpoint.
      - parameter completion: user's completion block for returned ride.
      */
-    private func apiCallForRideResponse(_ endpoint: UberAPI, completion:@escaping (_ ride: Ride?, _ response: Response) -> Void) {
+    private func apiCallForRideResponse(_ endpoint: APIEndpoint, completion:@escaping (_ ride: Ride?, _ response: Response) -> Void) {
         apiCall(endpoint, completion: { response in
             var ride: Ride? = nil
             if let data = response.data,

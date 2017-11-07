@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UberCore
 
 @objc(UBSDKAuthorizationCodeGrantAuthenticator) public class AuthorizationCodeGrantAuthenticator: LoginViewAuthenticator {
     @objc public var state: String?
@@ -33,7 +34,7 @@ import UIKit
         callbackURIType = .authorizationCode
     }
     
-    override var endpoint: UberAPI {
+    override var endpoint: APIEndpoint {
         return OAuth.authorizationCodeLogin(clientID: Configuration.shared.clientID, redirect: Configuration.shared.getCallbackURIString(for: .authorizationCode), scopes: scopes, state: state)
     }
     

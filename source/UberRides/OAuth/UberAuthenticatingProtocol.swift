@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UberCore
 
 /**
  *  Protocol to conform to for defining an authorization flow.

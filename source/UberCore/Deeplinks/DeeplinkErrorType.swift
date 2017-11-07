@@ -29,7 +29,7 @@
  - UnableToFollow:      The deeplink attempted to open the url, but failed
  - UnableToOpen:        The application either is unable to open the URL or was unable to query for the provided deeplink scheme (iOS 9+ only). The latter requires you to add it to your application's plist file under LSQpplicationQueriesSchemes
  */
-@objc enum DeeplinkErrorType : Int {
+@objc(UBSDKDeeplinkErrorType) public enum DeeplinkErrorType: Int {
     case deeplinkNotFollowed
     case unableToFollow
     case unableToOpen

@@ -42,7 +42,7 @@ private let callbackURIStringKey = "URIString"
  - Implicit:          Callback URI to use for Implicit Grant flow
  - Native:            Callback URI to use for Native (SSO) flow
  */
-@objc public enum CallbackURIType : Int {
+@objc(UBSDKCallbackURIType) public enum CallbackURIType : Int {
     case authorizationCode
     case general
     case implicit
@@ -255,7 +255,7 @@ private let callbackURIStringKey = "URIString"
         self.callbackURIs = callbackURIs
     }
 
-    func resetProcessPool() {
+    public func resetProcessPool() {
         processPool = WKProcessPool()
     }
     

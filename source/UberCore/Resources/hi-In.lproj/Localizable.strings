@@ -1,0 +1,11 @@
+"Invalid Client ID provided." = "अमान्य Client ID उपलब्ध की गई.";
+"Invalid Redirect URI provided." = "अमान्य रीडायरेक्ट URI उपलब्ध किया गया.";
+"The server was unable to understand your request." = "सर्वर आपके अनुरोध को समझने में असमर्थ था.";
+"Unable to interpret the response from the server." = "सर्वर से प्रतिसाद की व्याख्या करने में असमर्थ हैं.";
+"Your app is not authorized for the requested scopes." = "अनुरोधित स्कोप के लिए आपका एप्लिकेशन प्राधिकृत नहीं है.";
+"The Redirect URI provided did not match what was expected." = "उपलब्ध रीडायरेक्ट URI अपेक्षित से मेल नहीं खा रहा था.";
+"A server error occurred." = "एक सर्वर त्रुटि उत्पन्न हुई.";
+"Unable to present the login view." = "लॉगिन दृश्य दिखाने में असमर्थ.";
+"Unable to save the access token." = "पहुँच टोकन को सहेजने में असमर्थ हैं.";
+"Login is temporarily unavailable." = "लॉगिन अस्थायी रूप से अनुपलब्ध है.";
+"User cancelled the login process." = "उपयोगकर्ता द्वारा लॉगिन प्रक्रिया रद्द की गई.";

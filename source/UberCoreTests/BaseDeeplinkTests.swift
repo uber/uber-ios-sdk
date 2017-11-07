@@ -22,7 +22,7 @@
 
 import XCTest
 
-@testable import UberRides
+@testable import UberCore
 
 class BaseDeeplinkTests: XCTestCase {
     
@@ -30,10 +30,9 @@ class BaseDeeplinkTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
-        versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        versionNumber = Bundle(for: BaseDeeplink.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
     }
     
     override func tearDown() {

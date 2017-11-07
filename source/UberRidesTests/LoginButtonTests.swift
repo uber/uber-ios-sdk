@@ -22,6 +22,7 @@
 
 import XCTest
 import CoreLocation
+import UberCore
 @testable import UberRides
 
 class LoginButtonTests : XCTestCase {
@@ -31,7 +32,6 @@ class LoginButtonTests : XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
         Configuration.shared.isSandbox = true

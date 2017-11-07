@@ -1,8 +1,6 @@
 //
-//  Codable+Uber.swift
+//  DeeplinkErrorFactoryTests.swift
 //  UberRides
-//
-//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,11 +20,24 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-extension JSONDecoder {
-    /// JSON Decoder tailored to the Uber API JSON
-    static var uberDecoder: JSONDecoder {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .secondsSince1970
-        return decoder
+import XCTest
+@testable import UberCore
+
+class DeeplinkErrorFactoryTests: XCTestCase {
+    let expectedErrorToValueMapping = [
+        DeeplinkErrorType.deeplinkNotFollowed : DeeplinkErrorType.deeplinkNotFollowed.rawValue,
+        DeeplinkErrorType.unableToFollow : DeeplinkErrorType.unableToFollow.rawValue,
+        DeeplinkErrorType.unableToOpen : DeeplinkErrorType.unableToOpen.rawValue,
+    ]
+    
+    func testCreateErrorsByErrorType() {
+        
+        for errorType in expectedErrorToValueMapping.keys {
+            let deeplinkError = DeeplinkErrorFactory.errorForType(errorType)
+            
+            XCTAssertNotNil(deeplinkError)
+            XCTAssertEqual(deeplinkError.code , errorType.rawValue)
+            XCTAssertEqual(deeplinkError.domain , DeeplinkErrorFactory.errorDomain)
+        }
     }
 }

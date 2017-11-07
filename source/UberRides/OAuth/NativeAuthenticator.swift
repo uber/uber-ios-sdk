@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import Foundation
+import UberCore
 
 /**
  * UberAuthenticating object for authenticating a user via the Native Uber app
@@ -52,9 +53,9 @@ import Foundation
         deeplink.execute { error in
             
             if let error = error, error.code == DeeplinkErrorType.unableToFollow.rawValue {
-                self.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest))
+                self.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest))
             } else if let _ = error {
-                self.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
+                self.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
             }
             self.deeplinkCompletion?(error)
         }

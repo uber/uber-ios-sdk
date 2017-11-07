@@ -22,6 +22,7 @@
 
 import XCTest
 import CoreLocation
+import UberCore
 @testable import UberRides
 
 class DeeplinkRequestingBehaviorTests : XCTestCase {
@@ -32,7 +33,6 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
         Configuration.shared.clientID = clientID

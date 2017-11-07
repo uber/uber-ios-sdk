@@ -24,6 +24,7 @@
 
 import WebKit
 import CoreLocation
+import UberCore
 
 /**
  *  Delegates are informed of events that occur in the RideRequestView such as errors.

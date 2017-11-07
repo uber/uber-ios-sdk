@@ -24,6 +24,7 @@
 
 import UIKit
 import CoreLocation
+import UberCore
 
 /**
  *  Protocol to listen to request button events, such as loading button content
@@ -42,7 +43,7 @@ import CoreLocation
      - parameter button: the RideRequestButton
      - parameter error:  the error that it encountered
      */
-    @objc func rideRequestButton(_ button: RideRequestButton, didReceiveError error: RidesError)
+    @objc func rideRequestButton(_ button: RideRequestButton, didReceiveError error: UberError)
 }
 
 /// RequestButton implements a button on the touch screen to request a ride.
@@ -188,7 +189,7 @@ import CoreLocation
         
         uberTitleLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 15) ?? UIFont.systemFont(ofSize: 16)
         
-        let titleText = LocalizationUtil.localizedString(forKey: "Ride there with Uber", comment: "Request button description")
+        let titleText = NSLocalizedString("Ride there with Uber", bundle: Bundle(for: type(of: self)), comment: "Request button description")
         uberTitleLabel.text = titleText
         
         let logo = getImage(name: "Badge")
@@ -342,9 +343,9 @@ import CoreLocation
         attrString.addAttribute(NSAttributedStringKey.font, value: metadataFont, range: (attrString.string as NSString).range(of: subtitle))
 
         if attrString.string.isEmpty {
-            uberTitleLabel.text = LocalizationUtil.localizedString(forKey: "Ride there with Uber", comment: "Request button description")
+            uberTitleLabel.text = NSLocalizedString("Ride there with Uber", bundle: Bundle(for: type(of: self)), comment: "Request button description")
         } else {
-            uberTitleLabel.text = LocalizationUtil.localizedString(forKey: "Get a ride", comment: "Request button shorter description")
+            uberTitleLabel.text = NSLocalizedString("Get a ride", bundle: Bundle(for: type(of: self)), comment: "Request button shorter description")
         }
 
         uberMetadataLabel.attributedText = attrString
@@ -363,8 +364,8 @@ import CoreLocation
         return attachment
     }
 
-    private func createValidationFailedError() -> RidesError {
-        return RidesError(status: 422, code: "validation_failed", title: "Invalid Request")
+    private func createValidationFailedError() -> UberError {
+        return UberError(status: 422, code: "validation_failed", title: "Invalid Request")
     }
 
     /**
@@ -381,7 +382,7 @@ import CoreLocation
         
         let downloadGroup = DispatchGroup()
         downloadGroup.enter()
-        var errors = [RidesError]()
+        var errors = [UberError]()
         let pickupLocation = CLLocation(latitude: pickupLatitude, longitude: pickupLongitude)
         
         // Set the information on the button label once all information is retrieved.
@@ -393,9 +394,9 @@ import CoreLocation
             if let timeEstimate = self.metadata.timeEstimate?.estimate {
                 let mins = timeEstimate / 60
                 if mins == 1 {
-                    titleText = String(format: LocalizationUtil.localizedString(forKey: "%d min away", comment: "Estimate is for car one minute away"), mins).uppercased(with: Locale.current)
+                    titleText = String(format: NSLocalizedString("%d min away", bundle: Bundle(for: type(of: self)), comment: "Estimate is for car one minute away"), mins).uppercased(with: Locale.current)
                 } else {
-                    titleText = String(format: LocalizationUtil.localizedString(forKey: "%d mins away", comment: "Estimate is for car multiple minutes away"), mins).uppercased(with: Locale.current)
+                    titleText = String(format: NSLocalizedString("%d mins away", bundle: Bundle(for: type(of: self)), comment: "Estimate is for car multiple minutes away"), mins).uppercased(with: Locale.current)
                 }
             }
 
@@ -407,7 +408,7 @@ import CoreLocation
                     if estimate.surgeMultiplier > 1.0 {
                         surge = true
                     }
-                    let priceEstimateString = String(format: LocalizationUtil.localizedString(forKey: "%1$@ for %2$@", comment: "Price estimate string for an Uber product"), price, productName)
+                    let priceEstimateString = String(format: NSLocalizedString("%1$@ for %2$@", bundle: Bundle(for: type(of: self)), comment: "Price estimate string for an Uber product"), price, productName)
                     if titleText.isEmpty {
                         titleText = priceEstimateString
                     } else {

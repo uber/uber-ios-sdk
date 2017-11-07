@@ -25,6 +25,7 @@
 
 import Foundation
 import CoreLocation
+import UberCore
 
 @objc enum UberButtonColor: Int {
     case uberBlack
@@ -83,16 +84,6 @@ class FontUtil {
     }
 }
 
-class LocalizationUtil {
-    static func localizedString(forKey key: String, comment: String) -> String {
-        var localizationBundle = Bundle(for: self)
-        if let frameworkPath = Bundle.main.privateFrameworksPath, let frameworkBundle = Bundle(path: "\(frameworkPath)/UberRides.framework") {
-            localizationBundle = frameworkBundle
-        }
-        return NSLocalizedString(key, bundle: localizationBundle, comment: comment)
-    }
-}
-
 class OAuthUtil {
     
     static let ErrorKey = "error"
@@ -102,21 +93,21 @@ class OAuthUtil {
      
      - parameter url: the URL to be parsed, most likely from a webview.
      
-     - returns: an NSError, who's code contains the RidesAuthenticationErrorType that occured. If none recognized, defaults to InvalidRequest.
+     - returns: an NSError, who's code contains the UberAuthenticationErrorType that occured. If none recognized, defaults to InvalidRequest.
      */
     static func parseAuthenticationErrorFromURL(_ url: URL) -> NSError {
         if let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
            let params = components.allItems {
             for param in params {
                 if param.name == "error" {
-                    guard let rawValue = param.value, let error = RidesAuthenticationErrorFactory.createRidesAuthenticationError(rawValue: rawValue) else {
-                        return RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
+                    guard let rawValue = param.value, let error = UberAuthenticationErrorFactory.createRidesAuthenticationError(rawValue: rawValue) else {
+                        return UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
                     }
                     return error
                 }
             }
         }
-        return RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
+        return UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
     }
     
     static func parseRideWidgetErrorFromURL(_ url: URL) -> NSError {

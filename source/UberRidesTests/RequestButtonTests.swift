@@ -26,6 +26,7 @@ import XCTest
 import OHHTTPStubs
 import CoreLocation
 import WebKit
+import UberCore
 @testable import UberRides
 
 class RequestButtonTests: XCTestCase {
@@ -33,12 +34,11 @@ class RequestButtonTests: XCTestCase {
     var button: RideRequestButton!
     weak var expectation: XCTestExpectation?
     weak var errorExpectation: XCTestExpectation?
-    var rideButtonError: RidesError!
+    var rideButtonError: UberError!
     let timeout: Double = 5
     
     override func setUp() {
         super.setUp()
-        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
         Configuration.shared.isSandbox = true
@@ -512,7 +512,7 @@ extension RequestButtonTests: RideRequestButtonDelegate {
         expectation?.fulfill()
     }
     
-    func rideRequestButton(_ button: RideRequestButton, didReceiveError error: RidesError) {
+    func rideRequestButton(_ button: RideRequestButton, didReceiveError error: UberError) {
         self.rideButtonError = error
         errorExpectation?.fulfill()
     }

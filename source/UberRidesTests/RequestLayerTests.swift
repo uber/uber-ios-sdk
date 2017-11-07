@@ -24,6 +24,7 @@
 
 import XCTest
 import OHHTTPStubs
+import UberCore
 @testable import UberRides
 
 class RequestLayerTests: XCTestCase {
@@ -33,7 +34,6 @@ class RequestLayerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
         Configuration.shared.isSandbox = true
@@ -97,7 +97,7 @@ class RequestLayerTests: XCTestCase {
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 401)
             XCTAssertNotNil(response.error)
-            XCTAssertTrue(response.error is RidesClientError)
+            XCTAssertTrue(response.error is UberClientError)
             XCTAssertEqual(response.error!.title, message)
             XCTAssertEqual(response.error!.code, code)
             XCTAssertNil(response.error!.meta)
@@ -131,7 +131,7 @@ class RequestLayerTests: XCTestCase {
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 409)
             XCTAssertNotNil(response.error)
-            XCTAssertTrue(response.error is RidesClientError)
+            XCTAssertTrue(response.error is UberClientError)
             XCTAssertNotNil(response.error!.meta)
             
                 let meta = response.error!.meta! as! [String: [String: String]]
@@ -171,7 +171,7 @@ class RequestLayerTests: XCTestCase {
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 422)
             XCTAssertNotNil(response.error)
-            XCTAssertTrue(response.error is RidesClientError)
+            XCTAssertTrue(response.error is UberClientError)
             XCTAssertEqual(response.error!.title, message)
             XCTAssertEqual(response.error!.code, code)
             
@@ -213,7 +213,7 @@ class RequestLayerTests: XCTestCase {
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 422)
             XCTAssertNotNil(response.error)
-            XCTAssertTrue(response.error is RidesClientError)
+            XCTAssertTrue(response.error is UberClientError)
             XCTAssertEqual(response.error!.title, message)
             XCTAssertEqual(response.error!.code, code)
             
@@ -256,7 +256,7 @@ class RequestLayerTests: XCTestCase {
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 409)
             XCTAssertNotNil(response.error)
-            XCTAssertTrue(response.error is RidesClientError)
+            XCTAssertTrue(response.error is UberClientError)
             XCTAssertNil(response.error!.meta)
             XCTAssertEqual(response.error!.errors!.count, 1)
             
@@ -297,7 +297,7 @@ class RequestLayerTests: XCTestCase {
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 500)
             XCTAssertNotNil(response.error)
-            XCTAssertTrue(response.error is RidesServerError)
+            XCTAssertTrue(response.error is UberServerError)
             XCTAssertEqual(response.error!.title, message)
             XCTAssertEqual(response.error!.code, code)
             XCTAssertNil(response.error!.meta)
@@ -334,7 +334,7 @@ class RequestLayerTests: XCTestCase {
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 503)
             XCTAssertNotNil(response.error)
-            XCTAssertTrue(response.error is RidesServerError)
+            XCTAssertTrue(response.error is UberServerError)
             XCTAssertEqual(response.error!.title, message)
             XCTAssertEqual(response.error!.code, code)
             XCTAssertNil(response.error!.meta)
@@ -368,7 +368,7 @@ class RequestLayerTests: XCTestCase {
         request.execute({ response in
             XCTAssertEqual(response.statusCode, 0)
             XCTAssertNotNil(response.error)
-            XCTAssertTrue(response.error is RidesUnknownError)
+            XCTAssertTrue(response.error is UberUnknownError)
             XCTAssertEqual(response.error!.title, NSURLErrorDomain)
             XCTAssertEqual(response.error!.status, Int(CFNetworkErrors.cfurlErrorNotConnectedToInternet.rawValue))
             XCTAssertNil(response.error!.meta)

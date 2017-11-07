@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UberCore
 
 // MARK: View Controller Lifecycle
 
@@ -57,7 +58,7 @@ class OAuthViewController: UIViewController {
         // Set up navigation item
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem = cancelButton
-        navigationItem.title = LocalizationUtil.localizedString(forKey: "Sign in with Uber", comment: "Title of navigation bar during OAuth")
+        navigationItem.title = NSLocalizedString("Sign in with Uber", bundle: Bundle(for: type(of: self)), comment: "Title of navigation bar during OAuth")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,7 +70,7 @@ class OAuthViewController: UIViewController {
     }
     
     @objc func cancel() {
-        self.loginView.loginAuthenticator.loginCompletion?(nil, RidesAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .userCancelled))
+        self.loginView.loginAuthenticator.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .userCancelled))
         dismiss(animated: true, completion: nil)
     }
     

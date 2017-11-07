@@ -1,8 +1,8 @@
 //
-//  UberRidesTests.swift
-//  UberRidesTests
+//  APIEndpoint.swift
+//  UberRides
 //
-//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,32 +22,51 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+/**
+ *  Protocol for all endpoints to conform to.
+ */
+public protocol APIEndpoint {
+    var body: Data? { get }
+    var headers: [String: String]? { get }
+    var host: String { get}
+    var method: HTTPMethod { get }
+    var path: String { get }
+    var query: [URLQueryItem] { get }
+}
 
-import XCTest
-@testable import UberRides
+public extension APIEndpoint {
+    var body: Data? {
+        return nil
+    }
 
-class UberRidesTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    var headers: [String: String]? {
+        return nil
     }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+
+    var host: String {
+        if Configuration.shared.isSandbox {
+            return "https://sandbox-api.uber.com"
+        } else {
+            return "https://api.uber.com"
         }
     }
-    
+}
+
+/**
+ Enum for HTTPHeaders.
+ */
+public enum HTTPHeader: String {
+    case Authorization = "Authorization"
+    case ContentType = "Content-Type"
+}
+
+/**
+ Enum for HTTPMethods
+ */
+public enum HTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+    case put = "PUT"
+    case patch = "PATCH"
+    case delete = "DELETE"
 }

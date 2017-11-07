@@ -24,6 +24,7 @@
 
 import UIKit
 import MapKit
+import UberCore
 
 /**
  *  Delegate Protocol to pass errors from the internal RideRequestView outward if necessary.
@@ -171,11 +172,11 @@ import MapKit
     func displayNetworkErrorAlert() {
         self.rideRequestView.cancelLoad()
         self.loginView.cancelLoad()
-        let alertController = UIAlertController(title: nil, message: LocalizationUtil.localizedString(forKey: "The Ride Request Widget encountered a problem.", comment: "The Ride Request Widget encountered a problem."), preferredStyle: .alert)
-        let tryAgainAction = UIAlertAction(title: LocalizationUtil.localizedString(forKey: "Try Again", comment: "Try Again"), style: .default, handler: { (UIAlertAction) -> Void in
+        let alertController = UIAlertController(title: nil, message: NSLocalizedString("The Ride Request Widget encountered a problem.", bundle: Bundle(for: type(of: self)), comment: "The Ride Request Widget encountered a problem."), preferredStyle: .alert)
+        let tryAgainAction = UIAlertAction(title: NSLocalizedString("Try Again", bundle: Bundle(for: type(of: self)), comment: "Try Again"), style: .default, handler: { (UIAlertAction) -> Void in
             self.load()
         })
-        let cancelAction = UIAlertAction(title: LocalizationUtil.localizedString(forKey: "Cancel", comment: "Cancel"), style: .cancel, handler: { (UIAlertAction) -> Void in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", bundle: Bundle(for: type(of: self)), comment: "Cancel"), style: .cancel, handler: { (UIAlertAction) -> Void in
             self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.networkError))
         })
         alertController.addAction(tryAgainAction)
@@ -184,8 +185,8 @@ import MapKit
     }
     
     func displayNotSupportedErrorAlert() {
-        let alertController = UIAlertController(title: nil, message: LocalizationUtil.localizedString(forKey: "The operation you are attempting is not supported on the current device.", comment: "The operation you are attempting is not supported on the current device."), preferredStyle: .alert)
-        let okayAction = UIAlertAction(title: LocalizationUtil.localizedString(forKey: "OK", comment: "OK"), style: .default, handler: nil)
+        let alertController = UIAlertController(title: nil, message: NSLocalizedString("The operation you are attempting is not supported on the current device.", bundle: Bundle(for: type(of: self)), comment: "The operation you are attempting is not supported on the current device."), preferredStyle: .alert)
+        let okayAction = UIAlertAction(title: NSLocalizedString("OK", bundle: Bundle(for: type(of: self)), comment: "OK"), style: .default, handler: nil)
         alertController.addAction(okayAction)
         self.present(alertController, animated: true, completion: nil)
     }
@@ -224,7 +225,7 @@ import MapKit
         let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: self, scopes: [.rideWidgets])
         loginBehavior.loginCompletion = { token, error in
             guard let token = token, error == nil else {
-                if error?.code == RidesAuthenticationErrorType.networkError.rawValue {
+                if error?.code == UberAuthenticationErrorType.networkError.rawValue {
                     self.displayNetworkErrorAlert()
                 } else {
                     self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
@@ -256,9 +257,9 @@ import MapKit
         
         nativeAuthenticator.loginCompletion = { token, error in
             guard let token = token, error == nil else {
-                if error?.code == RidesAuthenticationErrorType.networkError.rawValue {
+                if error?.code == UberAuthenticationErrorType.networkError.rawValue {
                     self.displayNetworkErrorAlert()
-                } else if error?.code == RidesAuthenticationErrorType.unavailable.rawValue {
+                } else if error?.code == UberAuthenticationErrorType.unavailable.rawValue {
                     self.loginManager.loginType = .implicit
                     self.setupLoginView()
                     self.load()

@@ -1,0 +1,11 @@
+"Invalid Client ID provided." = "Указан неверный Client ID.";
+"Invalid Redirect URI provided." = "Указан неверный URI для переадресации.";
+"The server was unable to understand your request." = "Серверу не удалось распознать ваш запрос.";
+"Unable to interpret the response from the server." = "Не удалось распознать ответ от сервера.";
+"Your app is not authorized for the requested scopes." = "У вашего приложения нет прав для авторизации.";
+"The Redirect URI provided did not match what was expected." = "Указанный для переадресации URI не совпадает с ожидаемым.";
+"A server error occurred." = "Произошла ошибка на сервере.";
+"Unable to present the login view." = "Невозможно отобразить окно входа.";
+"Unable to save the access token." = "Невозможно сохранить токен доступа.";
+"Login is temporarily unavailable." = "Вход временно невозможен.";
+"User cancelled the login process." = "Пользователь отменил процесс авторизации.";

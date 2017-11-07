@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import XCTest
+@testable import UberCore
 @testable import UberRides
 
 class OAuthTests: XCTestCase {
@@ -35,7 +36,6 @@ class OAuthTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Configuration.bundle = Bundle(for: type(of: self))
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
         Configuration.shared.isSandbox = true
@@ -115,8 +115,8 @@ class OAuthTests: XCTestCase {
             }
             
             XCTAssertNotNil(self.error)
-            XCTAssertEqual(self.error?.code, RidesAuthenticationErrorType.mismatchingRedirect.rawValue)
-            XCTAssertEqual(self.error?.domain, RidesAuthenticationErrorFactory.errorDomain)
+            XCTAssertEqual(self.error?.code, UberAuthenticationErrorType.mismatchingRedirect.rawValue)
+            XCTAssertEqual(self.error?.domain, UberAuthenticationErrorFactory.errorDomain)
         })
     }
     
@@ -140,8 +140,8 @@ class OAuthTests: XCTestCase {
             }
             
             XCTAssertNotNil(self.error)
-            XCTAssertEqual(self.error?.code, RidesAuthenticationErrorType.invalidRedirect.rawValue)
-            XCTAssertEqual(self.error?.domain, RidesAuthenticationErrorFactory.errorDomain)
+            XCTAssertEqual(self.error?.code, UberAuthenticationErrorType.invalidRedirect.rawValue)
+            XCTAssertEqual(self.error?.domain, UberAuthenticationErrorFactory.errorDomain)
         })
     }
     
@@ -165,8 +165,8 @@ class OAuthTests: XCTestCase {
             }
             
             XCTAssertNotNil(self.error)
-            XCTAssertEqual(self.error?.code, RidesAuthenticationErrorType.invalidClientID.rawValue)
-            XCTAssertEqual(self.error?.domain, RidesAuthenticationErrorFactory.errorDomain)
+            XCTAssertEqual(self.error?.code, UberAuthenticationErrorType.invalidClientID.rawValue)
+            XCTAssertEqual(self.error?.domain, UberAuthenticationErrorFactory.errorDomain)
         })
     }
     
@@ -190,8 +190,8 @@ class OAuthTests: XCTestCase {
             }
             
             XCTAssertNotNil(self.error)
-            XCTAssertEqual(self.error?.code, RidesAuthenticationErrorType.invalidScope.rawValue)
-            XCTAssertEqual(self.error?.domain, RidesAuthenticationErrorFactory.errorDomain)
+            XCTAssertEqual(self.error?.code, UberAuthenticationErrorType.invalidScope.rawValue)
+            XCTAssertEqual(self.error?.domain, UberAuthenticationErrorFactory.errorDomain)
         })
     }
     
@@ -215,8 +215,8 @@ class OAuthTests: XCTestCase {
             }
             
             XCTAssertNotNil(self.error)
-            XCTAssertEqual(self.error?.code, RidesAuthenticationErrorType.invalidRequest.rawValue)
-            XCTAssertEqual(self.error?.domain, RidesAuthenticationErrorFactory.errorDomain)
+            XCTAssertEqual(self.error?.code, UberAuthenticationErrorType.invalidRequest.rawValue)
+            XCTAssertEqual(self.error?.domain, UberAuthenticationErrorFactory.errorDomain)
         })
     }
     
@@ -240,8 +240,8 @@ class OAuthTests: XCTestCase {
             }
             
             XCTAssertNotNil(self.error)
-            XCTAssertEqual(self.error?.code, RidesAuthenticationErrorType.serverError.rawValue)
-            XCTAssertEqual(self.error?.domain, RidesAuthenticationErrorFactory.errorDomain)
+            XCTAssertEqual(self.error?.code, UberAuthenticationErrorType.serverError.rawValue)
+            XCTAssertEqual(self.error?.domain, UberAuthenticationErrorFactory.errorDomain)
         })
     }
     
@@ -405,7 +405,7 @@ class OAuthTests: XCTestCase {
         let authorizationCodeGrantAuthenticator = AuthorizationCodeGrantAuthenticator(presentingViewController: UIViewController(), scopes: [.profile])
         authorizationCodeGrantAuthenticator.loginCompletion = { accessToken, error in
             if let error = error {
-                XCTAssertEqual(RidesAuthenticationErrorType.serverError.rawValue, error.code)
+                XCTAssertEqual(UberAuthenticationErrorType.serverError.rawValue, error.code)
             } else {
                 XCTFail()
             }
@@ -432,7 +432,7 @@ class OAuthTests: XCTestCase {
                 return
             }
             XCTAssertEqual(error.domain, "com.uber.rides-ios-sdk.ridesAuthenticationError")
-            XCTAssertEqual(error.code, RidesAuthenticationErrorType.mismatchingRedirect.rawValue)
+            XCTAssertEqual(error.code, UberAuthenticationErrorType.mismatchingRedirect.rawValue)
             
             self.testExpectation.fulfill()
         }
