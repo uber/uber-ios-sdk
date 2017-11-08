@@ -69,8 +69,8 @@ import UIKit
         }
     }
     
-    /// The RidesScopes to request
-    @objc public var scopes: [RidesScope]
+    /// The UberScopes to request
+    @objc public var scopes: [UberScope]
     
     /// The view controller to present login over. Used
     @objc public var presentingViewController: UIViewController?
@@ -94,7 +94,7 @@ import UIKit
     
     private var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
     
-    @objc public init(frame: CGRect, scopes: [RidesScope], loginManager: LoginManager) {
+    @objc public init(frame: CGRect, scopes: [UberScope], loginManager: LoginManager) {
         self.loginManager = loginManager
         self.scopes = scopes
         super.init(frame: frame)
@@ -227,7 +227,7 @@ import UIKit
     }
 
     private func getImage(_ name: String) -> UIImage? {
-        let bundle = Bundle(for: RideRequestButton.self)
+        let bundle = Bundle(for: LoginButton.self)
         return UIImage(named: name, in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
     }
 }

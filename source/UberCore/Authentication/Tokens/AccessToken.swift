@@ -35,7 +35,7 @@
     @objc public private(set) var expirationDate: Date?
     
     /// The scopes this token is valid for
-    @objc public private(set) var grantedScopes: [RidesScope] = []
+    @objc public private(set) var grantedScopes: [UberScope] = []
     
     /**
      Initializes an AccessToken with the provided tokenString
@@ -66,7 +66,7 @@
         refreshToken = decoder.decodeObject(forKey: "refreshToken") as? String
         expirationDate = decoder.decodeObject(forKey: "expirationDate") as? Date
         if let scopesString = decoder.decodeObject(forKey: "grantedScopes") as? String {
-            grantedScopes = scopesString.toRidesScopesArray()
+            grantedScopes = scopesString.toUberScopesArray()
         }
     }
     
@@ -79,7 +79,7 @@
         coder.encode(self.tokenString, forKey: "tokenString")
         coder.encode(self.refreshToken, forKey:  "refreshToken")
         coder.encode(self.expirationDate, forKey: "expirationDate")
-        coder.encode(self.grantedScopes.toRidesScopeString(), forKey: "grantedScopes")
+        coder.encode(self.grantedScopes.toUberScopeString(), forKey: "grantedScopes")
     }
     
     /**
@@ -101,6 +101,6 @@
         refreshToken = try container.decodeIfPresent(String.self, forKey: .refreshToken)
         expirationDate = try container.decodeIfPresent(Date.self, forKey: .expirationDate)
         let scopesString = try container.decodeIfPresent(String.self, forKey: .scopesString)
-        grantedScopes = scopesString?.toRidesScopesArray() ?? []
+        grantedScopes = scopesString?.toUberScopesArray() ?? []
     }
 }

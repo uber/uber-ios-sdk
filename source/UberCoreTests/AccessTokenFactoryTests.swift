@@ -23,8 +23,7 @@
 //  THE SOFTWARE.
 
 import XCTest
-@testable   import UberCore
-@testable import UberRides
+@testable import UberCore
 
 class AccessTokenFactoryTests: XCTestCase {
     private let redirectURI = "http://localhost:1234/"
@@ -61,7 +60,7 @@ class AccessTokenFactoryTests: XCTestCase {
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertEqual(token.refreshToken, refreshTokenString)
-            XCTAssertEqual(token.grantedScopes.toRidesScopeString(), allowedScopesString)
+            XCTAssertEqual(token.grantedScopes.toUberScopeString(), allowedScopesString)
             
             guard let expiration = token.expirationDate?.timeIntervalSince1970 else {
                 XCTAssert(false)
@@ -130,7 +129,7 @@ class AccessTokenFactoryTests: XCTestCase {
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertNil(token.refreshToken)
             XCTAssertNil(token.expirationDate)
-            XCTAssertEqual(token.grantedScopes, [RidesScope]())
+            XCTAssertEqual(token.grantedScopes, [UberScope]())
         } catch _ as NSError {
             XCTAssert(false)
         } catch {
@@ -173,7 +172,7 @@ class AccessTokenFactoryTests: XCTestCase {
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertEqual(token.refreshToken, refreshTokenString)
-            XCTAssertEqual(token.grantedScopes.toRidesScopeString(), allowedScopesString)
+            XCTAssertEqual(token.grantedScopes.toUberScopeString(), allowedScopesString)
             
             guard let expiration = token.expirationDate?.timeIntervalSince1970 else {
                 XCTAssert(false)
@@ -202,7 +201,7 @@ class AccessTokenFactoryTests: XCTestCase {
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertNil(token.refreshToken)
             XCTAssertNil(token.expirationDate)
-            XCTAssertEqual(token.grantedScopes, [RidesScope]())
+            XCTAssertEqual(token.grantedScopes, [UberScope]())
         } catch _ as NSError {
             XCTAssert(false)
         } catch {

@@ -23,7 +23,6 @@
 //  THE SOFTWARE.
 
 import Foundation
-import UberCore
 
 /**
  *  A Deeplinking object for authenticating a user via the native Uber app
@@ -33,15 +32,15 @@ import UberCore
     /**
      Initializes an Authentication Deeplink to request the provided scopes
      
-     - parameter scopes: An array of RidesScopes you would like to request
+     - parameter scopes: An array of UberScopes you would like to request
      
      - returns: An initialized AuthenticationDeeplink
      */
-    @objc public init(scopes: [RidesScope]) {
+    @objc public init(scopes: [UberScope]) {
         let queryItems = AuthenticationURLUtility.buildQueryParameters(scopes)
         let scheme = "uberauth"
         let domain = "connect"
         
-        super.init(scheme: scheme, domain: domain, path: "", queryItems: queryItems)!
+        super.init(scheme: scheme, host: domain, path: "", queryItems: queryItems)!
     }
 }

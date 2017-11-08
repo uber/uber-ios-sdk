@@ -1,5 +1,5 @@
 //
-//  RidesAppDelegate.swift
+//  UberAppDelegate.swift
 //  UberRides
 //
 //  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
@@ -27,11 +27,11 @@
  Designed to mimic methods from your application's AppDelegate and should
  be called inside their corresponding methods
  */
-@objc(UBSDKRidesAppDelegate) public class RidesAppDelegate : NSObject {
+@objc(UBSDKAppDelegate) public class UberAppDelegate : NSObject {
     
     //MARK: Class variables
     
-    @objc open static let shared = RidesAppDelegate()
+    @objc open static let shared = UberAppDelegate()
     
     //MARK: Public variables
     

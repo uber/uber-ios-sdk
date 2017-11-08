@@ -1,5 +1,5 @@
 //
-//  RidesScope.swift
+//  UberScope.swift
 //  UberRides
 //
 //  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
@@ -46,7 +46,7 @@ import UIKit
  - RideReceipt:    Get receipt details for requests made by application.
  - RideWidgets:    The scope for using the Ride Request Widget.
  */
-@objc public enum RidesScopeType: Int {
+@objc public enum UberScopeType: Int {
     case allTrips
     case history
     case historyLite
@@ -97,87 +97,87 @@ import UIKit
 /**
  *  Object representing an access scope to the Uber API
  */
-@objc(UBSDKRidesScope) public class RidesScope : NSObject {
-    /// The RidesScopeType of this RidesScope
-    @objc public let ridesScopeType: RidesScopeType
-    /// The ScopeType of this RidesScope (General / Privileged)
+@objc(UBSDKUberScope) public class UberScope : NSObject {
+    /// The UberScopeType of this UberScope
+    @objc public let uberScopeType: UberScopeType
+    /// The ScopeType of this UberScope (General / Privileged)
     @objc public let scopeType : ScopeType
     /// The String raw value of the scope
     @objc public let rawValue : String
     
-    @objc public init(ridesScopeType: RidesScopeType) {
-        self.ridesScopeType = ridesScopeType
-        scopeType = ridesScopeType.type
-        rawValue = ridesScopeType.toString()
+    @objc public init(uberScopeType: UberScopeType) {
+        self.uberScopeType = uberScopeType
+        scopeType = uberScopeType.type
+        rawValue = uberScopeType.toString()
     }
     
     override public func isEqual(_ object: Any?) -> Bool {
-        if let object = object as? RidesScope {
-            return self.ridesScopeType == object.ridesScopeType
+        if let object = object as? UberScope {
+            return self.uberScopeType == object.uberScopeType
         } else {
             return false
         }
     }
     
     override public var hash: Int {
-        return ridesScopeType.rawValue.hashValue
+        return uberScopeType.rawValue.hashValue
     }
     
     /// Convenience variable for the AllTrips scope
-    @objc public static let allTrips = RidesScope(ridesScopeType: .allTrips)
+    @objc public static let allTrips = UberScope(uberScopeType: .allTrips)
     
     /// Convenience variable for the History scope
-    @objc public static let history = RidesScope(ridesScopeType: .history)
+    @objc public static let history = UberScope(uberScopeType: .history)
     
     /// Convenience variable for the HistoryLite scope
-    @objc public static let historyLite = RidesScope(ridesScopeType: .historyLite)
+    @objc public static let historyLite = UberScope(uberScopeType: .historyLite)
     
     /// Convenience variable for the Places scope
-    @objc public static let places = RidesScope(ridesScopeType: .places)
+    @objc public static let places = UberScope(uberScopeType: .places)
     
     /// Convenience variable for the Profile scope
-    @objc public static let profile = RidesScope(ridesScopeType: .profile)
+    @objc public static let profile = UberScope(uberScopeType: .profile)
     
     /// Convenience variable for the Request scope
-    @objc public static let request = RidesScope(ridesScopeType: .request)
+    @objc public static let request = UberScope(uberScopeType: .request)
     
     /// Convenience variable for the RequestReceipt scope
-    @objc public static let requestReceipt = RidesScope(ridesScopeType: .requestReceipt)
+    @objc public static let requestReceipt = UberScope(uberScopeType: .requestReceipt)
     
     /// Convenience variable for the RideWidgets scope
-    @objc public static let rideWidgets = RidesScope(ridesScopeType: .rideWidgets)
+    @objc public static let rideWidgets = UberScope(uberScopeType: .rideWidgets)
     
 }
 
-class RidesScopeFactory : NSObject {
-    static func ridesScopeForType(_ ridesScopeType: RidesScopeType) -> RidesScope {
-        return RidesScope(ridesScopeType: ridesScopeType)
+class UberScopeFactory : NSObject {
+    static func uberScopeForType(_ uberScopeType: UberScopeType) -> UberScope {
+        return UberScope(uberScopeType: uberScopeType)
     }
     
-    static func ridesScopeForString(_ rawString: String) -> RidesScope? {
-        guard let type = ridesScopeTypeForRawValue(rawString) else {
+    static func uberScopeForString(_ rawString: String) -> UberScope? {
+        guard let type = uberScopeTypeForRawValue(rawString) else {
             return nil
         }
-        return ridesScopeForType(type)
+        return uberScopeForType(type)
     }
     
-    static func ridesScopeTypeForRawValue(_ rawValue: String) -> RidesScopeType? {
+    static func uberScopeTypeForRawValue(_ rawValue: String) -> UberScopeType? {
         switch rawValue.lowercased() {
-        case RidesScopeType.history.toString():
+        case UberScopeType.history.toString():
             return .history
-        case RidesScopeType.historyLite.toString():
+        case UberScopeType.historyLite.toString():
             return .historyLite
-        case RidesScopeType.places.toString():
+        case UberScopeType.places.toString():
             return .places
-        case RidesScopeType.profile.toString():
+        case UberScopeType.profile.toString():
             return .profile
-        case RidesScopeType.rideWidgets.toString():
+        case UberScopeType.rideWidgets.toString():
             return .rideWidgets
-        case RidesScopeType.allTrips.toString():
+        case UberScopeType.allTrips.toString():
             return .allTrips
-        case RidesScopeType.request.toString():
+        case UberScopeType.request.toString():
             return .request
-        case RidesScopeType.requestReceipt.toString():
+        case UberScopeType.requestReceipt.toString():
             return .requestReceipt
         default:
             return nil
@@ -187,18 +187,18 @@ class RidesScopeFactory : NSObject {
 
 /**
  Extending String to allow for easy conversion from space delminated scope string
- to array of RidesScopes
+ to array of UberScopes
  */
-extension String {
+public extension String {
     /**
      Converts a string of space delimited scopes into an array of RideScopes
-     - returns: An array of RidesScope representing the string
+     - returns: An array of UberScope representing the string
      */
-    func toRidesScopesArray() -> [RidesScope]
+    func toUberScopesArray() -> [UberScope]
     {
-        var scopesArray = [RidesScope]()
+        var scopesArray = [UberScope]()
         for scopeString in self.components(separatedBy: " ") {
-            guard let scope = RidesScopeFactory.ridesScopeForString(scopeString) else {
+            guard let scope = UberScopeFactory.uberScopeForString(scopeString) else {
                 continue
             }
             scopesArray.append(scope)
@@ -208,16 +208,16 @@ extension String {
 }
 
 /**
- Extends SequenceType of RidesScope to allow for easy conversion to a space 
+ Extends SequenceType of UberScope to allow for easy conversion to a space
  delimited scope string
  */
-extension Sequence where Iterator.Element == RidesScope {
+public extension Sequence where Iterator.Element == UberScope {
     /**
-     Converts an array of RidesScopes into a space delimited String
-     - parameter scopes: The array of RidesScopes to convert
+     Converts an array of UberScopes into a space delimited String
+     - parameter scopes: The array of UberScopes to convert
      - returns: A string representing the scopes
      */
-    func toRidesScopeString() -> String
+    func toUberScopeString() -> String
     {
         var scopeStringArray = [String]()
         for scope in self {

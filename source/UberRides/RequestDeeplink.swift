@@ -40,6 +40,6 @@ import UberCore
         let scheme = "uber"
         let domain = ""
         
-        super.init(scheme: scheme, domain: domain, path: "", queryItems: queryItems)!
+        super.init(scheme: scheme, host: domain, path: "", queryItems: queryItems)!
     }
 }

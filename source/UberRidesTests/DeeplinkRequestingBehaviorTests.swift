@@ -59,10 +59,10 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
         
         let appStoreDeeplink = requestingBehavior.createAppStoreDeeplink(rideParameters: rideParameters)
         
-        let components = URLComponents(url: appStoreDeeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(url: appStoreDeeplink.url, resolvingAgainstBaseURL: false)
         XCTAssertNotNil(components)
         
-        XCTAssertEqual(expectedUrlString, appStoreDeeplink.deeplinkURL.absoluteString)
+        XCTAssertEqual(expectedUrlString, appStoreDeeplink.url.absoluteString)
         XCTAssertEqual(components!.queryItems!.count, 2)
         XCTAssertTrue(components!.query!.contains("&user-agent=\(expectedButtonUserAgent!)"))
     }
@@ -79,10 +79,10 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
         
         let appStoreDeeplink = requestingBehavior.createAppStoreDeeplink(rideParameters: rideParameters)
         
-        let components = URLComponents(url: appStoreDeeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(url: appStoreDeeplink.url, resolvingAgainstBaseURL: false)
         XCTAssertNotNil(components)
         
-        XCTAssertEqual(expectedUrlString, appStoreDeeplink.deeplinkURL.absoluteString)
+        XCTAssertEqual(expectedUrlString, appStoreDeeplink.url.absoluteString)
         XCTAssertEqual(components!.queryItems!.count, 2)
         XCTAssertTrue(components!.query!.contains("&user-agent=\(expectedDeeplinkUserAgent!)"))
     }

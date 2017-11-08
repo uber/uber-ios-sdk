@@ -22,8 +22,7 @@
 
 import XCTest
 
-import UberCore
-@testable import UberRides
+@testable import UberCore
 
 class AuthenticationDeeplinkTests: XCTestCase {
     
@@ -33,7 +32,7 @@ class AuthenticationDeeplinkTests: XCTestCase {
         super.setUp()
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
-        versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        versionNumber = Bundle(for: AuthenticationDeeplink.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
     }
     
     override func tearDown() {
@@ -43,25 +42,25 @@ class AuthenticationDeeplinkTests: XCTestCase {
     
     func testScheme() {
         let authenticationDeeplink = AuthenticationDeeplink(scopes:[])
-        XCTAssertEqual(authenticationDeeplink.scheme, "uberauth")
+        XCTAssertEqual(authenticationDeeplink.url.scheme, "uberauth")
     }
     
     func testHost() {
         let authenticationDeeplink = AuthenticationDeeplink(scopes:[])
-        XCTAssertEqual(authenticationDeeplink.domain, "connect")
+        XCTAssertEqual(authenticationDeeplink.url.host, "connect")
     }
     
     func testPath() {
         let authenticationDeeplink = AuthenticationDeeplink(scopes:[])
-        XCTAssertEqual(authenticationDeeplink.path, "")
+        XCTAssertEqual(authenticationDeeplink.url.path, "")
     }
     
     func testDeeplinkURL() {
-        let scopes = [RidesScope.allTrips, RidesScope.profile]
+        let scopes = [UberScope.allTrips, UberScope.profile]
         let authenticationDeeplink = AuthenticationDeeplink(scopes:scopes)
         let expectedURLPrefix = "uberauth://connect?"
         
-        XCTAssertTrue(authenticationDeeplink.deeplinkURL.absoluteString.hasPrefix(expectedURLPrefix))
+        XCTAssertTrue(authenticationDeeplink.url.absoluteString.hasPrefix(expectedURLPrefix))
     }
 }
 

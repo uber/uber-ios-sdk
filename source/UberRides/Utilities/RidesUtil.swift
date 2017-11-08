@@ -27,43 +27,6 @@ import Foundation
 import CoreLocation
 import UberCore
 
-@objc enum UberButtonColor: Int {
-    case uberBlack
-    case uberWhite
-    case blackHighlighted
-    case whiteHighlighted
-}
-
-class ColorUtil {
-    static func colorForUberButtonColor(_ color: UberButtonColor) -> UIColor {
-        let hexCode = hexCodeFromColor(color)
-        let scanner = Scanner(string: hexCode)
-        var color: UInt32 = 0
-        scanner.scanHexInt32(&color)
-        
-        let mask = 0x000000FF
-        
-        let redValue = CGFloat(Int(color >> 16)&mask)/255.0
-        let greenValue = CGFloat(Int(color >> 8)&mask)/255.0
-        let blueValue = CGFloat(Int(color)&mask)/255.0
-        
-        return UIColor(red: redValue, green: greenValue, blue: blueValue, alpha: 1.0)
-    }
-    
-    private static func hexCodeFromColor(_ color: UberButtonColor) -> String {
-        switch color {
-        case .uberBlack:
-            return "000000"
-        case .uberWhite:
-            return "FFFFFF"
-        case .blackHighlighted:
-            return "282727"
-        case .whiteHighlighted:
-            return "E5E5E4"
-        }
-    }
-}
-
 class FontUtil {
     static func loadFontWithName(_ name: String, familyName: String) -> Bool {
         if let path = Bundle(for: FontUtil.self).path(forResource: name, ofType: "otf") {

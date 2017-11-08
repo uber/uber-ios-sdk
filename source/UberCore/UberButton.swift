@@ -25,28 +25,28 @@
 import UIKit
 
 /// Base class for Uber buttons that sets up colors and some constraints.
-@objc(UBSDKUberButton) public class UberButton: UIButton {
-    let cornerRadius: CGFloat = 8
-    let horizontalEdgePadding: CGFloat = 16
-    let imageLabelPadding: CGFloat = 8
-    let verticalPadding: CGFloat = 10
+@objc(UBSDKUberButton) open class UberButton: UIButton {
+    public let cornerRadius: CGFloat = 8
+    public let horizontalEdgePadding: CGFloat = 16
+    public let imageLabelPadding: CGFloat = 8
+    public let verticalPadding: CGFloat = 10
     
-    let uberImageView: UIImageView = UIImageView()
-    let uberTitleLabel: UILabel = UILabel()
+    public let uberImageView: UIImageView = UIImageView()
+    public let uberTitleLabel: UILabel = UILabel()
     
-    @objc public var colorStyle: RequestButtonColorStyle = .black {
+    @objc public var colorStyle: UberButtonColorStyle = .black {
         didSet {
             colorStyleDidUpdate(colorStyle)
         }
     }
     
-    override public var isHighlighted: Bool {
+    override open var isHighlighted: Bool {
         didSet {
             updateColors(isHighlighted)
         }
     }
     
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         setup()
         colorStyleDidUpdate(.black)
@@ -62,7 +62,7 @@ import UIKit
      Function responsible for the initial setup of the button. 
      Calls addSubviews(), setContent(), and setConstraints()
      */
-    @objc public func setup() {
+    @objc open func setup() {
         addSubviews()
         setContent()
         setConstraints()
@@ -72,7 +72,7 @@ import UIKit
      Function responsible for adding all the subviews to the button. Subclasses
      should override this method and add any necessary subviews.
      */
-    @objc public func addSubviews() {
+    @objc open func addSubviews() {
         addSubview(uberImageView)
         addSubview(uberTitleLabel)
     }
@@ -81,7 +81,7 @@ import UIKit
      Function responsible for updating content on the button. Subclasses should
      override and do any necessary view setup
      */
-    @objc public func setContent() {
+    @objc open func setContent() {
         clipsToBounds = true
         layer.cornerRadius = cornerRadius
     }
@@ -90,7 +90,7 @@ import UIKit
      Function responsible for adding autolayout constriants on the button. Subclasses
      should override and add any additional autolayout constraints
      */
-    @objc public func setConstraints() {
+    @objc open func setConstraints() {
         
         uberTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         uberImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -105,7 +105,7 @@ import UIKit
         addConstraints(verticalContraints)
     }
     
-    override public func sizeThatFits(_ size: CGSize) -> CGSize {
+    override open func sizeThatFits(_ size: CGSize) -> CGSize {
         let logoSize = uberImageView.image?.size ?? CGSize.zero
         let titleSize = uberTitleLabel.intrinsicContentSize
         
@@ -114,10 +114,8 @@ import UIKit
         
         return CGSize(width: width, height: height)
     }
-    
-    // Mark: Internal Interface
 
-    func colorStyleDidUpdate(_ style: RequestButtonColorStyle) {
+    open func colorStyleDidUpdate(_ style: UberButtonColorStyle) {
         switch colorStyle {
         case .black:
             backgroundColor = ColorUtil.colorForUberButtonColor(.uberBlack)
@@ -141,5 +139,47 @@ import UIKit
             color = highlighted ? .whiteHighlighted : .uberWhite
         }
         backgroundColor = ColorUtil.colorForUberButtonColor(color)
+    }
+}
+
+@objc public enum UberButtonColor: Int {
+    case uberBlack
+    case uberWhite
+    case blackHighlighted
+    case whiteHighlighted
+}
+
+@objc public enum UberButtonColorStyle: Int {
+    case black
+    case white
+}
+
+public class ColorUtil {
+    public static func colorForUberButtonColor(_ color: UberButtonColor) -> UIColor {
+        let hexCode = hexCodeFromColor(color)
+        let scanner = Scanner(string: hexCode)
+        var color: UInt32 = 0
+        scanner.scanHexInt32(&color)
+
+        let mask = 0x000000FF
+
+        let redValue = CGFloat(Int(color >> 16)&mask)/255.0
+        let greenValue = CGFloat(Int(color >> 8)&mask)/255.0
+        let blueValue = CGFloat(Int(color)&mask)/255.0
+
+        return UIColor(red: redValue, green: greenValue, blue: blueValue, alpha: 1.0)
+    }
+
+    private static func hexCodeFromColor(_ color: UberButtonColor) -> String {
+        switch color {
+        case .uberBlack:
+            return "000000"
+        case .uberWhite:
+            return "FFFFFF"
+        case .blackHighlighted:
+            return "282727"
+        case .whiteHighlighted:
+            return "E5E5E4"
+        }
     }
 }

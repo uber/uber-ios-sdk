@@ -105,7 +105,6 @@ class RequestButtonTests: XCTestCase {
         
         waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
-            XCTAssertTrue(rideRequestVC.loginView.isHidden)
             XCTAssertFalse(rideRequestVC.rideRequestView.isHidden)
         })
     }

@@ -22,10 +22,9 @@
 
 import XCTest
 import CoreLocation
-import UberCore
-@testable import UberRides
+@testable import UberCore
 
-class RidesAppDelegateTests : XCTestCase {
+class UberAppDelegateTests : XCTestCase {
     
     private var versionNumber: String?
     private var expectedDeeplinkUserAgent: String?
@@ -35,9 +34,9 @@ class RidesAppDelegateTests : XCTestCase {
         super.setUp()
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
-        Configuration.shared.clientID = clientID
+        Configuration.shared.clientID = "testClientID"
         Configuration.shared.isSandbox = true
-        versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        versionNumber = Bundle(for: UberAppDelegate.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         expectedDeeplinkUserAgent = "rides-ios-v\(versionNumber!)-deeplink"
         expectedButtonUserAgent = "rides-ios-v\(versionNumber!)-button"
     }
@@ -49,7 +48,7 @@ class RidesAppDelegateTests : XCTestCase {
     }
     
     func testOpenUrlReturnsFalse_whenNoLoginManager() {
-        let appDelegate = RidesAppDelegate.shared
+        let appDelegate = UberAppDelegate.shared
         
         let testApp = UIApplication.shared
         guard let url = URL(string: "http://www.google.com") else {
@@ -62,7 +61,7 @@ class RidesAppDelegateTests : XCTestCase {
     
     func testOpenUrlReturnsTrue_callsOpenURLOnLoginManager() {
         let expectation = self.expectation(description: "open URL called")
-        let appDelegate = RidesAppDelegate.shared
+        let appDelegate = UberAppDelegate.shared
         let loginManagerMock = LoginManagingProtocolMock()
         let testApp = UIApplication.shared
         guard let testURL = URL(string: "http://www.google.com") else {
@@ -89,14 +88,14 @@ class RidesAppDelegateTests : XCTestCase {
     }
     
     func testDidFinishLaunchingReturnsFalse_whenNoLaunchOptions() {
-        let appDelegate = RidesAppDelegate.shared
+        let appDelegate = UberAppDelegate.shared
         let testApp = UIApplication.shared
         XCTAssertFalse(appDelegate.application(testApp, didFinishLaunchingWithOptions: nil))
     }
     
     func testDidFinishLaunchingCallsOpenURL_whenLaunchURL() {
         let expectation = self.expectation(description: "open URL called")
-        let appDelegate = RidesAppDelegate.shared
+        let appDelegate = UberAppDelegate.shared
         let testApp = UIApplication.shared
         let loginManagerMock = LoginManagingProtocolMock()
         guard let testURL = URL(string: "http://www.google.com") else {
@@ -128,7 +127,7 @@ class RidesAppDelegateTests : XCTestCase {
     
     func testDidBecomeActiveCallsLoginManager_whenDidBecomeActiveNotification() {
         let expectation = self.expectation(description: "didBecomeActive called")
-        let appDelegate = RidesAppDelegate.shared
+        let appDelegate = UberAppDelegate.shared
         let loginManagerMock = LoginManagingProtocolMock()
         
         let didBecomeActiveClosure: () -> () = {
