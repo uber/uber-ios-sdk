@@ -43,7 +43,7 @@
      - parameter presentingViewController: The presenting view controller present the login view controller over.
      - parameter completion:               The LoginManagerRequestTokenHandler completion handler for login success/failure.
      */
-    @objc func login(requestedScopes scopes: [RidesScope], presentingViewController: UIViewController?, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?)
+    @objc func login(requestedScopes scopes: [UberScope], presentingViewController: UIViewController?, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?)
     
     /**
      Called via the RidesAppDelegate when the application is opened via a URL. Responsible
