@@ -23,19 +23,17 @@
 //  THE SOFTWARE.
 
 import Foundation
-import UberCore
 
 /**
  * UberAuthenticating object for authenticating a user via the Native Uber app
  */
 @objc(UBSSONativeAuthenticator) public class NativeAuthenticator: BaseAuthenticator {
-    
-    /// The completion block to call when the deeplink is completed. Bool indicates if the deeplink was successful
-    @objc public var deeplinkCompletion: ((NSError?) -> ())?
+    private var deeplink: AuthenticationDeeplink
 
-    
-    var deeplink: Deeplinking
-    
+    @objc override var authorizationURL: URL {
+        return deeplink.url
+    }
+
     /**
      Creates a NativeAuthenticator using the provided scopes
      
@@ -43,21 +41,8 @@ import UberCore
      
      - returns: true if a redirect was handled, false otherwise.
      */
-    @objc public override init(scopes: [RidesScope]) {
+    @objc public override init(scopes: [UberScope]) {
         deeplink = AuthenticationDeeplink(scopes: scopes)
         super.init(scopes: scopes)
-        callbackURIType = .native
-    }
-    
-    override func login() {
-        deeplink.execute { error in
-            
-            if let error = error, error.code == DeeplinkErrorType.unableToFollow.rawValue {
-                self.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest))
-            } else if let _ = error {
-                self.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
-            }
-            self.deeplinkCompletion?(error)
-        }
     }
 }
