@@ -28,43 +28,20 @@ import Foundation
  *  A Deeplinking object for authenticating a user via the native Uber app
  */
 @objc(UBSDKBaseDeeplink) open class BaseDeeplink: NSObject, Deeplinking {
-    
-    /// The scheme for the auth deeplink
-    public var scheme: String
-    
-    /// The domain for the auth deeplink
-    public var domain: String
-    
-    /// The path for the auth deeplink
-    public var path: String
-    
-    /// The array of query items the deeplink will include
-    public var queryItems: [URLQueryItem]?
-    
-    public let deeplinkURL: URL
-    
-    private var waitingOnSystemPromptResponse = false
-    private var checkingSystemPromptResponse = false
-    private var promptTimer: Timer?
-    private var completionWrapper: ((NSError?) -> ()) = { _ in }
-    
-    @objc public init?(scheme: String, domain: String, path: String, queryItems: [URLQueryItem]?) {
-        self.scheme = scheme
-        self.domain = domain
-        self.path = path
-        self.queryItems = queryItems
-        
-        var requestURLComponents = URLComponents()
-        requestURLComponents.scheme = scheme
-        requestURLComponents.host = domain
-        requestURLComponents.path = path
-        requestURLComponents.queryItems = queryItems
-        guard let deeplinkURL = requestURLComponents.url else {
+    @objc public var url: URL
+
+    @objc public init?(scheme: String, host: String, path: String, queryItems: [URLQueryItem]?) {
+        var components = URLComponents()
+        components.scheme = scheme
+        components.host = host
+        components.path = path
+        components.queryItems = queryItems
+
+        if let url = components.url {
+            self.url = url
+        } else {
             return nil
         }
-        self.deeplinkURL = deeplinkURL
-
-        super.init()
     }
     
     /**
@@ -74,90 +51,7 @@ import Foundation
      - parameter completion: The completion block to execute once the deeplink has
      executed. Passes in True if the url was successfully opened, false otherwise.
      */
-    @objc public func execute(completion: ((NSError?) -> ())? = nil) {
-
-        let usingIOS9 = ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 9, minorVersion: 0, patchVersion: 0))
-        
-        if usingIOS9 {
-            executeOnIOS9(completion)
-        } else {
-            executeOnBelowIOS9(completion)
-        }
-    }
-    
-    //Mark: Internal Interface
-    
-    func executeOnIOS9(_ completion: ((NSError?) -> ())?) {
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActiveHandler), name: Notification.Name.UIApplicationWillResignActive, object: nil);
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveHandler), name: Notification.Name.UIApplicationDidBecomeActive, object: nil);
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackgroundHandler), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
-        
-        completionWrapper = { handled in
-            NotificationCenter.default.removeObserver(self)
-            self.promptTimer?.invalidate()
-            self.promptTimer = nil
-            self.checkingSystemPromptResponse = false
-            self.waitingOnSystemPromptResponse = false
-            completion?(handled)
-        }
-        
-        var error: NSError?
-        if UIApplication.shared.canOpenURL(deeplinkURL) {
-            let openedURL = UIApplication.shared.openURL(deeplinkURL)
-            if !openedURL {
-                error = DeeplinkErrorFactory.errorForType(.unableToFollow)
-            }
-        } else {
-            error = DeeplinkErrorFactory.errorForType(.unableToOpen)
-        }
-        
-        if error != nil {
-            completionWrapper(error)
-        }
-    }
-    
-    func executeOnBelowIOS9(_ completion: ((NSError?) -> ())?) {
-        completionWrapper = { handled in
-            completion?(handled)
-        }
-        
-        var error: NSError?
-        if UIApplication.shared.canOpenURL(deeplinkURL) {
-            let openedURL = UIApplication.shared.openURL(deeplinkURL)
-            if !openedURL {
-                error = DeeplinkErrorFactory.errorForType(.unableToFollow)
-            }
-        } else {
-            error = DeeplinkErrorFactory.errorForType(.unableToOpen)
-        }
-        
-        completionWrapper(error)
-    }
-    
-    //Mark: App Lifecycle Notifications
-    
-    @objc private func appWillResignActiveHandler(_ notification: Notification) {
-        if !waitingOnSystemPromptResponse {
-            waitingOnSystemPromptResponse = true
-        } else if checkingSystemPromptResponse {
-            completionWrapper(nil)
-        }
-    }
-    
-    @objc private func appDidBecomeActiveHandler(_ notification: Notification) {
-        if waitingOnSystemPromptResponse {
-            checkingSystemPromptResponse = true
-            promptTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(deeplinkHelper), userInfo: nil, repeats: false)
-        }
-    }
-    
-    @objc private func appDidEnterBackgroundHandler(_ notification: Notification) {
-        completionWrapper(nil)
-    }
-    
-    @objc private func deeplinkHelper() {
-        let error = DeeplinkErrorFactory.errorForType(.deeplinkNotFollowed)
-        completionWrapper(error)
+    @objc public func execute(completion: DeeplinkCompletionHandler? = nil) {
+        DeeplinkManager.shared.open(self, completion: completion)
     }
 }
-

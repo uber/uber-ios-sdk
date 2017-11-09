@@ -23,7 +23,6 @@
 //  THE SOFTWARE.
 
 import Foundation
-import UberCore
 
 /**
  *  A Deeplinking object for authenticating a user via the native Uber app
@@ -48,6 +47,6 @@ import UberCore
         
         let queryItems = [clientIDQueryItem, userAgentQueryItem]
         
-        super.init(scheme: scheme, domain: domain, path: path, queryItems: queryItems)!
+        super.init(scheme: scheme, host: domain, path: path, queryItems: queryItems)!
     }
 }
