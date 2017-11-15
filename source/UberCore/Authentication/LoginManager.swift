@@ -22,20 +22,18 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import UberCore
+import SafariServices
 
 /// Manages user login via SSO, authorization code grant, or implicit grant.
 @objc(UBSDKLoginManager) public class LoginManager: NSObject, LoginManaging {
-    
-    /// Optional state to use for explcit grant authorization
-    @objc public var state: String?
-    
-    var accessTokenIdentifier: String
-    var keychainAccessGroup: String
-    var loginType: LoginType
-    var oauthViewController: OAuthViewController?
+    private(set) public var accessTokenIdentifier: String
+    private(set) public var keychainAccessGroup: String
+    private(set) public var loginType: LoginType
+    private var oauthViewController: UIViewController?
+    private var safariAuthenticationSession: Any? // Any? because otherwise this won't compile for earlier versions of iOS
     var authenticator: UberAuthenticating?
     var loggingIn: Bool = false
+    private var postCompletionHandler: AuthenticationCompletionHandler?
 
     /**
     Create instance of login manager to authenticate user and retreive access token.
@@ -114,44 +112,23 @@ import UberCore
      - parameter presentingViewController: The presenting view controller present the login view controller over.
      - parameter completion:               The LoginManagerRequestTokenHandler completion handler for login success/failure.
      */
-    @objc public func login(requestedScopes scopes: [RidesScope], presentingViewController: UIViewController? = nil, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)? = nil) {
-        guard !loggingIn else {
-            completion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
-            return
-        }
-        
-        var loginAuthenticator: UberAuthenticating!
-        
+    @objc public func login(requestedScopes scopes: [UberScope], presentingViewController: UIViewController? = nil, completion: AuthenticationCompletionHandler? = nil) {
+        self.postCompletionHandler = completion
+        UberAppDelegate.shared.loginManager = self
+
+        var authenticator: UberAuthenticating
         switch loginType {
-        case .authorizationCode:
-            guard let presentingViewController = presentingViewController else {
-                completion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
-                return
-            }
-            loginAuthenticator = AuthorizationCodeGrantAuthenticator(presentingViewController: presentingViewController, scopes: scopes, state: state)
-        case .implicit:
-            guard let presentingViewController = presentingViewController else {
-                completion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
-                return
-            }
-            loginAuthenticator = ImplicitGrantAuthenticator(presentingViewController: presentingViewController, scopes: scopes)
         case .native:
-            let nativeAuthenticator = NativeAuthenticator(scopes: scopes)
-            nativeAuthenticator.deeplinkCompletion = { error in
-                if (error == nil) {
-                    RidesAppDelegate.shared.loginManager = self
-                }
-            };
-            loginAuthenticator = nativeAuthenticator
+            authenticator = NativeAuthenticator(scopes: scopes)
+        case .implicit:
+            authenticator = ImplicitGrantAuthenticator(scopes: scopes)
+        case .authorizationCode:
+            authenticator = AuthorizationCodeGrantAuthenticator(scopes: scopes)
         }
-        
-        loginAuthenticator.keychainAccessGroup = keychainAccessGroup
-        loginAuthenticator.accessTokenIdentifier = accessTokenIdentifier
-        loginAuthenticator.loginCompletion = loginCompletion(loginType, presentingViewController: presentingViewController, completion: completion)
-        
+
+        self.authenticator = authenticator
         loggingIn = true
-        authenticator = loginAuthenticator
-        executeLogin()
+        executeLogin(presentingViewController: presentingViewController, authenticator: authenticator)
     }
     
     /**
@@ -168,15 +145,18 @@ import UberCore
      - returns: true if the url was meant to be handled by the SDK, false otherwise
      */
     public func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        guard let source = sourceApplication, source.hasPrefix("com.ubercab"),
-        let nativeAuthenticator = authenticator as? NativeAuthenticator else {
+        guard let sourceApplication = sourceApplication else { return false }
+        let sourceIsNative = loginType == .native && sourceApplication.hasPrefix("com.ubercab")
+        let sourceIsSafariVC = loginType != .native && sourceApplication == "com.apple.SafariViewService"
+        let sourceIsSafari = loginType != .native && sourceApplication == "com.apple.mobilesafari"
+        let isValidSourceApplication = sourceIsNative || sourceIsSafariVC || sourceIsSafari
+
+        if loggingIn && isValidSourceApplication {
+            authenticator?.consumeResponse(url: url, completion: loginCompletion)
+            return true
+        } else {
             return false
         }
-        let redirectURL = URLRequest(url: url)
-        let handled = nativeAuthenticator.handleRedirect(for: redirectURL)
-        loggingIn = false
-        authenticator = nil
-        return handled
     }
 
     /**
@@ -202,79 +182,116 @@ import UberCore
      if a user abandons Native login without getting an access token.
      */
     public func applicationDidBecomeActive() {
-        if loggingIn {
+        if loggingIn && loginType == .native {
             self.handleLoginCanceled()
         }
     }
-    
-    // Mark: Internal Interface
-    
-    func executeLogin() {
-        authenticator?.login()
-    }
-    
+
     // Mark: Private Interface
     
-    private func handleLoginCanceled() {
+    private func executeLogin(presentingViewController: UIViewController?, authenticator: UberAuthenticating) {
+        if authenticator.authorizationURL.scheme == "https" {
+            executeWebLogin(presentingViewController: presentingViewController, authenticator: authenticator)
+        } else {
+            executeDeeplinkLogin(presentingViewController: presentingViewController, authenticator: authenticator)
+        }
+    }
+
+    // Delegates a web login to SFAuthenticationSession, SFSafariViewController, or just Safari
+    private func executeWebLogin(presentingViewController: UIViewController?, authenticator: UberAuthenticating) {
+        if #available(iOS 11.0, *) {
+            executeSafariAuthLogin(authenticator: authenticator)
+        } else if #available(iOS 9.0, *) {
+            executeSafariVCLogin(presentingViewController: presentingViewController, authenticator: authenticator)
+        } else {
+            UIApplication.shared.openURL(authenticator.authorizationURL)
+        }
+    }
+
+    /// Login using SFAuthenticationSession
+    @available(iOS 11.0, *)
+    private func executeSafariAuthLogin(authenticator: UberAuthenticating) {
+        guard let bundleID = Bundle.main.bundleIdentifier else {
+            preconditionFailure("You do not have a Bundle ID set for your app. You need a Bundle ID to use Uber Authentication")
+        }
+
+        let safariAuthenticationSession = SFAuthenticationSession(url: authenticator.authorizationURL, callbackURLScheme: bundleID, completionHandler: { (callbackURL, error) in
+            if let callbackURL = callbackURL {
+                authenticator.consumeResponse(url: callbackURL, completion: self.loginCompletion)
+            } else {
+                self.handleLoginCanceled()
+            }
+            self.safariAuthenticationSession = nil
+        })
+        safariAuthenticationSession.start()
+        self.safariAuthenticationSession = safariAuthenticationSession
+    }
+
+    /// Login using SFSafariViewController
+    @available(iOS 9.0, *)
+    private func executeSafariVCLogin(presentingViewController: UIViewController?, authenticator: UberAuthenticating) {
+        // Find the topmost view controller, and present from it
+        var presentingViewController = presentingViewController
+        if presentingViewController == nil {
+            var topController = UIApplication.shared.keyWindow?.rootViewController
+            while let vc = topController?.presentedViewController {
+                topController = vc
+            }
+            presentingViewController = topController
+        }
+
+        let safariVC = SFSafariViewController(url: authenticator.authorizationURL)
+
+        presentingViewController?.present(safariVC, animated: true, completion: nil)
+        oauthViewController = safariVC
+    }
+
+    /// Login using native deeplink
+    private func executeDeeplinkLogin(presentingViewController: UIViewController?, authenticator: UberAuthenticating) {
+        DeeplinkManager.shared.open(authenticator.authorizationURL, completion: { error in
+            guard let _ = error else { return }
+            // If we can't open the deeplink, fallback.
+            // Privileged scopes require auth code flow.
+            // Since that requires server support, fallback to app store if not available.
+            if authenticator.scopes.contains(where: { $0.scopeType == .privileged }) {
+                if (Configuration.shared.useFallback) {
+                    self.loginType = .authorizationCode
+                } else {
+                    let appstoreDeeplink = AppStoreDeeplink(userAgent: nil)
+                    appstoreDeeplink.execute(completion: { _ in
+                        self.loginCompletion(accessToken: nil, error: UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
+                    })
+                    return
+                }
+            } else { // Otherwise fallback to implicit flow
+                self.loginType = .implicit
+            }
+            self.login(requestedScopes: authenticator.scopes, presentingViewController: presentingViewController, completion: self.postCompletionHandler)
+        })
+    }
+    
+    func handleLoginCanceled() {
         loggingIn = false
-        authenticator?.loginCompletion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .userCancelled))
+        loginCompletion(accessToken: nil, error: UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .userCancelled))
         authenticator = nil
     }
     
-    private func loginCompletion(_ loginType: LoginType, presentingViewController: UIViewController?, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?) -> ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)? {
-        var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
-        
-        switch loginType {
-        case .native:
-            loginCompletion = { token, error in
-                self.loggingIn = false
-                if let error = error, error.code == UberAuthenticationErrorType.unavailable.rawValue {
-                    self.handleNativeFallback(error, presentingViewController: presentingViewController, completion: completion)
-                } else {
-                    completion?(token, error)
-                }
+    func loginCompletion(accessToken: AccessToken?, error: NSError?) {
+        loggingIn = false
+        authenticator = nil
+        oauthViewController?.dismiss(animated: true, completion: nil)
+
+        var error = error
+        if let accessToken = accessToken {
+            let tokenIdentifier = accessTokenIdentifier
+            let accessGroup = keychainAccessGroup
+            let success = TokenManager.save(accessToken: accessToken, tokenIdentifier: tokenIdentifier, accessGroup: accessGroup)
+            if !success {
+                error = UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken)
+                print("Error: access token failed to save to keychain")
             }
-            break
-        case .implicit:
-            fallthrough
-        case .authorizationCode:
-            fallthrough
-        default:
-            loginCompletion = { token, error in
-                self.loggingIn = false
-                if let presentingViewController = presentingViewController {
-                    presentingViewController.dismiss(animated: true, completion: { () -> Void in
-                        completion?(token, error)
-                    })
-                } else {
-                    completion?(token, error)
-                }
-            }
-            break
         }
-        
-        return loginCompletion
-    }
-    
-    private func handleNativeFallback(_ error: NSError?, presentingViewController: UIViewController?, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?) {
-        guard let manager = authenticator as? NativeAuthenticator else {
-            completion?(nil, error)
-            return
-        }
-        
-        if manager.scopes.contains(where: { $0.scopeType == .privileged }) {
-            if (Configuration.shared.useFallback) {
-                loginType = .authorizationCode
-            } else {
-                let appstoreDeeplink = AppStoreDeeplink(userAgent: nil)
-                appstoreDeeplink.execute(completion: { _ in
-                    completion?(nil, error)
-                })
-                return
-            }
-        } else {
-            loginType = .implicit
-        }
-        login(requestedScopes: manager.scopes, presentingViewController: presentingViewController, completion: completion)
+
+        postCompletionHandler?(accessToken, error)
     }
 }
