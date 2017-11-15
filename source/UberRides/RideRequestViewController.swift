@@ -47,22 +47,13 @@ import UberCore
     @objc public var delegate: RideRequestViewControllerDelegate?
     
     /// The LoginManager to use for managing the login process
-    @objc public var loginManager: LoginManager {
-        didSet {
-            accessTokenIdentifier = loginManager.accessTokenIdentifier
-            keychainAccessGroup = loginManager.keychainAccessGroup
-        }
-    }
+    @objc public var loginManager: LoginManager
     
     lazy var rideRequestView: RideRequestView = RideRequestView()
-    lazy var loginView: LoginView = LoginView(loginAuthenticator: ImplicitGrantAuthenticator(presentingViewController: self, scopes: [.rideWidgets]))
-    lazy var nativeAuthenticator = NativeAuthenticator(scopes: [.rideWidgets])
 
     static let sourceString = "ride_request_widget"
 
     private var accessTokenWasUnauthorizedOnPreviousAttempt = false
-    private var accessTokenIdentifier: String
-    private var keychainAccessGroup: String
     private var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
     
     /**
@@ -75,8 +66,6 @@ import UberCore
      */
     @objc public required init?(coder aDecoder: NSCoder) {
         loginManager = LoginManager()
-        accessTokenIdentifier = loginManager.accessTokenIdentifier
-        keychainAccessGroup = loginManager.keychainAccessGroup
         
         super.init(coder: aDecoder)
 
@@ -96,15 +85,13 @@ import UberCore
      */
     @objc public init(rideParameters: RideParameters, loginManager: LoginManager) {
         self.loginManager = loginManager
-        accessTokenIdentifier = loginManager.accessTokenIdentifier
-        keychainAccessGroup = loginManager.keychainAccessGroup
         
         super.init(nibName: nil, bundle: nil)
         
         rideParameters.source = rideParameters.source ?? RideRequestViewController.sourceString
         
         rideRequestView.rideParameters = rideParameters
-        rideRequestView.accessToken = TokenManager.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup)
+        rideRequestView.accessToken = TokenManager.fetchToken(identifier: loginManager.accessTokenIdentifier, accessGroup: loginManager.keychainAccessGroup)
     }
     
     // MARK: View Lifecycle
@@ -115,18 +102,15 @@ import UberCore
         self.view.backgroundColor = UIColor.white
         
         setupRideRequestView()
-        setupLoginView()
     }
-    
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        self.load()
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        load()
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        stopLoading()
         accessTokenWasUnauthorizedOnPreviousAttempt = false
     }
     
@@ -139,39 +123,27 @@ import UberCore
     // MARK: Internal
 
     func load() {
-        if let accessToken = TokenManager.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup) {
+        if let accessToken = TokenManager.fetchToken(identifier: loginManager.accessTokenIdentifier, accessGroup: loginManager.keychainAccessGroup) {
             rideRequestView.accessToken = accessToken
-            rideRequestView.isHidden = false
-            loginView.isHidden = true
             rideRequestView.load()
         } else {
-            switch loginManager.loginType {
-            case .native:
-                executeNativeLogin()
-            case .implicit:
-                fallthrough
-            case .authorizationCode:
-                loginView.isHidden = false
-                rideRequestView.isHidden = true
-                loginView.load()
+            loginManager.login(requestedScopes: [.rideWidgets], presentingViewController: self) { accessToken, error in
+                if let accessToken = accessToken {
+                    self.rideRequestView.accessToken = accessToken
+                    self.rideRequestView.load()
+                } else {
+                    self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
+                }
             }
         }
     }
     
-    func executeNativeLogin() {
-        loginManager.authenticator = nativeAuthenticator
-        loginManager.loggingIn = true
-        nativeAuthenticator.login()
-    }
-    
     func stopLoading() {
-        loginView.cancelLoad()
         rideRequestView.cancelLoad()
     }
     
     func displayNetworkErrorAlert() {
         self.rideRequestView.cancelLoad()
-        self.loginView.cancelLoad()
         let alertController = UIAlertController(title: nil, message: NSLocalizedString("The Ride Request Widget encountered a problem.", bundle: Bundle(for: type(of: self)), comment: "The Ride Request Widget encountered a problem."), preferredStyle: .alert)
         let tryAgainAction = UIAlertAction(title: NSLocalizedString("Try Again", bundle: Bundle(for: type(of: self)), comment: "Try Again"), style: .default, handler: { (UIAlertAction) -> Void in
             self.load()
@@ -207,79 +179,6 @@ import UberCore
         
         rideRequestView.delegate = self
     }
-    
-    private func setupLoginView() {
-        switch loginManager.loginType {
-        case .authorizationCode:
-            fallthrough
-        case .implicit:
-            setupImplicitLoginView()
-            break
-        case .native:
-            setupNativeLogin()
-            break
-        }
-    }
-    
-    private func setupImplicitLoginView() {
-        let loginBehavior = ImplicitGrantAuthenticator(presentingViewController: self, scopes: [.rideWidgets])
-        loginBehavior.loginCompletion = { token, error in
-            guard let token = token, error == nil else {
-                if error?.code == UberAuthenticationErrorType.networkError.rawValue {
-                    self.displayNetworkErrorAlert()
-                } else {
-                    self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
-                }
-                return
-            }
-            self.loginView.isHidden = true
-            self.rideRequestView.accessToken = token
-            self.rideRequestView.isHidden = false
-            self.load()
-        }
-        loginManager.authenticator = loginBehavior
-        let loginView = LoginView(loginAuthenticator: loginBehavior)
-        self.view.addSubview(loginView)
-        loginView.isHidden = true
-        loginView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let views = ["loginView": loginView]
-        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[loginView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[loginView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-        
-        self.view.addConstraints(horizontalConstraints)
-        self.view.addConstraints(verticalConstraints)
-        
-        self.loginView = loginView
-    }
-    
-    private func setupNativeLogin() {
-        
-        nativeAuthenticator.loginCompletion = { token, error in
-            guard let token = token, error == nil else {
-                if error?.code == UberAuthenticationErrorType.networkError.rawValue {
-                    self.displayNetworkErrorAlert()
-                } else if error?.code == UberAuthenticationErrorType.unavailable.rawValue {
-                    self.loginManager.loginType = .implicit
-                    self.setupLoginView()
-                    self.load()
-                    self.loginManager.loginType = .native
-                } else {
-                    self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
-                }
-                return
-            }
-            self.loginView.isHidden = true
-            self.rideRequestView.accessToken = token
-            self.rideRequestView.isHidden = false
-            self.load()
-        }
-        nativeAuthenticator.deeplinkCompletion = { error in
-            if (error == nil) {
-                RidesAppDelegate.shared.loginManager = self.loginManager
-            }
-        };
-    }
 }
 
 //MARK: RideRequestView Delegate
@@ -300,7 +199,7 @@ extension RideRequestViewController : RideRequestViewDelegate {
             if accessTokenWasUnauthorizedOnPreviousAttempt {
                 fallthrough
             }
-            attemptTokenRefresh(accessTokenIdentifier, accessGroup: keychainAccessGroup)
+            attemptTokenRefresh()
             break
         default:
             self.delegate?.rideRequestViewController(self, didReceiveError: error)
@@ -308,21 +207,21 @@ extension RideRequestViewController : RideRequestViewDelegate {
         }
     }
 
-    private func attemptTokenRefresh(_ tokenIdentifier: String?, accessGroup: String?) {
-        let identifer = tokenIdentifier ?? Configuration.shared.defaultAccessTokenIdentifier
-        let group = accessGroup ?? Configuration.shared.defaultKeychainAccessGroup
+    private func attemptTokenRefresh() {
+        let identifer = loginManager.accessTokenIdentifier
+        let group = loginManager.keychainAccessGroup
         guard let accessToken = TokenManager.fetchToken(identifier: identifer, accessGroup: group), let refreshToken = accessToken.refreshToken else {
             accessTokenWasUnauthorizedOnPreviousAttempt = true
             _ = TokenManager.deleteToken(identifier: identifer, accessGroup: group)
             self.load()
             return
         }
-        _ = TokenManager.deleteToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup)
+        _ = TokenManager.deleteToken(identifier: identifer, accessGroup: group)
 
-        let ridesClient = RidesClient(accessTokenIdentifier: identifer, keychainAccessGroup: group)
+        let ridesClient = RidesClient()
         ridesClient.refreshAccessToken(usingRefreshToken: refreshToken) { (accessToken, response) in
             if let token = accessToken {
-                _ = TokenManager.save(accessToken: token, tokenIdentifier: self.accessTokenIdentifier, accessGroup: self.keychainAccessGroup)
+                _ = TokenManager.save(accessToken: token, tokenIdentifier: identifer, accessGroup: group)
             }
             self.load()
         }
