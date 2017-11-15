@@ -53,7 +53,6 @@ class RideRequestViewControllerMock : RideRequestViewController {
     var networkClosure: (() -> ())?
     var notSupportedClosure: (() -> ())?
     var presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ())?
-    var executeNativeClosure: (() -> ())?
     
     init(rideParameters: RideParameters, loginManager: LoginManager, loadClosure: (() -> ())? = nil, networkClosure: (() -> ())? = nil, presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ())? = nil, notSupportedClosure: (() -> ())? = nil) {
         self.loadClosure = loadClosure
@@ -98,61 +97,7 @@ class RideRequestViewControllerMock : RideRequestViewController {
             super.present(viewControllerToPresent, animated: flag, completion: completion)
         }
     }
-    
-    override func executeNativeLogin() {
-        if let closure = executeNativeClosure {
-            closure()
-        } else {
-            super.executeNativeLogin()
-        }
-    }
 
-}
-
-class LoginViewMock : LoginView {
-    var testClosure: (() -> ())?
-    init(loginBehavior: LoginViewAuthenticator, testClosure: (() -> ())?) {
-        self.testClosure = testClosure
-        super.init(loginAuthenticator: loginBehavior, frame: CGRect.zero)
-    }
-    
-    required override init(loginAuthenticator: LoginViewAuthenticator, frame: CGRect) {
-        fatalError("init(scopes:frame:) has not been implemented")
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func load() {
-        self.testClosure?()
-    }
-    
-    override func cancelLoad() {
-        self.testClosure?()
-    }
-}
-
-class OAuthViewControllerMock : OAuthViewController {
-    var presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ())?
-    
-    init(loginView: LoginView, presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ())?) {
-        self.presentViewControllerClosure = presentViewControllerClosure
-        super.init(loginAuthenticator: loginView.loginAuthenticator)
-        self.loginView = loginView
-    }
-
-    @objc required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)?) {
-        if let presentViewControllerClosure = presentViewControllerClosure {
-            presentViewControllerClosure(viewControllerToPresent, flag, completion)
-        } else {
-            super.present(viewControllerToPresent, animated: flag, completion: completion)
-        }
-    }
 }
 
 class WebViewMock : WKWebView {
@@ -184,7 +129,7 @@ class RequestDeeplinkMock : RequestDeeplink {
             completion?(nil)
             return
         }
-        _ = testClosure(deeplinkURL)
+        _ = testClosure(url)
     }
 }
 
@@ -215,54 +160,14 @@ class DeeplinkRequestingBehaviorMock: DeeplinkRequestingBehavior {
     let deeplinkingObject: Deeplinking
     
     var executeClosure: ((((NSError?) -> ())?) -> ())?
-    var backingScheme: String?
-    var backingDomain: String?
-    var backingPath: String?
-    var backingQueryItems: [URLQueryItem]?
     var backingDeeplinkURL: URL?
     
     var overrideExecute: Bool = false
     var overrideExecuteValue: NSError? = nil
-
-    var scheme: String {
-        get {
-            return backingScheme ?? deeplinkingObject.scheme
-        }
-        set(newScheme) {
-            backingScheme = newScheme
-        }
-    }
     
-    var domain: String {
+    var url: URL {
         get {
-            return backingDomain ?? deeplinkingObject.domain
-        }
-        set(newDomain) {
-            backingDomain = newDomain
-        }
-    }
-    
-    var path: String {
-        get {
-            return backingPath ?? deeplinkingObject.path
-        }
-        set(newPath) {
-            backingPath = newPath
-        }
-    }
-    
-    var queryItems: [URLQueryItem]? {
-        get {
-            return backingQueryItems ?? deeplinkingObject.queryItems
-        }
-        set(newQueryItems) {
-            backingQueryItems = newQueryItems
-        }
-    }
-    
-    var deeplinkURL: URL {
-        get {
-            return backingDeeplinkURL ?? deeplinkingObject.deeplinkURL
+            return backingDeeplinkURL ?? deeplinkingObject.url
         }
         set(newDeeplinkURL) {
             backingDeeplinkURL = newDeeplinkURL
@@ -283,79 +188,4 @@ class DeeplinkRequestingBehaviorMock: DeeplinkRequestingBehavior {
         self.deeplinkingObject = deeplinkingObject
         super.init()
     }
-}
-
-@objc class LoginManagingProtocolMock : NSObject, LoginManaging {
-    
-    var loginClosure: (([RidesScope], UIViewController?, ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?) -> Void)?
-    var openURLClosure: ((UIApplication, URL, String?, Any?) -> Bool)?
-    var didBecomeActiveClosure: (() -> ())?
-
-    var backingManager: LoginManaging?
-    
-    init(loginManaging: LoginManaging? = nil) {
-        backingManager = loginManaging
-        super.init()
-    }
-    
-    func login(requestedScopes scopes: [RidesScope], presentingViewController: UIViewController?, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?) {
-        if let closure = loginClosure {
-            closure(scopes, presentingViewController, completion)
-        } else if let manager = backingManager {
-            manager.login(requestedScopes: scopes, presentingViewController: presentingViewController, completion: completion)
-        }
-    }
-    
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        if let closure = openURLClosure {
-            return closure(application, url, sourceApplication, annotation)
-        } else if let manager = backingManager {
-            return manager.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
-        } else {
-            return false
-        }
-    }
-
-    @available(iOS 9.0, *)
-    public func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
-        let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String
-        let annotation = options[.annotation] as Any
-
-        return application(app, open: url, sourceApplication: sourceApplication, annotation: annotation)
-    }
-
-    func applicationDidBecomeActive() {
-        if let closure = didBecomeActiveClosure {
-            closure()
-        } else if let manager = backingManager {
-            manager.applicationDidBecomeActive()
-        }
-    }
-}
-
-class LoginManagerPartialMock : LoginManager {
-    
-    var executeLoginClosure: (() -> ())?
-    
-    override func executeLogin() {
-        if let closure = executeLoginClosure {
-            closure()
-        } else {
-            super.executeLogin()
-        }
-    }
-}
-
-class NativeAuthenticatorPartialMock : NativeAuthenticator {
-    
-    var handleRedirectClosure: ((URLRequest) -> (Bool))?
-    
-    override func handleRedirect(for request: URLRequest) -> Bool {
-        if let closure = handleRedirectClosure {
-            return closure(request)
-        } else {
-            return super.handleRedirect(for: request)
-        }
-    }
-    
 }

@@ -1,5 +1,5 @@
 //
-//  ImplicitGrantAuthenticator.swift
+//  AuthorizationCodeGrantAuthenticator.swift
 //  UberRides
 //
 //  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
@@ -23,19 +23,11 @@
 //  THE SOFTWARE.
 
 import UIKit
-import UberCore
 
-/**
- *  Defines the implicit grant authorization flow where access token is extracted from redirect fragment.
- */
-@objc(UBSDKImplicitGrantAuthenticator) public class ImplicitGrantAuthenticator: LoginViewAuthenticator {
+@objc(UBSDKAuthorizationCodeGrantAuthenticator) public class AuthorizationCodeGrantAuthenticator: BaseAuthenticator {
+    @objc public var state: String?
     
-    override var endpoint: APIEndpoint {
-        return OAuth.implicitLogin(clientID: Configuration.shared.clientID, scopes: self.scopes, redirect: Configuration.shared.getCallbackURIString(for: .implicit))
-    }
-    
-    override public init(presentingViewController: UIViewController, scopes: [RidesScope]) {
-        super.init(presentingViewController: presentingViewController, scopes: scopes)
-        callbackURIType = .implicit
+    @objc override var authorizationURL: URL {
+        return OAuth.authorizationCodeLogin(clientID: Configuration.shared.clientID, redirect: Configuration.shared.getCallbackURI(for: .authorizationCode), scopes: scopes, state: state).url
     }
 }

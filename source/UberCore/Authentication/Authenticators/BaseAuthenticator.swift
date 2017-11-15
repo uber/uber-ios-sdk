@@ -1,5 +1,5 @@
 //
-//  UberAuthenticatingProtocol.swift
+//  BaseAuthenticator.swift
 //  UberRides
 //
 //  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
@@ -23,40 +23,35 @@
 //  THE SOFTWARE.
 
 import UIKit
-import UberCore
 
-/**
- *  Protocol to conform to for defining an authorization flow.
- */
-protocol UberAuthenticating {
+/// Base class for authorization flows
+@objc(UBSDKBaseAuthenticator) public class BaseAuthenticator: NSObject, UberAuthenticating {
+    /// Scopes to request during login
+    @objc public var scopes: [UberScope]
     
-    /// Optional access token identifier for keychain.
-    var accessTokenIdentifier: String? { get set }
-    
-    /// Optional access group for keychain.
-    var keychainAccessGroup: String? { get set }
-    
-    /// Completion handler for success and errors.
-    var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)? { get set }
-    
-    /// Scopes to request during authorization.
-    var scopes: [RidesScope] { get set }
-    
-    /// The Callback URL Type to use for this authentication method
-    var callbackURIType: CallbackURIType { get }
-    
+    @objc public init(scopes: [UberScope]) {
+        self.scopes = scopes
+        super.init()
+    }
+
     /**
-     Handles a request from the web view to see if it's a redirect.
-     Redirects are handled differently for different authorization types.
-     
-     - parameter request: the URL request.
-     
-     - returns: true if a redirect was handled, false otherwise.
+     Get URL to begin login process.
      */
-    func handleRedirect(for request: URLRequest) -> Bool
-    
-    /**
-     Performs login for the requested scopes.
-    */
-    func login()
+    @objc var authorizationURL: URL {
+        preconditionFailure("Not Implemented, this is an abstract class. ")
+    }
+
+    @objc public func consumeResponse(url: URL, completion: AuthenticationCompletionHandler?) {
+        if AuthenticationURLUtility.shouldHandleRedirectURL(url) {
+            do {
+                let accessToken = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
+                
+                completion?(accessToken, nil)
+            } catch let ridesError as NSError {
+                completion?(nil, ridesError)
+            } catch {
+                completion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse))
+            }
+        }
+    }
 }
