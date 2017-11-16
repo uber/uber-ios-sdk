@@ -23,8 +23,7 @@
 //  THE SOFTWARE.
 
 import XCTest
-import UberCore
-@testable import UberRides
+@testable import UberCore
 
 class OauthEndpointTests: XCTestCase {
     
@@ -45,20 +44,20 @@ class OauthEndpointTests: XCTestCase {
     func testLogin_withSandboxEnabled() {
         Configuration.shared.isSandbox = true
         
-        let scopes = [ RidesScope.profile, RidesScope.history ]
+        let scopes = [ UberScope.profile, UberScope.history ]
         let expectedHost = "https://login.uber.com"
         let expectedPath = "/oauth/v2/authorize"
-        let expectedScopes = scopes.toRidesScopeString()
+        let expectedScopes = scopes.toUberScopeString()
         let expectedClientID = Configuration.shared.clientID
-        let expectedRedirect = Configuration.shared.getCallbackURIString()
+        let expectedRedirect = Configuration.shared.getCallbackURI()
         let expectedTokenType = "token"
         
-        let expectedQueryItems = queryBuilder(
-            ("scope", expectedScopes),
-            ("client_id", expectedClientID),
-            ("redirect_uri", expectedRedirect),
-            ("signup_params", base64EncodedSignup),
-            ("response_type", expectedTokenType))
+        let expectedQueryItems = [
+            URLQueryItem(name: "scope", value: expectedScopes),
+            URLQueryItem(name: "client_id", value: expectedClientID),
+            URLQueryItem(name: "redirect_uri", value: expectedRedirect.absoluteString),
+            URLQueryItem(name: "signup_params", value: base64EncodedSignup),
+            URLQueryItem(name: "response_type", value: expectedTokenType)]
         
         let login = OAuth.implicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
         
@@ -70,20 +69,20 @@ class OauthEndpointTests: XCTestCase {
     func testLogin_withSandboxDisabled() {
         Configuration.shared.isSandbox = false
         
-        let scopes = [ RidesScope.profile, RidesScope.history ]
+        let scopes = [ UberScope.profile, UberScope.history ]
         let expectedHost = "https://login.uber.com"
         let expectedPath = "/oauth/v2/authorize"
-        let expectedScopes = scopes.toRidesScopeString()
+        let expectedScopes = scopes.toUberScopeString()
         let expectedClientID = Configuration.shared.clientID
-        let expectedRedirect = Configuration.shared.getCallbackURIString()
+        let expectedRedirect = Configuration.shared.getCallbackURI()
         let expectedTokenType = "token"
-        
-        let expectedQueryItems = queryBuilder(
-            ("scope", expectedScopes),
-            ("client_id", expectedClientID),
-            ("redirect_uri", expectedRedirect),
-            ("signup_params", base64EncodedSignup),
-            ("response_type", expectedTokenType))
+
+        let expectedQueryItems = [
+            URLQueryItem(name: "scope", value: expectedScopes),
+            URLQueryItem(name: "client_id", value: expectedClientID),
+            URLQueryItem(name: "redirect_uri", value: expectedRedirect.absoluteString),
+            URLQueryItem(name: "signup_params", value: base64EncodedSignup),
+            URLQueryItem(name: "response_type", value: expectedTokenType)]
         
         let login = OAuth.implicitLogin(clientID: expectedClientID, scopes: scopes, redirect: expectedRedirect)
         
@@ -93,22 +92,23 @@ class OauthEndpointTests: XCTestCase {
     }
 
     func testLogin_forAuthorizationCodeGrant_defaultSettings() {
-        let scopes = [ RidesScope.allTrips, RidesScope.history ]
+        let scopes = [ UberScope.allTrips, UberScope.history ]
         let expectedHost = "https://login.uber.com"
         let expectedPath = "/oauth/v2/authorize"
-        let expectedScopes = scopes.toRidesScopeString()
+        let expectedScopes = scopes.toUberScopeString()
         let expectedClientID = Configuration.shared.clientID
-        let expectedRedirect = Configuration.shared.getCallbackURIString()
+        let expectedRedirect = Configuration.shared.getCallbackURI()
         let expectedTokenType = "code"
         let expectedState = "state123423"
-        
-        let expectedQueryItems = queryBuilder(
-            ("scope", expectedScopes),
-            ("client_id", expectedClientID),
-            ("redirect_uri", expectedRedirect),
-            ("signup_params", base64EncodedSignup),
-            ("response_type", expectedTokenType),
-            ("state", expectedState))
+
+
+        let expectedQueryItems = [
+            URLQueryItem(name: "scope", value: expectedScopes),
+            URLQueryItem(name: "client_id", value: expectedClientID),
+            URLQueryItem(name: "redirect_uri", value: expectedRedirect.absoluteString),
+            URLQueryItem(name: "signup_params", value: base64EncodedSignup),
+            URLQueryItem(name: "response_type", value: expectedTokenType),
+            URLQueryItem(name: "state", value: expectedState)]
         
         let login = OAuth.authorizationCodeLogin(clientID: expectedClientID, redirect: expectedRedirect, scopes: scopes, state: expectedState)
         

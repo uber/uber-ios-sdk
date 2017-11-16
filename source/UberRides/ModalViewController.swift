@@ -22,6 +22,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+import UberCore
+
 /**
 Possible Styles for the ModalViewController
 
@@ -171,6 +173,7 @@ Possible Styles for the ModalViewController
     //MARK: Private Helpers
     
     private func setupStyle() {
+        let coreBundle = Bundle(for: UberAppDelegate.self)
         let bundle = Bundle(for: RideRequestButton.self)
         self.wrappedViewController.navigationItem.leftBarButtonItem = nil
         self.wrappedViewController.navigationItem.rightBarButtonItem = nil
@@ -198,7 +201,7 @@ Possible Styles for the ModalViewController
             self.wrappedViewController.navigationItem.leftBarButtonItem = backButton
         }
         
-        let logoImage = UIImage(named: "ic_logo_white", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+        let logoImage = UIImage(named: "ic_logo_white", in: coreBundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
         let logoImageView = UIImageView(image: logoImage)
         logoImageView.tintColor = iconTintColor
         

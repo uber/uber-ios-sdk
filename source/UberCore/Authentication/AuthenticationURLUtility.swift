@@ -23,7 +23,6 @@
 //  THE SOFTWARE.
 
 import Foundation
-import UberCore
 
 class AuthenticationURLUtility {
     
@@ -36,22 +35,22 @@ class AuthenticationURLUtility {
     
     static let sdkValue = "ios"
     
-    static func buildQueryParameters(_ scopes: [RidesScope]) -> [URLQueryItem] {
+    static func buildQueryParameters(_ scopes: [UberScope]) -> [URLQueryItem] {
         var queryItems = [URLQueryItem]()
         
         queryItems.append(URLQueryItem(name: appNameKey, value: Configuration.shared.appDisplayName))
-        queryItems.append(URLQueryItem(name: callbackURIKey, value: Configuration.shared.getCallbackURIString(for: .native)))
+        queryItems.append(URLQueryItem(name: callbackURIKey, value: Configuration.shared.getCallbackURI(for: .native).absoluteString))
         queryItems.append(URLQueryItem(name: clientIDKey, value: Configuration.shared.clientID))
-        queryItems.append(URLQueryItem(name: scopesKey, value: scopes.toRidesScopeString()))
+        queryItems.append(URLQueryItem(name: scopesKey, value: scopes.toUberScopeString()))
         queryItems.append(URLQueryItem(name: sdkKey, value: sdkValue))
         queryItems.append(URLQueryItem(name: sdkVersionKey, value: Configuration.shared.sdkVersion))
         
         return queryItems
     }
     
-    static func shouldHandleRedirectURL(_ URL: Foundation.URL, type: CallbackURIType) -> Bool {
+    static func shouldHandleRedirectURL(_ URL: Foundation.URL) -> Bool {
         guard let redirectURLComponents = URLComponents(url: URL, resolvingAgainstBaseURL: false),
-        let expectedURLComponents = URLComponents(string: Configuration.shared.getCallbackURIString(for: type)) else {
+        let expectedURLComponents = URLComponents(string: Configuration.shared.getCallbackURI(for: .general).absoluteString) else {
             return false
         }
 

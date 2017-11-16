@@ -50,6 +50,33 @@ public extension APIEndpoint {
             return "https://api.uber.com"
         }
     }
+
+    var url: URL {
+        var components = URLComponents(string: host)
+        components?.path = path
+        components?.queryItems = query
+        guard let url = components?.url else {
+            preconditionFailure("Could not generate URL from endpoint object. ")
+        }
+        return url
+    }
+
+    /**
+     Helper function to build array of NSURLQueryItems. A key-value pair with an empty string value is ignored.
+
+     - parameter queries: tuples of key-value pairs
+     - returns: an array of NSURLQueryItems
+     */
+    func queryBuilder(_ queries: (name: String, value: String)...) -> [URLQueryItem] {
+        var queryItems = [URLQueryItem]()
+        for query in queries {
+            if query.name.isEmpty || query.value.isEmpty {
+                continue
+            }
+            queryItems.append(URLQueryItem(name: query.name, value: query.value))
+        }
+        return queryItems
+    }
 }
 
 /**

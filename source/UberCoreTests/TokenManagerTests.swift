@@ -23,8 +23,7 @@
 //  THE SOFTWARE.
 
 import XCTest
-import UberCore
-@testable import UberRides
+@testable import UberCore
 
 class TokenManagerTests: XCTestCase {
     

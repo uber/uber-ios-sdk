@@ -22,8 +22,7 @@
 
 import XCTest
 
-import UberCore
-@testable import UberRides
+@testable import UberCore
 
 class AuthenticationURLUtilityTests: XCTestCase {
     
@@ -33,7 +32,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
         super.setUp()
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
-        versionNumber = Bundle(for: RideParameters.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        versionNumber = Bundle(for: AuthenticationURLUtility.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
     }
     
     override func tearDown() {
@@ -43,9 +42,9 @@ class AuthenticationURLUtilityTests: XCTestCase {
     
     func testBuildQueryParameters_withSingleScope() {
         
-        let scopes = [RidesScope.rideWidgets]
+        let scopes = [UberScope.rideWidgets]
         
-        let expectedScopes = scopes.toRidesScopeString()
+        let expectedScopes = scopes.toUberScopeString()
         let expectedClientID = "testClientID"
         let expectedAppName = "My Awesome App"
         let expectedCallbackURI = "testURI://uberConnectNative"
@@ -70,9 +69,9 @@ class AuthenticationURLUtilityTests: XCTestCase {
     
     func testBuildQueryParameters_withMultipleScopes() {
         
-        let scopes = [RidesScope.rideWidgets, RidesScope.allTrips, RidesScope.history]
+        let scopes = [UberScope.rideWidgets, UberScope.allTrips, UberScope.history]
         
-        let expectedScopes = scopes.toRidesScopeString()
+        let expectedScopes = scopes.toUberScopeString()
         let expectedClientID = "testClientID"
         let expectedAppName = "My Awesome App"
         let expectedCallbackURI = "testURI://uberConnectNative"
@@ -96,20 +95,13 @@ class AuthenticationURLUtilityTests: XCTestCase {
     }
     
     func testShouldHandleRedirectURL() {
-        let testRedirectURLString = "test://handleThis"
-        guard let testRedirectURL = URL(string: testRedirectURLString) else {
-            XCTFail()
-            return
-        }
-        Configuration.shared.setCallbackURIString(testRedirectURLString, type: .implicit)
-        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .general))
-        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .native))
-        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .authorizationCode))
+        let testRedirectURL = URL(string: "test://handleThis")!
         
-        XCTAssertTrue(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .implicit))
+        Configuration.shared.setCallbackURI(testRedirectURL, type: .general)
+        XCTAssertTrue(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL))
         
-        Configuration.shared.setCallbackURIString(nil, type: .implicit)
+        Configuration.shared.setCallbackURI(nil, type: .general)
         
-        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL, type: .implicit))
+        XCTAssertFalse(AuthenticationURLUtility.shouldHandleRedirectURL(testRedirectURL))
     }
 }

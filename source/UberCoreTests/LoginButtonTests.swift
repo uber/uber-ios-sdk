@@ -22,8 +22,7 @@
 
 import XCTest
 import CoreLocation
-import UberCore
-@testable import UberRides
+@testable import UberCore
 
 class LoginButtonTests : XCTestCase {
     
@@ -87,7 +86,7 @@ class LoginButtonTests : XCTestCase {
         let expectation = self.expectation(description: "Expected executeLogin() called")
         
         let loginManager = LoginManagerPartialMock(accessTokenIdentifier: identifier, keychainAccessGroup: nil, loginType: .implicit)
-        loginManager.executeLoginClosure = {
+        loginManager.executeLoginClosure = { _ in
             expectation.fulfill()
         }
         let loginButton = LoginButton(frame: CGRect.zero, scopes: [.profile], loginManager: loginManager)

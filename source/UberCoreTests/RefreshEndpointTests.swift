@@ -24,13 +24,14 @@
 
 import XCTest
 import OHHTTPStubs
-import UberCore
-@testable import UberRides
+@testable import UberCore
 
 class RefreshEndpointTests: XCTestCase {
-    var client: RidesClient!
+    var session = URLSession.shared
     var headers: [AnyHashable: Any]!
     let timeout: Double = 1
+
+    let clientID = Configuration.shared.clientID
     
     override func setUp() {
         super.setUp()
@@ -38,7 +39,6 @@ class RefreshEndpointTests: XCTestCase {
         Configuration.restoreDefaults()
         Configuration.shared.isSandbox = true
         headers = ["Content-Type": "application/json"]
-        client = RidesClient()
     }
     
     override func tearDown() {
@@ -55,10 +55,9 @@ class RefreshEndpointTests: XCTestCase {
             return OHHTTPStubsResponse(fileAtPath:OHPathForFile("refresh.json", type(of: self))!, statusCode:200, headers:self.headers)
         }
         let refreshToken = "ThisIsRefresh"
-        let clientID = Configuration.shared.clientID
         let expectation = self.expectation(description: "200 success response")
         let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
-        guard let request = Request(session: client.session, endpoint: endpoint) else {
+        guard let request = Request(session: session, endpoint: endpoint) else {
             XCTFail("unable to create request")
             return
         }
@@ -114,7 +113,7 @@ class RefreshEndpointTests: XCTestCase {
         let refreshToken = "ThisIsRefresh"
         let expectation = self.expectation(description: "400 error response")
         let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
-        guard let request = Request(session: client.session, endpoint: endpoint) else {
+        guard let request = Request(session: session, endpoint: endpoint) else {
             XCTFail("unable to create request")
             return
         }
