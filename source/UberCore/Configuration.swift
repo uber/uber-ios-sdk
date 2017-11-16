@@ -102,7 +102,7 @@ private let callbackURIStringKey = "URIString"
      */
     @objc public var clientID: String
 
-    private var callbackURIs = [CallbackURIType: String]()
+    private var callbackURIs = [CallbackURIType: URL]()
 
     /**
      Gets the display name of this app. Defaults to the value stored in your Appication's
@@ -152,7 +152,7 @@ private let callbackURIStringKey = "URIString"
 
      - returns: true if fallback enabled, false otherwise
      */
-    @objc public var useFallback: Bool = true
+    @objc public var useFallback: Bool = false
 
     public override init() {
         self.clientID = ""
@@ -191,17 +191,27 @@ private let callbackURIStringKey = "URIString"
     // MARK: Getters
     
     /**
-     Gets the callback URIString of this app. Defaults to the value stored in your Application's
+     Gets the callback URI of this app. Defaults to the value stored in your Application's
      plist if not set (UberCallbackURI)
      
      - returns: The string to use for the Callback URI
     */
+    @objc public func getCallbackURI() -> URL {
+        return getCallbackURI(for: .general)
+    }
+
+    /**
+     Gets the callback URIString of this app. Defaults to the value stored in your Application's
+     plist if not set (UberCallbackURI)
+
+     - returns: The string to use for the Callback URI
+     */
     @objc public func getCallbackURIString() -> String {
-        return getCallbackURIString(for: .general)
+        return getCallbackURI().absoluteString
     }
     
     /**
-     Gets the callback URIString for the given CallbackURIType. Defaults to the value 
+     Gets the callback URI for the given CallbackURIType. Defaults to the value
      stored in your Applications' plist (under the UberCallbackURIs key). If the requested
      type is not defined in your plist, it will attempt to use the .General type. If the 
      .General type is not defined, it will attempt to use the value stored under the UberCallbackURI key.
@@ -209,20 +219,37 @@ private let callbackURIStringKey = "URIString"
      
      - parameter type: The CallbackURIType to get a callback string for
      
-     - returns: The callbackURIString for the the requested type
+     - returns: The callbackURI for the the requested type
      */
-    @objc public func getCallbackURIString(for type: CallbackURIType) -> String {
+    @objc public func getCallbackURI(for type: CallbackURIType) -> URL {
         if callbackURIs[type] == nil {
             let defaultCallbacks = parseCallbackURIs()
             var fallback = defaultCallbacks[type] ?? callbackURIs[.general]
             fallback = fallback ?? defaultCallbacks[.general]
-            fallback = fallback ?? getDefaultValue(callbackURIKey)
+            if let defaultValue = getDefaultValue(callbackURIKey) {
+                fallback = fallback ?? URL(string: defaultValue)
+            }
             guard let fallbackCallback = fallback else {
-                fatalConfigurationError("CallbackURIStrings[\(type.toString())]", key: callbackURIsKey)
+                fatalConfigurationError("CallbackURI[\(type.toString())]", key: callbackURIsKey)
             }
             callbackURIs[type] = fallbackCallback
         }
         return callbackURIs[type]!
+    }
+
+    /**
+     Gets the callback URIString for the given CallbackURIType. Defaults to the value
+     stored in your Applications' plist (under the UberCallbackURIs key). If the requested
+     type is not defined in your plist, it will attempt to use the .General type. If the
+     .General type is not defined, it will attempt to use the value stored under the UberCallbackURI key.
+     Throws a fatal error if no value can be determined
+
+     - parameter type: The CallbackURIType to get a callback string for
+
+     - returns: The callbackURIString for the the requested type
+     */
+    @objc public func getCallbackURIString(for type: CallbackURIType) -> String {
+        return getCallbackURI(for: type).absoluteString
     }
     
     //MARK: Setters
@@ -233,10 +260,10 @@ private let callbackURIStringKey = "URIString"
      If you're setting a custom value, be sure your app is configured to handle deeplinks
      from this URI & you've added it to the redirect URIs on your Uber developer dashboard
      
-     - parameter callbackURIString: The callback URI String to use
+     - parameter callbackURI: The callback URI String to use
     */
-    @objc public func setCallbackURIString(_ callbackURIString: String?) {
-        setCallbackURIString(callbackURIString, type: .general)
+    @objc public func setCallbackURI(_ callbackURI: URL?) {
+        setCallbackURI(callbackURI, type: .general)
     }
     
     /**
@@ -246,12 +273,12 @@ private let callbackURIStringKey = "URIString"
      If you're setting a custom value, be sure your app is configured to handle deeplinks
      from this URI & you've added it to the redirect URIs on your Uber developer dashboard
      
-     - parameter callbackURIString: The callback URI String to use
+     - parameter callbackURI: The callback URI String to use
      - parameter type:              The Callback URI Type to use
      */
-    @objc public func setCallbackURIString(_ callbackURIString: String?, type: CallbackURIType) {
+    @objc public func setCallbackURI(_ callbackURI: URL?, type: CallbackURIType) {
         var callbackURIs = self.callbackURIs
-        callbackURIs[type] = callbackURIString
+        callbackURIs[type] = callbackURI
         self.callbackURIs = callbackURIs
     }
 
@@ -261,18 +288,20 @@ private let callbackURIStringKey = "URIString"
     
     // MARK: Private
     
-    private func parseCallbackURIs() -> [CallbackURIType : String] {
-        guard let plist = getPlistDictionary(), let callbacks = plist[callbackURIsKey] as? [[String : AnyObject]] else {
-            return [CallbackURIType : String]()
+    private func parseCallbackURIs() -> [CallbackURIType : URL] {
+        guard let plist = getPlistDictionary(), let callbacks = plist[callbackURIsKey] as? [[String: AnyObject]] else {
+            return [CallbackURIType: URL]()
         }
-        var callbackURIs = [CallbackURIType : String]()
+        var callbackURIs = [CallbackURIType : URL]()
         
         for callbackObject in callbacks {
-            guard let callbackTypeString = callbackObject[callbackURIsTypeKey] as? String, let uriString = callbackObject[callbackURIStringKey] as? String else {
+            guard let callbackTypeString = callbackObject[callbackURIsTypeKey] as? String,
+                let uriString = callbackObject[callbackURIStringKey] as? String,
+                let uri = URL(string: uriString) else {
                 continue
             }
             let callbackType = CallbackURIType.fromString(callbackTypeString)
-            callbackURIs[callbackType] = uriString
+            callbackURIs[callbackType] = uri
         }
         return callbackURIs
     }
