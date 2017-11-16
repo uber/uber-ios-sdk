@@ -199,6 +199,16 @@ private let callbackURIStringKey = "URIString"
     @objc public func getCallbackURI() -> URL {
         return getCallbackURI(for: .general)
     }
+
+    /**
+     Gets the callback URIString of this app. Defaults to the value stored in your Application's
+     plist if not set (UberCallbackURI)
+
+     - returns: The string to use for the Callback URI
+     */
+    @objc public func getCallbackURIString() -> String {
+        return getCallbackURI().absoluteString
+    }
     
     /**
      Gets the callback URI for the given CallbackURIType. Defaults to the value
@@ -225,6 +235,21 @@ private let callbackURIStringKey = "URIString"
             callbackURIs[type] = fallbackCallback
         }
         return callbackURIs[type]!
+    }
+
+    /**
+     Gets the callback URIString for the given CallbackURIType. Defaults to the value
+     stored in your Applications' plist (under the UberCallbackURIs key). If the requested
+     type is not defined in your plist, it will attempt to use the .General type. If the
+     .General type is not defined, it will attempt to use the value stored under the UberCallbackURI key.
+     Throws a fatal error if no value can be determined
+
+     - parameter type: The CallbackURIType to get a callback string for
+
+     - returns: The callbackURIString for the the requested type
+     */
+    @objc public func getCallbackURIString(for type: CallbackURIType) -> String {
+        return getCallbackURI(for: type).absoluteString
     }
     
     //MARK: Setters
