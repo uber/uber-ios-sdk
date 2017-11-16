@@ -1,5 +1,32 @@
 # Change Log
 
+# [0.8.0] TBD
+
+0.8 separates the Uber Rides SDK into two modules, `UberRides` and `UberCore`. It also contains a number of authentication-related changes to simplify the Login with Uber flows. 
+
+When migrating to 0.8, you may need to add `import UberCore` to files previously importing just `UberRides`, and rename usage of some classes below. 
+
+### Changes
+
+* `LoginManager` now uses `SFAuthenticationSession`, `SFSafariViewController`, or external Safari for web-based OAuth flows.
+* `Deeplinking` protocol simplified. Public properties from the previous protocol is now available under the `.url` property. 
+* `UberAuthenticating` protocol simplified. 
+
+### Moved to UberCore
+
+* `Configuration`
+* `Deeplinking`, `BaseDeeplink`, `AppStoreDeeplink`, 
+* `UberAPI` -> `APIEndpoint`
+* `RidesError` -> `UberError`
+* `RidesScope` -> `UberScope`
+* `UberAuthenticating`, `BaseAuthenticator`, `AuthorizationCodeGrantAuthenticator`, `ImplicitGrantAuthenticator`,  `NativeAuthenticator`
+
+### Removed
+
+* `LoginView` - initiate the login process via `LoginManager` instead.
+* `LoginViewAuthenticator` - initiate the login process via `LoginManager` instead.
+* `OAuthViewController` - initiate the login process via `LoginManager` instead.
+
 ## [0.7.0] 2017-09-15
 
 0.7 makes the Uber Rides iOS SDK compatible with iOS 11 and Swift 4.
@@ -216,9 +243,9 @@ All ride requests are now specified by a `RideParameters` object. It allows you 
 Currently available `requestingBehaviors` are:
 
 - `DeeplinkRequestingBehavior`
-	- Deeplinks into the Uber app to request a ride
+  - Deeplinks into the Uber app to request a ride
 - `RideRequestViewRequestingBehavior`
-	- Presents the **Ride Request Widget** modally in your app to provide and end to end Uber experience
+  - Presents the **Ride Request Widget** modally in your app to provide and end to end Uber experience
 
 ### Fixed
 
@@ -228,14 +255,14 @@ Currently available `requestingBehaviors` are:
 ### Breaking
 - `ClientID` must now be set in your app's `Info.plist` under the `UberClientID` key
 - `RequestButton` --> `RideRequestButton`
-	- Removed `init(colorStyle: RequestButtonColorStyle)` use `init(rideParameters: RideParameters, requestingBehavior: RideRequesting)`
-	- Removed all setting parameter methods (`setPickupLocation()`, `setDropoffLocation()`, ect) use a `RideParameters` object instead
-	- Removed `RequestButtonError`, only used to indicate no `ClientID` which is now handled by `Configuration`
-	- `uberButtonTapped()` no longer public
+  - Removed `init(colorStyle: RequestButtonColorStyle)` use `init(rideParameters: RideParameters, requestingBehavior: RideRequesting)`
+  - Removed all setting parameter methods (`setPickupLocation()`, `setDropoffLocation()`, ect) use a `RideParameters` object instead
+  - Removed `RequestButtonError`, only used to indicate no `ClientID` which is now handled by `Configuration`
+  - `uberButtonTapped()` no longer public
 - `RequestDeeplink`
-	- Removed `init(withClientID: String, fromSource: SourceParameter)` use `init(rideParameters: RideParameters)` instead
-	- Removed all setting parameter methods (`setPickupLocation()`, `setDropoffLocation`, ect) use a `RideParameters` object instead
-	- `SourceParameter` removed
+  - Removed `init(withClientID: String, fromSource: SourceParameter)` use `init(rideParameters: RideParameters)` instead
+  - Removed all setting parameter methods (`setPickupLocation()`, `setDropoffLocation`, ect) use a `RideParameters` object instead
+  - `SourceParameter` removed
 - Removed Carthage support
 
 

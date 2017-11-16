@@ -22,25 +22,14 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+public typealias DeeplinkCompletionHandler = (NSError?) -> Void
+
 /**
  *  Protocol for defining a deeplink that can be executed to open an external app
  */
 @objc(UBSDKDeeplinking) public protocol Deeplinking {
-    
-    /// The deeplink scheme to use, where a deeplink takes the form scheme://domain/path?query
-    var scheme: String { get }
-    
-    /// The domain of the deeplink, where a deeplink takes the form scheme://domain/path?query
-    var domain: String { get }
-    
-    /// The path of the deeplink, where a deeplink takes the form scheme://domain/path?query
-    var path: String { get }
-    
-    /// The query parameter items for the deeplink, where a deeplink takes the form scheme://domain/path?query
-    var queryItems: [URLQueryItem]? { get }
-    
     /// The deeplink URL that the deeplink will execute
-    var deeplinkURL: URL { get }
+    var url: URL { get }
     
     /**
      Execute a deeplink to launch into an external app
@@ -54,5 +43,5 @@
      - parameter completion: The completion block to execute once the deeplink has
      executed. Passes in True if the url was successfully opened, false otherwise.
      */
-    @objc func execute(completion: ((NSError?) -> ())?)
+    @objc func execute(completion: DeeplinkCompletionHandler?)
 }
