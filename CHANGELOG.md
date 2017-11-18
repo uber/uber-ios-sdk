@@ -23,6 +23,7 @@ When migrating to 0.8, you may need to add `import UberCore` to files previously
 * `Deeplinking`, `BaseDeeplink`, `AppStoreDeeplink`, `AuthenticationDeeplink`
 * `UberAuthenticating`, `BaseAuthenticator`, `AuthorizationCodeGrantAuthenticator`, `ImplicitGrantAuthenticator`,  `NativeAuthenticator`
 * `UberButton`
+* `UBSDKConstants`
 
 ### Removed
 
