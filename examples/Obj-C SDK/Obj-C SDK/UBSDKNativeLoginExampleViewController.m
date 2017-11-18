@@ -26,6 +26,7 @@
 
 #import "UBSDKLocalization.h"
 
+#import <UberCore/UberCore-Swift.h>
 #import <UberRides/UberRides-Swift.h>
 
 @interface UBSDKNativeLoginExampleViewController() <UBSDKLoginButtonDelegate>
@@ -67,7 +68,7 @@
 - (void)_initialSetup {
     _loginManager = [[UBSDKLoginManager alloc] initWithLoginType:UBSDKLoginTypeNative];
     
-    NSArray<UBSDKRidesScope *> *scopes = @[UBSDKRidesScope.profile, UBSDKRidesScope.places, UBSDKRidesScope.request];
+    NSArray<UBSDKUberScope *> *scopes = @[UBSDKUberScope.profile, UBSDKUberScope.places, UBSDKUberScope.request];
     
     _blackLoginButton = ({
         UBSDKLoginButton *loginButton = [[UBSDKLoginButton alloc] initWithFrame:CGRectZero scopes:scopes loginManager:_loginManager];
@@ -79,7 +80,7 @@
     
     _whiteLoginButton = ({
         UBSDKLoginButton *loginButton = [[UBSDKLoginButton alloc] initWithFrame:CGRectZero scopes:scopes loginManager:_loginManager];
-        loginButton.colorStyle = RequestButtonColorStyleWhite;
+        loginButton.colorStyle = UberButtonColorStyleWhite;
         loginButton.presentingViewController = self;
         [loginButton sizeToFit];
         loginButton.delegate = self;
@@ -153,7 +154,7 @@
 #pragma mark - Actions
 
 - (void)_loginButtonAction:(UIButton *)button {
-    NSArray<UBSDKRidesScope *> *requestedScopes = @[ UBSDKRidesScope.rideWidgets, UBSDKRidesScope.profile, UBSDKRidesScope.places ];
+    NSArray<UBSDKUberScope *> *requestedScopes = @[ UBSDKUberScope.rideWidgets, UBSDKUberScope.profile, UBSDKUberScope.places ];
     
     [self.loginManager loginWithRequestedScopes:requestedScopes presentingViewController:self completion:^(UBSDKAccessToken * _Nullable accessToken, NSError * _Nullable error) {
         if (accessToken) {

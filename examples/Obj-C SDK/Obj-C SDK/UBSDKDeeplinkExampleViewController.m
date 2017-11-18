@@ -25,6 +25,7 @@
 #import "UBSDKDeeplinkExampleViewController.h"
 #import "UBSDKLocalization.h"
 
+#import <UberCore/UberCore-Swift.h>
 #import <UberRides/UberRides-Swift.h>
 
 #import <CoreLocation/CoreLocation.h>
@@ -86,7 +87,7 @@
         UBSDKRideParameters *rideParameters = [self _buildRideParameters];
         id<UBSDKRideRequesting> deeplinkBehavior = [[UBSDKDeeplinkRequestingBehavior alloc] init];
         UBSDKRideRequestButton *rideRequestButton = [[UBSDKRideRequestButton alloc] initWithRideParameters:rideParameters requestingBehavior:deeplinkBehavior];
-        rideRequestButton.colorStyle = RequestButtonColorStyleWhite;
+        rideRequestButton.colorStyle = UberButtonColorStyleWhite;
         rideRequestButton;
     });
 }

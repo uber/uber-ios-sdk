@@ -22,6 +22,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+import UberCore
 import UberRides
 import CoreLocation
 
@@ -72,13 +73,10 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
     }
     
     @IBAction func login(_ sender: AnyObject) {
-        // Can define a state variable to prevent tampering
-        loginManager.state = UUID().uuidString
-        
         // Define which scopes we're requesting
         // Need to be authorized on your developer dashboard at developer.uber.com
         // Privileged scopes can be used by anyone in sandbox for your own account but must be approved for production
-        let requestedScopes = [RidesScope.request, RidesScope.allTrips]
+        let requestedScopes = [UberScope.request, UberScope.allTrips]
         // Use your loginManager to login with the requested scopes, viewcontroller to present over, and completion block
         loginManager.login(requestedScopes: requestedScopes, presentingViewController: self) { (accessToken, error) -> () in
             // Error

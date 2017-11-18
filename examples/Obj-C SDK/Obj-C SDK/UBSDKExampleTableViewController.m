@@ -31,6 +31,7 @@
 #import "UBSDKRideRequestWidgetExampleViewController.h"
 #import "UBSDKNativeLoginExampleViewController.h"
 
+#import <UberCore/UberCore-Swift.h>
 #import <UberRides/UberRides-Swift.h>
 
 @interface UBSDKExampleTableViewController ()

@@ -25,6 +25,7 @@
 #import "UBSDKRideRequestWidgetExampleViewController.h"
 #import "UBSDKLocalization.h"
 
+#import <UberCore/UberCore-Swift.h>
 #import <UberRides/UberRides-Swift.h>
 
 #import <CoreLocation/CoreLocation.h>
@@ -66,7 +67,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self.locationManager requestWhenInUseAuthorization];
 }
 
 #pragma mark - Private
@@ -75,7 +75,7 @@
     _blackRideRequestButton = [self _buildRideRequestWidgetButtonWithLoginType:UBSDKLoginTypeNative];
     
     _whiteRideRequestButton = [self _buildRideRequestWidgetButtonWithLoginType:UBSDKLoginTypeImplicit];
-    [_whiteRideRequestButton setColorStyle:RequestButtonColorStyleWhite];
+    [_whiteRideRequestButton setColorStyle:UberButtonColorStyleWhite];
     
     _locationManager = [[CLLocationManager alloc] init];
 }

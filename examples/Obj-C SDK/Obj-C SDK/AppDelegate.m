@@ -24,6 +24,7 @@
 
 #import "AppDelegate.h"
 
+#import <UberCore/UberCore-Swift.h>
 #import <UberRides/UberRides-Swift.h>
 
 @interface AppDelegate ()
@@ -64,12 +65,16 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
     //Check & handle incoming SSO URL
-    BOOL handledUberURL = [[UBSDKRidesAppDelegate shared] application:app open:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+    BOOL handledUberURL = [[UBSDKAppDelegate shared] application:app open:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
     
     return handledUberURL;
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    BOOL handledURL = [[UBSDKAppDelegate shared] application:application open:url sourceApplication:sourceApplication annotation:annotation];
+    
+    return handledURL;
+}
 @end

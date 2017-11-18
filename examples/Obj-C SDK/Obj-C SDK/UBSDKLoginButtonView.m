@@ -29,7 +29,7 @@
 @interface UBSDKLoginButtonView()
 
 @property (nonatomic, nonnull) UBSDKLoginManager *loginManager;
-@property (nonatomic, readonly, nonnull) NSArray<UBSDKRidesScope *> *scopes;
+@property (nonatomic, readonly, nonnull) NSArray<UBSDKUberScope *> *scopes;
 
 @end
 
@@ -37,7 +37,7 @@
 
 #pragma mark - UBSDKLoginButtonView
 
-- (instancetype)initWithFrame:(CGRect)frame scopes:(NSArray<UBSDKRidesScope *> *)scopes loginType:(UBSDKLoginType)loginType {
+- (instancetype)initWithFrame:(CGRect)frame scopes:(NSArray<UBSDKUberScope *> *)scopes loginType:(UBSDKLoginType)loginType {
     self = [super initWithFrame:frame];
     if (self) {
         _scopes = scopes;
