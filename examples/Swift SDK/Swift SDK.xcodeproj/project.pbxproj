@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D94BEF86EA555A4586CE452 /* Pods_Swift_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A429C0BEA8F99C8FA10B67 /* Pods_Swift_SDK.framework */; };
 		AC0404A81BFAD0C800AC1501 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404A71BFAD0C800AC1501 /* AppDelegate.swift */; };
 		AC0404AA1BFAD0C800AC1501 /* DeeplinkExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0404A91BFAD0C800AC1501 /* DeeplinkExampleViewController.swift */; };
 		AC0404AD1BFAD0C800AC1501 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC0404AB1BFAD0C800AC1501 /* Main.storyboard */; };
@@ -21,8 +22,6 @@
 		DC78EC7C1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC78EC7B1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift */; };
 		DCD806161CFE7F4300EF6EB1 /* ButtonExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD806151CFE7F4300EF6EB1 /* ButtonExampleViewController.swift */; };
 		DCD806181CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD806171CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift */; };
-		DCEB808A1D078BCA00899810 /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB80891D078BCA00899810 /* UberRides.framework */; };
-		DCEB808B1D078BCA00899810 /* UberRides.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB80891D078BCA00899810 /* UberRides.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +48,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DCEB808B1D078BCA00899810 /* UberRides.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,6 +56,7 @@
 
 /* Begin PBXFileReference section */
 		936D353832B2D6A2F78B5456 /* Pods-Swift SDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swift SDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-Swift SDK/Pods-Swift SDK.release.xcconfig"; sourceTree = "<group>"; };
+		96A429C0BEA8F99C8FA10B67 /* Pods_Swift_SDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swift_SDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC0404A41BFAD0C800AC1501 /* Swift SDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift SDK.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC0404A71BFAD0C800AC1501 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AC0404A91BFAD0C800AC1501 /* DeeplinkExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkExampleViewController.swift; sourceTree = "<group>"; };
@@ -85,7 +84,6 @@
 		DC8FC36C1CBDF5D200D58839 /* hi-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-IN"; path = "hi-IN.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		DCD806151CFE7F4300EF6EB1 /* ButtonExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonExampleViewController.swift; sourceTree = "<group>"; };
 		DCD806171CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeLoginExampleViewController.swift; sourceTree = "<group>"; };
-		DCEB80891D078BCA00899810 /* UberRides.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UberRides.framework; path = Carthage/Build/iOS/UberRides.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCEB808A1D078BCA00899810 /* UberRides.framework in Frameworks */,
+				8D94BEF86EA555A4586CE452 /* Pods_Swift_SDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,7 +124,7 @@
 		823B0AE4697BBA3B456C5C93 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DCEB80891D078BCA00899810 /* UberRides.framework */,
+				96A429C0BEA8F99C8FA10B67 /* Pods_Swift_SDK.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -198,11 +196,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AC0404CC1BFAD0C800AC1501 /* Build configuration list for PBXNativeTarget "Swift SDK" */;
 			buildPhases = (
+				B93972D24501F42E9C68E979 /* [CP] Check Pods Manifest.lock */,
 				AC0404A01BFAD0C800AC1501 /* Sources */,
 				AC0404A11BFAD0C800AC1501 /* Frameworks */,
 				AC0404A21BFAD0C800AC1501 /* Resources */,
-				DCEB807E1D078ACC00899810 /* Copy Carthage Frameworks */,
 				DCEB80851D078BB500899810 /* Embed Frameworks */,
+				E6835DE2B81B6684590AD161 /* [CP] Embed Pods Frameworks */,
+				8B1F36539338433F86C28295 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -326,20 +326,58 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		DCEB807E1D078ACC00899810 /* Copy Carthage Frameworks */ = {
+		8B1F36539338433F86C28295 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/UberRides.framework",
 			);
-			name = "Copy Carthage Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Swift SDK/Pods-Swift SDK-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B93972D24501F42E9C68E979 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Swift SDK-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E6835DE2B81B6684590AD161 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Swift SDK/Pods-Swift SDK-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/UberCore/UberCore.framework",
+				"${BUILT_PRODUCTS_DIR}/UberRides/UberRides.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UberCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UberRides.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Swift SDK/Pods-Swift SDK-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -507,14 +545,12 @@
 		};
 		AC0404CD1BFAD0C800AC1501 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C5ADDC8A8EE48350FDC38319 /* Pods-Swift SDK.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 5F83KRY2FH;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Swift SDK/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -527,14 +563,12 @@
 		};
 		AC0404CE1BFAD0C800AC1501 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 936D353832B2D6A2F78B5456 /* Pods-Swift SDK.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 5F83KRY2FH;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Swift SDK/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
