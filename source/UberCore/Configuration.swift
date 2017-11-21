@@ -283,7 +283,9 @@ private let callbackURIStringKey = "URIString"
     }
 
     public func resetProcessPool() {
-        processPool = WKProcessPool()
+        DispatchQueue.main.async {
+            self.processPool = WKProcessPool()
+        }
     }
     
     // MARK: Private
