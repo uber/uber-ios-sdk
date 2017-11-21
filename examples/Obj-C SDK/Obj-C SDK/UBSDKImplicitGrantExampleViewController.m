@@ -70,7 +70,7 @@ static NSString *const historyCellReuseIdentifier = @"HistoryCell";
     [self.view addSubview:tableView];
     _tableView = tableView;
     
-    NSArray<UBSDKUberScope *> *requestedScopes = @[ UBSDKUberScope.rideWidgets, UBSDKUberScope.profile, UBSDKUberScope.places, UBSDKUberScope.history ];
+    NSArray<UBSDKScope *> *requestedScopes = @[ UBSDKScope.rideWidgets, UBSDKScope.profile, UBSDKScope.places, UBSDKScope.history ];
     
     UBSDKLoginButtonView *loginButtonView = [[UBSDKLoginButtonView alloc] initWithFrame:self.view.frame
                                                                                        scopes:requestedScopes
