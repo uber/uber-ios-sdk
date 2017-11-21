@@ -146,6 +146,7 @@ import UberCore
      Requires that the access token has been retrieved.
      */
     @objc public func load() {
+        guard !webView.isLoading else { return }
         guard let accessToken = accessToken else {
             self.delegate?.rideRequestView(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
             return
