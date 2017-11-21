@@ -104,8 +104,6 @@
 		DF0A44AA1F998C7E002CFE5B /* AuthorizationCodeGrantAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80D4A511CD01894000EE8A9 /* AuthorizationCodeGrantAuthenticator.swift */; };
 		DF137B731F981EAB00B954A7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DF137B6E1F981E5400B954A7 /* Localizable.strings */; };
 		DF251C181FA2876D003150E6 /* UberAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8D42A81CF4C95000C16D16 /* UberAppDelegate.swift */; };
-		DF3ABF0A1F6A3E0400091106 /* UBSDKConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = DF3ABF091F6A3E0400091106 /* UBSDKConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DF3ABF111F6A41E900091106 /* UBSDKConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = DF3ABF101F6A41E900091106 /* UBSDKConstants.m */; };
 		DF4104E51FAD17D6007901BF /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA459D31D003EFC003CBA3D /* OHHTTPStubs.framework */; };
 		DF4104E61FAD199D007901BF /* refresh.json in Resources */ = {isa = PBXBuildFile; fileRef = DC1AE1BC1CF78A3300B8CFCB /* refresh.json */; };
 		DF4104E71FAD19C4007901BF /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA459D31D003EFC003CBA3D /* OHHTTPStubs.framework */; };
@@ -126,6 +124,8 @@
 		DFC99A251FAB9D9300C12021 /* UberAppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3F74121CF6767B00A713AA /* UberAppDelegateTests.swift */; };
 		DFC99A261FAB9EED00C12021 /* UberButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D885CD3B1CADEF1E0055976D /* UberButton.swift */; };
 		DFC99A281FABC28800C12021 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFC99A271FABC28800C12021 /* Media.xcassets */; };
+		DFCACA5E1FBFB3610050F46F /* UBSDKConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = DF3ABF091F6A3E0400091106 /* UBSDKConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DFCACA5F1FBFB3610050F46F /* UBSDKConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = DF3ABF101F6A41E900091106 /* UBSDKConstants.m */; };
 		DFD776D61FA7D589003719AB /* AppStoreDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC673D111CF5184D00F36E2B /* AppStoreDeeplink.swift */; };
 		DFF443881F50DF9200525F7A /* UpfrontFare.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF443871F50DF9200525F7A /* UpfrontFare.swift */; };
 		DFF4438A1F50E73500525F7A /* requestEstimateNoUpfront.json in Resources */ = {isa = PBXBuildFile; fileRef = DFF443891F50E73500525F7A /* requestEstimateNoUpfront.json */; };
@@ -422,8 +422,6 @@
 				D8A196B61C56FC1A0050A264 /* Resources */,
 				DCAEA9921CEE8DF500E6F239 /* Utilities */,
 				AC0404781BFACD1D00AC1501 /* UberRides.h */,
-				DF3ABF091F6A3E0400091106 /* UBSDKConstants.h */,
-				DF3ABF101F6A41E900091106 /* UBSDKConstants.m */,
 				AC04047A1BFACD1D00AC1501 /* Info.plist */,
 				AC0404931BFACDAF00AC1501 /* RequestDeeplink.swift */,
 				AC0404951BFACDC900AC1501 /* RidesClient.swift */,
@@ -620,6 +618,8 @@
 				DC8E2ACF1C9AA17400EDD74B /* Configuration.swift */,
 				D885CD3B1CADEF1E0055976D /* UberButton.swift */,
 				DFFCA8AE1F96A4800032E6BA /* UberCore.h */,
+				DF3ABF091F6A3E0400091106 /* UBSDKConstants.h */,
+				DF3ABF101F6A41E900091106 /* UBSDKConstants.m */,
 				DFFCA8AF1F96A4800032E6BA /* Info.plist */,
 				DCF87E781CF2F7AF0081894C /* testInfoMissingCallbacks.plist */,
 			);
@@ -700,7 +700,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DF3ABF0A1F6A3E0400091106 /* UBSDKConstants.h in Headers */,
 				AC0404791BFACD1D00AC1501 /* UberRides.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -709,6 +708,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DFCACA5E1FBFB3610050F46F /* UBSDKConstants.h in Headers */,
 				DFFCA8BE1F96A4800032E6BA /* UberCore.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1006,7 +1006,6 @@
 				DC75DFEC1CA5EC1200071417 /* RideParameters.swift in Sources */,
 				D8D18E831CBF41F200055B76 /* Driver.swift in Sources */,
 				DC2C77911CACDDD000A052BA /* ModalRideRequestViewController.swift in Sources */,
-				DF3ABF111F6A41E900091106 /* UBSDKConstants.m in Sources */,
 				D81C85361CC8315200DC82EE /* RideEstimate.swift in Sources */,
 				DCB0D38E1CAD9D5800194DD5 /* RideRequestViewRequestingBehavior.swift in Sources */,
 				DC78ED0F1CB502BF00850814 /* RideRequestViewErrorFactory.swift in Sources */,
@@ -1068,6 +1067,7 @@
 				DF021B511F998A1D004A7893 /* OAuthEndpoint.swift in Sources */,
 				DFC99A261FAB9EED00C12021 /* UberButton.swift in Sources */,
 				DF021B461F996158004A7893 /* BaseAuthenticator.swift in Sources */,
+				DFCACA5F1FBFB3610050F46F /* UBSDKConstants.m in Sources */,
 				DFFCA8CC1F96AB400032E6BA /* DeeplinkingProtocol.swift in Sources */,
 				DF251C181FA2876D003150E6 /* UberAppDelegate.swift in Sources */,
 				DF021B401F996158004A7893 /* TokenManager.swift in Sources */,
