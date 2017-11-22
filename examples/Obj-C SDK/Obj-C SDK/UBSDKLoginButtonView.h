@@ -24,8 +24,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import <UberCore/UberCore-Swift.h>
-#import <UberRides/UberRides-Swift.h>
+@import UberCore;
+@import UberRides;
 
 NS_ASSUME_NONNULL_BEGIN
 

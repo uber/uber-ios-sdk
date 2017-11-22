@@ -25,8 +25,8 @@
 #import "UBSDKRideRequestWidgetExampleViewController.h"
 #import "UBSDKLocalization.h"
 
-#import <UberCore/UberCore-Swift.h>
-#import <UberRides/UberRides-Swift.h>
+@import UberCore;
+@import UberRides;
 
 #import <CoreLocation/CoreLocation.h>
 

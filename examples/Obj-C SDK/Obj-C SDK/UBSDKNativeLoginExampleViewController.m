@@ -26,8 +26,8 @@
 
 #import "UBSDKLocalization.h"
 
-#import <UberCore/UberCore-Swift.h>
-#import <UberRides/UberRides-Swift.h>
+@import UberCore;
+@import UberRides;
 
 @interface UBSDKNativeLoginExampleViewController() <UBSDKLoginButtonDelegate>
 

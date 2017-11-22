@@ -28,7 +28,7 @@
 #import "UBSDKLoginButtonView.h"
 #import "UBSDKUtility.h"
 
-#import <UberRides/UberRides-Swift.h>
+@import UberRides;
 
 typedef NS_ENUM(NSInteger, ImplicitGrantTableViewSection) {
     ImplicitGrantTableViewSectionProfile,
