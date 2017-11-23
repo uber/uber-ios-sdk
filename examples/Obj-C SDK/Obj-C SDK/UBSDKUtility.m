@@ -24,7 +24,7 @@
 
 #import "UBSDKUtility.h"
 
-#import <UberRides/UberRides-Swift.h>
+@import UberRides;
 
 #import <UIKit/UIKit.h>
 

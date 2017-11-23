@@ -97,7 +97,7 @@ import UIKit
 /**
  *  Object representing an access scope to the Uber API
  */
-@objc(UBSDKUberScope) public class UberScope : NSObject {
+@objc(UBSDKScope) public class UberScope : NSObject {
     /// The UberScopeType of this UberScope
     @objc public let uberScopeType: UberScopeType
     /// The ScopeType of this UberScope (General / Privileged)

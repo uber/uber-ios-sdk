@@ -28,7 +28,7 @@
 #import "UBSDKLoginButtonView.h"
 #import "UBSDKUtility.h"
 
-#import <UberRides/UberRides-Swift.h>
+@import UberRides;
 
 typedef NS_ENUM(NSInteger, ImplicitGrantTableViewSection) {
     ImplicitGrantTableViewSectionProfile,
@@ -70,7 +70,7 @@ static NSString *const historyCellReuseIdentifier = @"HistoryCell";
     [self.view addSubview:tableView];
     _tableView = tableView;
     
-    NSArray<UBSDKRidesScope *> *requestedScopes = @[ UBSDKRidesScope.rideWidgets, UBSDKRidesScope.profile, UBSDKRidesScope.places, UBSDKRidesScope.history ];
+    NSArray<UBSDKScope *> *requestedScopes = @[ UBSDKScope.rideWidgets, UBSDKScope.profile, UBSDKScope.places, UBSDKScope.history ];
     
     UBSDKLoginButtonView *loginButtonView = [[UBSDKLoginButtonView alloc] initWithFrame:self.view.frame
                                                                                        scopes:requestedScopes

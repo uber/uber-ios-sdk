@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UberCore
 import UberRides
 import CoreLocation
 
@@ -54,10 +55,6 @@ class RideRequestWidgetExampleViewController: ButtonExampleViewController {
         addWhiteRequestButtonConstraints()
         
         locationManger.delegate = self
-        
-        if !checkLocationServices() {
-            locationManger.requestWhenInUseAuthorization()
-        }
     }
     
     // Mark: Private Interface
@@ -69,15 +66,6 @@ class RideRequestWidgetExampleViewController: ButtonExampleViewController {
         
         let rideParameters = RideParametersBuilder().build()
 
-        let accessTokenString = "access_token_string"
-        let token = AccessToken(tokenString: accessTokenString)
-        if TokenManager.save(accessToken: token){
-            // Success
-        } else {
-            // Unable to save
-        }
-
-        TokenManager.fetchToken()
         TokenManager.deleteToken()
         
         return RideRequestButton(rideParameters: rideParameters, requestingBehavior: requestBehavior)
@@ -99,14 +87,6 @@ class RideRequestWidgetExampleViewController: ButtonExampleViewController {
         let centerXConstraint = NSLayoutConstraint(item: whiteRideRequestButton, attribute: .centerX, relatedBy: .equal, toItem: bottomView, attribute: .centerX, multiplier: 1.0, constant: 0.0)
         
         bottomView.addConstraints([centerYConstraint, centerXConstraint])
-    }
-    
-    fileprivate func checkLocationServices() -> Bool {
-        let locationEnabled = CLLocationManager.locationServicesEnabled()
-        let locationAuthorization = CLLocationManager.authorizationStatus()
-        let locationAuthorized = locationAuthorization == .authorizedWhenInUse || locationAuthorization == .authorizedAlways
-        
-        return locationEnabled && locationAuthorized
     }
     
     fileprivate func showMessage(_ message: String) {

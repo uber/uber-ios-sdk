@@ -23,13 +23,14 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UberCore
 import UberRides
 import CoreLocation
 
 /// This class provides an example for using the LoginButton to do Native Login (SSO with the Uber App)
 open class NativeLoginExampleViewController: ButtonExampleViewController, LoginButtonDelegate {
     
-    let scopes: [RidesScope]
+    let scopes: [UberScope]
     let loginManager: LoginManager
     let blackLoginButton: LoginButton
     let whiteLoginButton: LoginButton

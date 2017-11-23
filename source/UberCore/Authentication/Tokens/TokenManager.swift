@@ -88,7 +88,7 @@ import Foundation
 
      - returns: true if the accessToken was saved successfully, false otherwise
      */
-    @objc public static func save(accessToken: AccessToken, tokenIdentifier: String, accessGroup: String) -> Bool {
+    @discardableResult @objc public static func save(accessToken: AccessToken, tokenIdentifier: String, accessGroup: String) -> Bool {
         keychainWrapper.setAccessGroup(accessGroup)
         let success = keychainWrapper.setObject(accessToken, key: tokenIdentifier)
         if success {
@@ -108,7 +108,7 @@ import Foundation
      
      - returns: true if the accessToken was saved successfully, false otherwise
      */
-    @objc public static func save(accessToken: AccessToken, tokenIdentifier: String) -> Bool {
+    @discardableResult @objc public static func save(accessToken: AccessToken, tokenIdentifier: String) -> Bool {
         return self.save(accessToken: accessToken, tokenIdentifier: tokenIdentifier, accessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
     
@@ -123,7 +123,7 @@ import Foundation
      
      - returns: true if the accessToken was saved successfully, false otherwise
      */
-    @objc public static func save(accessToken: AccessToken) -> Bool {
+    @discardableResult @objc public static func save(accessToken: AccessToken) -> Bool {
         return self.save(accessToken: accessToken,  tokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, accessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
     
@@ -138,7 +138,7 @@ import Foundation
 
      - returns: true if the token was deleted, false otherwise
      */
-    @objc public static func deleteToken(identifier: String, accessGroup: String) -> Bool {
+    @discardableResult @objc public static func deleteToken(identifier: String, accessGroup: String) -> Bool {
         keychainWrapper.setAccessGroup(accessGroup)
         deleteCookies()
         let success = keychainWrapper.deleteObjectForKey(identifier)
@@ -156,7 +156,7 @@ import Foundation
      
      - returns: true if the token was deleted, false otherwise
      */
-    @objc public static func deleteToken(identifier: String) -> Bool {
+    @discardableResult @objc public static func deleteToken(identifier: String) -> Bool {
         return self.deleteToken(identifier: identifier, accessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
     
@@ -167,7 +167,7 @@ import Foundation
      
      - returns: true if the token was deleted, false otherwise
      */
-    @objc public static func deleteToken() -> Bool {
+    @discardableResult @objc public static func deleteToken() -> Bool {
         return self.deleteToken(identifier: Configuration.shared.defaultAccessTokenIdentifier, accessGroup: Configuration.shared.defaultKeychainAccessGroup)
     }
     

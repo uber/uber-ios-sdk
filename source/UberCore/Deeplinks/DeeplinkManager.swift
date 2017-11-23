@@ -31,7 +31,6 @@ class DeeplinkManager {
     private var waitingOnSystemPromptResponse = false
     private var checkingSystemPromptResponse = false
     private var promptTimer: Timer?
-    private var completionWrapper: ((NSError?) -> ()) = { _ in }
 
     func open(_ deeplink: Deeplinking, completion: DeeplinkCompletionHandler? = nil) {
         open(deeplink.url, completion: completion)
@@ -91,7 +90,7 @@ class DeeplinkManager {
             error = DeeplinkErrorFactory.errorForType(.unableToOpen)
         }
 
-        completionWrapper(error)
+        callbackWrapper?(error)
     }
 
     //Mark: App Lifecycle Notifications
@@ -100,7 +99,7 @@ class DeeplinkManager {
         if !waitingOnSystemPromptResponse {
             waitingOnSystemPromptResponse = true
         } else if checkingSystemPromptResponse {
-            completionWrapper(nil)
+            callbackWrapper?(nil)
         }
     }
 
@@ -112,11 +111,11 @@ class DeeplinkManager {
     }
 
     @objc private func appDidEnterBackgroundHandler(_ notification: Notification) {
-        completionWrapper(nil)
+        callbackWrapper?(nil)
     }
 
     @objc private func deeplinkHelper() {
         let error = DeeplinkErrorFactory.errorForType(.deeplinkNotFollowed)
-        completionWrapper(error)
+        callbackWrapper?(error)
     }
 }

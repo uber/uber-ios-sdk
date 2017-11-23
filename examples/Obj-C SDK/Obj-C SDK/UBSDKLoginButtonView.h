@@ -24,7 +24,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import <UberRides/UberRides-Swift.h>
+@import UberCore;
+@import UberRides;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly, nonnull) UBSDKLoginButton *loginButton;
 
-- (instancetype)initWithFrame:(CGRect)frame scopes:(NSArray<UBSDKRidesScope *> *)scopes loginType:(UBSDKLoginType)loginType;
+- (instancetype)initWithFrame:(CGRect)frame scopes:(NSArray<UBSDKScope *> *)scopes loginType:(UBSDKLoginType)loginType;
 
 @end
 
