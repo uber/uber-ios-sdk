@@ -11,6 +11,7 @@ When migrating to 0.8, you may need to add `import UberCore` to files previously
 * `LoginManager` now uses `SFAuthenticationSession`, `SFSafariViewController`, or external Safari for web-based OAuth flows.
 * `Deeplinking` protocol simplified. Public properties from the previous protocol is now available under the `.url` property. 
 * `UberAuthenticating` protocol simplified. 
+* `AccessToken` adds two new initializers intended to make custom OAuth flows easier. Fixes [Issue #187](https://github.com/uber/rides-ios-sdk/issues/187)
 
 ### Moved to UberCore
 

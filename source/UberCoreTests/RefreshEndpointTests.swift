@@ -88,8 +88,6 @@ class RefreshEndpointTests: XCTestCase {
 
         XCTAssertTrue(queryItems.contains(expectedClientID))
         XCTAssertTrue(queryItems.contains(expectedRefreshToken))
-
-
         
         waitForExpectations(timeout: timeout, handler: { error in
             if let error = error {

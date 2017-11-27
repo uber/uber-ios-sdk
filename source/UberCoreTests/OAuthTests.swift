@@ -31,6 +31,10 @@ class OAuthTests: XCTestCase {
     var error: NSError?
     let timeout: TimeInterval = 2
     let tokenString = "accessToken1234"
+    let refreshTokenString = "refresh"
+    let expiresIn = 10030.23
+    let scope = "profile history"
+    
     private var redirectURI: URL!
     
     override func setUp() {
@@ -45,12 +49,6 @@ class OAuthTests: XCTestCase {
         _ = TokenManager.deleteToken()
         Configuration.restoreDefaults()
         super.tearDown()
-    }
-    
-    func testBuildinigWithString() {
-        let tokenString = "accessTokenString"
-        let token = AccessToken(tokenString: tokenString)
-        XCTAssertEqual(token.tokenString, tokenString)
     }
     
     /**
@@ -123,6 +121,23 @@ class OAuthTests: XCTestCase {
         XCTAssert(queryItems.contains(URLQueryItem(name: "redirect_uri", value: redirectURI.absoluteString)))
     }
     
+    func testInitializeAccessTokenFromString() {
+        let token = AccessToken(tokenString: tokenString)
+        XCTAssertEqual(token.tokenString, tokenString)
+    }
+    
+    func testInitializeAccessTokenFromOAuthDictionary() {
+        guard let token = tokenFixture() else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(token.tokenString, tokenString)
+        XCTAssertEqual(token.refreshToken, refreshTokenString)
+        UBSDKAssert(date: token.expirationDate!, approximatelyIn: expiresIn)
+        XCTAssert(token.grantedScopes.contains(UberScope.profile))
+        XCTAssert(token.grantedScopes.contains(UberScope.history))
+    }
+    
     func loginCompletion() -> ((_ accessToken: AccessToken?, _ error: NSError?) -> Void) {
         return { token, error in
             self.accessToken = token
@@ -130,17 +145,28 @@ class OAuthTests: XCTestCase {
             self.testExpectation.fulfill()
         }
     }
+    
+    // Mark: Helper
+    
+    func tokenFixture(_ accessToken: String = "accessToken1234") -> AccessToken?
+    {
+        var jsonDictionary = [String: Any]()
+        jsonDictionary["access_token"] = accessToken
+        jsonDictionary["refresh_token"] = refreshTokenString
+        jsonDictionary["expires_in"] = expiresIn
+        jsonDictionary["scope"] = scope
+        return AccessToken(oauthDictionary: jsonDictionary)
+    }
 }
 
-// Mark: Helper
-
-func tokenFixture(_ accessToken: String = "token") -> AccessToken?
-{
-    var jsonDictionary = [String: String]()
-    jsonDictionary["access_token"] = accessToken
-    jsonDictionary["refresh_token"] = "refresh"
-    jsonDictionary["expires_in"] = "10030.23"
-    jsonDictionary["scope"] = "profile history"
-    let jsonData = try! JSONEncoder().encode(jsonDictionary)
-    return try? JSONDecoder.uberDecoder.decode(AccessToken.self, from: jsonData)
+extension XCTestCase {
+    func UBSDKAssert(date: Date, approximatelyEqualTo otherDate: Date, _ message: String = "") {
+        let allowedDifference: TimeInterval = 2
+        let difference = abs(date.timeIntervalSince(otherDate))
+        XCTAssert(difference < allowedDifference, message)
+    }
+    
+    func UBSDKAssert(date: Date, approximatelyIn seconds: TimeInterval, _ message: String = "") {
+        UBSDKAssert(date: date, approximatelyEqualTo: Date(timeIntervalSinceNow: seconds), message)
+    }
 }

@@ -22,11 +22,16 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-/// Stores information about an access token used for authorizing requests.
-@objc(UBSDKAccessToken) public class AccessToken: NSObject, NSCoding, Decodable {
-    
+/**
+ Stores information about an access token used for authorizing requests.
+ 
+ This class implements NSCoding, but its representation is an internal representation
+ not compatible with the OAuth representation. Use an initializer if you want to serialize this
+ via an OAuth representation.
+ */
+@objc(UBSDKAccessToken) public class AccessToken: NSObject, NSCoding {
     /// String containing the bearer token.
-    @objc public private(set) var tokenString: String?
+    @objc public private(set) var tokenString: String
     
     /// String containing the refresh token.
     @objc public private(set) var refreshToken: String?
@@ -40,14 +45,62 @@
     /**
      Initializes an AccessToken with the provided tokenString
      
-     - parameter tokenString: The tokenString to use for this AccessToken
-     
-     - returns: an initialized AccessToken object
+     - parameter tokenString: The access token string
      */
     @objc public init(tokenString: String) {
-        super.init()
         self.tokenString = tokenString
+        super.init()
     }
+    
+    /**
+     Initializes an AccessToken with the provided parameters
+     
+     - parameter tokenString: The access token string
+     - parameter refreshToken: String containing the refresh token.
+     - parameter expirationDate: The expiration date for this access token
+     - parameter grantedScopes: The scopes this token is valid for
+     */
+    @objc public init(tokenString: String,
+                      refreshToken: String?,
+                      expirationDate: Date?,
+                      grantedScopes: [UberScope]) {
+        self.tokenString = tokenString
+        self.refreshToken = refreshToken
+        self.expirationDate = expirationDate
+        self.grantedScopes = grantedScopes
+        super.init()
+    }
+    
+    /**
+     Initializes an AccessToken using a dictionary with key/values matching
+     the OAuth access token response.
+     
+     See https://tools.ietf.org/html/rfc6749#section-5.1 for more details.
+     The `token_type` parameter is not required for this initializer.
+     
+     - parameter oauthDictionary: A dictionary with key/values matching
+     the OAuth access token response.
+     */
+    @objc public init?(oauthDictionary: [String: Any]) {
+        guard let tokenString = oauthDictionary["access_token"] as? String else { return nil }
+        self.tokenString = tokenString
+        self.refreshToken = oauthDictionary["refresh_token"] as? String
+        if let expiresIn = oauthDictionary["expires_in"] as? Double {
+            self.expirationDate = Date(timeIntervalSinceNow: expiresIn)
+        } else if let expiresIn = oauthDictionary["expires_in"] as? String,
+            let expiresInDouble = Double(expiresIn) {
+            self.expirationDate = Date(timeIntervalSinceNow: expiresInDouble)
+        }
+        self.grantedScopes = (oauthDictionary["scope"] as? String)?.toUberScopesArray() ?? []
+    }
+    
+    // MARK: NSCoding methods.
+    
+    /**
+     Note for reference. It would be better if these NSCoding methods allowed for serialization/deserialization for JSON.
+     However, this is used for serializing to Keychain via NSKeyedArchiver, and would take work to maintain backwards compatibility
+     if this was changed. Also, the OAuth `expires_in` parameter is a relative seconds string, which can't be stored by itself.
+     */
     
     /**
      Initializer to build an accessToken from the provided NSCoder. Allows for 
@@ -58,7 +111,6 @@
      - returns: An initialized AccessToken, or nil if something went wrong
      */
     @objc public required init?(coder decoder: NSCoder) {
-        super.init()
         guard let token = decoder.decodeObject(forKey: "tokenString") as? String else {
             return nil
         }
@@ -68,6 +120,7 @@
         if let scopesString = decoder.decodeObject(forKey: "grantedScopes") as? String {
             grantedScopes = scopesString.toUberScopesArray()
         }
+        super.init()
     }
     
     /**
@@ -80,27 +133,5 @@
         coder.encode(self.refreshToken, forKey:  "refreshToken")
         coder.encode(self.expirationDate, forKey: "expirationDate")
         coder.encode(self.grantedScopes.toUberScopeString(), forKey: "grantedScopes")
-    }
-    
-    /**
-     Mapping function used by ObjectMapper. Builds an AccessToken using the provided
-     Map data
-     
-     - parameter map: The Map to use for populatng this AccessToken.
-     */
-    enum CodingKeys: String, CodingKey {
-        case tokenString         = "access_token"
-        case refreshToken        = "refresh_token"
-        case expirationDate      = "expiration_date"
-        case scopesString        = "scope"
-    }
-
-    public required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        tokenString = try container.decode(String.self, forKey: .tokenString)
-        refreshToken = try container.decodeIfPresent(String.self, forKey: .refreshToken)
-        expirationDate = try container.decodeIfPresent(Date.self, forKey: .expirationDate)
-        let scopesString = try container.decodeIfPresent(String.self, forKey: .scopesString)
-        grantedScopes = scopesString?.toUberScopesArray() ?? []
     }
 }
