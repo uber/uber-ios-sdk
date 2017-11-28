@@ -127,7 +127,7 @@ To use any of the SDK's other features, you need to have the end user authorize 
 
 First, open up the [Uber Developer Dashboard](https://developer.uber.com/dashboard). Go to the Authorizations tab and under App Signatures, put in your iOS application's Bundle ID.
 
-We also need to register a Redirect URL for your application. This ensures that Uber sends users to the correct application after they log in. Make a URL in this format, and save your application: `YourApplicationBundleID:/oauth/consumer`.
+We also need to register a Redirect URL for your application. This ensures that Uber sends users to the correct application after they log in. Make a URL in this format, and save your application: `YourApplicationBundleID://oauth/consumer`.
 
 In your Xcode project, you need to register your URL scheme as well as the callback URL with the Uber SDK. Copy this into your `Info.plist`, replacing the relevant values:
 
@@ -138,7 +138,7 @@ In your Xcode project, you need to register your URL scheme as well as the callb
         <key>UberCallbackURIType</key>
         <string>General</string>
         <key>URIString</key>
-        <string>[Your Bundle ID Here]:/oauth/consumer</string>
+        <string>[Your Bundle ID Here]://oauth/consumer</string>
     </dict>
 </array>
 <key>CFBundleURLTypes</key>
