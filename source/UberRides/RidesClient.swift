@@ -540,7 +540,7 @@ import UberCore
             var accessToken: AccessToken?
             if let data = response.data,
                 response.error == nil {
-                accessToken = try? JSONDecoder.uberDecoder.decode(AccessToken.self, from: data)
+                accessToken = try? AccessTokenFactory.createAccessToken(fromJSONData: data)
             }
             completion(accessToken, response)
         }

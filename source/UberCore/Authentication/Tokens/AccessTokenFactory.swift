@@ -27,15 +27,15 @@ import Foundation
 /**
 Factory class to build access tokens
 */
-@objc(UBSDKAccessTokenFactory) class AccessTokenFactory: NSObject {
+@objc(UBSDKAccessTokenFactory) public class AccessTokenFactory: NSObject {
     /**
      Builds an AccessToken from the provided redirect URL
      
-     - throws: RidesAuthenticationError
+     - throws: UberAuthenticationError
      - parameter url: The URL to parse the token from
      - returns: An initialized AccessToken, or nil if one couldn't be created
      */
-    static func createAccessToken(fromRedirectURL redirectURL: URL) throws -> AccessToken {
+    public static func createAccessToken(fromRedirectURL redirectURL: URL) throws -> AccessToken {
         guard var components = URLComponents(url: redirectURL, resolvingAgainstBaseURL: false) else {
             throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
         }
@@ -60,23 +60,32 @@ Factory class to build access tokens
             }
             queryDictionary[queryItem.name] = value
         }
-        if let error = queryDictionary["error"] as? String {
+        
+        return try createAccessToken(from: queryDictionary)
+    }
+    
+    /**
+     Builds an AccessToken from the provided JSON data
+     
+     - throws: UberAuthenticationError
+     - parameter jsonData: The JSON Data to parse the token from
+     - returns: An initialized AccessToken
+     */
+    public static func createAccessToken(fromJSONData jsonData: Data) throws -> AccessToken {
+        guard let responseDictionary = (try? JSONSerialization.jsonObject(with: jsonData, options: [])) as? [String: Any] else {
+            throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
+        }
+        return try createAccessToken(from: responseDictionary)
+    }
+    
+    private static func createAccessToken(from oauthResponseDictionary: [String: Any]) throws -> AccessToken {
+        if let error = oauthResponseDictionary["error"] as? String {
             guard let error = UberAuthenticationErrorFactory.createRidesAuthenticationError(rawValue: error) else {
                 throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
             }
             throw error
-        } else {
-            if let expiresInString = queryDictionary["expires_in"] as? String {
-                let expiresInSeconds =  TimeInterval(atof(expiresInString))
-                let expirationDateSeconds = Date().timeIntervalSince1970 + expiresInSeconds
-                queryDictionary["expiration_date"] = expirationDateSeconds
-                queryDictionary.removeValue(forKey: "expires_in")
-            }
-            
-            if let json = try? JSONSerialization.data(withJSONObject: queryDictionary, options: []),
-                let token = try? JSONDecoder.uberDecoder.decode(AccessToken.self, from: json) {
-                return token
-            }
+        } else if let token = AccessToken(oauthDictionary: oauthResponseDictionary) {
+            return token
         }
         throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
     }

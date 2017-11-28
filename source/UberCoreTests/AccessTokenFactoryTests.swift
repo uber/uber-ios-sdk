@@ -33,8 +33,6 @@ class AccessTokenFactoryTests: XCTestCase {
     private let allowedScopesString = "profile history"
     private let errorString = "invalid_parameters"
     
-    private let maxExpirationDifference = 2.0
-    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -54,21 +52,12 @@ class AccessTokenFactoryTests: XCTestCase {
             return
         }
         do {
-            let expectedExpirationInterval = Date().timeIntervalSince1970 + expirationTime
-            
             let token : AccessToken = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertEqual(token.refreshToken, refreshTokenString)
             XCTAssertEqual(token.grantedScopes.toUberScopeString(), allowedScopesString)
-            
-            guard let expiration = token.expirationDate?.timeIntervalSince1970 else {
-                XCTAssert(false)
-                return
-            }
-            
-            let timeDiff = abs(expiration - expectedExpirationInterval)
-            XCTAssertLessThanOrEqual(timeDiff, maxExpirationDifference)
+            UBSDKAssert(date: token.expirationDate!, approximatelyIn: expirationTime)
             
         } catch _ as NSError {
             XCTAssert(false)
@@ -166,21 +155,12 @@ class AccessTokenFactoryTests: XCTestCase {
             return
         }
         do {
-            let expectedExpirationInterval = Date().timeIntervalSince1970 + expirationTime
-            
             let token : AccessToken = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertEqual(token.refreshToken, refreshTokenString)
             XCTAssertEqual(token.grantedScopes.toUberScopeString(), allowedScopesString)
-            
-            guard let expiration = token.expirationDate?.timeIntervalSince1970 else {
-                XCTAssert(false)
-                return
-            }
-            
-            let timeDiff = abs(expiration - expectedExpirationInterval)
-            XCTAssertLessThanOrEqual(timeDiff, maxExpirationDifference)
+            UBSDKAssert(date: token.expirationDate!, approximatelyIn: expirationTime)
             
         } catch {
             XCTAssert(false)
@@ -210,18 +190,23 @@ class AccessTokenFactoryTests: XCTestCase {
     }
 
     func testParseValidJsonStringToAccessToken() {
-        let tokenString = "tokenString1234"
-        let jsonString = "{\"access_token\": \"\(tokenString)\"}"
-        let accessToken = try? JSONDecoder.uberDecoder.decode(AccessToken.self, from: jsonString.data(using: .utf8)!)
-        
-        XCTAssertNotNil(accessToken)
-        XCTAssertEqual(accessToken?.tokenString, tokenString)
+        let jsonString = "{\"access_token\": \"\(tokenString)\", \"refresh_token\": \"\(refreshTokenString)\", \"expires_in\": \"\(expirationTime)\", \"scope\": \"\(allowedScopesString)\"}"
+
+        guard let accessToken = try? AccessTokenFactory.createAccessToken(fromJSONData: jsonString.data(using: .utf8)!) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(accessToken.tokenString, tokenString)
+        XCTAssertEqual(accessToken.refreshToken, refreshTokenString)
+        UBSDKAssert(date: accessToken.expirationDate!, approximatelyIn: expirationTime)
+        XCTAssert(accessToken.grantedScopes.contains(UberScope.profile))
+        XCTAssert(accessToken.grantedScopes.contains(UberScope.history))
     }
     
     func testParseInvalidJsonStringToAccessToken() {
         let tokenString = "tokenString1234"
         let jsonString = "{\"access_token\": \"\(tokenString)\""
-        let accessToken = try? JSONDecoder.uberDecoder.decode(AccessToken.self, from: jsonString.data(using: .utf8)!)
+        let accessToken = try? AccessTokenFactory.createAccessToken(fromJSONData: jsonString.data(using: .utf8)!)
         
         XCTAssertNil(accessToken)
     }
