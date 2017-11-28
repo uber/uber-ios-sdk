@@ -1,6 +1,6 @@
 # Change Log
 
-# [0.8.0] TBD
+## [0.8.0] 2017-11-28
 
 0.8 separates the Uber Rides SDK into two modules, `UberRides` and `UberCore`. It also contains a number of authentication-related changes to simplify the Login with Uber flows. 
 
