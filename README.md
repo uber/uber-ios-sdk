@@ -13,14 +13,14 @@ This [Swift library](https://developer.apple.com/library/ios/documentation/Gener
 To install the Uber Rides SDK, you may use [CocoaPods](http://cocoapods.org), [Carthage](https://github.com/Carthage/Carthage), or add it to your project manually
 
 ```ruby
-pod 'UberRides', '~> 0.7'
+pod 'UberRides', '~> 0.8'
 ```
 
 If you get compilation errors with CocoaPods, you may be using Swift 3.2 or no Swift at all in your main target. In that scenario, CocoaPods will set the swift version incorrectly. [See issue](https://github.com/CocoaPods/CocoaPods/issues/6791). To fix this, click on your Pods project and select the `UberRides` target. Search for the `Swift Language Version` property, and change it to "Swift 4.0".
 
 ### Carthage
 ```
-github "uber/rides-ios-sdk" ~> 0.7
+github "uber/rides-ios-sdk" ~> 0.8
 ```
 
 ## Getting Started
@@ -85,6 +85,9 @@ The SDK provides an simple object for defining your ride requests. The `RidePara
 
 ```swift
 // Swift
+import UberRides
+import CoreLocation
+
 let builder = RideParametersBuilder()
 let pickupLocation = CLLocation(latitude: 37.787654, longitude: -122.402760)
 let dropoffLocation = CLLocation(latitude: 37.775200, longitude: -122.417587)
@@ -97,6 +100,9 @@ let rideParameters = builder.build()
 
 ```objective-c
 // Objective-C
+@import UberRides;
+@import CoreLocation;
+
 UBSDKRideParametersBuilder *builder = [[UBSDKRideParametersBuilder alloc] init];
 CLLocation *pickupLocation = [[CLLocation alloc] initWithLatitude:37.787654 longitude:-122.402760];
 CLLocation *dropoffLocation = [[CLLocation alloc] initWithLatitude:37.775200 longitude:-122.417587];
@@ -136,16 +142,16 @@ In your Xcode project, you need to register your URL scheme as well as the callb
     </dict>
 </array>
 <key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>[Your Bundle ID Here]</string>
-			</array>
-		</dict>
-	</array>
+<array>
+    <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>[Your Bundle ID Here]</string>
+        </array>
+    </dict>
+</array>
 ```
 
 You also need to modify your application's **App Delegate** to make calls to the **RidesAppDelegate** to handle URLs. 
@@ -153,17 +159,17 @@ You also need to modify your application's **App Delegate** to make calls to the
 ```swift
 // Swift
 // Add the following calls to your AppDelegate
-import UberRides
+import UberCore
     
 @available(iOS 9, *)
 func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
-    let handledUberURL = RidesAppDelegate.shared.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as Any)
+    let handledUberURL = UberAppDelegate.shared.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as Any)
 
     return handledUberURL
 }
     
 func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-    let handledUberURL = RidesAppDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
+    let handledUberURL = UberAppDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
 
     return handledUberURL
 }
@@ -172,28 +178,20 @@ func application(_ application: UIApplication, open url: URL, sourceApplication:
 ```objective-c
 // Objective-C
 // Add the following calls to your AppDelegate
-#import <UberRides/UberRides-Swift.h>
+@import UberCore;
 
 // iOS 9+
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
-    BOOL handledURL = [[UBSDKRidesAppDelegate shared] application:app open:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+    BOOL handledURL = [[UBSDKAppDelegate shared] application:app open:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
     
-    if (!handledURL) {
-        // Other URL logic
-    }
-    
-    return true;
+    return handledURL;
 }
 
 // iOS 8
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    BOOL handledURL = [[UBSDKRidesAppDelegate shared] application:application open:url sourceApplication:sourceApplication annotation:annotation];
+    BOOL handledURL = [[UBSDKAppDelegate shared] application:application open:url sourceApplication:sourceApplication annotation:annotation];
     
-    if (!handledURL) {
-        // Other URL logic
-    }
-    
-    return true;
+    return handledURL;
 }
 ```
 
@@ -204,7 +202,9 @@ You can optionally set a `LoginButtonDelegate` to receive notifications for logi
 
 ```swift
 // Swift
-let scopes: [RidesScope] = [.profile, .places, .request]
+import UberCore
+
+let scopes: [UberScope] = [.profile, .places, .request]
 let loginManager = LoginManager(loginType: .native)
 let loginButton = LoginButton(frame: CGRect.zero, scopes: scopes, loginManager: loginManager)
 loginButton.presentingViewController = self
@@ -228,8 +228,9 @@ func loginButton(_ button: LoginButton, didCompleteLoginWithToken accessToken: A
 
 ```objective-c
 // Objective-C
+@import UberCore;
 
-NSArray<UBSDKRidesScope *> *scopes = @[UBSDKRidesScope.profile, UBSDKRidesScope.places, UBSDKRidesScope.request];
+NSArray<UBSDKScope *> *scopes = @[UBSDKScope.profile, UBSDKScope.places, UBSDKScope.request];
 
 UBSDKLoginManager *loginManager = [[UBSDKLoginManager alloc] initWithLoginType:UBSDKLoginTypeNative];
 
@@ -237,6 +238,7 @@ UBSDKLoginButton *loginButton = [[UBSDKLoginButton alloc] initWithFrame:CGRectZe
 loginButton.presentingViewController = self;
 [loginButton sizeToFit];
 loginButton.delegate = self;
+[self.view addSubview:loginButton];
 
 #pragma mark - UBSDKLoginButtonDelegate
 
@@ -360,7 +362,7 @@ If you want to provide a more custom experience in your app, there are a few cla
 ### Uber Rides API Endpoints
 The SDK exposes all the endpoints available in the [Uber Developers documentation](https://developer.uber.com/docs). Some endpoints can be authenticated with a server token, but for most endpoints, you will require a bearer token. A bearer token can be retrieved via implicit grant, authorization code grant, or SSO. To authorize [privileged scopes](https://developer.uber.com/docs/scopes#section-privileged-scopes), you must use authorization code grant or SSO.
 
-Read the full API documentation at [CocoaDocs](http://cocoadocs.org/docsets/UberRides/0.7.0/)
+Read the full API documentation at [CocoaDocs](http://cocoadocs.org/docsets/UberRides/0.8.0/)
 
 The `RidesClient` is your source to access all the endpoints available in the Uber Rides API. With just your server token, you can get a list of Uber products as well as price and time estimates. 
 
@@ -411,7 +413,7 @@ loginManager.login(requestedScopes:[.request], presentingViewController: self, c
 ```objective-c
 // Objective-C
 UBSDKLoginManager *loginManager = [[UBSDKLoginManager alloc] init];
-[loginManager loginWithRequestedScopes:@[ UBSDKRidesScope.request ] presentingViewController: self completion: ^(UBSDKAccessToken * _Nullable accessToken, NSError * _Nullable error) {
+[loginManager loginWithRequestedScopes:@[ UBSDKScope.request ] presentingViewController: self completion: ^(UBSDKAccessToken * _Nullable accessToken, NSError * _Nullable error) {
 // Completion block. If accessToken is non-nil, you're good to go
 // Otherwise, error.code corresponds to the RidesAuthenticationErrorType that occured
 }];
