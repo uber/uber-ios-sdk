@@ -126,6 +126,7 @@ import UIKit
             self.delegate?.loginButton(self, didCompleteLoginWithToken: token, error: error)
             self.refreshContent()
         }
+        sizeToFit()
     }
     
     /**
