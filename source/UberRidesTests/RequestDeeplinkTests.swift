@@ -86,7 +86,7 @@ class UberRidesDeeplinkTests: XCTestCase {
      */
     func testBuildDeeplinkWithClientIDHasDefaultParameters() {
         let deeplink = RequestDeeplink()
-        let uri = deeplink.deeplinkURL.absoluteString
+        let uri = deeplink.url.absoluteString
         
         XCTAssertTrue(uri.contains(ExpectedDeeplink.uberScheme))
         
@@ -110,7 +110,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = builder.build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = URLComponents(url: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(url: deeplink.url, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 5)
         
         let query = components?.query
@@ -133,7 +133,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = builder.build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = URLComponents(url: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(url: deeplink.url, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 7)
         
         let query = components?.query
@@ -156,7 +156,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = builder.build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = URLComponents(url: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(url: deeplink.url, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 6)
         
         let query = components?.query
@@ -185,7 +185,7 @@ class UberRidesDeeplinkTests: XCTestCase {
         let rideParams = builder.build()
         let deeplink = RequestDeeplink(rideParameters: rideParams)
         
-        let components = URLComponents(url: deeplink.deeplinkURL, resolvingAgainstBaseURL: false)
+        let components = URLComponents(url: deeplink.url, resolvingAgainstBaseURL: false)
         XCTAssertEqual(components?.queryItems?.count, 12)
         
         let query = components?.query

@@ -1,5 +1,5 @@
 //
-//  RidesScopeUtilTests.swift
+//  UberScopeUtilTests.swift
 //  UberRides
 //
 //  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
@@ -24,38 +24,39 @@
 
 import XCTest
 @testable import UberRides
+@testable import UberCore
 
-class RidesScopeExtensionsTests: XCTestCase {
+class UberScopeExtensionsTests: XCTestCase {
 
-    func testRidesScopeToString_withValidScopes()
+    func testUberScopeToString_withValidScopes()
     {
-        let scopes : [RidesScope] = Array(arrayLiteral: RidesScope.profile, RidesScope.places)
+        let scopes : [UberScope] = Array(arrayLiteral: UberScope.profile, UberScope.places)
         
-        let expectedString = "\(RidesScope.profile.rawValue) \(RidesScope.places.rawValue)"
-        let scopeString = scopes.toRidesScopeString()
+        let expectedString = "\(UberScope.profile.rawValue) \(UberScope.places.rawValue)"
+        let scopeString = scopes.toUberScopeString()
         
         XCTAssertEqual(expectedString, scopeString)
     }
     
-    func testRidesScopeToString_withNoScopes()
+    func testUberScopeToString_withNoScopes()
     {
-        let scopes : [RidesScope] = [RidesScope]()
+        let scopes : [UberScope] = [UberScope]()
         
         let expectedString = ""
-        let scopeString = scopes.toRidesScopeString()
+        let scopeString = scopes.toUberScopeString()
         
         XCTAssertEqual(expectedString, scopeString)
     }
     
-    func testRidesScopeToString_withValidScopesUsingSet()
+    func testUberScopeToString_withValidScopesUsingSet()
     {
-        let scopes : Set<RidesScope> = Set<RidesScope>(arrayLiteral: RidesScope.profile, RidesScope.places)
+        let scopes : Set<UberScope> = Set<UberScope>(arrayLiteral: UberScope.profile, UberScope.places)
         
-        let scopeString = scopes.toRidesScopeString()
+        let scopeString = scopes.toUberScopeString()
         
-        var testSet : Set<RidesScope> = Set<RidesScope>()
+        var testSet : Set<UberScope> = Set<UberScope>()
         for scopeString in scopeString.components(separatedBy: " ") {
-            guard let scope = RidesScopeFactory.ridesScopeForString(scopeString) else {
+            guard let scope = UberScopeFactory.uberScopeForString(scopeString) else {
                 continue
             }
             testSet.insert(scope)
@@ -64,67 +65,67 @@ class RidesScopeExtensionsTests: XCTestCase {
         XCTAssertEqual(scopes, testSet)
     }
     
-    func testRidesScopeToString_withNoScopes_usingSet()
+    func testUberScopeToString_withNoScopes_usingSet()
     {
-        let scopes : Set<RidesScope> = Set<RidesScope>()
+        let scopes : Set<UberScope> = Set<UberScope>()
         
         let expectedString = ""
-        let scopeString = scopes.toRidesScopeString()
+        let scopeString = scopes.toUberScopeString()
         
         XCTAssertEqual(expectedString, scopeString)
     }
     
-    func testStringToRidesScope_withValidScopes()
+    func testStringToUberScope_withValidScopes()
     {
-        let expectedScopes : [RidesScope] = Array(arrayLiteral: RidesScope.profile, RidesScope.places)
+        let expectedScopes : [UberScope] = Array(arrayLiteral: UberScope.profile, UberScope.places)
         
-        let scopeString = "\(RidesScope.profile.rawValue) \(RidesScope.places.rawValue)"
+        let scopeString = "\(UberScope.profile.rawValue) \(UberScope.places.rawValue)"
 
-        let scopes = scopeString.toRidesScopesArray()
+        let scopes = scopeString.toUberScopesArray()
         
         XCTAssertEqual(scopes, expectedScopes)
     }
 
-    func testStringToRidesScope_withInvalidScopes()
+    func testStringToUberScope_withInvalidScopes()
     {
-        let expectedScopes : [RidesScope] = [RidesScope]()
+        let expectedScopes : [UberScope] = [UberScope]()
         
         let scopeString = "not actual values"
         
-        let scopes = scopeString.toRidesScopesArray()
+        let scopes = scopeString.toUberScopesArray()
         
         XCTAssertEqual(scopes, expectedScopes)
     }
     
-    func testStringToRidesScope_withNoScopes()
+    func testStringToUberScope_withNoScopes()
     {
-        let expectedScopes : [RidesScope] = [RidesScope]()
+        let expectedScopes : [UberScope] = [UberScope]()
         
         let scopeString = ""
         
-        let scopes = scopeString.toRidesScopesArray()
+        let scopes = scopeString.toUberScopesArray()
         
         XCTAssertEqual(scopes, expectedScopes)
     }
     
-    func testStringToRidesScope_withInvalidAndValidScopes()
+    func testStringToUberScope_withInvalidAndValidScopes()
     {
-        let expectedScopes : [RidesScope] = Array(arrayLiteral: RidesScope.places)
+        let expectedScopes : [UberScope] = Array(arrayLiteral: UberScope.places)
         
-        let scopeString = "not actual values \(RidesScope.places.rawValue)"
+        let scopeString = "not actual values \(UberScope.places.rawValue)"
         
-        let scopes = scopeString.toRidesScopesArray()
+        let scopes = scopeString.toUberScopesArray()
         
         XCTAssertEqual(scopes, expectedScopes)
     }
     
-    func testStringToRidesScope_caseInsensitive()
+    func testStringToUberScope_caseInsensitive()
     {
-        let expectedScopes : [RidesScope] = Array(arrayLiteral: RidesScope.places, RidesScope.history)
+        let expectedScopes : [UberScope] = Array(arrayLiteral: UberScope.places, UberScope.history)
         
         let scopeString = "plAcEs HISTORY"
         
-        let scopes = scopeString.toRidesScopesArray()
+        let scopes = scopeString.toUberScopesArray()
         
         XCTAssertEqual(scopes, expectedScopes)
     }

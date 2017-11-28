@@ -53,23 +53,6 @@ private enum Resources: String {
 }
 
 /**
- Helper function to build array of NSURLQueryItems. A key-value pair with an empty string value is ignored.
- 
- - parameter queries: tuples of key-value pairs
- - returns: an array of NSURLQueryItems
- */
-func queryBuilder(_ queries: (name: String, value: String)...) -> [URLQueryItem] {
-    var queryItems = [URLQueryItem]()
-    for query in queries {
-        if query.name.isEmpty || query.value.isEmpty {
-            continue
-        }
-        queryItems.append(URLQueryItem(name: query.name, value: query.value))
-    }
-    return queryItems
-}
-
-/**
  Endpoints related to components.
  - RideRequestWidget: Ride Request Widget endpoint.
  */
@@ -105,102 +88,6 @@ enum Components: APIEndpoint {
             }
             
             return queryItems
-        }
-    }
-}
-
-/**
- OAuth endpoints.
- 
- - ImplicitLogin: Used to login user and request access to specified scopes via implicit grant.
- - AuthorizationCodeLogin: Used to login user and request access to specified scopes via authorization code grant.
- - Refresh: Used to refresh an access token that has been aquired via SSO
- */
-enum OAuth: APIEndpoint {
-    case implicitLogin(clientID: String, scopes: [RidesScope], redirect: String)
-    case authorizationCodeLogin(clientID: String, redirect: String, scopes: [RidesScope], state: String?)
-    case refresh(clientID: String, refreshToken: String)
-    
-    var method: HTTPMethod {
-        switch self {
-        case .implicitLogin:
-            fallthrough
-        case .authorizationCodeLogin:
-            return .get
-        case .refresh:
-            return .post
-        }
-    }
-    
-    var host: String {
-        return OAuth.regionHost
-    }
-
-    var body: Data? {
-        switch self {
-        case .refresh(let clientID, let refreshToken):
-            let query = queryBuilder(
-                ("client_id", clientID),
-                ("refresh_token", refreshToken)
-            )
-            var components = URLComponents()
-            components.queryItems = query
-            return components.query?.data(using: String.Encoding.utf8)
-        default:
-            return nil
-        }
-    }
-
-    static var regionHost: String {
-        return "https://login.uber.com"
-    }
-    
-    var path: String {
-        switch self {
-        case .implicitLogin:
-            fallthrough
-        case .authorizationCodeLogin:
-            return "/oauth/v2/authorize"
-        case .refresh:
-            return "/oauth/v2/mobile/token"
-        }
-    }
-    
-    var query: [URLQueryItem] {
-        switch self {
-        case .implicitLogin(let clientID, let scopes, let redirect):
-            var loginQuery = baseLoginQuery(clientID, redirect: redirect, scopes: scopes)
-            let additionalQueryItems = queryBuilder(("response_type", "token"))
-            
-            loginQuery.append(contentsOf: additionalQueryItems)
-            return loginQuery
-        case .authorizationCodeLogin(let clientID, let redirect, let scopes, let state):
-            var loginQuery = baseLoginQuery(clientID, redirect: redirect, scopes: scopes)
-            let additionalQueryItems = queryBuilder(("response_type", "code"),
-                                          ("state", state ?? ""))
-            loginQuery.append(contentsOf: additionalQueryItems)
-            return loginQuery
-        case .refresh:
-            return queryBuilder()
-        }
-    }
-    
-    func baseLoginQuery(_ clientID: String, redirect: String, scopes: [RidesScope]) -> [URLQueryItem] {
-        
-        return queryBuilder(
-            ("scope", scopes.toRidesScopeString()),
-            ("client_id", clientID),
-            ("redirect_uri", redirect),
-            ("signup_params", createSignupParameters()))
-    }
-    
-    private func createSignupParameters() -> String {
-        let signupParameters = [ "redirect_to_login" : true ]
-        do {
-            let json = try JSONSerialization.data(withJSONObject: signupParameters, options: JSONSerialization.WritingOptions(rawValue: 0))
-            return json.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength76Characters)
-        } catch _ as NSError {
-            return ""
         }
     }
 }

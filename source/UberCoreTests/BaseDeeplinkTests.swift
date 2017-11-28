@@ -52,23 +52,13 @@ class BaseDeeplinkTests: XCTestCase {
         urlComponents.path = testPath
         urlComponents.queryItems = testQueryItems
         let expectedURL = urlComponents.url
-        
-        guard let baseDeeplink = BaseDeeplink(scheme: testScheme, domain: testDomain, path: testPath, queryItems: testQueryItems) else {
+
+        guard let baseDeeplink = BaseDeeplink(scheme: testScheme, host: testDomain, path: testPath, queryItems: testQueryItems) else {
             XCTFail()
             return
         }
-        
-        
-        guard let queryItems = baseDeeplink.queryItems else {
-            XCTFail()
-            return
-        }
-        
-        XCTAssertEqual(baseDeeplink.scheme, testScheme)
-        XCTAssertEqual(baseDeeplink.domain, testDomain)
-        XCTAssertEqual(baseDeeplink.path, testPath)
-        XCTAssertEqual(queryItems, testQueryItems)
-        XCTAssertEqual(baseDeeplink.deeplinkURL, expectedURL)
+
+        XCTAssertEqual(baseDeeplink.url, expectedURL)
     }
 }
 

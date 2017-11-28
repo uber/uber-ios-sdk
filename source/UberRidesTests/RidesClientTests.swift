@@ -25,7 +25,7 @@
 import XCTest
 import OHHTTPStubs
 import CoreLocation
-import UberCore
+@testable import UberCore
 @testable import UberRides
 
 class RidesClientTests: XCTestCase {
@@ -847,7 +847,7 @@ class RidesClientTests: XCTestCase {
         }
         let refreshToken = "thisIsRefresh"
         let expectedScopeString = "request all_trips profile ride_widgets history places history_lite"
-        let expectedScopes = expectedScopeString.toRidesScopesArray()
+        let expectedScopes = expectedScopeString.toUberScopesArray()
         let expectedScopeSet = Set(expectedScopes)
         
         let expectation = self.expectation(description: "Refresh token completion")

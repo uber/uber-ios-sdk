@@ -45,7 +45,7 @@ class WidgetsEndpointTests: XCTestCase {
         
         let expectedHost = "https://components.uber.com"
         let expectedPath = "/rides/"
-        let expectedQueryItems = queryBuilder( ("env", "sandbox") )
+        let expectedQueryItems = [URLQueryItem(name: "env", value: "sandbox")]
         
         let rideRequestWidget = Components.rideRequestWidget(rideParameters: nil)
         
@@ -61,10 +61,9 @@ class WidgetsEndpointTests: XCTestCase {
         let expectedLong = -41.2
         let expectedHost = "https://components.uber.com"
         let expectedPath = "/rides/"
-        let expectedQueryItems = queryBuilder( ("env", "sandbox"),
-            ("pickup[latitude]", "\(expectedLat)" ),
-            ("pickup[longitude]", "\(expectedLong)")
-        )
+        let expectedQueryItems = [URLQueryItem(name: "env", value: "sandbox"),
+                                  URLQueryItem(name: "pickup[latitude]", value: "\(expectedLat)"),
+                                  URLQueryItem(name: "pickup[longitude]", value: "\(expectedLong)")]
         let pickupLocation = CLLocation(latitude: expectedLat, longitude: expectedLong)
         let rideParametersBuilder = RideParametersBuilder()
         rideParametersBuilder.pickupLocation = pickupLocation
@@ -84,7 +83,7 @@ class WidgetsEndpointTests: XCTestCase {
         
         let expectedHost = "https://components.uber.com"
         let expectedPath = "/rides/"
-        let expectedQueryItems = queryBuilder( ("env", "production") )
+        let expectedQueryItems = [URLQueryItem(name: "env", value: "production")]
         
         let rideRequestWidget = Components.rideRequestWidget(rideParameters: nil)
         

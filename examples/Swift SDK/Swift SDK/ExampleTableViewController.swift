@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UberCore
 import UberRides
 
 class ExampleTableViewController: UITableViewController {

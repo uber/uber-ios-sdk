@@ -1,37 +1,16 @@
 # Example Apps
 
-Example apps can be found in the `examples` folder. To build them, you can use Carthage or Cocoapods. 
+Requires Xcode 9
 
-## Carthage
-From inside the `examples/Swift SDK` or `examples/Obj-C SDK` folder, run:
+There are two sample apps, one written in Objective-C, and another written in Swift.
 
-```
-carthage update --platform iOS
-```
-This will build the required dependencies. Once you do that, open `Swift SDK.xcodeproj` or `Obj-C SDK.xcodeproj` in Xcode and run it.
-
-## CocoaPods
-First, you will have to remove Carthage dependencies. Navigate to the project folder and remove `Cartfile` and `Cartfile.resolved`. If you see a `Carthage` folder, remove that as well. Open .xcworkspace and navigate to  **General** tab, scroll to **Embedded Binaries** select `ObjectMapper.framework` and click the `-` button, do the same for `UberRides.framework`. Now go to  **Build Settings** tab and scroll to **Search Paths**, click on **Framework Search Paths** and remove the line $(PROJECT_DIR)/Carthage/Build/iOS.
-Now go to **Build Phases** find the **Copy Carthage Frameworks** and remove it.
-
-Now, still inside either `examples/Swift SDK` or `examples/Obj-C SDK`, create a new **Podfile** by running `pod init`, then add `pod 'UberRides'` to your main target. If you are using the Swift SDK, make sure to add the line `use_frameworks!`. Your **Podfile** should contain the following information:
-
-
-```ruby
-target 'Obj-C SDK' do
-  use_frameworks!
-  pod 'UberRides'
-end
-```
-
-Then, run the following command to install the dependency:
+The sample apps use [Cocoapods](https://cocoapods.org) for package management. To set up and open the sample apps, navigate to either the `Obj-C SDK` or `Swift SDK` folder and run the following command:
 
 ```bash
 $ pod install
 ```
 
-Now you can build the project.
+After Cocoapods installs the Uber dependencies, open `xcworkspace`, and run!
 
-<p align="center">
-  <img src="https://github.com/uber/rides-ios-sdk/blob/master/img/example_app.png?raw=true" alt="Example App Screenshot"/>
-</p>
+For the Objective-C project, you may run into a compilation error. If so, click on your Pods project and select the `UberRides` target. Search for the `Swift Language Version` property, and change it to "Swift 4.0". Do the same thing for `UberCore`. [See Cocoapods issue](https://github.com/CocoaPods/CocoaPods/issues/6791).
+

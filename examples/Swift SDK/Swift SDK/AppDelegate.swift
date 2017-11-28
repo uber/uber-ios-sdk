@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UberCore
 import UberRides
 
 @UIApplicationMain
@@ -40,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Configuration.shared.isSandbox = true
         
         // Handle incoming SSO Requests
-        _ = RidesAppDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        _ = UberAppDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         return true
     }
 
@@ -68,13 +69,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     @available(iOS 9, *)
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
-        let handledUberURL = RidesAppDelegate.shared.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as Any)
+        let handledUberURL = UberAppDelegate.shared.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as Any)
         
         return handledUberURL
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        let handledUberURL = RidesAppDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
+        let handledUberURL = UberAppDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
         
         return handledUberURL
     }

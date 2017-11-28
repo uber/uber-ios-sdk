@@ -244,7 +244,7 @@ import UberCore
         addConstraints([titleLabelCenterConstraint, metadataLabelCenterConstraint, imageViewCenterConstraint])
     }
     
-    override func colorStyleDidUpdate(_ style: RequestButtonColorStyle) {
+    override open func colorStyleDidUpdate(_ style: UberButtonColorStyle) {
         super.colorStyleDidUpdate(style)
         
         switch style {
@@ -469,13 +469,6 @@ import UberCore
         let image = UIImage(named: name, in: bundle, compatibleWith: nil)
         return image!
     }
-}
-
-// MARK: RideRequestButton structures
-
-@objc public enum RequestButtonColorStyle: Int {
-    case black
-    case white
 }
 
 /**
