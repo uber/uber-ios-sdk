@@ -44,22 +44,40 @@ import CoreLocation
     @objc public private(set) var pickup: RideRequestLocation?
     
     /// The unique ID of the Request.
-    @objc public private(set) var requestID: String
+    @objc public private(set) var requestID: String?
 
     /// The ID of the product
-    @objc public private(set) var productID: String
+    @objc public private(set) var productID: String?
     
     /// The status of the Request indicating state.
     @objc public private(set) var status: RideStatus
     
     /// The surge pricing multiplier used to calculate the increased price of a Request.
-    @objc public private(set) var surgeMultiplier: Double
-    
+    @nonobjc public private(set) var surgeMultiplier: Double?
+
+    /// The surge pricing multiplier used to calculate the increased price of a Request.
+    @objc(surgeMultiplier) public var objc_surgeMultiplier: NSNumber? {
+        if let surgeMultiplier = surgeMultiplier {
+            return NSNumber(value: surgeMultiplier)
+        } else {
+            return nil
+        }
+    }
+
     /// The object that contains vehicle details. Only non-null during an ongoing trip.
     @objc public private(set) var vehicle: Vehicle?
 
     /// True if the ride is an UberPOOL ride. False otherwise.
-    @objc public private(set) var isShared: Bool
+    @nonobjc public private(set) var isShared: Bool?
+
+    /// True if the ride is an UberPOOL ride. False otherwise.
+    @objc(isShared) public var objc_isShared: NSNumber? {
+        if let isShared = isShared {
+            return NSNumber(value: isShared)
+        } else {
+            return nil
+        }
+    }
 
     enum CodingKeys: String, CodingKey {
         case destination     = "destination"
@@ -80,11 +98,11 @@ import CoreLocation
         driver = try container.decodeIfPresent(Driver.self, forKey: .driver)
         driverLocation = try container.decodeIfPresent(RideRequestLocation.self, forKey: .driverLocation)
         pickup = try container.decodeIfPresent(RideRequestLocation.self, forKey: .pickup)
-        requestID = try container.decode(String.self, forKey: .requestID)
-        productID = try container.decode(String.self, forKey: .productID)
+        requestID = try container.decodeIfPresent(String.self, forKey: .requestID)
+        productID = try container.decodeIfPresent(String.self, forKey: .productID)
         surgeMultiplier = try container.decodeIfPresent(Double.self, forKey: .surgeMultiplier) ?? 1.0
         vehicle = try container.decodeIfPresent(Vehicle.self, forKey: .vehicle)
         status = try container.decodeIfPresent(RideStatus.self, forKey: .status) ?? .unknown
-        isShared = try container.decode(Bool.self, forKey: .isShared)
+        isShared = try container.decodeIfPresent(Bool.self, forKey: .isShared)
     }
 }

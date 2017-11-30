@@ -130,10 +130,11 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
         ridesClient.requestRide(parameters: builder.build(), completion: { ride, response in
             DispatchQueue.main.async(execute: {
                 self.checkError(response)
-                if let ride = ride {
+                if let ride = ride,
+                    let requestID = ride.requestID {
                     self.statusLabel.text = "Processing"
                     
-                    self.updateRideStatus(ride.requestID, index: 0)
+                    self.updateRideStatus(requestID, index: 0)
                 } else {
                     self.requestButton.isEnabled = true
                 }
@@ -202,7 +203,7 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
         let updateStatusEndpoint = URL(string: "https://sandbox-api.uber.com/v1/sandbox/requests/\(requestID)")!
         var request = URLRequest(url: updateStatusEndpoint)
         request.httpMethod = "PUT"
-        request.setValue("Bearer \(token.tokenString!)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(token.tokenString)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         do {
             let data = try JSONSerialization.data(withJSONObject: ["status":status], options: .prettyPrinted)

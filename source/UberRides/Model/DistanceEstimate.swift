@@ -24,19 +24,39 @@
 
 // MARK: DistanceEstimate
 
+import UberCore
+
 /**
  *  Estimate information on an Uber trip.
  */
 @objc(UBSDKDistanceEstimate) public class DistanceEstimate: NSObject, Codable {
     
     /// Expected activity distance.
-    @objc public private(set) var distance: Double
+    @nonobjc public private(set) var distance: Double?
+
+    /// Expected activity distance.
+    @objc(distance) public var objc_distance: NSNumber? {
+        if let distance = distance {
+            return NSNumber(value: distance)
+        } else {
+            return nil
+        }
+    }
     
     /// The unit of distance (mile or km).
-    @objc public private(set) var distanceUnit: String
-    
+    @objc public private(set) var distanceUnit: String?
+
     /// Expected activity duration (in seconds).
-    @objc public private(set) var duration: Int
+    @nonobjc public private(set) var duration: Int?
+
+    /// Expected activity duration (in seconds).
+    @objc(duration) public var objc_duration: NSNumber? {
+        if let duration = duration {
+            return NSNumber(value: duration)
+        } else {
+            return nil
+        }
+    }
 
     enum CodingKeys: String, CodingKey {
         case distance        = "distance_estimate"
@@ -46,8 +66,8 @@
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        distance = try container.decode(Double.self, forKey: .distance)
-        distanceUnit = try container.decode(String.self, forKey: .distanceUnit)
-        duration = try container.decode(Int.self, forKey: .duration)
+        distance = try container.decodeIfPresent(Double.self, forKey: .distance)
+        distanceUnit = try container.decodeIfPresent(String.self, forKey: .distanceUnit)
+        duration = try container.decodeIfPresent(Int.self, forKey: .duration)
     }
 }

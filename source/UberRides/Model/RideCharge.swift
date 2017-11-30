@@ -28,20 +28,30 @@
  *  Describes the charges made against the rider in a ride receipt.
  */
 @objc(UBSDKRideCharge) public class RideCharge: NSObject, Codable {
-    
     /// The amount of the charge.
-    @objc public private(set) var amount: Double
+    @nonobjc public private(set) var amount: Double?
+
+    /// The amount of the charge.
+    @objc(amount) public var objc_amount: NSNumber? {
+        if let amount = amount {
+            return NSNumber(value: amount)
+        } else {
+            return nil
+        }
+    }
     
     /// The name of the charge.
-    @objc public private(set) var name: String
+    @objc public private(set) var name: String?
     
     /// The type of the charge.
-    @objc public private(set) var type: String
+    @objc public private(set) var type: String?
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        amount = try Double(container.decode(String.self, forKey: .amount)) ?? 0.0
-        name = try container.decode(String.self, forKey: .name)
-        type = try container.decode(String.self, forKey: .type)
+        if let amountString = try container.decodeIfPresent(String.self, forKey: .amount) {
+            amount = Double(amountString)
+        }
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        type = try container.decodeIfPresent(String.self, forKey: .type)
     }
 }
