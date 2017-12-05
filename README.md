@@ -13,14 +13,14 @@ This [Swift library](https://developer.apple.com/library/ios/documentation/Gener
 To install the Uber Rides SDK, you may use [CocoaPods](http://cocoapods.org), [Carthage](https://github.com/Carthage/Carthage), or add it to your project manually
 
 ```ruby
-pod 'UberRides', '~> 0.8'
+pod 'UberRides', '~> 0.9'
 ```
 
 If you get compilation errors with CocoaPods, you may be using Swift 3.2 or no Swift at all in your main target. In that scenario, CocoaPods will set the swift version incorrectly. [See issue](https://github.com/CocoaPods/CocoaPods/issues/6791). To fix this, click on your Pods project and select the `UberRides` target. Search for the `Swift Language Version` property, and change it to "Swift 4.0".
 
 ### Carthage
 ```
-github "uber/rides-ios-sdk" ~> 0.8
+github "uber/rides-ios-sdk" ~> 0.9
 ```
 
 ## Getting Started
@@ -362,7 +362,7 @@ If you want to provide a more custom experience in your app, there are a few cla
 ### Uber Rides API Endpoints
 The SDK exposes all the endpoints available in the [Uber Developers documentation](https://developer.uber.com/docs). Some endpoints can be authenticated with a server token, but for most endpoints, you will require a bearer token. A bearer token can be retrieved via implicit grant, authorization code grant, or SSO. To authorize [privileged scopes](https://developer.uber.com/docs/scopes#section-privileged-scopes), you must use authorization code grant or SSO.
 
-Read the full API documentation at [CocoaDocs](http://cocoadocs.org/docsets/UberRides/0.8.0/)
+Read the full API documentation at [CocoaDocs](http://cocoadocs.org/docsets/UberRides/0.9.0/)
 
 The `RidesClient` is your source to access all the endpoints available in the Uber Rides API. With just your server token, you can get a list of Uber products as well as price and time estimates. 
 
