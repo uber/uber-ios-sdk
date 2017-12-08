@@ -25,6 +25,16 @@
 import UberCore
 
 @objc(UBSDKDeeplinkRequestingBehavior) public class DeeplinkRequestingBehavior : NSObject, RideRequesting {
+    private var fallbackType: DeeplinkFallbackType?
+
+    @objc public init(fallbackType: DeeplinkFallbackType) {
+        self.fallbackType = fallbackType
+        super.init()
+    }
+
+    @objc public override init() {
+        super.init()
+    }
         
     /**
      Requests a ride using a RequestDeeplink that is constructed using the provided
@@ -37,22 +47,15 @@ import UberCore
         guard let rideParameters = rideParameters else {
             return
         }
-        let deeplink = createDeeplink(rideParameters: rideParameters)
-        
-        let deeplinkCompletion: (NSError?) -> () = { error in
-            if let error = error, error.code != DeeplinkErrorType.deeplinkNotFollowed.rawValue {
-                self.createAppStoreDeeplink(rideParameters: rideParameters).execute(completion: nil)
-            }
-        }
-        
-        deeplink.execute(completion: deeplinkCompletion)
+
+        createDeeplink(rideParameters: rideParameters).execute()
     }
-    
+
     func createDeeplink(rideParameters: RideParameters) -> RequestDeeplink {
-        return RequestDeeplink(rideParameters: rideParameters)
-    }
-    
-    func createAppStoreDeeplink(rideParameters: RideParameters) -> Deeplinking {
-        return AppStoreDeeplink(userAgent: rideParameters.userAgent)
+        if let fallbackType = fallbackType {
+            return RequestDeeplink(rideParameters: rideParameters, fallbackType: fallbackType)
+        } else {
+            return RequestDeeplink(rideParameters: rideParameters)
+        }
     }
 }

@@ -121,7 +121,7 @@ class RequestDeeplinkMock : RequestDeeplink {
     var testClosure: ((URL?) -> (Bool))?
     init(rideParameters: RideParameters, testClosure: ((URL?) -> (Bool))?) {
         self.testClosure = testClosure
-        super.init(rideParameters: rideParameters)
+        super.init(rideParameters: rideParameters, fallbackType: .mobileWeb)
     }
     
     override func execute(completion: ((NSError?) -> ())? = nil) {
@@ -173,6 +173,8 @@ class DeeplinkRequestingBehaviorMock: DeeplinkRequestingBehavior {
             backingDeeplinkURL = newDeeplinkURL
         }
     }
+
+    var fallbackURLs: [URL] = []
 
     @objc func execute(completion: ((NSError?) -> ())?) {
         if let closure = executeClosure {

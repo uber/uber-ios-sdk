@@ -60,6 +60,24 @@ class BaseDeeplinkTests: XCTestCase {
 
         XCTAssertEqual(baseDeeplink.url, expectedURL)
     }
+
+    func testUberSchemeResultsInFallbacks() {
+        guard let deeplink = BaseDeeplink(scheme: "uber", host: "", path: "", queryItems: nil) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(deeplink.fallbackURLs.count, 2)
+        XCTAssertEqual(deeplink.fallbackURLs[0].scheme, "uber-enterprise")
+        XCTAssertEqual(deeplink.fallbackURLs[1].scheme, "uber-nightly")
+    }
+
+    func testNonUberSchemeResultsInNoFallbacks() {
+        guard let deeplink = BaseDeeplink(scheme: "uberauth", host: "", path: "", queryItems: nil) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(deeplink.fallbackURLs.count, 0)
+    }
 }
 
 
