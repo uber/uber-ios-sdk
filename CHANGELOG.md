@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.9.0] TBD
+
+### Changes
+
+* All model properties are now Optionals. 
+  * In Objective-C, `Double`, `Int`, and `Bool` are represented by NSNumber `boolValue`, `intValue`, and `doubleValue`. The `UBSDKDistanceUnavailable`, `UBSDKEstimateUnavailable`, and `UBSDKBearingUnavailable` constants are now removed. 
+
 ## [0.8.1] 2018-01-31
 
 ### Fixes

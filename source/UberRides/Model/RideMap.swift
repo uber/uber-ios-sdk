@@ -28,12 +28,11 @@
  *  Visual representation of a ride request, only available after a request is accepted.
  */
 @objc(UBSDKRideMap) public class RideMap: NSObject, Codable {
-    
     /// URL to a map representing the requested trip.
-    @objc public private(set) var path: URL
+    @objc public private(set) var path: URL?
     
     /// Unique identifier representing a ride request.
-    @objc public private(set) var requestID: String
+    @objc public private(set) var requestID: String?
 
     enum CodingKeys: String, CodingKey {
         case path      = "href"
@@ -42,7 +41,7 @@
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        path = try container.decode(URL.self, forKey: .path)
-        requestID = try container.decode(String.self, forKey: .requestID)
+        path = try container.decodeIfPresent(URL.self, forKey: .path)
+        requestID = try container.decodeIfPresent(String.self, forKey: .requestID)
     }
 }

@@ -30,19 +30,28 @@
 @objc(UBSDKDriver) public class Driver: NSObject, Codable {
     
     /// The first name of the driver.
-    @objc public private(set) var name: String
+    @objc public private(set) var name: String?
     
     /// The URL to the photo of the driver.
-    @objc public private(set) var pictureURL: URL
+    @objc public private(set) var pictureURL: URL?
 
     /// The formatted phone number for calling the driver.
-    @objc public private(set) var phoneNumber: String
+    @objc public private(set) var phoneNumber: String?
 
     /// The formatted phone number for sending a SMS to the driver.
     @objc public private(set) var smsNumber: String?
     
     /// The driver's star rating out of 5 stars.
-    @objc public private(set) var rating: Double
+    @nonobjc public private(set) var rating: Double?
+
+    /// The driver's star rating out of 5 stars.
+    @objc(rating) public var objc_rating: NSNumber? {
+        if let rating = rating {
+            return NSNumber(value: rating)
+        } else {
+            return nil
+        }
+    }
 
     enum CodingKeys: String, CodingKey {
         case name        = "name"
@@ -54,10 +63,10 @@
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(String.self, forKey: .name)
-        pictureURL = try container.decode(URL.self, forKey: .pictureURL)
-        phoneNumber = try container.decode(String.self, forKey: .phoneNumber)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        pictureURL = try container.decodeIfPresent(URL.self, forKey: .pictureURL)
+        phoneNumber = try container.decodeIfPresent(String.self, forKey: .phoneNumber)
         smsNumber = try container.decodeIfPresent(String.self, forKey: .smsNumber)
-        rating = try container.decode(Double.self, forKey: .rating)
+        rating = try container.decodeIfPresent(Double.self, forKey: .rating)
     }
 }

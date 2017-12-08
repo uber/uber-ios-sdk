@@ -30,13 +30,13 @@
 @objc(UBSDKVehicle) public class Vehicle: NSObject, Codable {
     
     /// The license plate number of the vehicle.
-    @objc public private(set) var licensePlate: String
+    @objc public private(set) var licensePlate: String?
     
     /// The vehicle make or brand.
-    @objc public private(set) var make: String
+    @objc public private(set) var make: String?
     
     /// The vehicle model or type.
-    @objc public private(set) var model: String
+    @objc public private(set) var model: String?
     
     /// The URL to a stock photo of the vehicle
     @objc public private(set) var pictureURL: URL?
@@ -50,9 +50,9 @@
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        licensePlate = try container.decode(String.self, forKey: .licensePlate)
-        make = try container.decode(String.self, forKey: .make)
-        model = try container.decode(String.self, forKey: .model)
+        licensePlate = try container.decodeIfPresent(String.self, forKey: .licensePlate)
+        make = try container.decodeIfPresent(String.self, forKey: .make)
+        model = try container.decodeIfPresent(String.self, forKey: .model)
         pictureURL = try container.decodeIfPresent(URL.self, forKey: .pictureURL)
     }
 }

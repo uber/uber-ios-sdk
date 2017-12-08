@@ -111,7 +111,7 @@ import MapKit
         self.upfrontFare = upfrontFare
     }
 
-    var userAgent: String {
+    var userAgent: String? {
         var userAgentString: String = ""
         if let versionNumber: String = Bundle(for: type(of: self)).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
             userAgentString = "rides-ios-v\(versionNumber)"

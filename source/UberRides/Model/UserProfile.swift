@@ -45,14 +45,14 @@
 
     /// Unique identifier of the Uber user. Deprecated, use riderID instead.
     @available(*, deprecated, message:"use riderID instead")
-    @objc public var UUID: String {
+    @objc public var UUID: String? {
         // This implementation gets rid of the deprecated warning while compiling this SDK.
         return _UUID
     }
-    private let _UUID: String
+    private let _UUID: String?
 
     /// Unique identifier of the Uber user.
-    @objc public private(set) var riderID: String
+    @objc public private(set) var riderID: String?
 
     enum CodingKeys: String, CodingKey {
         case firstName   = "first_name"
@@ -71,7 +71,7 @@
         email = try container.decodeIfPresent(String.self, forKey: .email)
         picturePath = try container.decodeIfPresent(String.self, forKey: .picturePath)
         promoCode = try container.decodeIfPresent(String.self, forKey: .promoCode)
-        _UUID = try container.decode(String.self, forKey: ._UUID)
-        riderID = try container.decode(String.self, forKey: .riderID)
+        _UUID = try container.decodeIfPresent(String.self, forKey: ._UUID)
+        riderID = try container.decodeIfPresent(String.self, forKey: .riderID)
     }
 }
