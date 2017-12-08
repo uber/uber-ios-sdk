@@ -222,6 +222,8 @@ extension ImplicitGrantExampleViewController: UITableViewDataSource {
                 dateFormatter.dateStyle = .short
                 dateFormatter.timeStyle = .short
                 cell.detailTextLabel?.text = "\(dateFormatter.string(from: startTime)) to \(dateFormatter.string(from: endTime))"
+            } else {
+                cell.detailTextLabel?.text = ""
             }
             
             return cell
