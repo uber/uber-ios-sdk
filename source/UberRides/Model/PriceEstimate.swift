@@ -50,52 +50,77 @@ struct PriceEstimates: Codable {
     /// Expected activity distance (in miles).
     @nonobjc public private(set) var distance: Double?
 
-    /// Expected activity distance (in miles). -1 if not present.
-    @objc(distance) public var objc_distance: Double {
-        return distance ?? UBSDKDistanceUnavailable
+    /// Expected activity distance (in miles).
+    @objc(distance) public var objc_distance: NSNumber? {
+        if let distance = distance {
+            return NSNumber(value: distance)
+        } else {
+            return nil
+        }
     }
-    
+
     /// Expected activity duration (in seconds).
     @nonobjc public private(set) var duration: Int?
 
-    /// Expected activity duration (in seconds). UBSDKEstimateUnavailable if not present.
-    @objc(duration) public var objc_duration: Int {
-        return duration ?? UBSDKEstimateUnavailable
+    /// Expected activity duration (in seconds).
+    @objc(duration) public var objc_duration: NSNumber? {
+        if let duration = duration {
+            return NSNumber(value: duration)
+        } else {
+            return nil
+        }
     }
-    
+
     /// A formatted string representing the estimate in local currency. Could be range, single number, or "Metered" for TAXI.
     @objc public private(set) var estimate: String?
-    
+
     /// Upper bound of the estimated price.
     @nonobjc public private(set) var highEstimate: Int?
 
-    /// Upper bound of the estimated price. UBSDKEstimateUnavailable if not present.
-    @objc(highEstimate) public var objc_highEstimate: Int {
-        return highEstimate ?? UBSDKEstimateUnavailable
+    /// Upper bound of the estimated price.
+    @objc(highEstimate) public var objc_highEstimate: NSNumber? {
+        if let highEstimate = highEstimate {
+            return NSNumber(value: highEstimate)
+        } else {
+            return nil
+        }
     }
-    
+
     /// Lower bound of the estimated price.
     @nonobjc public private(set) var lowEstimate: Int?
 
-    /// Lower bound of the estimated price. UBSDKEstimateUnavailable if not present.
-    @objc(lowEstimate) public var objc_lowEstimate: Int {
-        return lowEstimate ?? UBSDKEstimateUnavailable
+    /// Lower bound of the estimated price.
+    @objc(lowEstimate) public var objc_lowEstimate: NSNumber? {
+        if let lowEstimate = lowEstimate {
+            return NSNumber(value: lowEstimate)
+        } else {
+            return nil
+        }
     }
-    
+
     /// Display name of product. Ex: "UberBLACK".
     @objc public private(set) var name: String?
-    
+
     /// Unique identifier representing a specific product for a given latitude & longitude.
     @objc public private(set) var productID: String?
-    
+
     /// The unique identifier of the surge session for a user. Nil for no surge.
     @objc public private(set) var surgeConfirmationID: String?
-    
+
     /// The URL a user must visit to accept surge pricing.
     @objc public private(set) var surgeConfirmationURL: URL?
-    
+
     /// Expected surge multiplier (active if surge is greater than 1).
-    @objc public private(set) var surgeMultiplier: Double
+    @nonobjc public private(set) var surgeMultiplier: Double?
+
+    /// Expected surge multiplier (active if surge is greater than 1).
+    @objc(surgeMultiplier) public var objc_surgeMultiplier: NSNumber? {
+        if let surgeMultiplier = surgeMultiplier {
+            return NSNumber(value: surgeMultiplier)
+        } else {
+            return nil
+        }
+    }
 
     enum CodingKeys: String, CodingKey {
         case currencyCode         = "currency_code"
@@ -123,6 +148,6 @@ struct PriceEstimates: Codable {
         productID = try container.decodeIfPresent(String.self, forKey: .productID)
         surgeConfirmationID = try container.decodeIfPresent(String.self, forKey: .surgeConfirmationID)
         surgeConfirmationURL = try container.decodeIfPresent(URL.self, forKey: .surgeConfirmationURL)
-        surgeMultiplier = try container.decodeIfPresent(Double.self, forKey: .surgeMultiplier) ?? 1.0
+        surgeMultiplier = try container.decodeIfPresent(Double.self, forKey: .surgeMultiplier)
     }
 }

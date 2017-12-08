@@ -66,9 +66,9 @@ class ObjectMappingTests: XCTestCase {
                 
                 let serviceFees = priceDetails!.serviceFees
                 XCTAssertNotNil(serviceFees)
-                XCTAssertEqual(serviceFees.count, 1)
-                XCTAssertEqual(serviceFees.first!.name, "Booking fee")
-                XCTAssertEqual(serviceFees.first!.fee, 2.0)
+                XCTAssertEqual(serviceFees?.count, 1)
+                XCTAssertEqual(serviceFees?.first?.name, "Booking fee")
+                XCTAssertEqual(serviceFees?.first?.fee, 2.0)
             }
         }
     }
@@ -137,8 +137,8 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(uberX?.productGroup, ProductGroup.uberX)
                 XCTAssertEqual(uberX?.productDescription, "Everyday rides that are always smarter than a taxi")
 
-                XCTAssertEqual(uberX?.priceDetails?.serviceFees.first?.fee, 0.55)
-                XCTAssertEqual(uberX?.priceDetails?.serviceFees.first?.name, "Booking fee")
+                XCTAssertEqual(uberX?.priceDetails?.serviceFees?.first?.fee, 0.55)
+                XCTAssertEqual(uberX?.priceDetails?.serviceFees?.first?.name, "Booking fee")
                 XCTAssertEqual(uberX?.priceDetails?.costPerMinute, 0.4)
                 XCTAssertEqual(uberX?.priceDetails?.distanceUnit, "km")
                 XCTAssertEqual(uberX?.priceDetails?.minimumFee, 9)
@@ -298,9 +298,9 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertNotNil(history[0].startCity)
                 
                 let city = history[0].startCity
-                XCTAssertEqual(city.name, "San Francisco")
-                XCTAssertEqual(city.latitude, 37.7749295)
-                XCTAssertEqual(city.longitude, -122.4194155)
+                XCTAssertEqual(city?.name, "San Francisco")
+                XCTAssertEqual(city?.latitude, 37.7749295)
+                XCTAssertEqual(city?.longitude, -122.4194155)
             }
         }
     }
@@ -397,7 +397,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(trip.requestID, "43faeac4-1634-4a0c-9826-783e3a3d1668")
                 XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
                 XCTAssertEqual(trip.status, RideStatus.processing)
-                XCTAssertFalse(trip.isShared)
+                XCTAssertEqual(trip.isShared, false)
 
                 XCTAssertNil(trip.driverLocation)
                 XCTAssertNil(trip.vehicle)
@@ -431,7 +431,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(trip.requestID, "17cb78a7-b672-4d34-a288-a6c6e44d5315")
                 XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
                 XCTAssertEqual(trip.status, RideStatus.accepted)
-                XCTAssertFalse(trip.isShared)
+                XCTAssertEqual(trip.isShared, false)
                 XCTAssertEqual(trip.surgeMultiplier, 1.0)
 
                 XCTAssertNotNil(trip.driverLocation)
@@ -480,7 +480,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(trip.requestID, "a274f565-cdb7-4a64-947d-042dfd185eed")
                 XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
                 XCTAssertEqual(trip.status, RideStatus.arriving)
-                XCTAssertFalse(trip.isShared)
+                XCTAssertEqual(trip.isShared, false)
 
                 XCTAssertNotNil(trip.driverLocation)
                 XCTAssertEqual(trip.driverLocation?.latitude, 37.7751956968)
@@ -528,7 +528,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(trip.requestID, "a274f565-cdb7-4a64-947d-042dfd185eed")
                 XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
                 XCTAssertEqual(trip.status, RideStatus.inProgress)
-                XCTAssertFalse(trip.isShared)
+                XCTAssertEqual(trip.isShared, false)
 
                 XCTAssertNotNil(trip.driverLocation)
                 XCTAssertEqual(trip.driverLocation?.latitude, 37.7751956968)
@@ -576,7 +576,7 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(trip.requestID, "a274f565-cdb7-4a64-947d-042dfd185eed")
                 XCTAssertEqual(trip.productID, "a1111c8c-c720-46c3-8534-2fcdd730040d")
                 XCTAssertEqual(trip.status, RideStatus.completed)
-                XCTAssertFalse(trip.isShared)
+                XCTAssertEqual(trip.isShared, false)
 
                 XCTAssertNil(trip.driverLocation)
                 XCTAssertNil(trip.vehicle)
@@ -605,9 +605,9 @@ class ObjectMappingTests: XCTestCase {
                 XCTAssertEqual(estimate!.pickupEstimate, 2)
 
                 XCTAssertNotNil(estimate?.fare)
-                XCTAssertEqual(estimate?.fare?.breakdown.first?.name, "Base Fare")
-                XCTAssertEqual(estimate?.fare?.breakdown.first?.type, UpfrontFareComponentType.baseFare)
-                XCTAssertEqual(estimate?.fare?.breakdown.first?.value, 11.95)
+                XCTAssertEqual(estimate?.fare?.breakdown?.first?.name, "Base Fare")
+                XCTAssertEqual(estimate?.fare?.breakdown?.first?.type, UpfrontFareComponentType.baseFare)
+                XCTAssertEqual(estimate?.fare?.breakdown?.first?.value, 11.95)
                 XCTAssertEqual(estimate?.fare?.value, 11.95)
                 XCTAssertEqual(estimate?.fare?.fareID, "3d957d6ab84e88209b6778d91bd4df3c12d17b60796d89793d6ed01650cbabfe")
                 XCTAssertEqual(estimate?.fare?.expiresAt, Date(timeIntervalSince1970: 1503702982))
@@ -743,18 +743,18 @@ class ObjectMappingTests: XCTestCase {
                 
                 let chargeAdjustments = receipt.chargeAdjustments
                 
-                XCTAssertEqual(chargeAdjustments.count, 1)
-                XCTAssertEqual(chargeAdjustments.first?.name, "Booking Fee")
-                XCTAssertEqual(chargeAdjustments.first?.type, "booking_fee")
+                XCTAssertEqual(chargeAdjustments?.count, 1)
+                XCTAssertEqual(chargeAdjustments?.first?.name, "Booking Fee")
+                XCTAssertEqual(chargeAdjustments?.first?.type, "booking_fee")
 
                 XCTAssertEqual(receipt.subtotal, "$12.78")
                 XCTAssertEqual(receipt.totalCharged, "$5.92")
                 XCTAssertEqual(receipt.totalFare, "$12.79")
                 XCTAssertEqual(receipt.totalOwed, 0.0)
                 XCTAssertEqual(receipt.currencyCode, "USD")
-                XCTAssertEqual(receipt.duration.hour, 0)
-                XCTAssertEqual(receipt.duration.minute, 11)
-                XCTAssertEqual(receipt.duration.second, 32)
+                XCTAssertEqual(receipt.duration?.hour, 0)
+                XCTAssertEqual(receipt.duration?.minute, 11)
+                XCTAssertEqual(receipt.duration?.second, 32)
                 XCTAssertEqual(receipt.distance, "1.87")
                 XCTAssertEqual(receipt.distanceLabel, "miles")
                 

@@ -405,7 +405,8 @@ import UberCore
                 if let price = estimate.estimate,
                     let productName = estimate.name,
                     estimate.productID == productID {
-                    if estimate.surgeMultiplier > 1.0 {
+                    if let surgeMultiplier = estimate.surgeMultiplier,
+                        surgeMultiplier > 1.0 {
                         surge = true
                     }
                     let priceEstimateString = String(format: NSLocalizedString("%1$@ for %2$@", bundle: Bundle(for: type(of: self)), comment: "Price estimate string for an Uber product"), price, productName)

@@ -210,18 +210,21 @@ extension ImplicitGrantExampleViewController: UITableViewDataSource {
             return cell
         case HistorySection:
             let trip = history[indexPath.row]
-            let startCity = trip.startCity.name
-            let startTime = trip.startTime
-            let endTime = trip.endTime
+            let startCity = trip.startCity?.name ?? ""
             
             let cell = tableView.dequeueReusableCell(withIdentifier: HistoryCell) ??
                 UITableViewCell(style: .default, reuseIdentifier: HistoryCell)
             cell.textLabel?.text = startCity
             
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .short
-            dateFormatter.timeStyle = .short
-            cell.detailTextLabel?.text = "\(dateFormatter.string(from: startTime)) to \(dateFormatter.string(from: endTime))"
+            if let startTime = trip.startTime,
+                let endTime = trip.endTime {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = .short
+                dateFormatter.timeStyle = .short
+                cell.detailTextLabel?.text = "\(dateFormatter.string(from: startTime)) to \(dateFormatter.string(from: endTime))"
+            } else {
+                cell.detailTextLabel?.text = ""
+            }
             
             return cell
         default:

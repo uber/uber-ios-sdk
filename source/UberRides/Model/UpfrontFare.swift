@@ -21,22 +21,31 @@
 
 @objc(UBSDKUpfrontFare) public class UpfrontFare: NSObject, Codable {
     /// A unique upfront fare identifier.
-    @objc public private(set) var fareID: String
+    @objc public private(set) var fareID: String?
 
     /// The total upfront fare value.
-    @objc public private(set) var value: Double
+    @nonobjc public private(set) var value: Double?
+
+    /// The total upfront fare value.
+    @objc(value) public var objc_value: NSNumber? {
+        if let value = value {
+            return NSNumber(value: value)
+        } else {
+            return nil
+        }
+    }
 
     /// ISO 4217 currency code.
-    @objc public private(set) var currencyCode: String
+    @objc public private(set) var currencyCode: String?
 
     /// Formatted string of estimate in local currency.
-    @objc public private(set) var display: String
+    @objc public private(set) var display: String?
 
     /// The upfront fare expiration time
-    @objc public private(set) var expiresAt: Date
+    @objc public private(set) var expiresAt: Date?
 
     /// The components that make up the upfront fare
-    @objc public private(set) var breakdown: [UpfrontFareComponent]
+    @objc public private(set) var breakdown: [UpfrontFareComponent]?
 
     enum CodingKeys: String, CodingKey {
         case fareID = "fare_id"
@@ -49,12 +58,12 @@
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        fareID = try container.decode(String.self, forKey: .fareID)
-        value = try container.decode(Double.self, forKey: .value)
-        currencyCode = try container.decode(String.self, forKey: .currencyCode)
-        display = try container.decode(String.self, forKey: .display)
-        expiresAt = try container.decode(Date.self, forKey: .expiresAt)
-        breakdown = try container.decode([UpfrontFareComponent].self, forKey: .breakdown)
+        fareID = try container.decodeIfPresent(String.self, forKey: .fareID)
+        value = try container.decodeIfPresent(Double.self, forKey: .value)
+        currencyCode = try container.decodeIfPresent(String.self, forKey: .currencyCode)
+        display = try container.decodeIfPresent(String.self, forKey: .display)
+        expiresAt = try container.decodeIfPresent(Date.self, forKey: .expiresAt)
+        breakdown = try container.decodeIfPresent([UpfrontFareComponent].self, forKey: .breakdown)
     }
 }
 
@@ -63,16 +72,25 @@
     @objc public private(set) var type: UpfrontFareComponentType
 
     /// Value of the upfront fare component
-    @objc public private(set) var value: Double
+    @nonobjc public private(set) var value: Double?
+
+    /// Value of the upfront fare component
+    @objc(value) public var objc_value: NSNumber? {
+        if let value = value {
+            return NSNumber(value: value)
+        } else {
+            return nil
+        }
+    }
 
     /// A string that can be displayed to the user representing this portion of the fare
-    @objc public private(set) var name: String
+    @objc public private(set) var name: String?
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        type = try container.decode(UpfrontFareComponentType.self, forKey: .type)
-        value = try container.decode(Double.self, forKey: .value)
-        name = try container.decode(String.self, forKey: .name)
+        type = try container.decodeIfPresent(UpfrontFareComponentType.self, forKey: .type) ?? .unknown
+        value = try container.decodeIfPresent(Double.self, forKey: .value)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
     }
 }
 
