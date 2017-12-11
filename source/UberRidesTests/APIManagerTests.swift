@@ -277,7 +277,7 @@ class APIManagerTests: XCTestCase {
             XCTAssert(false)
         }
         XCTAssertNotNil(request.httpBody)
-        XCTAssertEqual(request.allHTTPHeaderFields![HTTPHeader.ContentType.rawValue], "application/json")
+        XCTAssertEqual(request.allHTTPHeaderFields!["Content-Type"], "application/json")
     }
     
     /**
@@ -363,7 +363,7 @@ class APIManagerTests: XCTestCase {
             XCTAssert(false)
         }
         if let headers = request.allHTTPHeaderFields {
-            XCTAssertEqual(headers[HTTPHeader.ContentType.rawValue], "application/json")
+            XCTAssertEqual(headers["Content-Type"], "application/json")
         } else {
             XCTAssert(false)
         }
@@ -400,7 +400,7 @@ class APIManagerTests: XCTestCase {
         }
         
         if let headers = request.allHTTPHeaderFields {
-            XCTAssertEqual(headers[HTTPHeader.ContentType.rawValue], "application/json")
+            XCTAssertEqual(headers["Content-Type"], "application/json")
         } else {
             XCTAssert(false)
         }
@@ -441,7 +441,7 @@ class APIManagerTests: XCTestCase {
         }
         
         if let headers = request.allHTTPHeaderFields {
-            XCTAssertEqual(headers[HTTPHeader.ContentType.rawValue], "application/json")
+            XCTAssertEqual(headers["Content-Type"], "application/json")
         } else {
             XCTAssert(false)
         }
@@ -507,7 +507,7 @@ class APIManagerTests: XCTestCase {
         }
         XCTAssertNil(request.httpBody)
         if let headers = request.allHTTPHeaderFields {
-            XCTAssertEqual(headers[HTTPHeader.ContentType.rawValue], "application/json")
+            XCTAssertEqual(headers["Content-Type"], "application/json")
         } else {
             XCTAssert(false)
         }
@@ -526,7 +526,7 @@ class APIManagerTests: XCTestCase {
         }
         XCTAssertNil(request.httpBody)
         if let headers = request.allHTTPHeaderFields {
-            XCTAssertEqual(headers[HTTPHeader.ContentType.rawValue], "application/json")
+            XCTAssertEqual(headers["Content-Type"], "application/json")
         } else {
             XCTAssert(false)
         }

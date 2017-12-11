@@ -80,14 +80,6 @@ public extension APIEndpoint {
 }
 
 /**
- Enum for HTTPHeaders.
- */
-public enum HTTPHeader: String {
-    case Authorization = "Authorization"
-    case ContentType = "Content-Type"
-}
-
-/**
  Enum for HTTPMethods
  */
 public enum HTTPMethod: String {

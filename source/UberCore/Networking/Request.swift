@@ -110,9 +110,9 @@ public class Request {
             urlRequest.setValue("iOS Rides SDK v\(versionNumber)", forHTTPHeaderField: "X-Uber-User-Agent")
         }
         if let token = bearerToken {
-            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: HTTPHeader.Authorization.rawValue)
+            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         } else if let token = serverToken {
-            urlRequest.setValue("Token \(token)", forHTTPHeaderField: HTTPHeader.Authorization.rawValue)
+            urlRequest.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
         }
         if let headers = endpoint.headers {
             for (header,value) in headers {

@@ -285,7 +285,7 @@ enum Requests: APIEndpoint {
     }
     
     var headers: [String : String]? {
-        return [HTTPHeader.ContentType.rawValue: "application/json"]
+        return ["Content-Type": "application/json"]
     }
     
     var method: HTTPMethod {
@@ -385,7 +385,7 @@ enum Places: APIEndpoint {
         case .getPlace:
             return nil
         case .putPlace:
-            return [HTTPHeader.ContentType.rawValue: "application/json"]
+            return ["Content-Type": "application/json"]
         }
     }
     
