@@ -53,7 +53,6 @@ class DeeplinkManager {
     //Mark: Internal Interface
 
     private func open(_ url: URL) {
-        print("opening \(url)")
         if #available(iOS 9.0, *) {
             executeOnIOS9(deeplink: url)
         } else {
@@ -118,7 +117,7 @@ class DeeplinkManager {
         deeplinkDidFinish(error: error)
     }
 
-    //Mark: App Lifecycle Notifications
+    // Mark: App Lifecycle Notifications
 
     @objc private func appWillResignActiveHandler(_ notification: Notification) {
         if !waitingOnSystemPromptResponse {
