@@ -34,7 +34,7 @@ public enum OAuth: APIEndpoint {
     case authorizationCodeLogin(clientID: String, redirect: URL, scopes: [UberScope], state: String?)
     case refresh(clientID: String, refreshToken: String)
 
-    public var method: HTTPMethod {
+    public var method: UberHTTPMethod {
         switch self {
         case .implicitLogin:
             fallthrough
