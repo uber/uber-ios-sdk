@@ -105,6 +105,10 @@ public class Request {
      */
     private func addHeaders() {
         urlRequest.setValue("gzip, deflate", forHTTPHeaderField: "Accept-Encoding")
+
+        if let versionNumber = Bundle(for: type(of: self)).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
+            urlRequest.setValue("iOS Rides SDK v\(versionNumber)", forHTTPHeaderField: "X-Uber-User-Agent")
+        }
         if let token = bearerToken {
             urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: HTTPHeader.Authorization.rawValue)
         } else if let token = serverToken {
