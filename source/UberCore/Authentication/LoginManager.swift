@@ -33,6 +33,7 @@ import SafariServices
     private var safariAuthenticationSession: Any? // Any? because otherwise this won't compile for earlier versions of iOS
     var authenticator: UberAuthenticating?
     var loggingIn: Bool = false
+    var willEnterForegroundCalled: Bool = false
     private var postCompletionHandler: AuthenticationCompletionHandler?
 
     /**
@@ -128,6 +129,7 @@ import SafariServices
 
         self.authenticator = authenticator
         loggingIn = true
+        willEnterForegroundCalled = false
         executeLogin(presentingViewController: presentingViewController, authenticator: authenticator)
     }
     
@@ -178,15 +180,27 @@ import SafariServices
     }
     
     /**
+     Called via the RidesAppDelegate when the application is about to enter the foreground. Used to distinguish
+     calls to applicationDidBecomeActive() that represent a true context switch vs. those that represent system
+     dialogs appearing over the app
+     */
+    public func applicationWillEnterForeground() {
+        if loggingIn {
+            willEnterForegroundCalled = true
+        }
+    }
+
+    /**
      Called via the RidesAppDelegate when the application becomes active. Used to determine
      if a user abandons Native login without getting an access token.
      */
     public func applicationDidBecomeActive() {
-        if loggingIn && loginType == .native {
+        if willEnterForegroundCalled && loggingIn && loginType == .native {
             self.handleLoginCanceled()
+            UberAppDelegate.shared.loginManager = nil;
         }
     }
-
+    
     // Mark: Private Interface
     
     private func executeLogin(presentingViewController: UIViewController?, authenticator: UberAuthenticating) {
@@ -250,6 +264,13 @@ import SafariServices
     private func executeDeeplinkLogin(presentingViewController: UIViewController?, authenticator: UberAuthenticating) {
         DeeplinkManager.shared.open(authenticator.authorizationURL, completion: { error in
             guard let _ = error else { return }
+            
+            // If the user rejected the attempt to call the Uber app, don't use fallback.
+            if self.loginType == .native && error?.code == DeeplinkErrorType.deeplinkNotFollowed.rawValue {
+                self.loginCompletion(accessToken: nil, error: UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
+                return
+            }
+            
             // If we can't open the deeplink, fallback.
             // Privileged scopes require auth code flow.
             // Since that requires server support, fallback to app store if not available.
@@ -272,12 +293,14 @@ import SafariServices
     
     func handleLoginCanceled() {
         loggingIn = false
+        willEnterForegroundCalled = false
         loginCompletion(accessToken: nil, error: UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .userCancelled))
         authenticator = nil
     }
     
     func loginCompletion(accessToken: AccessToken?, error: NSError?) {
         loggingIn = false
+        willEnterForegroundCalled = false
         authenticator = nil
         oauthViewController?.dismiss(animated: true, completion: nil)
 
