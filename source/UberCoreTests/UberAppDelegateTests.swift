@@ -136,7 +136,8 @@ class UberAppDelegateTests : XCTestCase {
         
         loginManagerMock.didBecomeActiveClosure = didBecomeActiveClosure
         appDelegate.loginManager = loginManagerMock
-        
+
+        NotificationCenter.default.post(name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         NotificationCenter.default.post(name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
         waitForExpectations(timeout: 0.2) { _ in

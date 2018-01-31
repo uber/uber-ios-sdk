@@ -202,7 +202,7 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
         let updateStatusEndpoint = URL(string: "https://sandbox-api.uber.com/v1/sandbox/requests/\(requestID)")!
         var request = URLRequest(url: updateStatusEndpoint)
         request.httpMethod = "PUT"
-        request.setValue("Bearer \(token.tokenString!)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(token.tokenString)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         do {
             let data = try JSONSerialization.data(withJSONObject: ["status":status], options: .prettyPrinted)
