@@ -139,10 +139,21 @@ class LoginManagerTests: XCTestCase {
         XCTAssertNil(loginManager.authenticator)
     }
 
+    func testCancelLoginNotCalled_whenNotEnteringForeground() {
+        let loginManager = LoginManager(loginType: .native)
+        loginManager.loggingIn = true
+
+        loginManager.applicationDidBecomeActive()
+
+        XCTAssertNil(loginManager.authenticator)
+        XCTAssertTrue(loginManager.loggingIn)
+    }
+
     func testCancelLoginCalled_whenDidBecomeActive() {
         let loginManager = LoginManager(loginType: .native)
         loginManager.loggingIn = true
 
+        loginManager.applicationWillEnterForeground()
         loginManager.applicationDidBecomeActive()
 
         XCTAssertNil(loginManager.authenticator)

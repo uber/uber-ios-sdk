@@ -43,6 +43,7 @@
         super.init()
         
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
     deinit {
@@ -94,10 +95,16 @@
     
     //MARK: Private Methods
     
+    @objc private func willEnterForeground(_ notification: Notification) {
+        if let manager = loginManager {
+            manager.applicationWillEnterForeground()
+        }
+    }
+    
     @objc private func didBecomeActive(_ notification: Notification) {
         if let manager = loginManager {
             manager.applicationDidBecomeActive()
-            loginManager = nil
         }
     }
+
 }

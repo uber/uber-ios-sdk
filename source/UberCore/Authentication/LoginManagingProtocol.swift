@@ -74,6 +74,12 @@
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool
     
     /**
+     Called via the RidesAppDelegate when the application is about to enter the foreground. Used to determine
+     if a user abandons Native login without getting an access token.
+     */
+    func applicationWillEnterForeground()
+    
+    /**
      Called via the RidesAppDelegate when the application becomes active. Used to determine
      if a user abandons Native login without getting an access token.
      */

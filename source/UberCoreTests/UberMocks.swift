@@ -36,6 +36,7 @@ class LoginManagerPartialMock: LoginManager {
     var loginClosure: (([UberScope], UIViewController?, ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?) -> Void)?
     var openURLClosure: ((UIApplication, URL, String?, Any?) -> Bool)?
     var didBecomeActiveClosure: (() -> ())?
+    var willEnterForegroundClosure: (() -> ())?
 
     var backingManager: LoginManaging?
 
@@ -75,6 +76,14 @@ class LoginManagerPartialMock: LoginManager {
             closure()
         } else if let manager = backingManager {
             manager.applicationDidBecomeActive()
+        }
+    }
+
+    func applicationWillEnterForeground() {
+        if let closure = willEnterForegroundClosure {
+            closure()
+        } else {
+            backingManager?.applicationWillEnterForeground()
         }
     }
 }
