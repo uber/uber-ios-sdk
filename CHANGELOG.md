@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.8.1] 2018-01-31
+
+### Fixes
+
+* [Pull #222](https://github.com/uber/rides-ios-sdk/pull/222) Fixes [Issue #90](https://github.com/uber/rides-ios-sdk/issues/90), where a user would get a "User cancelled the login error" erroneously. 
+
 ## [0.8.0] 2017-11-28
 
 0.8 separates the Uber Rides SDK into two modules, `UberRides` and `UberCore`. It also contains a number of authentication-related changes to simplify the Login with Uber flows. 
