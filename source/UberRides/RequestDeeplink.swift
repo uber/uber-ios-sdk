@@ -36,10 +36,16 @@ import UberCore
     private let rideParameters: RideParameters
     private let fallbackType: DeeplinkFallbackType
 
+    /**
+     Initialize a ride request deeplink. If the Uber app is not installed, fallback to the App Store.
+     */
     @objc public convenience init(rideParameters: RideParameters = RideParametersBuilder().build()) {
-        self.init(rideParameters: rideParameters, fallbackType: DeeplinkFallbackType.mobileWeb)
+        self.init(rideParameters: rideParameters, fallbackType: DeeplinkFallbackType.appStore)
     }
 
+    /**
+     Initialize a ride request deeplink.
+     */
     @objc public init(rideParameters: RideParameters, fallbackType: DeeplinkFallbackType) {
         self.rideParameters = rideParameters
         self.fallbackType = fallbackType

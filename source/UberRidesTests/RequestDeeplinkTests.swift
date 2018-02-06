@@ -235,24 +235,24 @@ class UberRidesDeeplinkTests: XCTestCase {
         })
     }
 
-    func testRequestDeeplinkFallbackDefaultsMuber() {
+    func testRequestDeeplinkFallbackAppStore() {
         let deeplink = RequestDeeplink()
         XCTAssertEqual(deeplink.fallbackURLs.count, 3)
         XCTAssertEqual(deeplink.fallbackURLs[0].scheme, "uber-enterprise")
         XCTAssertEqual(deeplink.fallbackURLs[1].scheme, "uber-nightly")
         XCTAssertEqual(deeplink.fallbackURLs[2].scheme, "https")
         XCTAssertEqual(deeplink.fallbackURLs[2].host, "m.uber.com")
-        XCTAssertEqual(deeplink.fallbackURLs[2].path, "")
+        XCTAssertEqual(deeplink.fallbackURLs[2].path, "/sign-up")
     }
 
-    func testRequestDeeplinkFallbackAppStore() {
-        let deeplink = RequestDeeplink(rideParameters: RideParametersBuilder().build(), fallbackType: .appStore)
+    func testRequestDeeplinkFallbackDefaultsMuber() {
+        let deeplink = RequestDeeplink(rideParameters: RideParametersBuilder().build(), fallbackType: .mobileWeb)
         XCTAssertEqual(deeplink.fallbackURLs.count, 3)
         XCTAssertEqual(deeplink.fallbackURLs[0].scheme, "uber-enterprise")
         XCTAssertEqual(deeplink.fallbackURLs[1].scheme, "uber-nightly")
         XCTAssertEqual(deeplink.fallbackURLs[2].scheme, "https")
         XCTAssertEqual(deeplink.fallbackURLs[2].host, "m.uber.com")
-        XCTAssertEqual(deeplink.fallbackURLs[2].path, "/sign-up")
+        XCTAssertEqual(deeplink.fallbackURLs[2].path, "")
     }
 
     func testRequestDeeplinkFallbackNone() {
