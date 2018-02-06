@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.8.2] 2018-02-06
+
+### Changes
+
+* [Pull #223](https://github.com/uber/rides-ios-sdk/pull/223) Uses Apple's new openURL API for iOS 10+ devices. 
+
 ## [0.8.1] 2018-01-31
 
 ### Fixes
