@@ -37,7 +37,10 @@ class DeeplinkManager {
     }
 
     func open(_ url: URL, completion: DeeplinkCompletionHandler? = nil) {
-        if #available(iOS 9.0, *) {
+        if #available(iOS 10.0, *) {
+            executeOnIOS10(deeplink: url, callback: completion)
+        }
+        else if #available(iOS 9.0, *) {
             executeOnIOS9(deeplink: url, callback: completion)
         } else {
             executeOnBelowIOS9(deeplink: url, callback: completion)
@@ -46,6 +49,22 @@ class DeeplinkManager {
 
     //Mark: Internal Interface
 
+    @available(iOS 10.0, *)
+    private func executeOnIOS10(deeplink url: URL, callback: DeeplinkCompletionHandler?) {
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: { (succeeded) in
+                if !succeeded {
+                    callback?(DeeplinkErrorFactory.errorForType(.deeplinkNotFollowed))
+                }
+                else {
+                    callback?(nil)
+                }
+            })
+        } else {
+            callback?(DeeplinkErrorFactory.errorForType(.unableToOpen))
+        }
+    }
+    
     private func executeOnIOS9(deeplink url: URL, callback: DeeplinkCompletionHandler?) {
         NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActiveHandler), name: Notification.Name.UIApplicationWillResignActive, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveHandler), name: Notification.Name.UIApplicationDidBecomeActive, object: nil);
