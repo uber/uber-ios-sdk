@@ -29,7 +29,7 @@ public protocol APIEndpoint {
     var body: Data? { get }
     var headers: [String: String]? { get }
     var host: String { get}
-    var method: HTTPMethod { get }
+    var method: UberHTTPMethod { get }
     var path: String { get }
     var query: [URLQueryItem] { get }
 }
@@ -80,17 +80,9 @@ public extension APIEndpoint {
 }
 
 /**
- Enum for HTTPHeaders.
+ Enum for UberHTTPMethods
  */
-public enum HTTPHeader: String {
-    case Authorization = "Authorization"
-    case ContentType = "Content-Type"
-}
-
-/**
- Enum for HTTPMethods
- */
-public enum HTTPMethod: String {
+public enum UberHTTPMethod: String {
     case get = "GET"
     case post = "POST"
     case put = "PUT"

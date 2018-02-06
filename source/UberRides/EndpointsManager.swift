@@ -59,7 +59,7 @@ private enum Resources: String {
 enum Components: APIEndpoint {
     case rideRequestWidget(rideParameters: RideParameters?)
     
-    var method: HTTPMethod {
+    var method: UberHTTPMethod {
         switch self {
         case .rideRequestWidget:
             return .get
@@ -102,7 +102,7 @@ enum Products: APIEndpoint {
     case getAll(location: CLLocation)
     case getProduct(productID: String)
     
-    var method: HTTPMethod {
+    var method: UberHTTPMethod {
         switch self {
         case .getAll:
             fallthrough
@@ -142,7 +142,7 @@ enum Estimates: APIEndpoint {
     case price(startLocation: CLLocation, endLocation: CLLocation)
     case time(location: CLLocation, productID: String?)
     
-    var method: HTTPMethod {
+    var method: UberHTTPMethod {
         switch self {
         case .price:
             fallthrough
@@ -185,7 +185,7 @@ enum Estimates: APIEndpoint {
 enum History: APIEndpoint {
     case get(offset: Int?, limit: Int?)
     
-    var method: HTTPMethod {
+    var method: UberHTTPMethod {
         switch self {
         case .get:
             return .get
@@ -217,7 +217,7 @@ enum History: APIEndpoint {
 enum Me: APIEndpoint {
     case userProfile
     
-    var method: HTTPMethod {
+    var method: UberHTTPMethod {
         switch self {
         case .userProfile:
             return .get
@@ -285,10 +285,10 @@ enum Requests: APIEndpoint {
     }
     
     var headers: [String : String]? {
-        return [HTTPHeader.ContentType.rawValue: "application/json"]
+        return ["Content-Type": "application/json"]
     }
     
-    var method: HTTPMethod {
+    var method: UberHTTPMethod {
         switch self {
         case .deleteCurrent:
             fallthrough
@@ -350,7 +350,7 @@ enum Payment: APIEndpoint {
         return nil
     }
     
-    var method: HTTPMethod {
+    var method: UberHTTPMethod {
         return .get
     }
     
@@ -385,11 +385,11 @@ enum Places: APIEndpoint {
         case .getPlace:
             return nil
         case .putPlace:
-            return [HTTPHeader.ContentType.rawValue: "application/json"]
+            return ["Content-Type": "application/json"]
         }
     }
     
-    var method: HTTPMethod {
+    var method: UberHTTPMethod {
         switch self {
         case .getPlace:
             return .get

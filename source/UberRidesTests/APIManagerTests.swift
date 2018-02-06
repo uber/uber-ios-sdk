@@ -75,7 +75,7 @@ class APIManagerTests: XCTestCase {
      
      - parameter endpoint: Endpoint that conforms to UberAPI.
      
-     - returns: URLRequest with URL and HTTPMethod set.
+     - returns: URLRequest with URL and UberHTTPMethod set.
      */
     func buildRequestForEndpoint(_ endpoint: APIEndpoint) -> URLRequest {
         let request = Request(session: nil, endpoint: endpoint)
@@ -89,7 +89,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetAllProducts() {
         let request = buildRequestForEndpoint(Products.getAll(location: CLLocation(latitude: pickupLat, longitude: pickupLong)))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetProducts)
         } else {
@@ -102,7 +102,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetProduct() {
         let request = buildRequestForEndpoint(Products.getProduct(productID: productID))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetProduct)
         } else {
@@ -115,7 +115,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetPriceEstimates() {
         let request = buildRequestForEndpoint(Estimates.price(startLocation: CLLocation(latitude: pickupLat, longitude: pickupLong), endLocation: CLLocation(latitude: dropoffLat, longitude: dropoffLong)))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetPriceEstimates)
         } else {
@@ -128,7 +128,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetTimeEstimates() {
         let request = buildRequestForEndpoint(Estimates.time(location: CLLocation(latitude: pickupLat, longitude: pickupLong), productID: nil))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetTimeEstimates)
         } else {
@@ -141,7 +141,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetTimeEstimatesWithOptionalParameters() {
         let request = buildRequestForEndpoint(Estimates.time(location: CLLocation(latitude: pickupLat, longitude: pickupLong), productID: productID))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetTimeEstimatesAllParams)
         } else {
@@ -154,7 +154,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetHistory() {
         let request = buildRequestForEndpoint(History.get(offset: nil, limit: nil))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetHistory)
         } else {
@@ -167,7 +167,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetHistoryWithAllParameters() {
         let request = buildRequestForEndpoint(History.get(offset: offset, limit: limit))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetHistoryWithAllParameters)
         } else {
@@ -180,7 +180,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetHistoryWithOffsetParameter() {
         let request = buildRequestForEndpoint(History.get(offset: offset, limit: nil))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetHistoryWithOffset)
         } else {
@@ -193,7 +193,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetHistoryWithLimitParameter() {
         let request = buildRequestForEndpoint(History.get(offset: nil, limit: limit))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetHistoryWithLimit)
         } else {
@@ -206,7 +206,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetUserProfile() {
         let request = buildRequestForEndpoint(Me.userProfile)
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetUserProfile)
         } else {
@@ -270,14 +270,14 @@ class APIManagerTests: XCTestCase {
         builder.productID = productID
         let rideParameters = builder.build()
         let request = buildRequestForEndpoint(Requests.make(rideParameters: rideParameters))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.post.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.post.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.PostRequest)
         } else {
             XCTAssert(false)
         }
         XCTAssertNotNil(request.httpBody)
-        XCTAssertEqual(request.allHTTPHeaderFields![HTTPHeader.ContentType.rawValue], "application/json")
+        XCTAssertEqual(request.allHTTPHeaderFields!["Content-Type"], "application/json")
     }
     
     /**
@@ -285,7 +285,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetCurrentRequest() {
         let request = buildRequestForEndpoint(Requests.getCurrent)
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetCurrentRequest)
         } else {
@@ -298,7 +298,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetRequestByID() {
         let request = buildRequestForEndpoint(Requests.getRequest(requestID: requestID))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetRequestByID)
         } else {
@@ -340,7 +340,7 @@ class APIManagerTests: XCTestCase {
     func testGetPlace() {
         let placeID = Place.home
         let request = buildRequestForEndpoint(Places.getPlace(placeID: placeID))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetPlace)
         } else {
@@ -356,14 +356,14 @@ class APIManagerTests: XCTestCase {
         let testAddress = "testAddress"
         let placeID = Place.home
         let request = buildRequestForEndpoint(Places.putPlace(placeID: placeID, address: testAddress))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.put.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.put.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.PutPlace)
         } else {
             XCTAssert(false)
         }
         if let headers = request.allHTTPHeaderFields {
-            XCTAssertEqual(headers[HTTPHeader.ContentType.rawValue], "application/json")
+            XCTAssertEqual(headers["Content-Type"], "application/json")
         } else {
             XCTAssert(false)
         }
@@ -400,7 +400,7 @@ class APIManagerTests: XCTestCase {
         }
         
         if let headers = request.allHTTPHeaderFields {
-            XCTAssertEqual(headers[HTTPHeader.ContentType.rawValue], "application/json")
+            XCTAssertEqual(headers["Content-Type"], "application/json")
         } else {
             XCTAssert(false)
         }
@@ -441,7 +441,7 @@ class APIManagerTests: XCTestCase {
         }
         
         if let headers = request.allHTTPHeaderFields {
-            XCTAssertEqual(headers[HTTPHeader.ContentType.rawValue], "application/json")
+            XCTAssertEqual(headers["Content-Type"], "application/json")
         } else {
             XCTAssert(false)
         }
@@ -499,7 +499,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetRideReceipt() {
         let request = buildRequestForEndpoint(Requests.rideReceipt(requestID: requestID))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetRideReceipt)
         } else {
@@ -507,7 +507,7 @@ class APIManagerTests: XCTestCase {
         }
         XCTAssertNil(request.httpBody)
         if let headers = request.allHTTPHeaderFields {
-            XCTAssertEqual(headers[HTTPHeader.ContentType.rawValue], "application/json")
+            XCTAssertEqual(headers["Content-Type"], "application/json")
         } else {
             XCTAssert(false)
         }
@@ -518,7 +518,7 @@ class APIManagerTests: XCTestCase {
      */
     func testGetRideMap() {
         let request = buildRequestForEndpoint(Requests.rideMap(requestID: requestID))
-        XCTAssertEqual(request.httpMethod, HTTPMethod.get.rawValue)
+        XCTAssertEqual(request.httpMethod, UberHTTPMethod.get.rawValue)
         if let url = request.url {
             XCTAssertEqual(url.absoluteString, ExpectedEndpoint.GetRideMap)
         } else {
@@ -526,7 +526,7 @@ class APIManagerTests: XCTestCase {
         }
         XCTAssertNil(request.httpBody)
         if let headers = request.allHTTPHeaderFields {
-            XCTAssertEqual(headers[HTTPHeader.ContentType.rawValue], "application/json")
+            XCTAssertEqual(headers["Content-Type"], "application/json")
         } else {
             XCTAssert(false)
         }
