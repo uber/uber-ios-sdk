@@ -55,14 +55,14 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
 
         let rideParameters = RideParametersBuilder().build()
         rideParameters.source = RideRequestButton.sourceString
-        let requestingBehavior = DeeplinkRequestingBehavior()
+        let requestingBehavior = DeeplinkRequestingBehavior(fallbackType: .appStore)
         
-        let appStoreDeeplink = requestingBehavior.createAppStoreDeeplink(rideParameters: rideParameters)
+        let appStoreDeeplink = requestingBehavior.createDeeplink(rideParameters: rideParameters).fallbackURLs.last!
         
-        let components = URLComponents(url: appStoreDeeplink.url, resolvingAgainstBaseURL: false)
+        let components = URLComponents(url: appStoreDeeplink, resolvingAgainstBaseURL: false)
         XCTAssertNotNil(components)
         
-        XCTAssertEqual(expectedUrlString, appStoreDeeplink.url.absoluteString)
+        XCTAssertEqual(expectedUrlString, appStoreDeeplink.absoluteString)
         XCTAssertEqual(components!.queryItems!.count, 2)
         XCTAssertTrue(components!.query!.contains("&user-agent=\(expectedButtonUserAgent!)"))
     }
@@ -75,14 +75,14 @@ class DeeplinkRequestingBehaviorTests : XCTestCase {
 
         let rideParameters = RideParametersBuilder().build()
         rideParameters.source = RequestDeeplink.sourceString
-        let requestingBehavior = DeeplinkRequestingBehavior()
+        let requestingBehavior = DeeplinkRequestingBehavior(fallbackType: .appStore)
         
-        let appStoreDeeplink = requestingBehavior.createAppStoreDeeplink(rideParameters: rideParameters)
+        let appStoreDeeplink = requestingBehavior.createDeeplink(rideParameters: rideParameters).fallbackURLs.last!
         
-        let components = URLComponents(url: appStoreDeeplink.url, resolvingAgainstBaseURL: false)
+        let components = URLComponents(url: appStoreDeeplink, resolvingAgainstBaseURL: false)
         XCTAssertNotNil(components)
         
-        XCTAssertEqual(expectedUrlString, appStoreDeeplink.url.absoluteString)
+        XCTAssertEqual(expectedUrlString, appStoreDeeplink.absoluteString)
         XCTAssertEqual(components!.queryItems!.count, 2)
         XCTAssertTrue(components!.query!.contains("&user-agent=\(expectedDeeplinkUserAgent!)"))
     }

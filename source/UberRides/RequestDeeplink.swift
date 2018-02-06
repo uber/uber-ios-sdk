@@ -32,14 +32,54 @@ import UberCore
  */
 @objc(UBSDKRequestDeeplink) public class RequestDeeplink: BaseDeeplink {
     static let sourceString = "deeplink"
-    
-    @objc public init(rideParameters: RideParameters = RideParametersBuilder().build()) {
-        rideParameters.source = rideParameters.source ?? RequestDeeplink.sourceString
-        
+
+    private let rideParameters: RideParameters
+    private let fallbackType: DeeplinkFallbackType
+
+    /**
+     Initialize a ride request deeplink. If the Uber app is not installed, fallback to the App Store.
+     */
+    @objc public convenience init(rideParameters: RideParameters = RideParametersBuilder().build()) {
+        self.init(rideParameters: rideParameters, fallbackType: DeeplinkFallbackType.appStore)
+    }
+
+    /**
+     Initialize a ride request deeplink.
+     */
+    @objc public init(rideParameters: RideParameters, fallbackType: DeeplinkFallbackType) {
+        self.rideParameters = rideParameters
+        self.fallbackType = fallbackType
+        self.rideParameters.source = rideParameters.source ?? RequestDeeplink.sourceString
+
         let queryItems = RequestURLUtil.buildRequestQueryParameters(rideParameters)
         let scheme = "uber"
         let domain = ""
-        
+
         super.init(scheme: scheme, host: domain, path: "", queryItems: queryItems)!
+    }
+
+    public override var fallbackURLs: [URL] {
+        var urls = super.fallbackURLs
+        if let fallbackURL = buildFallbackURL() {
+            urls.append(fallbackURL)
+        }
+        return urls
+    }
+
+    private func buildFallbackURL() -> URL? {
+        switch fallbackType {
+        case .mobileWeb:
+            if var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+                urlComponents.scheme = "https"
+                urlComponents.host = "m.uber.com"
+                return urlComponents.url
+            }
+        case .appStore:
+            let deeplink = AppStoreDeeplink(userAgent: rideParameters.userAgent)
+            return deeplink.url
+        default:
+            break
+        }
+        return nil
     }
 }

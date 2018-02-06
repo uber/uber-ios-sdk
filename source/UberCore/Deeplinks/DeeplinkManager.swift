@@ -22,86 +22,110 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+/**
+ The Deeplink Manager keeps track of an external URL being opened.
+ */
 class DeeplinkManager {
     static let shared = DeeplinkManager()
+    var urlOpener: URLOpening = UIApplication.shared
 
-    private var currentDeeplink: Deeplinking?
-    private var callbackWrapper: DeeplinkCompletionHandler?
+    private var urlQueue: [URL] = []
+    private var callback: DeeplinkCompletionHandler?
 
     private var waitingOnSystemPromptResponse = false
     private var checkingSystemPromptResponse = false
     private var promptTimer: Timer?
 
+    /// Open a deeplink, utilizing its fallback URLs.
     func open(_ deeplink: Deeplinking, completion: DeeplinkCompletionHandler? = nil) {
+        urlQueue = deeplink.fallbackURLs
+
         open(deeplink.url, completion: completion)
     }
 
+    /// Open a URL
     func open(_ url: URL, completion: DeeplinkCompletionHandler? = nil) {
-        if #available(iOS 10.0, *) {
-            executeOnIOS10(deeplink: url, callback: completion)
-        }
-        else if #available(iOS 9.0, *) {
-            executeOnIOS9(deeplink: url, callback: completion)
-        } else {
-            executeOnBelowIOS9(deeplink: url, callback: completion)
-        }
+        callback = completion
+
+        open(url)
     }
 
     //Mark: Internal Interface
 
-    @available(iOS 10.0, *)
-    private func executeOnIOS10(deeplink url: URL, callback: DeeplinkCompletionHandler?) {
-        if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: { (succeeded) in
-                if !succeeded {
-                    callback?(DeeplinkErrorFactory.errorForType(.deeplinkNotFollowed))
-                }
-                else {
-                    callback?(nil)
-                }
-            })
+    private func open(_ url: URL) {
+        if #available(iOS 10.0, *) {
+            executeOnIOS10(deeplink: url)
+        }
+        else if #available(iOS 9.0, *) {
+            executeOnIOS9(deeplink: url)
         } else {
-            callback?(DeeplinkErrorFactory.errorForType(.unableToOpen))
+            executeOnBelowIOS9(deeplink: url)
         }
     }
-    
-    private func executeOnIOS9(deeplink url: URL, callback: DeeplinkCompletionHandler?) {
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActiveHandler), name: Notification.Name.UIApplicationWillResignActive, object: nil);
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveHandler), name: Notification.Name.UIApplicationDidBecomeActive, object: nil);
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackgroundHandler), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
 
-        callbackWrapper = { handled in
+    private func deeplinkDidFinish(error: NSError?) {
+        if error != nil && !urlQueue.isEmpty &&
+            error != DeeplinkErrorFactory.errorForType(.deeplinkNotFollowed) {
+            // There is an error AND urlQueue is NOT empty.
+            // Also, it's not a user cancelled deeplink.
+            // Thus we will try opening the next url in the queue.
+            open(urlQueue.removeFirst())
+            return
+        }
+        if #available(iOS 9.0, *) {
             NotificationCenter.default.removeObserver(self)
             self.promptTimer?.invalidate()
             self.promptTimer = nil
             self.checkingSystemPromptResponse = false
             self.waitingOnSystemPromptResponse = false
-            callback?(handled)
         }
 
-        var error: NSError?
+        callback?(error)
+
+        self.urlQueue = []
+        self.callback = nil
+    }
+
+    @available(iOS 10.0, *)
+    private func executeOnIOS10(deeplink url: URL) {
         if UIApplication.shared.canOpenURL(url) {
-            let openedURL = UIApplication.shared.openURL(url)
-            if !openedURL {
-                error = DeeplinkErrorFactory.errorForType(.unableToFollow)
-            }
+            UIApplication.shared.open(url, options: [:], completionHandler: { (succeeded) in
+                if !succeeded {
+                    self.deeplinkDidFinish(error: DeeplinkErrorFactory.errorForType(.deeplinkNotFollowed))
+                }
+                else {
+                    self.deeplinkDidFinish(error: nil)
+                }
+            })
         } else {
+            deeplinkDidFinish(error: DeeplinkErrorFactory.errorForType(.unableToOpen))
+        }
+    }
+
+    private func executeOnIOS9(deeplink url: URL) {
+        subscribeToNotifications()
+
+        var error: NSError?
+        let openedURL = urlOpener.openURL(url)
+        if !openedURL {
             error = DeeplinkErrorFactory.errorForType(.unableToOpen)
         }
 
         if error != nil {
-            callbackWrapper?(error)
+            deeplinkDidFinish(error: error)
         }
     }
 
-    private func executeOnBelowIOS9(deeplink url: URL, callback: DeeplinkCompletionHandler?) {
-        callbackWrapper = { handled in
-            callback?(handled)
-        }
+    private func subscribeToNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActiveHandler), name: Notification.Name.UIApplicationWillResignActive, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveHandler), name: Notification.Name.UIApplicationDidBecomeActive, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackgroundHandler), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+    }
 
+    private func executeOnBelowIOS9(deeplink url: URL) {
         var error: NSError?
-        if UIApplication.shared.canOpenURL(url) {
-            let openedURL = UIApplication.shared.openURL(url)
+        if urlOpener.canOpenURL(url) {
+            let openedURL = urlOpener.openURL(url)
             if !openedURL {
                 error = DeeplinkErrorFactory.errorForType(.unableToFollow)
             }
@@ -109,16 +133,16 @@ class DeeplinkManager {
             error = DeeplinkErrorFactory.errorForType(.unableToOpen)
         }
 
-        callbackWrapper?(error)
+        deeplinkDidFinish(error: error)
     }
 
-    //Mark: App Lifecycle Notifications
+    // Mark: App Lifecycle Notifications
 
     @objc private func appWillResignActiveHandler(_ notification: Notification) {
         if !waitingOnSystemPromptResponse {
             waitingOnSystemPromptResponse = true
         } else if checkingSystemPromptResponse {
-            callbackWrapper?(nil)
+            deeplinkDidFinish(error: nil)
         }
     }
 
@@ -130,11 +154,18 @@ class DeeplinkManager {
     }
 
     @objc private func appDidEnterBackgroundHandler(_ notification: Notification) {
-        callbackWrapper?(nil)
+        deeplinkDidFinish(error: nil)
     }
 
     @objc private func deeplinkHelper() {
         let error = DeeplinkErrorFactory.errorForType(.deeplinkNotFollowed)
-        callbackWrapper?(error)
+        deeplinkDidFinish(error: error)
     }
 }
+
+protocol URLOpening {
+    func canOpenURL(_ url: URL) -> Bool
+    func openURL(_ url: URL) -> Bool
+}
+
+extension UIApplication: URLOpening {}
