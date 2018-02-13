@@ -23,7 +23,6 @@
 		DC9B5B7E1D00CC1200FFD5DF /* UBSDKUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9B5B7D1D00CC1200FFD5DF /* UBSDKUtility.m */; };
 		DCD806081CFE35EF00EF6EB1 /* UBSDKLoginButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCD806071CFE35EF00EF6EB1 /* UBSDKLoginButtonView.m */; };
 		DCEC0CAA1CB5D7780086C6D7 /* UBSDKExampleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEC0CA91CB5D7780086C6D7 /* UBSDKExampleTableViewController.m */; };
-		DCEC0CAD1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEC0CAC1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.m */; };
 		DCEC0CB01CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEC0CAF1CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -97,8 +96,6 @@
 		DCD806071CFE35EF00EF6EB1 /* UBSDKLoginButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSDKLoginButtonView.m; sourceTree = "<group>"; };
 		DCEC0CA81CB5D7780086C6D7 /* UBSDKExampleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKExampleTableViewController.h; sourceTree = "<group>"; };
 		DCEC0CA91CB5D7780086C6D7 /* UBSDKExampleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSDKExampleTableViewController.m; sourceTree = "<group>"; };
-		DCEC0CAB1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKRideRequestWidgetExampleViewController.h; sourceTree = "<group>"; };
-		DCEC0CAC1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSDKRideRequestWidgetExampleViewController.m; sourceTree = "<group>"; };
 		DCEC0CAE1CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UBSDKImplicitGrantExampleViewController.h; sourceTree = "<group>"; };
 		DCEC0CAF1CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UBSDKImplicitGrantExampleViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -172,8 +169,6 @@
 				DCEC0CA91CB5D7780086C6D7 /* UBSDKExampleTableViewController.m */,
 				AC0404F61BFB82CC00AC1501 /* UBSDKDeeplinkExampleViewController.h */,
 				AC0404F71BFB82CC00AC1501 /* UBSDKDeeplinkExampleViewController.m */,
-				DCEC0CAB1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.h */,
-				DCEC0CAC1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.m */,
 				DCEC0CAE1CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.h */,
 				DCEC0CAF1CB5E3D30086C6D7 /* UBSDKImplicitGrantExampleViewController.m */,
 				DC1AE1C31CF9137A00B8CFCB /* UBSDKNativeLoginExampleViewController.h */,
@@ -450,7 +445,6 @@
 				DCD806081CFE35EF00EF6EB1 /* UBSDKLoginButtonView.m in Sources */,
 				DC9B5B7E1D00CC1200FFD5DF /* UBSDKUtility.m in Sources */,
 				DC1AE1C21CF906E200B8CFCB /* UBSDKButtonExampleViewController.m in Sources */,
-				DCEC0CAD1CB5DCB10086C6D7 /* UBSDKRideRequestWidgetExampleViewController.m in Sources */,
 				AC0404F81BFB82CC00AC1501 /* UBSDKDeeplinkExampleViewController.m in Sources */,
 				AC0404F51BFB82CC00AC1501 /* AppDelegate.m in Sources */,
 				DC1AE1C51CF9137A00B8CFCB /* UBSDKNativeLoginExampleViewController.m in Sources */,

@@ -49,18 +49,14 @@ class ExampleTableViewController: UITableViewController {
                 cell.textLabel?.textColor = UIColor.black
                 cell.accessoryType = .disclosureIndicator
             case 1:
-                cell.textLabel?.text = "Ride Request Widget Button"
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
-            case 2:
                 cell.textLabel?.text = "Implicit Grant / Login Manager"
                 cell.textLabel?.textColor = UIColor.black
                 cell.accessoryType = .disclosureIndicator
-            case 3:
+            case 2:
                 cell.textLabel?.text = "Authorization Code Grant / Login Manager"
                 cell.textLabel?.textColor = UIColor.black
                 cell.accessoryType = .disclosureIndicator
-            case 4:
+            case 3:
                 cell.textLabel?.text = "Native Login"
                 cell.textLabel?.textColor = UIColor.black
                 cell.accessoryType = .disclosureIndicator
@@ -93,14 +89,12 @@ class ExampleTableViewController: UITableViewController {
             case 0:
                 viewControllerToPush = DeeplinkExampleViewController()
             case 1:
-                viewControllerToPush = RideRequestWidgetExampleViewController()
-            case 2:
                 performSegue(withIdentifier: implicitGrantSegueIdentifier, sender: self)
                 return
-            case 3:
+            case 2:
                 performSegue(withIdentifier: authorizationCodeGrantSegueIdentifier, sender: self)
                 return
-            case 4:
+            case 3:
                 viewControllerToPush = NativeLoginExampleViewController()
             default:
                 break
@@ -127,7 +121,7 @@ class ExampleTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 5
+            return 4
         case 1:
             return 1
         default:

@@ -1,11 +1,16 @@
 # Change Log
 
-## [0.9.0] TBD
+## [0.9.0] 2018-02-13
 
 ### Changes
 
-* All model properties are now Optionals. 
+* [Pull #213](https://github.com/uber/rides-ios-sdk/pull/213) All model properties are now Optionals. 
   * In Objective-C, `Double`, `Int`, and `Bool` are represented by NSNumber `boolValue`, `intValue`, and `doubleValue`. The `UBSDKDistanceUnavailable`, `UBSDKEstimateUnavailable`, and `UBSDKBearingUnavailable` constants are now removed. 
+* [Pull #217](https://github.com/uber/rides-ios-sdk/pull/217) Add fallback to m.uber.com for Ride Request Deeplinks -- you can now have the Ride Request Deeplink fallback to Uber's web experience instead of using the App Store. 
+
+### Deprecated
+
+ * The Ride Request Widget is now deprecated. New apps will not be able to add the Ride Request Widget, and existing apps have until 05/31/2018 to migrate. See the [Uber API Changelog](https://developer.uber.com/docs/riders/change-log) for more details. 
 
 ## [0.8.2] 2018-02-06
 

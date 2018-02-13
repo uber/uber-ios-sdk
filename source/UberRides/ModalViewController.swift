@@ -29,7 +29,9 @@ Possible Styles for the ModalViewController
 
 - Empty:       Presents the view modally without any BarButtonItems
 - DoneButton:  Presents the view mdoally with a Done BarButtonItem in the top right corner
-*/
+- Warning: The Ride Request Widget is deprecated, and will no longer work for new apps.
+Existing apps have until 05/31/2018 to migrate. See the Uber API Changelog for more details.
+ */
 @objc public enum ModalViewControllerButtonStyle : Int {
     case empty
     case doneButton
@@ -41,6 +43,8 @@ Possible Styles for the ModalViewController
  
  - Default: Default dark style, dark navigation bar with light text
  - Light:   Light color style, light navigation bar with dark text
+ - Warning: The Ride Request Widget is deprecated, and will no longer work for new apps.
+ Existing apps have until 05/31/2018 to migrate. See the Uber API Changelog for more details.
  */
 @objc public enum ModalViewControllerColorStyle : Int {
     case `default`
@@ -49,6 +53,8 @@ Possible Styles for the ModalViewController
 
 /**
  *  The ModalViewControllerDelegate protocol
+ - Warning: The Ride Request Widget is deprecated, and will no longer work for new apps.
+ Existing apps have until 05/31/2018 to migrate. See the Uber API Changelog for more details.
  */
 @objc(UBSDKModalViewControllerDelegate) public protocol ModalViewControllerDelegate {
     /**
@@ -66,7 +72,11 @@ Possible Styles for the ModalViewController
     @objc func modalViewControllerDidDismiss(_ modalViewController: ModalViewController)
 }
 
-/// Convenience to wrap a ViewController in a UINavigationController and add the appropriate buttons. Allows you to modally present a view controller w/ Uber branding.
+/**
+ Convenience to wrap a ViewController in a UINavigationController and add the appropriate buttons. Allows you to modally present a view controller w/ Uber branding.
+ - Warning: The Ride Request Widget is deprecated, and will no longer work for new apps.
+ Existing apps have until 05/31/2018 to migrate. See the Uber API Changelog for more details.
+*/
 @objc(UBSDKModalViewController) public class ModalViewController : UIViewController {
     /// The ModalViewControllerDelegate
     @objc public var delegate: ModalViewControllerDelegate?

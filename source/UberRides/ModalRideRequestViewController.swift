@@ -22,7 +22,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-/// Modal View Controller to use for presenting a RideRequestViewController. Handles errors & closing the modal for you
+/**
+ Modal View Controller to use for presenting a RideRequestViewController. Handles errors & closing the modal for you
+ - Warning: The Ride Request Widget is deprecated, and will no longer work for new apps.
+ Existing apps have until 05/31/2018 to migrate. See the Uber API Changelog for more details.
+*/
 @objc(UBSDKModalRideRequestViewController) public class ModalRideRequestViewController : ModalViewController {
     /// The RideRequestViewController this modal is wrapping
     @objc public internal(set) var rideRequestViewController : RideRequestViewController

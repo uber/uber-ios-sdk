@@ -27,7 +27,10 @@ import CoreLocation
 import UberCore
 
 /**
- *  Delegates are informed of events that occur in the RideRequestView such as errors.
+ Delegates are informed of events that occur in the RideRequestView such as errors.
+ 
+ - Warning: The Ride Request Widget is deprecated, and will no longer work for new apps.
+ Existing apps have until 05/31/2018 to migrate. See the Uber API Changelog for more details.
  */
 @objc(UBSDKRideRequestViewDelegate) public protocol RideRequestViewDelegate {
     /**
@@ -39,7 +42,11 @@ import UberCore
     func rideRequestView(_ rideRequestView: RideRequestView, didReceiveError error: NSError)
 }
 
-/// A view that shows the embedded Uber experience. 
+/**
+ A view that shows the embedded Uber experience.
+ - Warning: The Ride Request Widget is deprecated, and will no longer work for new apps.
+ Existing apps have until 05/31/2018 to migrate. See the Uber API Changelog for more details.
+*/
 @objc(UBSDKRideRequestView) public class RideRequestView: UIView {
     /// The RideRequestViewDelegate of this view.
     @objc public var delegate: RideRequestViewDelegate?
