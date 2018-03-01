@@ -176,6 +176,8 @@ We also need to register a Redirect URL for your application. This ensures that 
 
 In your Xcode project, you need to register your URL scheme as well as the callback URL with the Uber SDK. Copy this into your `Info.plist`, replacing the relevant values:
 
+> Note: If one of the following keys already exists in your `Info.plist` file, you will have to add the values to them and not duplicate the keys.
+
 ```
 <key>UberCallbackURIs</key>
 <array>
