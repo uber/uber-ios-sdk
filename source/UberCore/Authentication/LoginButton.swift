@@ -213,7 +213,11 @@ import UIKit
     //Mark: Private Interface
     
     @objc private func refreshContent() {
-        uberTitleLabel.text = titleForButtonState(buttonState)
+        DispatchQueue.main.async { [weak self] in
+            guard let strongSelf = self else { return }
+
+            strongSelf.uberTitleLabel.text = strongSelf.titleForButtonState(strongSelf.buttonState)
+        }
     }
     
     private func titleForButtonState(_ buttonState: LoginButtonState) -> String {
