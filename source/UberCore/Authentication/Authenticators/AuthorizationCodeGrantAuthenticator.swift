@@ -30,4 +30,20 @@ import UIKit
     @objc override var authorizationURL: URL {
         return OAuth.authorizationCodeLogin(clientID: Configuration.shared.clientID, redirect: Configuration.shared.getCallbackURI(for: .authorizationCode), scopes: scopes, state: state).url
     }
+    
+    /**
+     Overrided method to create AccessToken with Authorization Code
+     */
+    @objc public override func consumeResponse(url: URL, completion: AuthenticationCompletionHandler?) {
+        if AuthenticationURLUtility.shouldHandleRedirectURL(url) {
+            do {
+                let accessToken = try AccessTokenFactory.createAuthorizationCode(fromRedirectURL: url)
+                completion?(accessToken, nil)
+            } catch let ridesError as NSError {
+                completion?(nil, ridesError)
+            } catch {
+                completion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse))
+            }
+        }
+    }
 }

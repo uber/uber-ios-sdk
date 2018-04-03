@@ -65,6 +65,42 @@ Factory class to build access tokens
     }
     
     /**
+     Builds an AccessToken with authorizationCode from the provided redirect URL
+     
+     - throws: UberAuthenticationError
+     - parameter url: The URL to parse the authorization code from
+     - returns: An initialized AccessToken, or nil if one couldn't be created
+     */
+    public static func createAuthorizationCode(fromRedirectURL redirectURL: URL) throws -> AccessToken {
+        guard var components = URLComponents(url: redirectURL, resolvingAgainstBaseURL: false) else {
+            throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
+        }
+        
+        var finalQueryArray = [String]()
+        if let existingQuery = components.query {
+            finalQueryArray.append(existingQuery)
+        }
+        if let existingFragment = components.fragment {
+            finalQueryArray.append(existingFragment)
+        }
+        components.fragment = nil
+        components.query = finalQueryArray.joined(separator: "&")
+        
+        guard let queryItems = components.queryItems else {
+            throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
+        }
+        var queryDictionary = [String: Any]()
+        for queryItem in queryItems {
+            guard let value = queryItem.value else {
+                continue
+            }
+            queryDictionary[queryItem.name] = value
+        }
+        
+        return AccessToken(tokenString: "", authorizationCode: queryDictionary["code"] as? String)
+    }
+    
+    /**
      Builds an AccessToken from the provided JSON data
      
      - throws: UberAuthenticationError

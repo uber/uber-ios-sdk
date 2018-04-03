@@ -36,6 +36,9 @@
     /// String containing the refresh token.
     @objc public private(set) var refreshToken: String?
     
+    /// String containing the authorization code for LoginType.authorizationCode authentication type.
+    @objc public private(set) var authorizationCode: String?
+    
     /// The expiration date for this access token
     @objc public private(set) var expirationDate: Date?
     
@@ -49,6 +52,17 @@
      */
     @objc public init(tokenString: String) {
         self.tokenString = tokenString
+        super.init()
+    }
+    
+    /**
+     Initializes an AccessToken with the provided authorizationCode
+     
+     - parameter authorizationCode: The authorization code
+     */
+    @objc public init(tokenString: String, authorizationCode: String?) {
+        self.tokenString = tokenString
+        self.authorizationCode = authorizationCode
         super.init()
     }
     

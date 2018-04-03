@@ -87,6 +87,7 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
             
             // Poll backend for access token
             // Replace "YOUR_URL" with the path for your backend service
+            // Use accessToken.authorizationCode to receive authorizationCode
             if let url = URL(string: "YOUR_URL") {
                 let request = URLRequest(url: url)
                 URLSession.shared.dataTask(with: request) { (data, response, error) in
