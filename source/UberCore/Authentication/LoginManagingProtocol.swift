@@ -58,7 +58,7 @@
      
      - returns: true if the url was meant to be handled by the SDK, false otherwise
      */
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any?) -> Bool
 
     /**
      Called via the RidesAppDelegate when the application is opened via a URL. Responsible
