@@ -41,8 +41,12 @@ import UberCore
     @nonobjc public private(set) var pickupEstimate: Int?
 
     /// The estimated time of vehicle arrival in minutes. UBSDKEstimateUnavailable if there are no cars available.
-    @objc(pickupEstimate) public var objc_pickupEstimate: Int {
-        return pickupEstimate ?? UBSDKEstimateUnavailable
+    @objc(pickupEstimate) public var objc_pickupEstimate: NSNumber? {
+        if let pickupEstimate = pickupEstimate {
+            return NSNumber(value: pickupEstimate)
+        } else {
+            return nil
+        }
     }
 
     /// Upfront Fare for the Ride Estimate. 

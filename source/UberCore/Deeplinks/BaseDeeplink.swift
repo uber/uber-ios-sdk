@@ -30,6 +30,23 @@ import Foundation
 @objc(UBSDKBaseDeeplink) open class BaseDeeplink: NSObject, Deeplinking {
     @objc public var url: URL
 
+    @objc open var fallbackURLs: [URL] {
+        var urls: [URL] = []
+        if url.scheme == "uber",
+            var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+            urlComponents.scheme = "uber-enterprise"
+            if let betaURL = urlComponents.url {
+                urls.append(betaURL)
+            }
+
+            urlComponents.scheme = "uber-nightly"
+            if let nightlyURL = urlComponents.url {
+                urls.append(nightlyURL)
+            }
+        }
+        return urls
+    }
+
     @objc public init?(scheme: String, host: String, path: String, queryItems: [URLQueryItem]?) {
         var components = URLComponents()
         components.scheme = scheme
@@ -54,4 +71,14 @@ import Foundation
     @objc public func execute(completion: DeeplinkCompletionHandler? = nil) {
         DeeplinkManager.shared.open(self, completion: completion)
     }
+}
+
+/// Fallback types for Deeplinks
+@objc(UBSDKDeeplinkFallbackType) public enum DeeplinkFallbackType: Int {
+    /// Mobile web fallback (m.uber.com)
+    case mobileWeb
+    /// App Store download fallback
+    case appStore
+    /// No fallback
+    case none
 }

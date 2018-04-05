@@ -42,24 +42,50 @@ import UberCore
     /// The current bearing in degrees for a moving location.
     @nonobjc public private(set) var bearing: Int?
 
-    /// The current bearing in degrees for a moving location. UBSDKBearingUnavailable if not present.
-    @objc public var objc_bearing: Int {
-        return bearing ?? UBSDKBearingUnavailable
+    /// The current bearing in degrees for a moving location.
+    @objc(bearing) public var objc_bearing: NSNumber? {
+        if let bearing = bearing {
+            return NSNumber(value: bearing)
+        } else {
+            return nil
+        }
     }
-    
+
     /// ETA is only available when the trips is accepted or arriving.
     @nonobjc public private(set) var eta: Int?
 
-    /// ETA is only available when the trips is accepted or arriving. -1 if not present.
-    @objc public var objc_eta: Int {
-        return eta ?? UBSDKEstimateUnavailable
+    /// ETA is only available when the trips is accepted or arriving.
+    @objc(eta) public var objc_eta: NSNumber? {
+        if let eta = eta {
+            return NSNumber(value: eta)
+        } else {
+            return nil
+        }
     }
-    
+
     /// The latitude of the location.
-    @objc public private(set) var latitude: Double
-    
+    @nonobjc public private(set) var latitude: Double?
+
+    /// The latitude of the location.
+    @objc(latitude) public var objc_latitude: NSNumber? {
+        if let latitude = latitude {
+            return NSNumber(value: latitude)
+        } else {
+            return nil
+        }
+    }
+
     /// The longitude of the location.
-    @objc public private(set) var longitude: Double
+    @nonobjc public private(set) var longitude: Double?
+
+    /// The longitude of the location.
+    @objc(longitude) public var objc_longitude: NSNumber? {
+        if let longitude = longitude {
+            return NSNumber(value: longitude)
+        } else {
+            return nil
+        }
+    }
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -68,7 +94,7 @@ import UberCore
         bearing = try container.decodeIfPresent(Int.self, forKey: .bearing)
         eta = try container.decodeIfPresent(Int.self, forKey: .eta)
         eta = eta != -1 ? eta : nil // Since the API returns -1, converting to an optional. 
-        latitude = try container.decode(Double.self, forKey: .latitude)
-        longitude = try container.decode(Double.self, forKey: .longitude)
+        latitude = try container.decodeIfPresent(Double.self, forKey: .latitude)
+        longitude = try container.decodeIfPresent(Double.self, forKey: .longitude)
     }
 }

@@ -34,10 +34,10 @@
     @objc public static let work = "work"
     
     /// Fully qualified address of the location.
-    @objc public private(set) var address: String
+    @objc public private(set) var address: String?
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        address = try container.decode(String.self, forKey: .address)
+        address = try container.decodeIfPresent(String.self, forKey: .address)
     }
 }

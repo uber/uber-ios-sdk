@@ -28,7 +28,6 @@
 #import "UBSDKExampleTableViewCell.h"
 #import "UBSDKImplicitGrantExampleViewController.h"
 #import "UBSDKLocalization.h"
-#import "UBSDKRideRequestWidgetExampleViewController.h"
 #import "UBSDKNativeLoginExampleViewController.h"
 
 @import UberCore;
@@ -72,7 +71,6 @@
     NSMutableArray<UBSDKExampleTableViewCell *> *sectionOneExampleCells = [NSMutableArray array];
     
     [sectionOneExampleCells addObject:[self _createDeeplinkExampleCell]];
-    [sectionOneExampleCells addObject:[self _createRideRequestWidgetButtonExampleCell]];
     [sectionOneExampleCells addObject:[self _createImplicitGrantExampleCell]];
     [sectionOneExampleCells addObject:[self _createNativeLoginExampleCell]];
 
@@ -96,17 +94,6 @@
     UBSDKExampleTableViewCell *deeplinkExampleCell = [[UBSDKExampleTableViewCell alloc] initWithBehaviorBlock:behaviorBlock];
     deeplinkExampleCell.textLabel.text = UBSDKLOC(@"Deeplink Request Buttons");
     return deeplinkExampleCell;
-}
-
-- (UBSDKExampleTableViewCell *)_createRideRequestWidgetButtonExampleCell {
-    UBSDKExampleTableViewController __weak *weakSelf = self;
-    void (^behaviorBlock)() = ^void() {
-        UBSDKRideRequestWidgetExampleViewController *rideRequestWidgetExampleViewController = [[UBSDKRideRequestWidgetExampleViewController alloc] init];
-        [weakSelf.navigationController pushViewController:rideRequestWidgetExampleViewController animated:YES];
-    };
-    UBSDKExampleTableViewCell *rideRequestWidgetExampleCell = [[UBSDKExampleTableViewCell alloc] initWithBehaviorBlock:behaviorBlock];
-    rideRequestWidgetExampleCell.textLabel.text = UBSDKLOC(@"Ride Request Widget Button");
-    return rideRequestWidgetExampleCell;
 }
 
 - (UBSDKExampleTableViewCell *)_createImplicitGrantExampleCell {

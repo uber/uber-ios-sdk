@@ -18,7 +18,6 @@
 		D825C5CA1CD19773001FE3A7 /* AuthorizationCodeGrantExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D825C5C91CD19773001FE3A7 /* AuthorizationCodeGrantExampleViewController.swift */; };
 		D825C5CC1CD267C0001FE3A7 /* AuthorizationBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D825C5CB1CD267C0001FE3A7 /* AuthorizationBaseViewController.swift */; };
 		DC78EC781CB34AC600850814 /* ExampleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC78EC771CB34AC600850814 /* ExampleTableViewController.swift */; };
-		DC78EC7A1CB34D4800850814 /* RideRequestWidgetExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC78EC791CB34D4800850814 /* RideRequestWidgetExampleViewController.swift */; };
 		DC78EC7C1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC78EC7B1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift */; };
 		DCD806161CFE7F4300EF6EB1 /* ButtonExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD806151CFE7F4300EF6EB1 /* ButtonExampleViewController.swift */; };
 		DCD806181CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD806171CFE983B00EF6EB1 /* NativeLoginExampleViewController.swift */; };
@@ -74,7 +73,6 @@
 		D825C5C91CD19773001FE3A7 /* AuthorizationCodeGrantExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrantExampleViewController.swift; sourceTree = "<group>"; };
 		D825C5CB1CD267C0001FE3A7 /* AuthorizationBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationBaseViewController.swift; sourceTree = "<group>"; };
 		DC78EC771CB34AC600850814 /* ExampleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTableViewController.swift; sourceTree = "<group>"; };
-		DC78EC791CB34D4800850814 /* RideRequestWidgetExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestWidgetExampleViewController.swift; sourceTree = "<group>"; };
 		DC78EC7B1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImplicitGrantExampleViewController.swift; sourceTree = "<group>"; };
 		DC8FC3671CBDF5C100D58839 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		DC8FC3681CBDF5C100D58839 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
@@ -156,7 +154,6 @@
 			children = (
 				AC0404A71BFAD0C800AC1501 /* AppDelegate.swift */,
 				DC78EC771CB34AC600850814 /* ExampleTableViewController.swift */,
-				DC78EC791CB34D4800850814 /* RideRequestWidgetExampleViewController.swift */,
 				AC0404A91BFAD0C800AC1501 /* DeeplinkExampleViewController.swift */,
 				D825C5CB1CD267C0001FE3A7 /* AuthorizationBaseViewController.swift */,
 				DC78EC7B1CB35AAB00850814 /* ImplicitGrantExampleViewController.swift */,
@@ -394,7 +391,6 @@
 				AC0404A81BFAD0C800AC1501 /* AppDelegate.swift in Sources */,
 				D825C5CC1CD267C0001FE3A7 /* AuthorizationBaseViewController.swift in Sources */,
 				D825C5CA1CD19773001FE3A7 /* AuthorizationCodeGrantExampleViewController.swift in Sources */,
-				DC78EC7A1CB34D4800850814 /* RideRequestWidgetExampleViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

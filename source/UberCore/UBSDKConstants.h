@@ -22,8 +22,4 @@
 #ifndef UBSDKConstants_h
 #define UBSDKConstants_h
 
-FOUNDATION_EXPORT double UBSDKDistanceUnavailable;
-FOUNDATION_EXPORT NSInteger UBSDKEstimateUnavailable;
-FOUNDATION_EXPORT NSInteger UBSDKBearingUnavailable;
-
 #endif /* UBSDKConstants_h */

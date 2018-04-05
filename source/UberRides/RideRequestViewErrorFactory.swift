@@ -22,7 +22,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-/// Factory class for creating RideRequestViewErrors
+/**
+ Factory class for creating RideRequestViewErrors
+ - Warning: The Ride Request Widget is deprecated, and will no longer work for new apps.
+ Existing apps have until 05/31/2018 to migrate. See the Uber API Changelog for more details.
+ */
 class RideRequestViewErrorFactory {
     
     static let errorDomain = "com.uber.rides-ios-sdk.riderequesterror"

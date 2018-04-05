@@ -29,6 +29,8 @@ import UberCore
 /**
  *  Delegate Protocol to pass errors from the internal RideRequestView outward if necessary.
  *  For example, you might want to dismiss the View Controller if it experiences an error
+ - Warning: The Ride Request Widget is deprecated, and will no longer work for new apps.
+ Existing apps have until 05/31/2018 to migrate. See the Uber API Changelog for more details.
  */
 @objc(UBSDKRideRequestViewControllerDelegate) public protocol RideRequestViewControllerDelegate {
     /**
@@ -41,7 +43,11 @@ import UberCore
     @objc func rideRequestViewController(_ rideRequestViewController: RideRequestViewController, didReceiveError error: NSError)
 }
 
-// View controller to wrap the RideRequestView
+/**
+ View controller to wrap the RideRequestView
+ - Warning: The Ride Request Widget is deprecated, and will no longer work for new apps.
+ Existing apps have until 05/31/2018 to migrate. See the Uber API Changelog for more details.
+*/
 @objc (UBSDKRideRequestViewController) public class RideRequestViewController: UIViewController {
     /// The RideRequestViewControllerDelegate to handle the errors
     @objc public var delegate: RideRequestViewControllerDelegate?

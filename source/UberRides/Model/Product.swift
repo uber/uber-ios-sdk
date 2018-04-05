@@ -22,7 +22,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import UIKit
+import UberCore
 
 // MARK: Products
 
@@ -44,31 +44,67 @@ struct UberProducts: Codable {
 */
 @objc(UBSDKProduct) public class Product: NSObject, Codable {
     /// Unique identifier representing a specific product for a given latitude & longitude.
-    @objc public private(set) var productID: String
+    @objc public private(set) var productID: String?
     
     /// Display name of product. Ex: "UberBLACK".
-    @objc public private(set) var name: String
+    @objc public private(set) var name: String?
     
     /// Description of product. Ex: "The original Uber".
-    @objc public private(set) var productDescription: String
-    
+    @objc public private(set) var productDescription: String?
+
     /// Capacity of product. Ex: 4, for a product that fits 4.
-    @objc public private(set) var capacity: Int
+    @nonobjc public private(set) var capacity: Int?
+
+    /// Capacity of product. Ex: 4, for a product that fits 4.
+    @objc public var objc_capacity: NSNumber? {
+        if let capacity = capacity {
+            return NSNumber(value: capacity)
+        } else {
+            return nil
+        }
+    }
     
     /// Image URL representing the product.
-    @objc public private(set) var imageURL: URL
+    @objc public private(set) var imageURL: URL?
 
     /// The basic price details. See `PriceDetails` for structure.
     @objc public private(set) var priceDetails: PriceDetails?
 
-    /// Allows users to get upfront fares, instead of time + distance.
-    @objc public private(set) var upfrontFareEnabled: Bool
+    /// Specifies whether this product allows users to get upfront fares, instead of time + distance.
+    @nonobjc public private(set) var upfrontFareEnabled: Bool?
+
+    /// Specifies whether this product allows users to get upfront fares, instead of time + distance. Boolean value.
+    @objc public var objc_upfrontFareEnabled: NSNumber? {
+        if let upfrontFareEnabled = upfrontFareEnabled {
+            return NSNumber(value: upfrontFareEnabled)
+        } else {
+            return nil
+        }
+    }
 
     /// Specifies whether this product allows cash payments
-    @objc public private(set) var cashEnabled: Bool
+    @nonobjc public private(set) var cashEnabled: Bool?
+
+    /// Specifies whether this product allows cash payments. Boolean value.
+    @objc public var objc_cashEnabled: NSNumber? {
+        if let cashEnabled = cashEnabled {
+            return NSNumber(value: cashEnabled)
+        } else {
+            return nil
+        }
+    }
 
     /// Specifies whether this product allows for the pickup and drop off of other riders during the trip
-    @objc public private(set) var isShared: Bool
+    @nonobjc public private(set) var isShared: Bool?
+
+    /// Specifies whether this product allows for the pickup and drop off of other riders during the trip. Boolean value. 
+    @objc public var objc_isShared: NSNumber? {
+        if let isShared = isShared {
+            return NSNumber(value: isShared)
+        } else {
+            return nil
+        }
+    }
 
     /// The product group that this product belongs to
     @objc public private(set) var productGroup: ProductGroup
@@ -88,16 +124,16 @@ struct UberProducts: Codable {
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        productID = try container.decode(String.self, forKey: .productID)
-        name = try container.decode(String.self, forKey: .name)
-        productDescription = try container.decode(String.self, forKey: .productDescription)
-        capacity = try container.decode(Int.self, forKey: .capacity)
-        imageURL = try container.decode(URL.self, forKey: .imageURL)
+        productID = try container.decodeIfPresent(String.self, forKey: .productID)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        productDescription = try container.decodeIfPresent(String.self, forKey: .productDescription)
+        capacity = try container.decodeIfPresent(Int.self, forKey: .capacity)
+        imageURL = try container.decodeIfPresent(URL.self, forKey: .imageURL)
         priceDetails = try container.decodeIfPresent(PriceDetails.self, forKey: .priceDetails)
-        upfrontFareEnabled = try container.decode(Bool.self, forKey: .upfrontFareEnabled)
-        cashEnabled = try container.decode(Bool.self, forKey: .cashEnabled)
-        isShared = try container.decode(Bool.self, forKey: .isShared)
-        productGroup = try container.decode(ProductGroup.self, forKey: .productGroup)
+        upfrontFareEnabled = try container.decodeIfPresent(Bool.self, forKey: .upfrontFareEnabled)
+        cashEnabled = try container.decodeIfPresent(Bool.self, forKey: .cashEnabled)
+        isShared = try container.decodeIfPresent(Bool.self, forKey: .isShared)
+        productGroup = try container.decodeIfPresent(ProductGroup.self, forKey: .productGroup) ?? .unknown
     }
 }
 
@@ -108,28 +144,73 @@ struct UberProducts: Codable {
 */
 @objc(UBSDKPriceDetails) public class PriceDetails: NSObject, Codable {
     /// Unit of distance used to calculate fare (mile or km).
-    @objc public private(set) var distanceUnit: String
+    @objc public private(set) var distanceUnit: String?
     
     /// ISO 4217 currency code.
-    @objc public private(set) var currencyCode: String
-    
+    @objc public private(set) var currencyCode: String?
+
     /// The charge per minute (if applicable).
-    @objc public private(set) var costPerMinute: Double
-    
+    @nonobjc public private(set) var costPerMinute: Double?
+
+    /// The charge per minute (if applicable).
+    @objc(costPerMinute) public var objc_costPerMinute: NSNumber? {
+        if let costPerMinute = costPerMinute {
+            return NSNumber(value: costPerMinute)
+        } else {
+            return nil
+        }
+    }
+
     /// The charge per distance unit (if applicable).
-    @objc public private(set) var costPerDistance: Double
-    
+    @nonobjc public private(set) var costPerDistance: Double?
+
+    /// The charge per distance unit (if applicable).
+    @objc(costPerDistance) public var objc_costPerDistance: NSNumber? {
+        if let costPerDistance = costPerDistance {
+            return NSNumber(value: costPerDistance)
+        } else {
+            return nil
+        }
+    }
+
     /// The base price.
-    @objc public private(set) var baseFee: Double
-    
+    @nonobjc public private(set) var baseFee: Double?
+
+    /// The base price.
+    @objc(baseFee) public var objc_baseFee: NSNumber? {
+        if let baseFee = baseFee {
+            return NSNumber(value: baseFee)
+        } else {
+            return nil
+        }
+    }
+
     /// The minimum price of a trip.
-    @objc public private(set) var minimumFee: Double
-    
+    @nonobjc public private(set) var minimumFee: Double?
+
+    /// The minimum price of a trip.
+    @objc(minimumFee) public var objc_minimumFee: NSNumber? {
+        if let minimumFee = minimumFee {
+            return NSNumber(value: minimumFee)
+        } else {
+            return nil
+        }
+    }
+
     /// The fee if a rider cancels the trip after a grace period.
-    @objc public private(set) var cancellationFee: Double
+    @nonobjc public private(set) var cancellationFee: Double?
+
+    /// The fee if a rider cancels the trip after a grace period.
+    @objc(cancellationFee) public var objc_cancellationFee: NSNumber? {
+        if let cancellationFee = cancellationFee {
+            return NSNumber(value: cancellationFee)
+        } else {
+            return nil
+        }
+    }
     
     /// Array containing additional fees added to the price. See `ServiceFee`.
-    @objc public private(set) var serviceFees: [ServiceFee]
+    @objc public private(set) var serviceFees: [ServiceFee]?
 
     enum CodingKeys: String, CodingKey {
         case distanceUnit    = "distance_unit"
@@ -144,14 +225,14 @@ struct UberProducts: Codable {
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        distanceUnit = try container.decode(String.self, forKey: .distanceUnit)
-        currencyCode = try container.decode(String.self, forKey: .currencyCode)
-        costPerMinute = try container.decode(Double.self, forKey: .costPerMinute)
-        costPerDistance = try container.decode(Double.self, forKey: .costPerDistance)
-        baseFee = try container.decode(Double.self, forKey: .baseFee)
-        minimumFee = try container.decode(Double.self, forKey: .minimumFee)
-        cancellationFee = try container.decode(Double.self, forKey: .cancellationFee)
-        serviceFees = try container.decode([ServiceFee].self, forKey: .serviceFees)
+        distanceUnit = try container.decodeIfPresent(String.self, forKey: .distanceUnit)
+        currencyCode = try container.decodeIfPresent(String.self, forKey: .currencyCode)
+        costPerMinute = try container.decodeIfPresent(Double.self, forKey: .costPerMinute)
+        costPerDistance = try container.decodeIfPresent(Double.self, forKey: .costPerDistance)
+        baseFee = try container.decodeIfPresent(Double.self, forKey: .baseFee)
+        minimumFee = try container.decodeIfPresent(Double.self, forKey: .minimumFee)
+        cancellationFee = try container.decodeIfPresent(Double.self, forKey: .cancellationFee)
+        serviceFees = try container.decodeIfPresent([ServiceFee].self, forKey: .serviceFees)
     }
 }
 
@@ -162,10 +243,19 @@ struct UberProducts: Codable {
 */
 @objc(UBSDKServiceFee) public class ServiceFee: NSObject, Codable {
     /// The name of the service fee.
-    @objc public private(set) var name: String
+    @objc public private(set) var name: String?
     
     /// The amount of the service fee.
-    @objc public private(set) var fee: Double
+    @nonobjc public private(set) var fee: Double?
+
+    /// The amount of the service fee.
+    @objc(fee) public var objc_fee: NSNumber? {
+        if let fee = fee {
+            return NSNumber(value: fee)
+        } else {
+            return nil
+        }
+    }
 
     enum CodingKeys: String, CodingKey {
         case name = "name"
@@ -174,8 +264,8 @@ struct UberProducts: Codable {
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(String.self, forKey: .name)
-        fee = try container.decode(Double.self, forKey: .fee)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        fee = try container.decodeIfPresent(Double.self, forKey: .fee)
     }
 }
 

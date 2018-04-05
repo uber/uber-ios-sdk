@@ -30,13 +30,10 @@ public typealias DeeplinkCompletionHandler = (NSError?) -> Void
 @objc(UBSDKDeeplinking) public protocol Deeplinking {
     /// The deeplink URL that the deeplink will execute
     var url: URL { get }
-    
-    /**
-     Execute a deeplink to launch into an external app
-     
-     - returns: true if the deeplink was executed, false otherwise.
-     */
-    
+
+    /// Fallback URLs for the deeplink (eg, a website, alternate app, etc)
+    var fallbackURLs: [URL] { get }
+
     /**
      Execute a deeplink to launch into an external app
      

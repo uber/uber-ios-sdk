@@ -20,7 +20,3 @@
 //  THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-
-double UBSDKDistanceUnavailable = -INFINITY;
-NSInteger UBSDKEstimateUnavailable = NSIntegerMin;
-NSInteger UBSDKBearingUnavailable = NSIntegerMin;

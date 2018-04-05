@@ -130,10 +130,11 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
         ridesClient.requestRide(parameters: builder.build(), completion: { ride, response in
             DispatchQueue.main.async(execute: {
                 self.checkError(response)
-                if let ride = ride {
+                if let ride = ride,
+                    let requestID = ride.requestID {
                     self.statusLabel.text = "Processing"
                     
-                    self.updateRideStatus(ride.requestID, index: 0)
+                    self.updateRideStatus(requestID, index: 0)
                 } else {
                     self.requestButton.isEnabled = true
                 }

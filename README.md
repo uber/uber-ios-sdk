@@ -13,14 +13,14 @@ This [Swift library](https://developer.apple.com/library/ios/documentation/Gener
 To install the Uber Rides SDK, you may use [CocoaPods](http://cocoapods.org), [Carthage](https://github.com/Carthage/Carthage), or add it to your project manually
 
 ```ruby
-pod 'UberRides', '~> 0.8'
+pod 'UberRides', '~> 0.9'
 ```
 
 If you get compilation errors with CocoaPods, you may be using Swift 3.2 or no Swift at all in your main target. In that scenario, CocoaPods will set the swift version incorrectly. [See issue](https://github.com/CocoaPods/CocoaPods/issues/6791). To fix this, click on your Pods project and select the `UberRides` target. Search for the `Swift Language Version` property, and change it to "Swift 4.0".
 
 ### Carthage
 ```
-github "uber/rides-ios-sdk" ~> 0.8
+github "uber/rides-ios-sdk" ~> 0.9
 ```
 
 ## Getting Started
@@ -96,6 +96,8 @@ builder.dropoffLocation = dropoffLocation
 builder.dropoffNickname = "Somewhere"
 builder.dropoffAddress = "123 Fake St."
 let rideParameters = builder.build()
+
+let button = RideRequestButton(rideParameters: rideParameters)
 ```
 
 ```objective-c
@@ -111,6 +113,8 @@ CLLocation *dropoffLocation = [[CLLocation alloc] initWithLatitude:37.775200 lon
 [builder setDropoffAddress:@"123 Fake St."];
 [builder setDropoffNickname:@"Somewhere"];
 UBSDKRideParameters *rideParameters = [builder build];
+
+UBSDKRideRequestButton *button = [[UBSDKRideRequestButton alloc] initWithRideParameters:rideParameters];
 ```
 
 We suggest passing additional parameters to make the Uber experience even more seamless for your users. For example, dropoff location parameters can be used to automatically pass the user’s destination information over to the driver. With all the necessary parameters set, pressing the button will seamlessly prompt a ride request confirmation screen.
@@ -118,6 +122,47 @@ We suggest passing additional parameters to make the Uber experience even more s
 **Note:** If you are using a `RideRequestButton` that deeplinks into the Uber app and you want to specify a dropoff location, you must provide a nickname or formatted address for that location. Otherwise, the pin will not display.
 
 You can also use the `RideRequestButtonDelegate` to be informed of success and failure events during a button refresh.
+
+## Ride Request Deeplink
+
+If you don't want to use the Uber-provided button, you can also manually initiate a deeplink in a similar fashion as above:
+
+```swift
+// Swift
+import UberRides
+import CoreLocation
+
+let builder = RideParametersBuilder()
+// ...
+let rideParameters = builder.build()
+
+let deeplink = RequestDeeplink(rideParameters: rideParameters)
+deeplink.execute()
+```
+
+```objective-c
+// Objective-C
+@import UberRides;
+@import CoreLocation;
+
+UBSDKRideParametersBuilder *builder = [[UBSDKRideParametersBuilder alloc] init];
+// ...
+UBSDKRideParameters *rideParameters = [builder build];
+
+UBSDKRequestDeeplink *deeplink = [[UBSDKRequestDeeplink alloc] initWithRideParameters:rideParameters];
+[deeplink executeWithCompletion:nil];
+```
+
+With the Ride Request deeplink, you can specify a fallback for users that don't have the Uber app installed. With a fallback, they'll get redirected to either the mobile web version of Uber, or the App Store. To do so, simply add the `fallbackType` parameter:
+
+```swift
+// Swift
+let deeplink = RequestDeeplink(rideParameters: rideParameters, fallbackType: .mobileWeb) // Or .appStore
+
+// Objective-C
+UBSDKRequestDeeplink *requestDeeplink = [[UBSDKRequestDeeplink alloc] initWithRideParameters:rideParameters 
+                                          fallbackType:UBSDKDeeplinkFallbackTypeMobileWeb];
+```
 
 ## Login with Uber
 
@@ -130,6 +175,8 @@ First, open up the [Uber Developer Dashboard](https://developer.uber.com/dashboa
 We also need to register a Redirect URL for your application. This ensures that Uber sends users to the correct application after they log in. Make a URL in this format, and save your application: `YourApplicationBundleID://oauth/consumer`.
 
 In your Xcode project, you need to register your URL scheme as well as the callback URL with the Uber SDK. Copy this into your `Info.plist`, replacing the relevant values:
+
+> Note: If one of the following keys already exists in your `Info.plist` file, you will have to add the values to them and not duplicate the keys.
 
 ```
 <key>UberCallbackURIs</key>
@@ -255,114 +302,13 @@ loginButton.delegate = self;
 }
 ```
 
-## Ride Request Widget
-
-The Uber Rides SDK provides a simple way to add the Ride Request Widget in only a few lines of code via the `RideRequestButton`. You simply need to provide a `RideRequesting` object and an optional `RideParameters` object.
-
-```swift
-// Swift
-// Pass in a UIViewController to modally present the Ride Request Widget over
-let behavior = RideRequestViewRequestingBehavior(presentingViewController: self)
-// Optional, defaults to using the user’s current location for pickup
-let location = CLLocation(latitude: 37.787654, longitude: -122.402760)
-let builder = RideParametersBuilder()
-builder.pickupLocation = location
-let button = RideRequestButton(rideParameters: builder.build(), requestingBehavior: behavior)
-self.view.addSubview(button)
-```
-
-```objective-c
-// Objective-C
-// Pass in a UIViewController to modally present the Ride Request Widget over
-id<UBSDKRideRequesting> behavior = [[UBSDKRideRequestViewRequestingBehavior alloc] initWithPresentingViewController: self];
-// Optional, defaults to using the user’s current location for pickup
-CLLocation *location = [[CLLocation alloc] initWithLatitude: 37.787654 longitude: -122.402760];
-UBSDKRideParametersBuilder *builder = [[UBSDKRideParametersBuilder alloc] init];
-[builder setPickupLocation:location];
-UBSDKRideParameters *parameters = [builder build];
-UBSDKRideRequestButton *button = [[UBSDKRideRequestButton alloc] initWithRideParameters: parameters requestingBehavior: behavior];
-[self.view addSubview:button];
-```
-
-That’s it! When a user taps the button, a **RideRequestViewController** will be modally presented, containing a **RideRequestView** prefilled with the information provided from the **RideParameters** object. If they aren’t signed in, the modal will display a login page and automatically continue to the Ride Request Widget once they sign in. 
-
-Basic error handling is provided by default, but can be overwritten by specifying a **RideRequestViewControllerDelegate**.
-
-```swift
-// Swift
-extension your_class : RideRequestViewControllerDelegate {
-   func rideRequestViewController(_ rideRequestViewController: RideRequestViewController, didReceiveError error: NSError) {
-        let errorType = RideRequestViewErrorType(rawValue: error.code) ?? .unknown
-        // Handle error here
-        switch errorType {
-        case .accessTokenMissing:
-        // No AccessToken saved
-        case .accessTokenExpired:
-        // AccessToken expired / invalid
-        case .networkError:
-        // A network connectivity error
-        case .notSupported:
-        // The attempted operation is not supported on the current device
-        default:
-            // Other error
-        }
-    }
-}
-
-// Use your_class as the delegate
-let behavior = RideRequestViewRequestingBehavior(presentingViewController: self)
-let delegate = your_class()
-behavior.modalRideRequestViewController.rideRequestViewController.delegate = delegate
-// Create the button same as before
-let button = RideRequestButton(rideParameters: parameters, requestingBehavior: behavior)
-```
-
-```objective-c
-// Objective-C
-// Need to implement the UBSDKRideRequestViewControllerDelegate
-@interface your_class () <UBSDKRideRequestViewControllerDelegate>
-
-@end
-
-// Implement the delegate methods
-- (void)rideRequestViewController:(UBSDKRideRequestViewController *)rideRequestViewController didReceiveError:(NSError *)error {
-    // Handle error here
-    RideRequestViewErrorType errorType = (RideRequestViewErrorType)error.code;
-    
-    switch (errorType) {
-        case RideRequestViewErrorTypeAccessTokenExpired:
-            // No AccessToken saved
-            break;
-        case RideRequestViewErrorTypeAccessTokenMissing:
-            // AccessToken expired / invalid
-            break;
-        case RideRequestViewErrorTypeNetworkError:
-            // A network connectivity error
-            break;
-        case RideRequestViewErrorTypeUnknown:
-            // Other error
-            break;
-        default:
-            break;
-    }
-}
-
-// Assign the delegate when you initialize your UBSDKModalViewControllerDelegate
-UBSDKRideRequestViewRequestingBehavior *requestBehavior = [[UBSDKRideRequestViewRequestingBehavior alloc] initWithPresentingViewController:self];
-// Subscribe as the delegete
-requestBehavior.modalRideRequestViewController.delegate = self;
-// Create the button same as before
-UBSDKRideRequestButton *button = [[UBSDKRideRequestButton alloc] initWithRideParameters: parameters requestingBehavior: requestBehavior];
-[self.view addSubview:button];
-```
-
 ## Custom Integration
 If you want to provide a more custom experience in your app, there are a few classes to familiarize yourself with. Read the sections below and you’ll be requesting rides in no time!
 
 ### Uber Rides API Endpoints
 The SDK exposes all the endpoints available in the [Uber Developers documentation](https://developer.uber.com/docs). Some endpoints can be authenticated with a server token, but for most endpoints, you will require a bearer token. A bearer token can be retrieved via implicit grant, authorization code grant, or SSO. To authorize [privileged scopes](https://developer.uber.com/docs/scopes#section-privileged-scopes), you must use authorization code grant or SSO.
 
-Read the full API documentation at [CocoaDocs](http://cocoadocs.org/docsets/UberRides/0.8.0/)
+Read the full API documentation at [CocoaDocs](http://cocoadocs.org/docsets/UberRides/0.9.0/)
 
 The `RidesClient` is your source to access all the endpoints available in the Uber Rides API. With just your server token, you can get a list of Uber products as well as price and time estimates. 
 
@@ -405,8 +351,8 @@ The easiest form of authorization is using the `.native` login type. It allows y
 // Swift
 let loginManager = LoginManager()
 loginManager.login(requestedScopes:[.request], presentingViewController: self, completion: { accessToken, error in
-// Completion block. If accessToken is non-nil, you’re good to go
-// Otherwise, error.code corresponds to the RidesAuthenticationErrorType that occured
+    // Completion block. If accessToken is non-nil, you’re good to go
+    // Otherwise, error.code corresponds to the RidesAuthenticationErrorType that occured
 })
 ```
 
@@ -414,8 +360,8 @@ loginManager.login(requestedScopes:[.request], presentingViewController: self, c
 // Objective-C
 UBSDKLoginManager *loginManager = [[UBSDKLoginManager alloc] init];
 [loginManager loginWithRequestedScopes:@[ UBSDKScope.request ] presentingViewController: self completion: ^(UBSDKAccessToken * _Nullable accessToken, NSError * _Nullable error) {
-// Completion block. If accessToken is non-nil, you're good to go
-// Otherwise, error.code corresponds to the RidesAuthenticationErrorType that occured
+    // Completion block. If accessToken is non-nil, you're good to go
+    // Otherwise, error.code corresponds to the RidesAuthenticationErrorType that occured
 }];
 ```
 
