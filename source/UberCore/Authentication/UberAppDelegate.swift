@@ -87,7 +87,7 @@
         
         let manager = loginManager ?? LoginManager()
         let sourceApplication = options[UIApplicationLaunchOptionsKey.sourceApplication] as? String
-        let annotation = options[UIApplicationLaunchOptionsKey.annotation] as Any
+        let annotation = options[UIApplicationLaunchOptionsKey.annotation] as Any?
         let urlHandled = manager.application(application, open: launchURL, sourceApplication: sourceApplication, annotation: annotation)
         loginManager = nil
         return urlHandled
