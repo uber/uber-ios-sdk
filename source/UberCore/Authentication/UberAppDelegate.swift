@@ -68,7 +68,7 @@
      communicate information to the receiving app As passed to the corresponding AppDelegate method
      - returns: true if the URL was intended for the Rides SDK, false otherwise
      */
-    @objc public func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+    @objc public func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any?) -> Bool {
         guard let manager = loginManager else {
             return false
         }
@@ -87,7 +87,7 @@
         
         let manager = loginManager ?? LoginManager()
         let sourceApplication = options[UIApplicationLaunchOptionsKey.sourceApplication] as? String
-        let annotation = options[UIApplicationLaunchOptionsKey.annotation] as Any
+        let annotation = options[UIApplicationLaunchOptionsKey.annotation] as Any?
         let urlHandled = manager.application(application, open: launchURL, sourceApplication: sourceApplication, annotation: annotation)
         loginManager = nil
         return urlHandled

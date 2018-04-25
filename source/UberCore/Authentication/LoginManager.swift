@@ -146,7 +146,7 @@ import SafariServices
      
      - returns: true if the url was meant to be handled by the SDK, false otherwise
      */
-    public func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+    public func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any?) -> Bool {
         guard let sourceApplication = sourceApplication else { return false }
         let sourceIsNative = loginType == .native && sourceApplication.hasPrefix("com.ubercab")
         let sourceIsSafariVC = loginType != .native && sourceApplication == "com.apple.SafariViewService"
@@ -174,7 +174,7 @@ import SafariServices
     @available(iOS 9.0, *)
     public func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
         let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String
-        let annotation = options[.annotation] as Any
+        let annotation = options[.annotation] as Any?
 
         return application(app, open: url, sourceApplication: sourceApplication, annotation: annotation)
     }
