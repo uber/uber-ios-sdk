@@ -75,7 +75,7 @@ import UberCore
                 return urlComponents.url
             }
         case .appStore:
-            let deeplink = AppStoreDeeplink(userAgent: rideParameters.userAgent)
+            let deeplink = RidesAppStoreDeeplink(userAgent: rideParameters.userAgent)
             return deeplink.url
         default:
             break

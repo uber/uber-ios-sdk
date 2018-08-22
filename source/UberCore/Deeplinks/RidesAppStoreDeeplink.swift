@@ -1,5 +1,5 @@
 //
-//  BaseAuthenticator.swift
+//  RidesAppStoreDeeplink.swift
 //  UberRides
 //
 //  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
@@ -22,36 +22,31 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import UIKit
+import Foundation
 
-/// Base class for authorization flows
-@objc(UBSDKBaseAuthenticator) public class BaseAuthenticator: NSObject, UberAuthenticating {
-    /// Scopes to request during login
-    @objc public var scopes: [UberScope]
+/**
+ *  A Deeplinking object for opening the App Store to the native Uber rides app.
+ */
+@objc(UBSDKRidesAppStoreDeeplink) public class RidesAppStoreDeeplink: BaseDeeplink {
     
-    @objc public init(scopes: [UberScope]) {
-        self.scopes = scopes
-        super.init()
-    }
-
     /**
-     Get URL to begin login process.
+     Initializes an App Store Deeplink to bring the user to the appstore
+     
+     - returns: An initialized AppStoreDeeplink
      */
-    @objc var authorizationURL: URL {
-        preconditionFailure("Not Implemented, this is an abstract class. ")
-    }
-
-    @objc public func consumeResponse(url: URL, completion: AuthenticationCompletionHandler?) {
-        if AuthenticationURLUtility.shouldHandleRedirectURL(url) {
-            do {
-                let accessToken = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
-                
-                completion?(accessToken, nil)
-            } catch let error as NSError {
-                completion?(nil, error)
-            } catch {
-                completion?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse))
-            }
-        }
+    @objc public init(userAgent: String?) {
+        let scheme = "https"
+        let domain = "m.uber.com"
+        let path = "/sign-up"
+        
+        let clientIDQueryItem = URLQueryItem(name: "client_id", value: Configuration.shared.clientID)
+        
+        let userAgent = userAgent ?? "rides-ios-v\(Configuration.shared.sdkVersion)"
+        
+        let userAgentQueryItem = URLQueryItem(name: "user-agent", value: userAgent)
+        
+        let queryItems = [clientIDQueryItem, userAgentQueryItem]
+        
+        super.init(scheme: scheme, host: domain, path: path, queryItems: queryItems)!
     }
 }

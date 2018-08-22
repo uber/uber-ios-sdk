@@ -128,7 +128,7 @@ class LoginManagerTests: XCTestCase {
         let testSourceApplication = "com.ubercab.foo"
         let testAnnotation = "annotation"
 
-        let authenticatorMock = NativeAuthenticatorPartialStub(scopes: [.profile])
+        let authenticatorMock = RidesNativeAuthenticatorPartialStub(scopes: [.profile])
         authenticatorMock.consumeResponseCompletionValue = (nil, nil)
         loginManager.authenticator = authenticatorMock
         loginManager.loggingIn = true
@@ -166,7 +166,7 @@ class LoginManagerTests: XCTestCase {
 
         let loginManager = LoginManager(loginType: .native)
 
-        let nativeAuthenticatorStub = NativeAuthenticatorPartialStub(scopes: [])
+        let nativeAuthenticatorStub = RidesNativeAuthenticatorPartialStub(scopes: [])
         nativeAuthenticatorStub.consumeResponseCompletionValue = (nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
 
         loginManager.authenticator = nativeAuthenticatorStub
@@ -183,7 +183,7 @@ class LoginManagerTests: XCTestCase {
 
         let loginManager = LoginManager(loginType: .native)
 
-        let nativeAuthenticatorStub = NativeAuthenticatorPartialStub(scopes: [])
+        let nativeAuthenticatorStub = RidesNativeAuthenticatorPartialStub(scopes: [])
         nativeAuthenticatorStub.consumeResponseCompletionValue = (nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
 
         loginManager.authenticator = nativeAuthenticatorStub

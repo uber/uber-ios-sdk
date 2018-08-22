@@ -1,8 +1,8 @@
 //
-//  NativeAuthenticator.swift
+//  UberAuthenticationProductFlow.swift
 //  UberRides
 //
-//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2018 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,25 +24,21 @@
 
 import Foundation
 
+@objc public enum UberProductType : Int {
+    /// The main Uber app for requesting rides.
+    case rides
+    /// The UberEats app for food delivery.
+    case eats
+}
+
 /**
- * UberAuthenticating object for authenticating a user via the Native Uber app
+ * Represents an uber product flow to authenticate with (wrapped as an object for Obj-C compatibility)
  */
-@objc(UBSSONativeAuthenticator) public class NativeAuthenticator: BaseAuthenticator {
-    private var deeplink: AuthenticationDeeplink
+@objc(UBSDKUberAuthenticationProductFlow) open class UberAuthenticationProductFlow: NSObject {
 
-    @objc override var authorizationURL: URL {
-        return deeplink.url
-    }
+    @objc public let uberProductType: UberProductType
 
-    /**
-     Creates a NativeAuthenticator using the provided scopes
-     
-     - parameter request: the URL request.
-     
-     - returns: true if a redirect was handled, false otherwise.
-     */
-    @objc public override init(scopes: [UberScope]) {
-        deeplink = AuthenticationDeeplink(scopes: scopes)
-        super.init(scopes: scopes)
+    @objc public init(_ uberProductType: UberProductType) {
+        self.uberProductType = uberProductType
     }
 }

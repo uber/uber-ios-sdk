@@ -88,7 +88,7 @@ class LoginManagerPartialMock: LoginManager {
     }
 }
 
-class NativeAuthenticatorPartialMock: NativeAuthenticator {
+class RidesNativeAuthenticatorPartialMock: RidesNativeAuthenticator {
     var consumeResponseClosure: ((URL) -> Bool)?
     var loginCompletion: AuthenticationCompletionHandler?
     override func consumeResponse(url: URL, completion: AuthenticationCompletionHandler?) {
@@ -97,7 +97,7 @@ class NativeAuthenticatorPartialMock: NativeAuthenticator {
     }
 }
 
-class NativeAuthenticatorPartialStub: BaseAuthenticator {
+class RidesNativeAuthenticatorPartialStub: BaseAuthenticator {
     var consumeResponseCompletionValue: (AccessToken?, NSError?)?
     override func consumeResponse(url: URL, completion: AuthenticationCompletionHandler?) {
         completion?(consumeResponseCompletionValue?.0, consumeResponseCompletionValue?.1)

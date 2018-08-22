@@ -29,6 +29,7 @@ import SafariServices
     private(set) public var accessTokenIdentifier: String
     private(set) public var keychainAccessGroup: String
     private(set) public var loginType: LoginType
+    private(set) public var productFlowPriority: [UberAuthenticationProductFlow]
     private var oauthViewController: UIViewController?
     private var safariAuthenticationSession: Any? // Any? because otherwise this won't compile for earlier versions of iOS
     var authenticator: UberAuthenticating?
@@ -40,16 +41,18 @@ import SafariServices
     Create instance of login manager to authenticate user and retreive access token.
     
     - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.shared.defaultAccessTokenIdentifier
-    - parameter keychainAccessGroup:   The keychain access group to use for saving the Access Token, defaults to Configuration.shared.defaultKeychainAccessGroup
-    - parameter loginType:         The login type to use for logging in, defaults to Implicit
-    
+    - parameter keychainAccessGroup: The keychain access group to use for saving the Access Token, defaults to Configuration.shared.defaultKeychainAccessGroup
+    - parameter loginType: The login type to use for logging in, defaults to Implicit
+    - parameter productFlowPriority: An ordered list of the Uber apps to use for authentication, if available. Defaults to trying to use only the main Uber rides flow.
+
     - returns: An initialized LoginManager
     */
-    @objc public init(accessTokenIdentifier: String, keychainAccessGroup: String?, loginType: LoginType) {
+    @objc public init(accessTokenIdentifier: String, keychainAccessGroup: String?, loginType: LoginType, productFlowPriority: [UberAuthenticationProductFlow] = [UberAuthenticationProductFlow(.rides)]) {
 
         self.accessTokenIdentifier = accessTokenIdentifier
         self.keychainAccessGroup = keychainAccessGroup ?? Configuration.shared.defaultKeychainAccessGroup
         self.loginType = loginType
+        self.productFlowPriority = productFlowPriority
         
         super.init()
     }
@@ -59,12 +62,13 @@ import SafariServices
      Uses the Implicit Login Behavior
 
      - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.getDefaultAccessTokenIdentifier()
-     - parameter keychainAccessGroup:   The keychain access group to use for saving the Access Token, defaults to Configuration.getDefaultKeychainAccessGroup()
+     - parameter keychainAccessGroup: The keychain access group to use for saving the Access Token, defaults to Configuration.getDefaultKeychainAccessGroup()
+     - parameter productFlowPriority: An ordered list of the Uber apps to use for authentication, if available. Defaults to trying to use only the main Uber rides flow.
 
      - returns: An initialized LoginManager
      */
-    @objc public convenience init(accessTokenIdentifier: String, keychainAccessGroup: String?) {
-        self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: keychainAccessGroup, loginType: LoginType.implicit)
+    @objc public convenience init(accessTokenIdentifier: String, keychainAccessGroup: String?, productFlowPriority: [UberAuthenticationProductFlow] = [UberAuthenticationProductFlow(.rides)]) {
+        self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: keychainAccessGroup, loginType: LoginType.implicit, productFlowPriority: productFlowPriority)
     }
 
     /**
@@ -72,11 +76,12 @@ import SafariServices
      Uses the Implicit Login Behavior & your Configuration's keychain access group
 
      - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.getDefaultAccessTokenIdentifier()
+     - parameter productFlowPriority:          An ordered list of the Uber apps to use for authentication, if available. Defaults to trying to use only the main Uber rides flow.
 
      - returns: An initialized LoginManager
      */
-    @objc public convenience init(accessTokenIdentifier: String) {
-        self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: nil)
+    @objc public convenience init(accessTokenIdentifier: String, productFlowPriority: [UberAuthenticationProductFlow] = [UberAuthenticationProductFlow(.rides)]) {
+        self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: nil, productFlowPriority: productFlowPriority)
     }
 
     /**
@@ -85,17 +90,32 @@ import SafariServices
      in your Configuration
 
      - parameter loginType: The login behavior to use for logging in
+     - parameter productFlowPriority: An ordered list of the Uber apps to use for authentication, if available. Defaults to trying to use only the main Uber rides flow.
 
      - returns: An initialized LoginManager
      */
-    @objc public convenience init(loginType: LoginType) {
-        self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, keychainAccessGroup: nil, loginType: loginType)
+    @objc public convenience init(loginType: LoginType, productFlowPriority: [UberAuthenticationProductFlow] = [UberAuthenticationProductFlow(.rides)]) {
+        self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, keychainAccessGroup: nil, loginType: loginType, productFlowPriority: productFlowPriority)
     }
 
     /**
      Create instance of login manager to authenticate user and retreive access token.
      Uses the Native LoginType, with the accessTokenIdentifier & keychainAccessGroup defined
      in your Configuration
+
+     - parameter productFlowPriority: An ordered list of the Uber apps to use for authentication, if available. Defaults to trying to use only the main Uber rides flow.
+
+     - returns: An initialized LoginManager
+     */
+    @objc public convenience init(productFlowPriority: [UberAuthenticationProductFlow] = [UberAuthenticationProductFlow(.rides)]) {
+        self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, keychainAccessGroup: nil, loginType: LoginType.native, productFlowPriority: productFlowPriority)
+    }
+
+    /**
+     Create instance of login manager to authenticate user and retreive access token.
+     Uses the Native LoginType, with the accessTokenIdentifier & keychainAccessGroup defined
+     in your Configuration
+     Authenticates using Uber rides.
 
      - returns: An initialized LoginManager
      */
@@ -117,20 +137,11 @@ import SafariServices
         self.postCompletionHandler = completion
         UberAppDelegate.shared.loginManager = self
 
-        var authenticator: UberAuthenticating
-        switch loginType {
-        case .native:
-            authenticator = NativeAuthenticator(scopes: scopes)
-        case .implicit:
-            authenticator = ImplicitGrantAuthenticator(scopes: scopes)
-        case .authorizationCode:
-            authenticator = AuthorizationCodeGrantAuthenticator(scopes: scopes)
-        }
+        let authProvider = AuthenticationProvider(scopes: scopes, productFlowPriority: productFlowPriority)
 
-        self.authenticator = authenticator
         loggingIn = true
         willEnterForegroundCalled = false
-        executeLogin(presentingViewController: presentingViewController, authenticator: authenticator)
+        executeLogin(presentingViewController: presentingViewController, authenticationProvider: authProvider)
     }
     
     /**
@@ -148,7 +159,7 @@ import SafariServices
      */
     public func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any?) -> Bool {
         guard let sourceApplication = sourceApplication else { return false }
-        let sourceIsNative = loginType == .native && sourceApplication.hasPrefix("com.ubercab")
+        let sourceIsNative = loginType == .native && (sourceApplication.hasPrefix("com.ubercab") || sourceApplication.hasPrefix("com.ubereats"))
         let sourceIsSafariVC = loginType != .native && sourceApplication == "com.apple.SafariViewService"
         let sourceIsSafari = loginType != .native && sourceApplication == "com.apple.mobilesafari"
         let isValidSourceApplication = sourceIsNative || sourceIsSafariVC || sourceIsSafari
@@ -203,16 +214,17 @@ import SafariServices
     
     // Mark: Private Interface
     
-    private func executeLogin(presentingViewController: UIViewController?, authenticator: UberAuthenticating) {
-        if authenticator.authorizationURL.scheme == "https" {
+    private func executeLogin(presentingViewController: UIViewController?, authenticationProvider: AuthenticationProvider) {
+        if let authenticator = authenticationProvider.authenticators(for: loginType).first, authenticator.authorizationURL.scheme == "https" {
             executeWebLogin(presentingViewController: presentingViewController, authenticator: authenticator)
         } else {
-            executeDeeplinkLogin(presentingViewController: presentingViewController, authenticator: authenticator)
+            executeDeeplinkLogin(presentingViewController: presentingViewController, authenticationProvider:  authenticationProvider)
         }
     }
 
     // Delegates a web login to SFAuthenticationSession, SFSafariViewController, or just Safari
     private func executeWebLogin(presentingViewController: UIViewController?, authenticator: UberAuthenticating) {
+        self.authenticator = authenticator
         if #available(iOS 11.0, *) {
             executeSafariAuthLogin(authenticator: authenticator)
         } else if #available(iOS 9.0, *) {
@@ -261,34 +273,69 @@ import SafariServices
     }
 
     /// Login using native deeplink
-    private func executeDeeplinkLogin(presentingViewController: UIViewController?, authenticator: UberAuthenticating) {
-        DeeplinkManager.shared.open(authenticator.authorizationURL, completion: { error in
-            guard let _ = error else { return }
-            
-            // If the user rejected the attempt to call the Uber app, don't use fallback.
-            if self.loginType == .native && error?.code == DeeplinkErrorType.deeplinkNotFollowed.rawValue {
-                self.loginCompletion(accessToken: nil, error: UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
+    private func executeDeeplinkLogin(presentingViewController: UIViewController?, authenticationProvider: AuthenticationProvider) {
+
+        let authenticators = authenticationProvider.authenticators(for: loginType)
+        executeNativeAuthenticators(authenticators: authenticators) { (fallback: Bool) in
+            if (!fallback) {
                 return
             }
-            
+
             // If we can't open the deeplink, fallback.
             // Privileged scopes require auth code flow.
             // Since that requires server support, fallback to app store if not available.
-            if authenticator.scopes.contains(where: { $0.scopeType == .privileged }) {
+            if authenticationProvider.scopes.contains(where: { $0.scopeType == .privileged }) {
                 if (Configuration.shared.useFallback) {
                     self.loginType = .authorizationCode
                 } else {
-                    let appstoreDeeplink = AppStoreDeeplink(userAgent: nil)
-                    appstoreDeeplink.execute(completion: { _ in
-                        self.loginCompletion(accessToken: nil, error: UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
-                    })
+                    if let uberProductType = authenticationProvider.productFlowPriority.first?.uberProductType {
+                        let appStoreDeeplink: BaseDeeplink
+                        switch uberProductType {
+                        case .rides:
+                            appStoreDeeplink = RidesAppStoreDeeplink(userAgent: nil)
+                        case .eats:
+                            appStoreDeeplink = EatsAppStoreDeeplink(userAgent: nil)
+                        }
+
+                        appStoreDeeplink.execute(completion: { _ in
+                            self.loginCompletion(accessToken: nil, error: UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
+                        })
+                    }
                     return
                 }
             } else { // Otherwise fallback to implicit flow
                 self.loginType = .implicit
             }
-            self.login(requestedScopes: authenticator.scopes, presentingViewController: presentingViewController, completion: self.postCompletionHandler)
-        })
+
+
+            self.login(requestedScopes: authenticationProvider.scopes, presentingViewController: presentingViewController, completion: self.postCompletionHandler)
+        }
+    }
+
+    private func executeNativeAuthenticators(authenticators: [UberAuthenticating], completion: ((_ fallback: Bool) -> Void)) {
+        var stop: Bool = false
+        var fallback: Bool = false
+        
+        for authenticator in authenticators where stop == false {
+            self.authenticator = authenticator
+            fallback = false
+
+            DeeplinkManager.shared.open(authenticator.authorizationURL, completion: { error in
+                if error == nil {
+                    return stop = true
+                }
+
+                // If the user rejected the attempt to call the Uber app, don't use fallback.
+                if self.loginType == .native, error?.code == DeeplinkErrorType.deeplinkNotFollowed.rawValue {
+                        self.loginCompletion(accessToken: nil, error: UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToPresentLogin))
+                        return stop = true
+                } else {
+                    fallback = true
+                }
+            })
+        }
+
+        completion(fallback)
     }
     
     func handleLoginCanceled() {
