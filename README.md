@@ -351,7 +351,7 @@ Native authentication can occur either through the main Uber rides app or throug
 
 ```swift
 // Swift
-let loginManager = LoginManager(loginType: .native, productFlowPriority: [UberAuthenticationProductFlow(.eats)], [UberAuthenticationProductFlow(.rides)])
+let loginManager = LoginManager(loginType: .native, productFlowPriority: [UberAuthenticationProductFlow(.eats), UberAuthenticationProductFlow(.rides)])
 ```
 
 ```objective-c

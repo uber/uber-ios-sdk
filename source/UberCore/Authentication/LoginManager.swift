@@ -43,11 +43,11 @@ import SafariServices
     - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.shared.defaultAccessTokenIdentifier
     - parameter keychainAccessGroup: The keychain access group to use for saving the Access Token, defaults to Configuration.shared.defaultKeychainAccessGroup
     - parameter loginType: The login type to use for logging in, defaults to Implicit
-    - parameter productFlowPriority: An ordered list of the Uber apps to use for authentication, if available. Defaults to trying to use only the main Uber rides flow.
+    - parameter productFlowPriority: An ordered list of the Uber apps to use for authentication, if available.
 
     - returns: An initialized LoginManager
     */
-    @objc public init(accessTokenIdentifier: String, keychainAccessGroup: String?, loginType: LoginType, productFlowPriority: [UberAuthenticationProductFlow] = [UberAuthenticationProductFlow(.rides)]) {
+    @objc public init(accessTokenIdentifier: String, keychainAccessGroup: String?, loginType: LoginType, productFlowPriority: [UberAuthenticationProductFlow]) {
 
         self.accessTokenIdentifier = accessTokenIdentifier
         self.keychainAccessGroup = keychainAccessGroup ?? Configuration.shared.defaultKeychainAccessGroup
@@ -59,16 +59,45 @@ import SafariServices
 
     /**
      Create instance of login manager to authenticate user and retreive access token.
+     Authenticates using the main Uber rides product.
+
+     - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.shared.defaultAccessTokenIdentifier
+     - parameter keychainAccessGroup: The keychain access group to use for saving the Access Token, defaults to Configuration.shared.defaultKeychainAccessGroup
+     - parameter loginType: The login type to use for logging in, defaults to Implicit
+
+     - returns: An initialized LoginManager
+     */
+    @objc public convenience init(accessTokenIdentifier: String, keychainAccessGroup: String?, loginType: LoginType) {
+
+        self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: keychainAccessGroup, loginType: loginType, productFlowPriority: [UberAuthenticationProductFlow(.rides)])
+    }
+
+    /**
+     Create instance of login manager to authenticate user and retreive access token.
      Uses the Implicit Login Behavior
 
      - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.getDefaultAccessTokenIdentifier()
      - parameter keychainAccessGroup: The keychain access group to use for saving the Access Token, defaults to Configuration.getDefaultKeychainAccessGroup()
-     - parameter productFlowPriority: An ordered list of the Uber apps to use for authentication, if available. Defaults to trying to use only the main Uber rides flow.
+     - parameter productFlowPriority: An ordered list of the Uber apps to use for authentication, if available.
 
      - returns: An initialized LoginManager
      */
-    @objc public convenience init(accessTokenIdentifier: String, keychainAccessGroup: String?, productFlowPriority: [UberAuthenticationProductFlow] = [UberAuthenticationProductFlow(.rides)]) {
+    @objc public convenience init(accessTokenIdentifier: String, keychainAccessGroup: String?, productFlowPriority: [UberAuthenticationProductFlow]) {
         self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: keychainAccessGroup, loginType: LoginType.implicit, productFlowPriority: productFlowPriority)
+    }
+
+    /**
+     Create instance of login manager to authenticate user and retreive access token.
+     Uses the Implicit Login Behavior
+     Authenticates using the main Uber rides product.
+
+     - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.getDefaultAccessTokenIdentifier()
+     - parameter keychainAccessGroup: The keychain access group to use for saving the Access Token, defaults to Configuration.getDefaultKeychainAccessGroup()
+
+     - returns: An initialized LoginManager
+     */
+    @objc public convenience init(accessTokenIdentifier: String, keychainAccessGroup: String?) {
+        self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: keychainAccessGroup, loginType: LoginType.implicit, productFlowPriority: [UberAuthenticationProductFlow(.rides)])
     }
 
     /**
@@ -76,12 +105,25 @@ import SafariServices
      Uses the Implicit Login Behavior & your Configuration's keychain access group
 
      - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.getDefaultAccessTokenIdentifier()
-     - parameter productFlowPriority:          An ordered list of the Uber apps to use for authentication, if available. Defaults to trying to use only the main Uber rides flow.
+     - parameter productFlowPriority:          An ordered list of the Uber apps to use for authentication, if available.
 
      - returns: An initialized LoginManager
      */
-    @objc public convenience init(accessTokenIdentifier: String, productFlowPriority: [UberAuthenticationProductFlow] = [UberAuthenticationProductFlow(.rides)]) {
+    @objc public convenience init(accessTokenIdentifier: String, productFlowPriority: [UberAuthenticationProductFlow]) {
         self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: nil, productFlowPriority: productFlowPriority)
+    }
+
+    /**
+     Create instance of login manager to authenticate user and retreive access token.
+     Uses the Implicit Login Behavior & your Configuration's keychain access group
+     Authenticates using the main Uber rides product.
+
+     - parameter accessTokenIdentifier: The access token identifier to use for saving the Access Token, defaults to Configuration.getDefaultAccessTokenIdentifier()
+
+     - returns: An initialized LoginManager
+     */
+    @objc public convenience init(accessTokenIdentifier: String) {
+        self.init(accessTokenIdentifier: accessTokenIdentifier, keychainAccessGroup: nil, productFlowPriority: [UberAuthenticationProductFlow(.rides)])
     }
 
     /**
@@ -90,12 +132,26 @@ import SafariServices
      in your Configuration
 
      - parameter loginType: The login behavior to use for logging in
-     - parameter productFlowPriority: An ordered list of the Uber apps to use for authentication, if available. Defaults to trying to use only the main Uber rides flow.
+     - parameter productFlowPriority: An ordered list of the Uber apps to use for authentication, if available.
 
      - returns: An initialized LoginManager
      */
-    @objc public convenience init(loginType: LoginType, productFlowPriority: [UberAuthenticationProductFlow] = [UberAuthenticationProductFlow(.rides)]) {
+    @objc public convenience init(loginType: LoginType, productFlowPriority: [UberAuthenticationProductFlow]) {
         self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, keychainAccessGroup: nil, loginType: loginType, productFlowPriority: productFlowPriority)
+    }
+
+    /**
+     Create instance of login manager to authenticate user and retreive access token.
+     Uses the provided LoginType, with the accessTokenIdentifier & keychainAccessGroup defined
+     in your Configuration
+     Authenticates using the main Uber rides product.
+
+     - parameter loginType: The login behavior to use for logging in
+
+     - returns: An initialized LoginManager
+     */
+    @objc public convenience init(loginType: LoginType) {
+        self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, keychainAccessGroup: nil, loginType: loginType, productFlowPriority: [UberAuthenticationProductFlow(.rides)])
     }
 
     /**
@@ -103,11 +159,11 @@ import SafariServices
      Uses the Native LoginType, with the accessTokenIdentifier & keychainAccessGroup defined
      in your Configuration
 
-     - parameter productFlowPriority: An ordered list of the Uber apps to use for authentication, if available. Defaults to trying to use only the main Uber rides flow.
+     - parameter productFlowPriority: An ordered list of the Uber apps to use for authentication, if available.
 
      - returns: An initialized LoginManager
      */
-    @objc public convenience init(productFlowPriority: [UberAuthenticationProductFlow] = [UberAuthenticationProductFlow(.rides)]) {
+    @objc public convenience init(productFlowPriority: [UberAuthenticationProductFlow]) {
         self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, keychainAccessGroup: nil, loginType: LoginType.native, productFlowPriority: productFlowPriority)
     }
 
@@ -115,12 +171,12 @@ import SafariServices
      Create instance of login manager to authenticate user and retreive access token.
      Uses the Native LoginType, with the accessTokenIdentifier & keychainAccessGroup defined
      in your Configuration
-     Authenticates using Uber rides.
+     Authenticates using the main Uber rides product.
 
      - returns: An initialized LoginManager
      */
     @objc public convenience override init() {
-        self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, keychainAccessGroup: nil, loginType: LoginType.native)
+        self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, keychainAccessGroup: nil, loginType: LoginType.native, productFlowPriority: [UberAuthenticationProductFlow(.rides)])
     }
 
     // Mark: LoginManaging
