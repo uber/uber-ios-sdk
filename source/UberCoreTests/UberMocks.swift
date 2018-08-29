@@ -88,16 +88,14 @@ class LoginManagerPartialMock: LoginManager {
     }
 }
 
-class RidesNativeAuthenticatorPartialMock: RidesNativeAuthenticator {
-    var consumeResponseClosure: ((URL) -> Bool)?
-    var loginCompletion: AuthenticationCompletionHandler?
+class RidesNativeAuthenticatorPartialStub: BaseAuthenticator {
+    var consumeResponseCompletionValue: (AccessToken?, NSError?)?
     override func consumeResponse(url: URL, completion: AuthenticationCompletionHandler?) {
-        _ = consumeResponseClosure?(url)
-        super.consumeResponse(url: url, completion: loginCompletion)
+        completion?(consumeResponseCompletionValue?.0, consumeResponseCompletionValue?.1)
     }
 }
 
-class RidesNativeAuthenticatorPartialStub: BaseAuthenticator {
+class EatsNativeAuthenticatorPartialStub: BaseAuthenticator {
     var consumeResponseCompletionValue: (AccessToken?, NSError?)?
     override func consumeResponse(url: URL, completion: AuthenticationCompletionHandler?) {
         completion?(consumeResponseCompletionValue?.0, consumeResponseCompletionValue?.1)
