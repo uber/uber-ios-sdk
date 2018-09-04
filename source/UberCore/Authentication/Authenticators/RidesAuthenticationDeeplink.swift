@@ -1,8 +1,8 @@
 //
-//  AppStoreDeeplink.swift
+//  RidesAuthenticationDeeplink.swift
 //  UberRides
 //
-//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2018 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,28 +25,22 @@
 import Foundation
 
 /**
- *  A Deeplinking object for authenticating a user via the native Uber app
+ *  A Deeplinking object for authenticating a user via the native Uber rides app
  */
-@objc(UBSDKAppStoreDeeplink) public class AppStoreDeeplink: BaseDeeplink {
-    
+@objc(UBSDKRidesAuthenticationDeeplink) public class RidesAuthenticationDeeplink: BaseDeeplink {
+
     /**
-     Initializes an App Store Deeplink to bring the user to the appstore
-     
-     - returns: An initialized AppStoreDeeplink
+     Initializes an Authentication Deeplink to request the provided scopes
+
+     - parameter scopes: An array of UberScopes you would like to request
+
+     - returns: An initialized AuthenticationDeeplink
      */
-    @objc public init(userAgent: String?) {
-        let scheme = "https"
-        let domain = "m.uber.com"
-        let path = "/sign-up"
-        
-        let clientIDQueryItem = URLQueryItem(name: "client_id", value: Configuration.shared.clientID)
-        
-        let userAgent = userAgent ?? "rides-ios-v\(Configuration.shared.sdkVersion)"
-        
-        let userAgentQueryItem = URLQueryItem(name: "user-agent", value: userAgent)
-        
-        let queryItems = [clientIDQueryItem, userAgentQueryItem]
-        
-        super.init(scheme: scheme, host: domain, path: path, queryItems: queryItems)!
+    @objc public init(scopes: [UberScope]) {
+        let queryItems = AuthenticationURLUtility.buildQueryParameters(scopes)
+        let scheme = "uberauth"
+        let domain = "connect"
+
+        super.init(scheme: scheme, host: domain, path: "", queryItems: queryItems)!
     }
 }

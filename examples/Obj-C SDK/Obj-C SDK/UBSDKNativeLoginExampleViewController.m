@@ -66,8 +66,9 @@
 #pragma mark - Private
 
 - (void)_initialSetup {
-    _loginManager = [[UBSDKLoginManager alloc] initWithLoginType:UBSDKLoginTypeNative];
-    
+    UBSDKUberAuthenticationProductFlow *ridesProduct = [[UBSDKUberAuthenticationProductFlow alloc] init:UberProductTypeRides];
+    _loginManager = [[UBSDKLoginManager alloc] initWithLoginType:UBSDKLoginTypeNative productFlowPriority:@[ ridesProduct ]];
+
     NSArray<UBSDKScope *> *scopes = @[UBSDKScope.profile, UBSDKScope.places, UBSDKScope.request];
     
     _blackLoginButton = ({

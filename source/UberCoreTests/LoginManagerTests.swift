@@ -118,8 +118,8 @@ class LoginManagerTests: XCTestCase {
         XCTAssertFalse(loginManager.application(testApp, open: testURL, sourceApplication: testSourceApplication, annotation: testAnnotation))
     }
 
-    func testOpenURLSuccess() {
-        let loginManager = LoginManager(loginType: .native)
+    func testOpenURLSuccess_rides() {
+        let loginManager = LoginManager(loginType: .native, productFlowPriority: [UberAuthenticationProductFlow(.rides)])
         let testApp = UIApplication.shared
         guard let testURL = URL(string: "http://www.google.com") else {
             XCTFail()
@@ -128,7 +128,28 @@ class LoginManagerTests: XCTestCase {
         let testSourceApplication = "com.ubercab.foo"
         let testAnnotation = "annotation"
 
-        let authenticatorMock = NativeAuthenticatorPartialStub(scopes: [.profile])
+        let authenticatorMock = RidesNativeAuthenticatorPartialStub(scopes: [.profile])
+        authenticatorMock.consumeResponseCompletionValue = (nil, nil)
+        loginManager.authenticator = authenticatorMock
+        loginManager.loggingIn = true
+
+        XCTAssertTrue(loginManager.application(testApp, open: testURL, sourceApplication: testSourceApplication, annotation: testAnnotation))
+
+        XCTAssertFalse(loginManager.loggingIn)
+        XCTAssertNil(loginManager.authenticator)
+    }
+
+    func testOpenURLSuccess_eats() {
+        let loginManager = LoginManager(loginType: .native, productFlowPriority: [UberAuthenticationProductFlow(.eats)])
+        let testApp = UIApplication.shared
+        guard let testURL = URL(string: "http://www.google.com") else {
+            XCTFail()
+            return
+        }
+        let testSourceApplication = "com.ubercab.UberEats"
+        let testAnnotation = "annotation"
+
+        let authenticatorMock = EatsNativeAuthenticatorPartialStub(scopes: [.profile])
         authenticatorMock.consumeResponseCompletionValue = (nil, nil)
         loginManager.authenticator = authenticatorMock
         loginManager.loggingIn = true
@@ -160,13 +181,13 @@ class LoginManagerTests: XCTestCase {
         XCTAssertFalse(loginManager.loggingIn)
     }
 
-    func testNativeLoginCompletionDoesFallback_whenUnavailableError_withPrivelegedScopes() {
+    func testNativeLoginCompletionDoesFallback_whenUnavailableError_withPrivelegedScopes_rides() {
         Configuration.shared.useFallback = true
         let scopes = [UberScope.request]
 
-        let loginManager = LoginManager(loginType: .native)
+        let loginManager = LoginManager(loginType: .native, productFlowPriority: [UberAuthenticationProductFlow(.rides)])
 
-        let nativeAuthenticatorStub = NativeAuthenticatorPartialStub(scopes: [])
+        let nativeAuthenticatorStub = RidesNativeAuthenticatorPartialStub(scopes: [])
         nativeAuthenticatorStub.consumeResponseCompletionValue = (nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
 
         loginManager.authenticator = nativeAuthenticatorStub
@@ -178,12 +199,47 @@ class LoginManagerTests: XCTestCase {
         XCTAssertEqual(loginManager.loginType, LoginType.authorizationCode)
     }
 
-    func testNativeLoginCompletionDoesFallback_whenUnavailableError_withGeneralScopes() {
+    func testNativeLoginCompletionDoesFallback_whenUnavailableError_withPrivelegedScopes_eats() {
+        Configuration.shared.useFallback = true
+        let scopes = [UberScope.request]
+
+        let loginManager = LoginManager(loginType: .native, productFlowPriority: [UberAuthenticationProductFlow(.eats)])
+
+        let nativeAuthenticatorStub = EatsNativeAuthenticatorPartialStub(scopes: [])
+        nativeAuthenticatorStub.consumeResponseCompletionValue = (nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
+
+        loginManager.authenticator = nativeAuthenticatorStub
+
+        let viewController = UIViewController()
+
+        loginManager.login(requestedScopes: scopes, presentingViewController: viewController, completion: nil)
+
+        XCTAssertEqual(loginManager.loginType, LoginType.authorizationCode)
+    }
+
+    func testNativeLoginCompletionDoesFallback_whenUnavailableError_withGeneralScopes_rides() {
         let scopes = [UberScope.profile]
 
-        let loginManager = LoginManager(loginType: .native)
+        let loginManager = LoginManager(loginType: .native, productFlowPriority: [UberAuthenticationProductFlow(.rides)])
 
-        let nativeAuthenticatorStub = NativeAuthenticatorPartialStub(scopes: [])
+        let nativeAuthenticatorStub = RidesNativeAuthenticatorPartialStub(scopes: [])
+        nativeAuthenticatorStub.consumeResponseCompletionValue = (nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
+
+        loginManager.authenticator = nativeAuthenticatorStub
+
+        let viewController = UIViewController()
+
+        loginManager.login(requestedScopes: scopes, presentingViewController: viewController, completion: nil)
+
+        XCTAssertEqual(loginManager.loginType, LoginType.implicit)
+    }
+
+    func testNativeLoginCompletionDoesFallback_whenUnavailableError_withGeneralScopes_eats() {
+        let scopes = [UberScope.profile]
+
+        let loginManager = LoginManager(loginType: .native, productFlowPriority: [UberAuthenticationProductFlow(.eats)])
+
+        let nativeAuthenticatorStub = EatsNativeAuthenticatorPartialStub(scopes: [])
         nativeAuthenticatorStub.consumeResponseCompletionValue = (nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
 
         loginManager.authenticator = nativeAuthenticatorStub
