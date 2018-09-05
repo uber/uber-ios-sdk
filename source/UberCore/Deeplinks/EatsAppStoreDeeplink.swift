@@ -36,8 +36,8 @@ import Foundation
      */
     @objc public init(userAgent: String?) {
         let scheme = "https"
-        let domain = "get.uber.com"
-        let path = "/open_app/*?client_id=eats"
+        let domain = "itunes.apple.com"
+        let path = "/app/id1058959277"
 
         let clientIDQueryItem = URLQueryItem(name: "client_id", value: Configuration.shared.clientID)
 
