@@ -181,6 +181,24 @@ class LoginManagerTests: XCTestCase {
         XCTAssertFalse(loginManager.loggingIn)
     }
 
+    func testNativeLoginCompletionDoesFallback_whenUnavailableError_withConfiguration_alwaysUseAuthCodeFallback() {
+        Configuration.shared.alwaysUseAuthCodeFallback = true
+        let scopes = [UberScope.historyLite]
+
+        let loginManager = LoginManager(loginType: .native)
+
+        let nativeAuthenticatorStub = RidesNativeAuthenticatorPartialStub(scopes: [])
+        nativeAuthenticatorStub.consumeResponseCompletionValue = (nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
+
+        loginManager.authenticator = nativeAuthenticatorStub
+
+        let viewController = UIViewController()
+
+        loginManager.login(requestedScopes: scopes, presentingViewController: viewController, completion: nil)
+
+        XCTAssertEqual(loginManager.loginType, LoginType.authorizationCode)
+    }
+
     func testNativeLoginCompletionDoesFallback_whenUnavailableError_withPrivelegedScopes_rides() {
         Configuration.shared.useFallback = true
         let scopes = [UberScope.request]

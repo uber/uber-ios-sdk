@@ -154,6 +154,15 @@ private let callbackURIStringKey = "URIString"
      */
     @objc public var useFallback: Bool = false
 
+    /**
+     Returns if the fallback to use Authorization Code Grant is enabled. If true,
+     a failed SSO attempt will follow up with an attempt to do Authorization Code Grant,
+     regardless of scopes requested.
+
+     - returns: true if fallback enabled, false otherwise
+     */
+    @objc public var alwaysUseAuthCodeFallback: Bool = false
+
     public override init() {
         self.clientID = ""
         self.appDisplayName = ""
