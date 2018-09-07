@@ -1,8 +1,8 @@
 //
-//  AppStoreDeeplink.swift
+//  UberAuthenticationProductFlow.swift
 //  UberRides
 //
-//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2018 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,29 +24,21 @@
 
 import Foundation
 
+@objc public enum UberProductType : Int {
+    /// The main Uber app for requesting rides.
+    case rides
+    /// The UberEats app for food delivery.
+    case eats
+}
+
 /**
- *  A Deeplinking object for authenticating a user via the native Uber app
+ * Represents an uber product flow to authenticate with (wrapped as an object for Obj-C compatibility)
  */
-@objc(UBSDKAppStoreDeeplink) public class AppStoreDeeplink: BaseDeeplink {
-    
-    /**
-     Initializes an App Store Deeplink to bring the user to the appstore
-     
-     - returns: An initialized AppStoreDeeplink
-     */
-    @objc public init(userAgent: String?) {
-        let scheme = "https"
-        let domain = "m.uber.com"
-        let path = "/sign-up"
-        
-        let clientIDQueryItem = URLQueryItem(name: "client_id", value: Configuration.shared.clientID)
-        
-        let userAgent = userAgent ?? "rides-ios-v\(Configuration.shared.sdkVersion)"
-        
-        let userAgentQueryItem = URLQueryItem(name: "user-agent", value: userAgent)
-        
-        let queryItems = [clientIDQueryItem, userAgentQueryItem]
-        
-        super.init(scheme: scheme, host: domain, path: path, queryItems: queryItems)!
+@objc(UBSDKUberAuthenticationProductFlow) open class UberAuthenticationProductFlow: NSObject {
+
+    @objc public let uberProductType: UberProductType
+
+    @objc public init(_ uberProductType: UberProductType) {
+        self.uberProductType = uberProductType
     }
 }

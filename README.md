@@ -345,7 +345,23 @@ CLLocation *pickupLocation = [[CLLocation alloc] initWithLatitude: 37.787654 lon
 ### Native / SSO Authorization
 To get access to more informative endpoints, you need to have the end user authorize your application to access their Uber data.
 
-The easiest form of authorization is using the `.native` login type. It allows you to request Privileged scopes and, if your user is logged into the Uber app, it doesn't require your user to enter a username and password. It requires the user to have the native Uber application on their device. The `LoginManager` defaults to using the Native login type, so you simply instantiate a `LoginManager` and call `login()` with your requested scopes.
+The easiest form of authorization is using the `.native` login type. It allows you to request Privileged scopes and, if your user is logged into the Uber app, it doesn't require your user to enter a username and password. It requires the user to have the native Uber application on their device. 
+
+Native authentication can occur either through the main Uber rides app or through the Uber Eats app. You can also fallback from one app to another, so that for example if the user does not have the UberEats app installed on their device, you can instead authenticate through the main Uber rides app:
+
+```swift
+// Swift
+let loginManager = LoginManager(loginType: .native, productFlowPriority: [UberAuthenticationProductFlow(.eats), UberAuthenticationProductFlow(.rides)])
+```
+
+```objective-c
+// Objective-C
+UBSDKUberAuthenticationProductFlow *eatsProduct = [[UBSDKUberAuthenticationProductFlow alloc] init:UberProductTypeEats];
+UBSDKUberAuthenticationProductFlow *ridesProduct = [[UBSDKUberAuthenticationProductFlow alloc] init:UberProductTypeRides];
+UBSDKLoginManager *loginManager = [[UBSDKLoginManager alloc] initWithLoginType:loginType productFlowPriority:@[ eatsProduct, ridesProduct ]];
+```
+
+The `LoginManager` defaults to using the Native login type using the main Uber rides app, so you can simply instantiate a `LoginManager` and call `login()` with your requested scopes.
 
 ```swift
 // Swift

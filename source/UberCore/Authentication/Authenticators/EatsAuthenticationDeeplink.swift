@@ -1,8 +1,8 @@
 //
-//  NativeAuthenticator.swift
+//  EatsAuthenticationDeeplink.swift
 //  UberRides
 //
-//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2018 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,24 +25,22 @@
 import Foundation
 
 /**
- * UberAuthenticating object for authenticating a user via the Native Uber app
+ *  A Deeplinking object for authenticating a user via the native UberEats food delivery app
  */
-@objc(UBSSONativeAuthenticator) public class NativeAuthenticator: BaseAuthenticator {
-    private var deeplink: AuthenticationDeeplink
-
-    @objc override var authorizationURL: URL {
-        return deeplink.url
-    }
+@objc(UBSDKEatsAuthenticationDeeplink) public class EatsAuthenticationDeeplink: BaseDeeplink {
 
     /**
-     Creates a NativeAuthenticator using the provided scopes
-     
-     - parameter request: the URL request.
-     
-     - returns: true if a redirect was handled, false otherwise.
+     Initializes an Authentication Deeplink to request the provided scopes
+
+     - parameter scopes: An array of UberScopes you would like to request
+
+     - returns: An initialized AuthenticationDeeplink
      */
-    @objc public override init(scopes: [UberScope]) {
-        deeplink = AuthenticationDeeplink(scopes: scopes)
-        super.init(scopes: scopes)
+    @objc public init(scopes: [UberScope]) {
+        let queryItems = AuthenticationURLUtility.buildQueryParameters(scopes)
+        let scheme = "eatsauth"
+        let domain = "connect"
+
+        super.init(scheme: scheme, host: domain, path: "", queryItems: queryItems)!
     }
 }

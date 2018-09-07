@@ -43,6 +43,17 @@ import Foundation
             if let nightlyURL = urlComponents.url {
                 urls.append(nightlyURL)
             }
+        } else if url.scheme == "ubereats",
+            var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+            urlComponents.scheme = "ubereats-enterprise"
+            if let betaURL = urlComponents.url {
+                urls.append(betaURL)
+            }
+
+            urlComponents.scheme = "ubereats-nightly"
+            if let nightlyURL = urlComponents.url {
+                urls.append(nightlyURL)
+            }
         }
         return urls
     }

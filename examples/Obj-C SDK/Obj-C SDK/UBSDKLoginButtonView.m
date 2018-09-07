@@ -41,7 +41,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         _scopes = scopes;
-        _loginManager = [[UBSDKLoginManager alloc] initWithLoginType:loginType];
+        UBSDKUberAuthenticationProductFlow *ridesProduct = [[UBSDKUberAuthenticationProductFlow alloc] init:UberProductTypeRides];
+        _loginManager = [[UBSDKLoginManager alloc] initWithLoginType:loginType productFlowPriority:@[ ridesProduct ]];
         _loginButton = ({
             UBSDKLoginButton *loginButton = [[UBSDKLoginButton alloc] initWithFrame:CGRectZero scopes:scopes loginManager:_loginManager];
             [loginButton sizeToFit];
