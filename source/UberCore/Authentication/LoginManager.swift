@@ -339,9 +339,12 @@ import SafariServices
             }
 
             // If we can't open the deeplink, fallback.
-            // Privileged scopes require auth code flow.
+            // First check if the user requests auth code fallback regardless of scope.
+            // Next, check for privileged scopes, which require auth code flow.
             // Since that requires server support, fallback to app store if not available.
-            if authenticationProvider.scopes.contains(where: { $0.scopeType == .privileged }) {
+            if Configuration.shared.alwaysUseAuthCodeFallback {
+                self.loginType = .authorizationCode
+            } else if authenticationProvider.scopes.contains(where: { $0.scopeType == .privileged }) {
                 if (Configuration.shared.useFallback) {
                     self.loginType = .authorizationCode
                 } else {
