@@ -71,7 +71,7 @@
      - returns: true if the url was meant to be handled by the SDK, false otherwise
      */
     @available(iOS 9.0, *)
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool
     
     /**
      Called via the RidesAppDelegate when the application is about to enter the foreground. Used to determine

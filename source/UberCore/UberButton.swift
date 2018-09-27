@@ -98,8 +98,8 @@ import UIKit
         let views = ["imageView": uberImageView, "titleLabel": uberTitleLabel]
         let metrics = ["edgePadding": horizontalEdgePadding, "verticalPadding": verticalPadding, "imageLabelPadding": imageLabelPadding]
         
-        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-edgePadding-[imageView]-imageLabelPadding-[titleLabel]-(edgePadding)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
-        let verticalContraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-verticalPadding-[imageView]-verticalPadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
+        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-edgePadding-[imageView]-imageLabelPadding-[titleLabel]-(edgePadding)-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: metrics, views: views)
+        let verticalContraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-verticalPadding-[imageView]-verticalPadding-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: metrics, views: views)
         
         addConstraints(horizontalConstraints)
         addConstraints(verticalContraints)

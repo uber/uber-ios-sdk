@@ -214,7 +214,7 @@ import UberCore
         uberTitleLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         uberMetadataLabel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .horizontal)
         
-        let horizontalConstraints: [NSLayoutConstraint] = NSLayoutConstraint.constraints(withVisualFormat: "H:|-edgePadding-[image]-imageLabelPadding-[titleLabel]-middlePadding-[metadataLabel]-edgePadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views)
+        let horizontalConstraints: [NSLayoutConstraint] = NSLayoutConstraint.constraints(withVisualFormat: "H:|-edgePadding-[image]-imageLabelPadding-[titleLabel]-middlePadding-[metadataLabel]-edgePadding-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: metrics, views: views)
         let verticalConstraints: [NSLayoutConstraint] = NSLayoutConstraint.constraints(withVisualFormat: "V:|-verticalPadding-[image]-verticalPadding-|", options: .alignAllLeading, metrics: metrics, views: views)
         
         let titleLabelCenterConstraint = NSLayoutConstraint(item: self,
@@ -333,14 +333,14 @@ import UberCore
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .right
                 paragraphStyle.maximumLineHeight = 16
-                attrString.addAttribute(NSAttributedStringKey.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
+                attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
             }
             
             attrString.append(NSAttributedString(string: "\(subtitle)"))
         }
         
-        attrString.addAttribute(NSAttributedStringKey.font, value: metadataFont, range: (attrString.string as NSString).range(of: title))
-        attrString.addAttribute(NSAttributedStringKey.font, value: metadataFont, range: (attrString.string as NSString).range(of: subtitle))
+        attrString.addAttribute(NSAttributedString.Key.font, value: metadataFont, range: (attrString.string as NSString).range(of: title))
+        attrString.addAttribute(NSAttributedString.Key.font, value: metadataFont, range: (attrString.string as NSString).range(of: subtitle))
 
         if attrString.string.isEmpty {
             uberTitleLabel.text = NSLocalizedString("Ride there with Uber", bundle: Bundle(for: type(of: self)), comment: "Request button description")

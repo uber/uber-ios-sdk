@@ -89,7 +89,7 @@ class DeeplinkManager {
     @available(iOS 10.0, *)
     private func executeOnIOS10(deeplink url: URL) {
         if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: { (succeeded) in
+            UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: { (succeeded) in
                 if !succeeded {
                     self.deeplinkDidFinish(error: DeeplinkErrorFactory.errorForType(.deeplinkNotFollowed))
                 }
@@ -117,9 +117,9 @@ class DeeplinkManager {
     }
 
     private func subscribeToNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActiveHandler), name: Notification.Name.UIApplicationWillResignActive, object: nil);
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveHandler), name: Notification.Name.UIApplicationDidBecomeActive, object: nil);
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackgroundHandler), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActiveHandler), name: UIApplication.willResignActiveNotification, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveHandler), name: UIApplication.didBecomeActiveNotification, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackgroundHandler), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
 
     private func executeOnBelowIOS9(deeplink url: URL) {
@@ -169,3 +169,8 @@ protocol URLOpening {
 }
 
 extension UIApplication: URLOpening {}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
+}
