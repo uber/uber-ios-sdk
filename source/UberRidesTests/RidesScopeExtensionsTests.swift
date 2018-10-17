@@ -56,9 +56,7 @@ class UberScopeExtensionsTests: XCTestCase {
         
         var testSet : Set<UberScope> = Set<UberScope>()
         for scopeString in scopeString.components(separatedBy: " ") {
-            guard let scope = UberScopeFactory.uberScopeForString(scopeString) else {
-                continue
-            }
+            let scope = UberScope(scopeString: scopeString)
             testSet.insert(scope)
         }
         
@@ -86,33 +84,22 @@ class UberScopeExtensionsTests: XCTestCase {
         XCTAssertEqual(scopes, expectedScopes)
     }
 
-    func testStringToUberScope_withInvalidScopes()
+    func testStringToUberScope_withCustomScopes()
     {
-        let expectedScopes : [UberScope] = [UberScope]()
+        let expectedScopes : [UberScope] = [ UberScope(scopeString: "custom_scope") ]
         
-        let scopeString = "not actual values"
+        let scopeString = "Custom_Scope"
         
         let scopes = scopeString.toUberScopesArray()
         
         XCTAssertEqual(scopes, expectedScopes)
     }
     
-    func testStringToUberScope_withNoScopes()
+    func testStringToUberScope_withCustomAndValidScopes()
     {
-        let expectedScopes : [UberScope] = [UberScope]()
+        let expectedScopes : [UberScope] = [ UberScope(scopeString: "CUSTOM_SCOPE"), UberScope.places ]
         
-        let scopeString = ""
-        
-        let scopes = scopeString.toUberScopesArray()
-        
-        XCTAssertEqual(scopes, expectedScopes)
-    }
-    
-    func testStringToUberScope_withInvalidAndValidScopes()
-    {
-        let expectedScopes : [UberScope] = Array(arrayLiteral: UberScope.places)
-        
-        let scopeString = "not actual values \(UberScope.places.rawValue)"
+        let scopeString = "custom_scope \(UberScope.places.rawValue)"
         
         let scopes = scopeString.toUberScopesArray()
         
@@ -121,7 +108,7 @@ class UberScopeExtensionsTests: XCTestCase {
     
     func testStringToUberScope_caseInsensitive()
     {
-        let expectedScopes : [UberScope] = Array(arrayLiteral: UberScope.places, UberScope.history)
+        let expectedScopes : [UberScope] = [ UberScope.places, UberScope.history ]
         
         let scopeString = "plAcEs HISTORY"
         
