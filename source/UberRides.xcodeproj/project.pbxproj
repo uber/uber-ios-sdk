@@ -117,7 +117,6 @@
 		DF4104E71FAD19C4007901BF /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA459D31D003EFC003CBA3D /* OHHTTPStubs.framework */; };
 		DF94DAD01FA4020700EA5A2D /* DeeplinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF94DACF1FA4020700EA5A2D /* DeeplinkManager.swift */; };
 		DFA91C3C1FABEADD00149E8F /* UberMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA91C3B1FABEADD00149E8F /* UberMocks.swift */; };
-		DFA91C3D1FAC72EB00149E8F /* UberScopeFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC78ED121CB578D100850814 /* UberScopeFactoryTests.swift */; };
 		DFC99A191FAB9AC500C12021 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1AE1B81CF6BF3900B8CFCB /* LoginButton.swift */; };
 		DFC99A1A1FAB9AD200C12021 /* LoginButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1AE1BA1CF775F800B8CFCB /* LoginButtonTests.swift */; };
 		DFC99A1B1FAB9CE000C12021 /* OAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89338F01C77CAE0005B5486 /* OAuthTests.swift */; };
@@ -300,7 +299,6 @@
 		DC78ED0A1CB4F22D00850814 /* RideRequestViewErrorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestViewErrorType.swift; sourceTree = "<group>"; };
 		DC78ED0E1CB502BF00850814 /* RideRequestViewErrorFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestViewErrorFactory.swift; sourceTree = "<group>"; };
 		DC78ED101CB50ED600850814 /* RideRequestViewErrorFactoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestViewErrorFactoryTests.swift; sourceTree = "<group>"; };
-		DC78ED121CB578D100850814 /* UberScopeFactoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberScopeFactoryTests.swift; sourceTree = "<group>"; };
 		DC8D42A81CF4C95000C16D16 /* UberAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberAppDelegate.swift; sourceTree = "<group>"; };
 		DC8E2ACF1C9AA17400EDD74B /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		DC8E2AD11C9B19ED00EDD74B /* ConfigurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationTests.swift; sourceTree = "<group>"; };
@@ -674,7 +672,6 @@
 				DC1AE1BE1CF78ADF00B8CFCB /* RefreshEndpointTests.swift */,
 				DC3F74121CF6767B00A713AA /* UberAppDelegateTests.swift */,
 				DFA91C3B1FABEADD00149E8F /* UberMocks.swift */,
-				DC78ED121CB578D100850814 /* UberScopeFactoryTests.swift */,
 				DFFCA8BD1F96A4800032E6BA /* Info.plist */,
 				DF0233961FD76F5F00351976 /* DeeplinkManagerTests.swift */,
 			);
@@ -1140,7 +1137,6 @@
 				DFC99A1E1FAB9D0000C12021 /* OauthEndpointTests.swift in Sources */,
 				DFC99A251FAB9D9300C12021 /* UberAppDelegateTests.swift in Sources */,
 				DFC99A231FAB9D8E00C12021 /* AuthenticationURLUtilityTests.swift in Sources */,
-				DFA91C3D1FAC72EB00149E8F /* UberScopeFactoryTests.swift in Sources */,
 				DFFCA8D91F97D6450032E6BA /* ConfigurationTests.swift in Sources */,
 				77AD736D213F177E00390251 /* AsyncDispatcherTests.swift in Sources */,
 				DFC99A201FAB9D8E00C12021 /* RefreshEndpointTests.swift in Sources */,
