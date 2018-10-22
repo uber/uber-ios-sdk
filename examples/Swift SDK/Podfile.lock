@@ -9,9 +9,9 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   UberCore:
-    :path: "../../"
+    :path: ../../
   UberRides:
-    :path: "../../"
+    :path: ../../
 
 SPEC CHECKSUMS:
   UberCore: bbeec9cb7b92de9f292df2f8a345f2e290212746
@@ -19,4 +19,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1d713d30b94c4238ccc4571330ddf2a95fe4daf5
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.4.0

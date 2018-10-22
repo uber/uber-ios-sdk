@@ -31,7 +31,7 @@
     
     //MARK: Class variables
     
-    @objc open static let shared = UberAppDelegate()
+    @objc public static let shared = UberAppDelegate()
     
     //MARK: Public variables
     

@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.11.0] 2018-10-22
+
+0.11 updates the Uber Rides SDK for Xcode 10/Swift 4.2 compatibility. ([Pull #245](https://github.com/uber/rides-ios-sdk/pull/245), thanks @rmuhamedgaliev!)
+
+### Changes
+* [Pull #248](https://github.com/uber/rides-ios-sdk/pull/248) You can now use custom string scopes, with the initializer `UberScope(scopeString:)`
+* [Pull #242 & #243](https://github.com/uber/rides-ios-sdk/pull/242) add support for authenticating with Uber Eats
+
 ## [0.10.0] 2018-04-27
 
 0.10 updates the Uber Rides SDK for Xcode 9.3/Swift 4.1 compatibility.

@@ -29,8 +29,8 @@ import CoreLocation
 /// This class is a base class for all the button examples (two tone background ViewController)
 open class ButtonExampleViewController : UIViewController {
     
-    open let topView = UIView()
-    open let bottomView = UIView()
+    public let topView = UIView()
+    public let bottomView = UIView()
     
     override open func viewDidLoad() {
         super.viewDidLoad()
