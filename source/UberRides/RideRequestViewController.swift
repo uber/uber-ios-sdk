@@ -177,8 +177,8 @@ import UberCore
         rideRequestView.translatesAutoresizingMaskIntoConstraints = false
         
         let views = ["rideRequestView": rideRequestView]
-        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[rideRequestView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[rideRequestView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[rideRequestView]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: views)
+        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[rideRequestView]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: views)
         
         self.view.addConstraints(horizontalConstraints)
         self.view.addConstraints(verticalConstraints)

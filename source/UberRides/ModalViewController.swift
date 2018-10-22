@@ -139,10 +139,10 @@ Existing apps have until 05/31/2018 to migrate. See the Uber API Changelog for m
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.addChildViewController(wrappedNavigationController)
+        self.addChild(wrappedNavigationController)
         self.view.addSubview(self.wrappedNavigationController.view)
         
-        self.wrappedNavigationController.didMove(toParentViewController: self)
+        self.wrappedNavigationController.didMove(toParent: self)
     }
     
     public override func viewDidDisappear(_ animated: Bool) {

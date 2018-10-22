@@ -42,8 +42,8 @@
     public override init() {
         super.init()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     deinit {
@@ -80,14 +80,14 @@
         return urlHandled
     }
     
-    @objc public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
-        guard let options = launchOptions, let launchURL = options[UIApplicationLaunchOptionsKey.url] as? URL else {
+    @objc public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        guard let options = launchOptions, let launchURL = options[UIApplication.LaunchOptionsKey.url] as? URL else {
             return false
         }
         
         let manager = loginManager ?? LoginManager()
-        let sourceApplication = options[UIApplicationLaunchOptionsKey.sourceApplication] as? String
-        let annotation = options[UIApplicationLaunchOptionsKey.annotation] as Any?
+        let sourceApplication = options[UIApplication.LaunchOptionsKey.sourceApplication] as? String
+        let annotation = options[UIApplication.LaunchOptionsKey.annotation] as Any?
         let urlHandled = manager.application(application, open: launchURL, sourceApplication: sourceApplication, annotation: annotation)
         loginManager = nil
         return urlHandled

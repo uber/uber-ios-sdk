@@ -81,8 +81,8 @@ extension ModalRideRequestViewController : RideRequestViewControllerDelegate {
         
         if let errorString = errorString {
             let actionString = NSLocalizedString("OK", bundle: Bundle(for: type(of: self)), comment: "OK button title")
-            let alert = UIAlertController(title: nil, message: errorString, preferredStyle: UIAlertControllerStyle.alert)
-            let okayAction = UIAlertAction(title: actionString, style: UIAlertActionStyle.default, handler: { (_) -> Void in
+            let alert = UIAlertController(title: nil, message: errorString, preferredStyle: UIAlertController.Style.alert)
+            let okayAction = UIAlertAction(title: actionString, style: UIAlertAction.Style.default, handler: { (_) -> Void in
                 self.dismiss()
             })
             alert.addAction(okayAction)
