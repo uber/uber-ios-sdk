@@ -166,6 +166,7 @@ enum Estimates: APIEndpoint {
         switch self {
         case .price(let startLocation, let endLocation):
             return queryBuilder(
+            ("seat_count", "\(1)"),
             ("start_latitude", "\(startLocation.coordinate.latitude)"),
             ("start_longitude", "\(startLocation.coordinate.longitude)"),
             ("end_latitude", "\(endLocation.coordinate.latitude)"),
