@@ -36,6 +36,9 @@
     /// String containing the refresh token.
     @objc public private(set) var refreshToken: String?
     
+    /// String containing the token type.
+    @objc public private(set) var tokenType: String?
+    
     /// The expiration date for this access token
     @objc public private(set) var expirationDate: Date?
     
@@ -57,15 +60,18 @@
      
      - parameter tokenString: The access token string
      - parameter refreshToken: String containing the refresh token.
+     - parameter tokenType: String containing the token type.
      - parameter expirationDate: The expiration date for this access token
      - parameter grantedScopes: The scopes this token is valid for
      */
     @objc public init(tokenString: String,
                       refreshToken: String?,
+                      tokenType: String?,
                       expirationDate: Date?,
                       grantedScopes: [UberScope]) {
         self.tokenString = tokenString
         self.refreshToken = refreshToken
+        self.tokenType = tokenType
         self.expirationDate = expirationDate
         self.grantedScopes = grantedScopes
         super.init()
@@ -76,7 +82,7 @@
      the OAuth access token response.
      
      See https://tools.ietf.org/html/rfc6749#section-5.1 for more details.
-     The `token_type` parameter is not required for this initializer.
+     The `token_type` parameter is not required for this initializer, however is supported.
      
      - parameter oauthDictionary: A dictionary with key/values matching
      the OAuth access token response.
@@ -85,6 +91,7 @@
         guard let tokenString = oauthDictionary["access_token"] as? String else { return nil }
         self.tokenString = tokenString
         self.refreshToken = oauthDictionary["refresh_token"] as? String
+        self.tokenType = oauthDictionary["token_type"] as? String
         if let expiresIn = oauthDictionary["expires_in"] as? Double {
             self.expirationDate = Date(timeIntervalSinceNow: expiresIn)
         } else if let expiresIn = oauthDictionary["expires_in"] as? String,
@@ -116,6 +123,7 @@
         }
         tokenString = token
         refreshToken = decoder.decodeObject(forKey: "refreshToken") as? String
+        tokenType = decoder.decodeObject(forKey: "tokenType") as? String
         expirationDate = decoder.decodeObject(forKey: "expirationDate") as? Date
         if let scopesString = decoder.decodeObject(forKey: "grantedScopes") as? String {
             grantedScopes = scopesString.toUberScopesArray()
@@ -131,6 +139,7 @@
     @objc public func encode(with coder: NSCoder) {
         coder.encode(self.tokenString, forKey: "tokenString")
         coder.encode(self.refreshToken, forKey:  "refreshToken")
+        coder.encode(self.tokenType, forKey:  "tokenType")
         coder.encode(self.expirationDate, forKey: "expirationDate")
         coder.encode(self.grantedScopes.toUberScopeString(), forKey: "grantedScopes")
     }

@@ -28,6 +28,7 @@ import XCTest
 class AccessTokenFactoryTests: XCTestCase {
     private let redirectURI = "http://localhost:1234/"
     private let tokenString = "token"
+    private let tokenTypeString = "type"
     private let refreshTokenString = "refreshToken"
     private let expirationTime = 10030.23
     private let allowedScopesString = "profile history"
@@ -45,7 +46,7 @@ class AccessTokenFactoryTests: XCTestCase {
 
     func testParseTokenFromURL_withSuccess() {
         var components = URLComponents()
-        components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)&expires_in=\(expirationTime)&scope=\(allowedScopesString)"
+        components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)&token_type=\(tokenTypeString)&expires_in=\(expirationTime)&scope=\(allowedScopesString)"
         components.host = redirectURI
         guard let url = components.url else {
             XCTAssert(false)
@@ -56,6 +57,7 @@ class AccessTokenFactoryTests: XCTestCase {
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertEqual(token.refreshToken, refreshTokenString)
+            XCTAssertEqual(token.tokenType, tokenTypeString)
             XCTAssertEqual(token.grantedScopes.toUberScopeString(), allowedScopesString)
             UBSDKAssert(date: token.expirationDate!, approximatelyIn: expirationTime)
             
@@ -68,7 +70,7 @@ class AccessTokenFactoryTests: XCTestCase {
     
     func testParseTokenFromURL_withError() {
         var components = URLComponents()
-        components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)&expires_in=\(expirationTime)&scope=\(allowedScopesString)&error=\(errorString)"
+        components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)&token_type=\(tokenTypeString)&expires_in=\(expirationTime)&scope=\(allowedScopesString)&error=\(errorString)"
         components.host = redirectURI
         guard let url = components.url else {
             XCTAssert(false)
@@ -117,6 +119,7 @@ class AccessTokenFactoryTests: XCTestCase {
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
             XCTAssertNil(token.refreshToken)
+            XCTAssertNil(token.tokenType)
             XCTAssertNil(token.expirationDate)
             XCTAssertEqual(token.grantedScopes, [UberScope]())
         } catch _ as NSError {
@@ -148,7 +151,7 @@ class AccessTokenFactoryTests: XCTestCase {
     
     func testParseTokenFromURL_withFragmentAndQuery_withSuccess() {
         var components = URLComponents(string: redirectURI)!
-        components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)"
+        components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)&token_type=\(tokenTypeString)"
         components.query = "expires_in=\(expirationTime)&scope=\(allowedScopesString)"
         guard let url = components.url else {
             XCTAssert(false)
@@ -158,6 +161,7 @@ class AccessTokenFactoryTests: XCTestCase {
             let token : AccessToken = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
+            XCTAssertEqual(token.tokenType, tokenTypeString)
             XCTAssertEqual(token.refreshToken, refreshTokenString)
             XCTAssertEqual(token.grantedScopes.toUberScopeString(), allowedScopesString)
             UBSDKAssert(date: token.expirationDate!, approximatelyIn: expirationTime)
@@ -179,6 +183,7 @@ class AccessTokenFactoryTests: XCTestCase {
             let token : AccessToken = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
             XCTAssertNotNil(token)
             XCTAssertEqual(token.tokenString, tokenString)
+            XCTAssertNil(token.tokenType)
             XCTAssertNil(token.refreshToken)
             XCTAssertNil(token.expirationDate)
             XCTAssertEqual(token.grantedScopes, [UberScope]())
@@ -190,7 +195,7 @@ class AccessTokenFactoryTests: XCTestCase {
     }
 
     func testParseValidJsonStringToAccessToken() {
-        let jsonString = "{\"access_token\": \"\(tokenString)\", \"refresh_token\": \"\(refreshTokenString)\", \"expires_in\": \"\(expirationTime)\", \"scope\": \"\(allowedScopesString)\"}"
+        let jsonString = "{\"access_token\": \"\(tokenString)\", \"refresh_token\": \"\(refreshTokenString)\", \"token_type\": \"\(tokenTypeString)\", \"expires_in\": \"\(expirationTime)\", \"scope\": \"\(allowedScopesString)\"}"
 
         guard let accessToken = try? AccessTokenFactory.createAccessToken(fromJSONData: jsonString.data(using: .utf8)!) else {
             XCTFail()
@@ -198,6 +203,7 @@ class AccessTokenFactoryTests: XCTestCase {
         }
         XCTAssertEqual(accessToken.tokenString, tokenString)
         XCTAssertEqual(accessToken.refreshToken, refreshTokenString)
+        XCTAssertEqual(accessToken.tokenType, tokenTypeString)
         UBSDKAssert(date: accessToken.expirationDate!, approximatelyIn: expirationTime)
         XCTAssert(accessToken.grantedScopes.contains(UberScope.profile))
         XCTAssert(accessToken.grantedScopes.contains(UberScope.history))
