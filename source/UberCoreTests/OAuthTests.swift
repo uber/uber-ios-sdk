@@ -32,6 +32,7 @@ class OAuthTests: XCTestCase {
     let timeout: TimeInterval = 2
     let tokenString = "accessToken1234"
     let refreshTokenString = "refresh"
+    let tokenTypeString = "type"
     let expiresIn = 10030.23
     let scope = "profile history"
     
@@ -67,6 +68,7 @@ class OAuthTests: XCTestCase {
         let result = keychain.getObjectForKey(key) as! AccessToken
         XCTAssertEqual(result.tokenString, token.tokenString)
         XCTAssertEqual(result.refreshToken, token.refreshToken)
+        XCTAssertEqual(result.tokenType, token.tokenType)
         XCTAssertEqual(result.grantedScopes, token.grantedScopes)
         
         XCTAssertTrue(keychain.deleteObjectForKey(key))
@@ -93,6 +95,7 @@ class OAuthTests: XCTestCase {
         let result = keychain.getObjectForKey(key) as! AccessToken
         XCTAssertEqual(result.tokenString, newToken.tokenString)
         XCTAssertEqual(result.refreshToken, newToken.refreshToken)
+        XCTAssertEqual(result.tokenType, newToken.tokenType)
         XCTAssertEqual(result.grantedScopes, newToken.grantedScopes)
         
         XCTAssertTrue(keychain.deleteObjectForKey(key))
@@ -133,6 +136,7 @@ class OAuthTests: XCTestCase {
         }
         XCTAssertEqual(token.tokenString, tokenString)
         XCTAssertEqual(token.refreshToken, refreshTokenString)
+        XCTAssertEqual(token.tokenType, tokenTypeString)
         UBSDKAssert(date: token.expirationDate!, approximatelyIn: expiresIn)
         XCTAssert(token.grantedScopes.contains(UberScope.profile))
         XCTAssert(token.grantedScopes.contains(UberScope.history))
@@ -153,6 +157,7 @@ class OAuthTests: XCTestCase {
         var jsonDictionary = [String: Any]()
         jsonDictionary["access_token"] = accessToken
         jsonDictionary["refresh_token"] = refreshTokenString
+        jsonDictionary["token_type"] = tokenTypeString
         jsonDictionary["expires_in"] = expiresIn
         jsonDictionary["scope"] = scope
         return AccessToken(oauthDictionary: jsonDictionary)

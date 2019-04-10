@@ -898,6 +898,12 @@ class RidesClientTests: XCTestCase {
         })
     }
     
+    func testTokenType() {
+        stub(condition: isHost("login.uber.com")) { _ in
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("refresh.json", type(of: self))!, statusCode: 200, headers: nil)
+        }
+    }
+    
     /**
      Test to check getting the access token when using the default settings
      and the token exists
