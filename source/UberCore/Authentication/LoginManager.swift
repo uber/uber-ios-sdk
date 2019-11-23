@@ -214,6 +214,15 @@ import SafariServices
      - returns: true if the url was meant to be handled by the SDK, false otherwise
      */
     public func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any?) -> Bool {
+        if #available(iOS 13.0, *) {
+            if loggingIn {
+                authenticator?.consumeResponse(url: url, completion: loginCompletion)
+                return true
+            } else {
+                return false
+            }
+        }
+        
         guard let sourceApplication = sourceApplication else { return false }
         let sourceIsNative = loginType == .native && (sourceApplication.hasPrefix("com.ubercab") || sourceApplication.hasPrefix("com.ubereats"))
         let sourceIsSafariVC = loginType != .native && sourceApplication == "com.apple.SafariViewService"
