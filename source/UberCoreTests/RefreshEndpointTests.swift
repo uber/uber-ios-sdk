@@ -24,6 +24,7 @@
 
 import XCTest
 import OHHTTPStubs
+import OHHTTPStubsSwift
 @testable import UberCore
 
 class RefreshEndpointTests: XCTestCase {
@@ -42,7 +43,7 @@ class RefreshEndpointTests: XCTestCase {
     }
     
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         Configuration.restoreDefaults()
         super.tearDown()
     }
@@ -52,7 +53,7 @@ class RefreshEndpointTests: XCTestCase {
      */
     func test200Response() {
         stub(condition: isHost("login.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("refresh.json", type(of: self))!, statusCode:200, headers:self.headers)
+            return HTTPStubsResponse(fileAtPath:OHPathForFile("refresh.json", type(of: self))!, statusCode:200, headers:self.headers)
         }
         let refreshToken = "ThisIsRefresh"
         let expectation = self.expectation(description: "200 success response")
@@ -105,7 +106,7 @@ class RefreshEndpointTests: XCTestCase {
         
         stub(condition: isHost("login.uber.com")) { _ in
             let json = ["error": error]
-            return OHHTTPStubsResponse(jsonObject: json, statusCode: 400, headers: self.headers)
+            return HTTPStubsResponse(jsonObject: json, statusCode: 400, headers: self.headers)
         }
         
         let refreshToken = "ThisIsRefresh"

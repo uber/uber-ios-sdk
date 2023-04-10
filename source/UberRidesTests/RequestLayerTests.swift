@@ -24,6 +24,7 @@
 
 import XCTest
 import OHHTTPStubs
+import OHHTTPStubsSwift
 import UberCore
 @testable import UberRides
 
@@ -42,7 +43,7 @@ class RequestLayerTests: XCTestCase {
     }
     
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         Configuration.restoreDefaults()
         super.tearDown()
     }
@@ -52,7 +53,7 @@ class RequestLayerTests: XCTestCase {
      */
     func test200Response() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProductID.json", type(of: self))!, statusCode:200, headers:self.headers)
+            return HTTPStubsResponse(fileAtPath:OHPathForFile("getProductID.json", type(of: self))!, statusCode:200, headers:self.headers)
         }
         
         let expectation = self.expectation(description: "200 success response")
@@ -85,7 +86,7 @@ class RequestLayerTests: XCTestCase {
         
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let json = ["message": message, "code": code]
-            return OHHTTPStubsResponse(jsonObject: json, statusCode: 401, headers: self.headers)
+            return HTTPStubsResponse(jsonObject: json, statusCode: 401, headers: self.headers)
         }
         
         let expectation = self.expectation(description: "401 error response")
@@ -119,7 +120,7 @@ class RequestLayerTests: XCTestCase {
     func test409Error() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let json = ["meta": ["surge_confirmation": ["href": "api.uber.com/v1/surge-confirmations/abc", "surge_confirmation_id": "abc"]]]
-            return OHHTTPStubsResponse(jsonObject: json, statusCode: 409, headers: self.headers)
+            return HTTPStubsResponse(jsonObject: json, statusCode: 409, headers: self.headers)
         }
         
         let expectation = self.expectation(description: "409 error response")
@@ -159,7 +160,7 @@ class RequestLayerTests: XCTestCase {
         
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let json = ["message": message, "code": code, "fields": fields] as [String : Any]
-            return OHHTTPStubsResponse(jsonObject: json, statusCode: 422, headers: self.headers)
+            return HTTPStubsResponse(jsonObject: json, statusCode: 422, headers: self.headers)
         }
         
         let expectation = self.expectation(description: "422 error response")
@@ -201,7 +202,7 @@ class RequestLayerTests: XCTestCase {
         
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let json = ["message": message, "code": code, "fields": fields] as [String : Any]
-            return OHHTTPStubsResponse(jsonObject: json, statusCode: 422, headers: self.headers)
+            return HTTPStubsResponse(jsonObject: json, statusCode: 422, headers: self.headers)
         }
         
         let expectation = self.expectation(description: "422 error response")
@@ -244,7 +245,7 @@ class RequestLayerTests: XCTestCase {
         
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let json = ["meta": [], "errors": [["status": 422, "code": code, "title": message]]]
-            return OHHTTPStubsResponse(jsonObject: json, statusCode: 409, headers: self.headers)
+            return HTTPStubsResponse(jsonObject: json, statusCode: 409, headers: self.headers)
         }
         
         let expectation = self.expectation(description: "422 error response")
@@ -285,7 +286,7 @@ class RequestLayerTests: XCTestCase {
         
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let json = ["message": message, "code": code]
-            return OHHTTPStubsResponse(jsonObject: json, statusCode: 500, headers: self.headers)
+            return HTTPStubsResponse(jsonObject: json, statusCode: 500, headers: self.headers)
         }
         
         let expectation = self.expectation(description: "500 error response")
@@ -322,7 +323,7 @@ class RequestLayerTests: XCTestCase {
         
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let json = ["message": message, "code": code]
-            return OHHTTPStubsResponse(jsonObject: json, statusCode: 503, headers: self.headers)
+            return HTTPStubsResponse(jsonObject: json, statusCode: 503, headers: self.headers)
         }
         
         let expectation = self.expectation(description: "503 error response")
@@ -356,7 +357,7 @@ class RequestLayerTests: XCTestCase {
     func testNoNetworkError() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let notConnectedError = NSError(domain: NSURLErrorDomain, code: Int(CFNetworkErrors.cfurlErrorNotConnectedToInternet.rawValue), userInfo: nil)
-            return OHHTTPStubsResponse(error:notConnectedError)
+            return HTTPStubsResponse(error:notConnectedError)
         }
         
         let expectation = self.expectation(description: "No network error response")

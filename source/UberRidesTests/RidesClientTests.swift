@@ -24,6 +24,7 @@
 
 import XCTest
 import OHHTTPStubs
+import OHHTTPStubsSwift
 import CoreLocation
 @testable import UberCore
 @testable import UberRides
@@ -44,7 +45,7 @@ class RidesClientTests: XCTestCase {
     }
     
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         Configuration.restoreDefaults()
         Configuration.bundle = Bundle.main
         super.tearDown()
@@ -66,7 +67,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetProducts() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProducts.json", type(of: self))!, statusCode:200, headers:nil)
+            return HTTPStubsResponse(fileAtPath:OHPathForFile("getProducts.json", type(of: self))!, statusCode:200, headers:nil)
         }
         
         let expectation = self.expectation(description: "get all products")
@@ -99,7 +100,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetProductByID() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getProductID.json", type(of: self))!, statusCode:200, headers:nil)
+            return HTTPStubsResponse(fileAtPath:OHPathForFile("getProductID.json", type(of: self))!, statusCode:200, headers:nil)
         }
         
         let expectation = self.expectation(description: "get product by id")
@@ -125,7 +126,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetTimeEstimates() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimates.json", type(of: self))!, statusCode:200, headers:nil)
+            return HTTPStubsResponse(fileAtPath:OHPathForFile("getTimeEstimates.json", type(of: self))!, statusCode:200, headers:nil)
         }
         
         let expectation = self.expectation(description: "get time estimates")
@@ -153,7 +154,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetPriceEstimates() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimates.json", type(of: self))!, statusCode:200, headers:nil)
+            return HTTPStubsResponse(fileAtPath:OHPathForFile("getPriceEstimates.json", type(of: self))!, statusCode:200, headers:nil)
         }
         
         let expectation = self.expectation(description: "get price estimates")
@@ -182,7 +183,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetHistory() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath:OHPathForFile("getHistory.json", type(of: self))!, statusCode:200, headers:nil)
+            return HTTPStubsResponse(fileAtPath:OHPathForFile("getHistory.json", type(of: self))!, statusCode:200, headers:nil)
         }
         
         let expectation = self.expectation(description: "get user history")
@@ -208,7 +209,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetUserProfile() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getMe.json", type(of: self))!, statusCode: 200, headers: nil)
+            return HTTPStubsResponse(fileAtPath: OHPathForFile("getMe.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
         let expectation = self.expectation(description: "get user profile")
@@ -233,7 +234,7 @@ class RidesClientTests: XCTestCase {
      */
     func testMakeRideRequest() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("postRequests.json", type(of: self))!, statusCode: 200, headers: nil)
+            return HTTPStubsResponse(fileAtPath: OHPathForFile("postRequests.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
         let expectation = self.expectation(description: "make ride request")
@@ -260,7 +261,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetCurrentRide() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getRequestAccepted.json", type(of: self))!, statusCode: 200, headers: nil)
+            return HTTPStubsResponse(fileAtPath: OHPathForFile("getRequestAccepted.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
         let expectation = self.expectation(description: "get current ride")
@@ -285,7 +286,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetRideByID() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getRequestAccepted.json", type(of: self))!, statusCode: 200, headers: nil)
+            return HTTPStubsResponse(fileAtPath: OHPathForFile("getRequestAccepted.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
         let expectation = self.expectation(description: "get ride by ID")
@@ -310,7 +311,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetRequestEstimate() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("requestEstimate.json", type(of: self))!, statusCode: 200, headers: nil)
+            return HTTPStubsResponse(fileAtPath: OHPathForFile("requestEstimate.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
         let expectation = self.expectation(description: "get request estimate")
@@ -333,7 +334,7 @@ class RidesClientTests: XCTestCase {
     
     func testGetPlace() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("place.json", type(of: self))!, statusCode: 200, headers: nil)
+            return HTTPStubsResponse(fileAtPath: OHPathForFile("place.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
         let expectation = self.expectation(description: "get place")
@@ -362,7 +363,7 @@ class RidesClientTests: XCTestCase {
     func testGetPlace404Response() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let obj = ["code":"unknown_place_id", "title": "The given place id does not exist"]
-            return OHHTTPStubsResponse(jsonObject: obj, statusCode: 404, headers: nil)
+            return HTTPStubsResponse(jsonObject: obj, statusCode: 404, headers: nil)
         }
         
         let expectation = self.expectation(description: "get place not found error")
@@ -396,7 +397,7 @@ class RidesClientTests: XCTestCase {
     func testGetPlace401Response() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
             let obj = ["code":"unauthorized", "title": "The supplied bearer token is invalid."]
-            return OHHTTPStubsResponse(jsonObject: obj, statusCode: 401, headers: nil)
+            return HTTPStubsResponse(jsonObject: obj, statusCode: 401, headers: nil)
         }
         
         let expectation = self.expectation(description: "get place not found error")
@@ -426,7 +427,7 @@ class RidesClientTests: XCTestCase {
     
     func testUpdateRideDetailsSuccess() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: [], statusCode: 204, headers: nil)
+            return HTTPStubsResponse(jsonObject: [], statusCode: 204, headers: nil)
         }
         
         let expectation = self.expectation(description: "update ride")
@@ -445,7 +446,7 @@ class RidesClientTests: XCTestCase {
     
     func testUpdateRideDetailsUnauthorized() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: ["code":"unauthorized", "title":"Invalid OAuth 2.0 credentials provided."], statusCode: 401, headers: nil)
+            return HTTPStubsResponse(jsonObject: ["code":"unauthorized", "title":"Invalid OAuth 2.0 credentials provided."], statusCode: 401, headers: nil)
         }
         
         let expectation = self.expectation(description: "update ride")
@@ -470,7 +471,7 @@ class RidesClientTests: XCTestCase {
     
     func testUpdateRideDetailsNotFound() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: ["code":"not_found", "title":"The provided request ID doesn't exist."], statusCode: 404, headers: nil)
+            return HTTPStubsResponse(jsonObject: ["code":"not_found", "title":"The provided request ID doesn't exist."], statusCode: 404, headers: nil)
         }
         
         let expectation = self.expectation(description: "update ride")
@@ -495,7 +496,7 @@ class RidesClientTests: XCTestCase {
     
     func testUpdateRideDetailsValidationFailed() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: ["code":"validation_failed", "title": "The input failed invalidation."], statusCode: 422, headers: nil)
+            return HTTPStubsResponse(jsonObject: ["code":"validation_failed", "title": "The input failed invalidation."], statusCode: 422, headers: nil)
         }
         
         let expectation = self.expectation(description: "update ride")
@@ -520,7 +521,7 @@ class RidesClientTests: XCTestCase {
     
     func testUpdateCurrentRide() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: [], statusCode: 204, headers: nil)
+            return HTTPStubsResponse(jsonObject: [], statusCode: 204, headers: nil)
         }
         
         let expectation = self.expectation(description: "update ride")
@@ -539,7 +540,7 @@ class RidesClientTests: XCTestCase {
     
     func testUpdateCurrentRideUnauthorized() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: ["code":"unauthorized", "title":"Invalid OAuth 2.0 credentials provided."], statusCode: 401, headers: nil)
+            return HTTPStubsResponse(jsonObject: ["code":"unauthorized", "title":"Invalid OAuth 2.0 credentials provided."], statusCode: 401, headers: nil)
         }
         
         let expectation = self.expectation(description: "update ride")
@@ -564,7 +565,7 @@ class RidesClientTests: XCTestCase {
     
     func testUpdateCurrentRideForbidden() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: ["code":"forbidden", "title":"Forbidden."], statusCode: 403, headers: nil)
+            return HTTPStubsResponse(jsonObject: ["code":"forbidden", "title":"Forbidden."], statusCode: 403, headers: nil)
         }
         
         let expectation = self.expectation(description: "update ride")
@@ -589,7 +590,7 @@ class RidesClientTests: XCTestCase {
     
     func testUpdateCurrentRideNoCurrentTrip() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: ["code":"no_current_trip", "title":"User is not currently on a trip."], statusCode: 404, headers: nil)
+            return HTTPStubsResponse(jsonObject: ["code":"no_current_trip", "title":"User is not currently on a trip."], statusCode: 404, headers: nil)
         }
         
         let expectation = self.expectation(description: "update ride")
@@ -614,7 +615,7 @@ class RidesClientTests: XCTestCase {
     
     func testUpdateCurrentRideValidationFailed() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: ["code":"validation_failed", "title":"The input failed invalidation."], statusCode: 422, headers: nil)
+            return HTTPStubsResponse(jsonObject: ["code":"validation_failed", "title":"The input failed invalidation."], statusCode: 422, headers: nil)
         }
         
         let expectation = self.expectation(description: "update ride")
@@ -639,7 +640,7 @@ class RidesClientTests: XCTestCase {
     
     func testCancelRideByID() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: [], statusCode: 204, headers: nil)
+            return HTTPStubsResponse(jsonObject: [], statusCode: 204, headers: nil)
         }
         
         let expectation = self.expectation(description: "delete ride")
@@ -656,7 +657,7 @@ class RidesClientTests: XCTestCase {
     
     func testCancelCurrentRide() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: [], statusCode: 204, headers: nil)
+            return HTTPStubsResponse(jsonObject: [], statusCode: 204, headers: nil)
         }
         
         let expectation = self.expectation(description: "delete ride")
@@ -673,7 +674,7 @@ class RidesClientTests: XCTestCase {
     
     func testCancelCurrentRideUnauthorized() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: ["code":"unauthorized", "title":"Invalid OAuth 2.0 Credentials provided."], statusCode: 401, headers: nil)
+            return HTTPStubsResponse(jsonObject: ["code":"unauthorized", "title":"Invalid OAuth 2.0 Credentials provided."], statusCode: 401, headers: nil)
         }
         
         let expectation = self.expectation(description: "update ride")
@@ -696,7 +697,7 @@ class RidesClientTests: XCTestCase {
     
     func testCancelCurrentRideForbidden() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: ["code":"forbidden", "title":"Forbidden"], statusCode: 403, headers: nil)
+            return HTTPStubsResponse(jsonObject: ["code":"forbidden", "title":"Forbidden"], statusCode: 403, headers: nil)
         }
         
         let expectation = self.expectation(description: "update ride")
@@ -719,7 +720,7 @@ class RidesClientTests: XCTestCase {
     
     func testCancelCurrentRideNoCurrentTrip() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: ["code":"no_current_trip", "title":"User is not currently on a trip."], statusCode: 404, headers: nil)
+            return HTTPStubsResponse(jsonObject: ["code":"no_current_trip", "title":"User is not currently on a trip."], statusCode: 404, headers: nil)
         }
         
         let expectation = self.expectation(description: "update ride")
@@ -745,7 +746,7 @@ class RidesClientTests: XCTestCase {
      */
     func testGetPaymentMethods() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("getPaymentMethods.json", type(of: self))!, statusCode: 200, headers: nil)
+            return HTTPStubsResponse(fileAtPath: OHPathForFile("getPaymentMethods.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
         let expectation = self.expectation(description: "get payment methods")
@@ -770,7 +771,7 @@ class RidesClientTests: XCTestCase {
     
     func testGetRideReceipt() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("rideReceipt.json", type(of: self))!, statusCode: 200, headers: nil)
+            return HTTPStubsResponse(fileAtPath: OHPathForFile("rideReceipt.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
         let expectation = self.expectation(description: "ride receipt")
@@ -793,7 +794,7 @@ class RidesClientTests: XCTestCase {
     
     func testGetRideMap() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("rideMap.json", type(of: self))!, statusCode: 200, headers: nil)
+            return HTTPStubsResponse(fileAtPath: OHPathForFile("rideMap.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         
         let expectation = self.expectation(description: "ride map")
@@ -817,7 +818,7 @@ class RidesClientTests: XCTestCase {
     
     func testGetRideMapNotFound() {
         stub(condition: isHost("sandbox-api.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: ["code":"no_current_trip", "title":"User is not currently on a trip."], statusCode: 404, headers: nil)
+            return HTTPStubsResponse(jsonObject: ["code":"no_current_trip", "title":"User is not currently on a trip."], statusCode: 404, headers: nil)
         }
         
         let expectation = self.expectation(description: "ride map")
@@ -843,7 +844,7 @@ class RidesClientTests: XCTestCase {
     
     func testRefreshToken() {
         stub(condition: isHost("login.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("refresh.json", type(of: self))!, statusCode: 200, headers: nil)
+            return HTTPStubsResponse(fileAtPath: OHPathForFile("refresh.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         let refreshToken = "thisIsRefresh"
         let expectedScopeString = "request all_trips profile ride_widgets history places history_lite"
@@ -875,7 +876,7 @@ class RidesClientTests: XCTestCase {
 
     func testRefreshTokenInvalid() {
         stub(condition: isHost("login.uber.com")) { _ in
-            return OHHTTPStubsResponse(jsonObject: ["error":"invalid_refresh_token"], statusCode: 400, headers: nil)
+            return HTTPStubsResponse(jsonObject: ["error":"invalid_refresh_token"], statusCode: 400, headers: nil)
         }
         let refreshToken = "thisIsRefresh"
 
@@ -900,7 +901,7 @@ class RidesClientTests: XCTestCase {
     
     func testTokenType() {
         stub(condition: isHost("login.uber.com")) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("refresh.json", type(of: self))!, statusCode: 200, headers: nil)
+            return HTTPStubsResponse(fileAtPath: OHPathForFile("refresh.json", type(of: self))!, statusCode: 200, headers: nil)
         }
     }
     
