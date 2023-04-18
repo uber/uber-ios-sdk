@@ -29,8 +29,12 @@ import UIKit
     /// Scopes to request during login
     @objc public var scopes: [UberScope]
     
-    @objc public init(scopes: [UberScope]) {
+    @objc public var requestUri: String?
+    
+    @objc public init(scopes: [UberScope],
+                      requestUri: String? = nil) {
         self.scopes = scopes
+        self.requestUri = requestUri
         super.init()
     }
 

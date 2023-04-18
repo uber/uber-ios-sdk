@@ -36,8 +36,8 @@ import Foundation
 
      - returns: An initialized AuthenticationDeeplink
      */
-    @objc public init(scopes: [UberScope]) {
-        let queryItems = AuthenticationURLUtility.buildQueryParameters(scopes)
+    @objc public init(scopes: [UberScope], requestUri: String?) {
+        let queryItems = AuthenticationURLUtility.buildQueryParameters(scopes: scopes, requestUri: requestUri)
         let scheme = "eatsauth"
         let domain = "connect"
 

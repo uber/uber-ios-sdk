@@ -43,13 +43,21 @@ import UIKit
     @objc func loginButton(_ button: LoginButton, didLogoutWithSuccess success: Bool)
     
     /**
-     THe Login Button completed a login
+     The Login Button completed a login
      
      - parameter button:  The LoginButton involved
      - parameter accessToken: The access token that
      - parameter error:       The error that occured
      */
     @objc func loginButton(_ button: LoginButton, didCompleteLoginWithToken accessToken: AccessToken?, error: NSError?)
+}
+
+/**
+ *  Protocol to provide content for login
+ */
+@objc(UBSDKLoginButtonDataSource) public protocol LoginButtonDataSource {
+    
+    @objc func prefillValues(_ button: LoginButton) -> Prefill?
 }
 
 /// Button to handle logging in to Uber
@@ -61,6 +69,8 @@ import UIKit
 
     /// The LoginButtonDelegate for this button
     @objc public weak var delegate: LoginButtonDelegate?
+    
+    @objc public weak var dataSource: LoginButtonDataSource?
     
     /// The LoginManager to use for log in
     @objc public var loginManager: LoginManager {
@@ -206,7 +216,12 @@ import UIKit
             delegate?.loginButton(self, didLogoutWithSuccess: success)
             refreshContent()
         case .signedOut:
-            loginManager.login(requestedScopes: scopes, presentingViewController: presentingViewController, completion: loginCompletion)
+            loginManager.login(
+                requestedScopes: scopes,
+                presentingViewController: presentingViewController,
+                prefillValues: dataSource?.prefillValues(self),
+                completion: loginCompletion
+            )
         }
     }
     

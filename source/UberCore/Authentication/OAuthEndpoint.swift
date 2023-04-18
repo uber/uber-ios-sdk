@@ -30,23 +30,24 @@
  - Refresh: Used to refresh an access token that has been aquired via SSO
  */
 public enum OAuth: APIEndpoint {
-    case implicitLogin(clientID: String, scopes: [UberScope], redirect: URL)
-    case authorizationCodeLogin(clientID: String, redirect: URL, scopes: [UberScope], state: String?)
+    case implicitLogin(clientID: String, scopes: [UberScope], redirect: URL, requestUri: String? = nil)
+    case authorizationCodeLogin(clientID: String, redirect: URL, scopes: [UberScope], state: String?, requestUri: String? = nil)
     case refresh(clientID: String, refreshToken: String)
+    case par(clientID: String, loginHint: [String: String], responseType: ResponseType)
 
     public var method: UberHTTPMethod {
         switch self {
-        case .implicitLogin:
-            fallthrough
-        case .authorizationCodeLogin:
+        case .implicitLogin,
+                .authorizationCodeLogin:
             return .get
-        case .refresh:
+        case .refresh,
+                .par:
             return .post
         }
     }
 
     public var host: String {
-        return OAuth.regionHost
+        OAuth.regionHost
     }
 
     public var body: Data? {
@@ -59,13 +60,23 @@ public enum OAuth: APIEndpoint {
             var components = URLComponents()
             components.queryItems = query
             return components.query?.data(using: String.Encoding.utf8)
+        case .par(let clientID, let loginHint, let responseType):
+            let loginHintString = (try? JSONSerialization.data(withJSONObject: loginHint))?.base64EncodedString() ?? ""
+            let query = queryBuilder(
+                ("client_id", clientID),
+                ("response_type", responseType.rawValue),
+                ("login_hint", loginHintString)
+            )
+            var components = URLComponents()
+            components.queryItems = query
+            return components.query?.data(using: String.Encoding.utf8)
         default:
             return nil
         }
     }
 
     static var regionHost: String {
-        return "https://login.uber.com"
+        return "https://auth.uber.com"
     }
 
     public var path: String {
@@ -76,25 +87,60 @@ public enum OAuth: APIEndpoint {
             return "/oauth/v2/authorize"
         case .refresh:
             return "/oauth/v2/mobile/token"
+        case .par:
+            return "/oauth/v2/par"
         }
     }
 
     public var query: [URLQueryItem] {
         switch self {
-        case .implicitLogin(let clientID, let scopes, let redirect):
+        case .implicitLogin(let clientID, let scopes, let redirect, let requestUri):
             var loginQuery = baseLoginQuery(clientID, redirect: redirect, scopes: scopes)
-            let additionalQueryItems = queryBuilder(("response_type", "token"))
+            let additionalQueryItems: [URLQueryItem] = [
+                ("response_type", ResponseType.token.rawValue),
+                ("request_uri", requestUri)
+            ]
+            .compactMap { pair -> [URLQueryItem]? in
+                guard let value = pair.1 else {
+                    return nil
+                }
+                return self.queryBuilder((pair.0, value))
+            }
+            .flatMap { $0 }
 
             loginQuery.append(contentsOf: additionalQueryItems)
             return loginQuery
-        case .authorizationCodeLogin(let clientID, let redirect, let scopes, let state):
+        case .authorizationCodeLogin(let clientID, let redirect, let scopes, let state, let requestUri):
             var loginQuery = baseLoginQuery(clientID, redirect: redirect, scopes: scopes)
-            let additionalQueryItems = queryBuilder(("response_type", "code"),
-                                                    ("state", state ?? ""))
+            let additionalQueryItems: [URLQueryItem] = [
+                ("response_type", ResponseType.code.rawValue),
+                ("state", state ?? ""),
+                ("request_uri", requestUri)
+            ]
+            .compactMap { pair -> [URLQueryItem]? in
+                guard let value = pair.1 else {
+                    return nil
+                }
+                return self.queryBuilder((pair.0, value))
+            }
+            .flatMap { $0 }
             loginQuery.append(contentsOf: additionalQueryItems)
             return loginQuery
+        case .par:
+            return queryBuilder()
         case .refresh:
             return queryBuilder()
+        }
+    }
+    
+    public var contentType: String? {
+        switch self {
+        case .implicitLogin,
+                .authorizationCodeLogin,
+                .refresh:
+            return nil
+        case .par:
+            return "application/x-www-form-urlencoded"
         }
     }
 
@@ -115,5 +161,12 @@ public enum OAuth: APIEndpoint {
         } catch _ as NSError {
             return ""
         }
+    }
+    
+    // MARK: - ResponseType
+    
+    public enum ResponseType: String {
+        case code
+        case token
     }
 }

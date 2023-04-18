@@ -32,10 +32,11 @@ class AuthenticationURLUtility {
     static let scopesKey = "scope"
     static let sdkKey = "sdk"
     static let sdkVersionKey = "sdk_version"
+    static let requestUriKey = "request_uri"
     
     static let sdkValue = "ios"
     
-    static func buildQueryParameters(_ scopes: [UberScope]) -> [URLQueryItem] {
+    static func buildQueryParameters(scopes: [UberScope], requestUri: String?) -> [URLQueryItem] {
         var queryItems = [URLQueryItem]()
         
         queryItems.append(URLQueryItem(name: appNameKey, value: Configuration.shared.appDisplayName))
@@ -44,6 +45,9 @@ class AuthenticationURLUtility {
         queryItems.append(URLQueryItem(name: scopesKey, value: scopes.toUberScopeString()))
         queryItems.append(URLQueryItem(name: sdkKey, value: sdkValue))
         queryItems.append(URLQueryItem(name: sdkVersionKey, value: Configuration.shared.sdkVersion))
+        if let requestUri {
+            queryItems.append(URLQueryItem(name: requestUriKey, value: requestUri))
+        }
         
         return queryItems
     }

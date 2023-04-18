@@ -28,6 +28,12 @@ import UIKit
     @objc public var state: String?
     
     @objc override var authorizationURL: URL {
-        return OAuth.authorizationCodeLogin(clientID: Configuration.shared.clientID, redirect: Configuration.shared.getCallbackURI(for: .authorizationCode), scopes: scopes, state: state).url
+        return OAuth.authorizationCodeLogin(
+            clientID: Configuration.shared.clientID,
+            redirect: Configuration.shared.getCallbackURI(for: .authorizationCode),
+            scopes: scopes,
+            state: state,
+            requestUri: requestUri
+        ).url
     }
 }

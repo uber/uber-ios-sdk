@@ -30,6 +30,7 @@ class AuthenticationProvider {
 
     let productFlowPriority: [UberAuthenticationProductFlow]
     let scopes: [UberScope]
+    let requestUri: String?
 
     /// Returns an AuthenticationProvider.
     ///
@@ -38,8 +39,9 @@ class AuthenticationProvider {
     ///   - productFlowPriority: The product flows against which to authenticate, in the order of which Uber products you'd like to use to authenticate the user.
     ///
     ///     For example, you may want to SSO with the UberEats app, but if the app does not exist on the user's device, then try to authenticate with the Uber Rides app instead. In this example you'd call this parameter with [ eats, rides ].
-    init(scopes: [UberScope], productFlowPriority: [UberAuthenticationProductFlow]) {
+    init(scopes: [UberScope], productFlowPriority: [UberAuthenticationProductFlow], requestUri: String?) {
         self.scopes = scopes
+        self.requestUri = requestUri
         self.productFlowPriority = productFlowPriority
     }
 
@@ -54,16 +56,16 @@ class AuthenticationProvider {
         switch loginType {
         case .authorizationCode:
             // Rides and Eats temporarily share the same authorization code flow
-            return AuthorizationCodeGrantAuthenticator(scopes: scopes)
+            return AuthorizationCodeGrantAuthenticator(scopes: scopes, requestUri: requestUri)
         case .implicit:
             // Rides and Eats temporarily share the same implicit grant code flow
-            return ImplicitGrantAuthenticator(scopes: scopes)
+            return ImplicitGrantAuthenticator(scopes: scopes, requestUri: requestUri)
         case .native:
             switch authProduct.uberProductType {
             case .rides:
-                return RidesNativeAuthenticator(scopes: scopes)
+                return RidesNativeAuthenticator(scopes: scopes, requestUri: requestUri)
             case .eats:
-                return EatsNativeAuthenticator(scopes: scopes)
+                return EatsNativeAuthenticator(scopes: scopes, requestUri: requestUri)
             }
         }
     }

@@ -32,6 +32,7 @@ public protocol APIEndpoint {
     var method: UberHTTPMethod { get }
     var path: String { get }
     var query: [URLQueryItem] { get }
+    var contentType: String? { get }
 }
 
 public extension APIEndpoint {
@@ -76,6 +77,10 @@ public extension APIEndpoint {
             queryItems.append(URLQueryItem(name: query.name, value: query.value))
         }
         return queryItems
+    }
+    
+    var contentType: String? {
+        return nil
     }
 }
 
