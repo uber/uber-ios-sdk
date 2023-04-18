@@ -36,6 +36,7 @@ import SafariServices
     var loggingIn: Bool = false
     var willEnterForegroundCalled: Bool = false
     private var postCompletionHandler: AuthenticationCompletionHandler?
+    private let urlSession = URLSession(configuration: .default)
 
     /**
     Create instance of login manager to authenticate user and retreive access token.
@@ -187,17 +188,44 @@ import SafariServices
      
      - parameter scopes:                   scopes being requested.
      - parameter presentingViewController: The presenting view controller present the login view controller over.
+     - parameter prefillValues:            Optional values to pre-populate the signin form with.
      - parameter completion:               The LoginManagerRequestTokenHandler completion handler for login success/failure.
      */
-    @objc public func login(requestedScopes scopes: [UberScope], presentingViewController: UIViewController? = nil, completion: AuthenticationCompletionHandler? = nil) {
+    @objc public func login(requestedScopes scopes: [UberScope], presentingViewController: UIViewController? = nil, prefillValues: Prefill? = nil, completion: AuthenticationCompletionHandler? = nil) {
         self.postCompletionHandler = completion
         UberAppDelegate.shared.loginManager = self
 
-        let authProvider = AuthenticationProvider(scopes: scopes, productFlowPriority: productFlowPriority)
-
         loggingIn = true
         willEnterForegroundCalled = false
-        executeLogin(presentingViewController: presentingViewController, authenticationProvider: authProvider)
+        
+        let executeLogin: (String?) -> Void = { [weak self] requestUri in
+            guard let self = self else {
+                return
+            }
+            let authProvider = AuthenticationProvider(scopes: scopes, productFlowPriority: self.productFlowPriority, requestUri: requestUri)
+            self.executeLogin(presentingViewController: presentingViewController, authenticationProvider: authProvider)
+        }
+        
+        let responseType: OAuth.ResponseType? = {
+            switch loginType {
+            case .authorizationCode:
+                return .code
+            case .implicit:
+                return .token
+            case .native:
+                return nil
+            }
+        }()
+        
+        if let prefillValues = prefillValues,
+           let responseType = responseType {
+            executeParRequest(prefillValues: prefillValues,
+                              responseType: responseType) { requestUri in
+                executeLogin(requestUri)
+            }
+        } else {
+            executeLogin(nil)
+        }
     }
     
     /**
@@ -278,6 +306,42 @@ import SafariServices
     }
     
     // Mark: Private Interface
+    
+    private func executeParRequest(prefillValues: Prefill,
+                                   responseType: OAuth.ResponseType,
+                                   _ completion: @escaping (String?) -> Void) {
+
+        let loginHint = prefillValues.dictValue
+        guard !loginHint.isEmpty else {
+            completion(nil)
+            return
+        }
+
+        let request = Request(
+            session: urlSession,
+            endpoint: OAuth.par(
+                clientID: Configuration.shared.clientID,
+                loginHint: loginHint,
+                responseType: responseType
+            )
+        )
+        
+        request?.prepare()
+        request?.execute { response in
+            let requestUri: String? = {
+                guard let data = response.data,
+                      response.error == nil,
+                      let par = try? JSONDecoder.uberDecoder.decode(Par.self, from: data) else {
+                    return nil
+                }
+                return par.requestUri
+            }()
+            
+            DispatchQueue.main.async {
+                completion(requestUri)
+            }
+        }
+    }
     
     private func executeLogin(presentingViewController: UIViewController?, authenticationProvider: AuthenticationProvider) {
         if let authenticator = authenticationProvider.authenticators(for: loginType).first, authenticator.authorizationURL.scheme == "https" {
@@ -413,4 +477,5 @@ import SafariServices
 
         postCompletionHandler?(accessToken, error)
     }
+
 }

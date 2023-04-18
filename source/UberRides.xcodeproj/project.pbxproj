@@ -27,6 +27,11 @@
 		B261EBAA29E4A9A3007CDCC3 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B261EBA929E4A9A3007CDCC3 /* OHHTTPStubsSwift */; };
 		B261EBAC29E4A9A9007CDCC3 /* OHHTTPStubs in Frameworks */ = {isa = PBXBuildFile; productRef = B261EBAB29E4A9A9007CDCC3 /* OHHTTPStubs */; };
 		B261EBAE29E4A9A9007CDCC3 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B261EBAD29E4A9A9007CDCC3 /* OHHTTPStubsSwift */; };
+		B289FC9F29D5FB560071FFF4 /* UberCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFFCA8AC1F96A4800032E6BA /* UberCore.framework */; };
+		B289FCA029D5FB7C0071FFF4 /* UberRides.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC0404751BFACD1D00AC1501 /* UberRides.framework */; };
+		B289FCA229D6123B0071FFF4 /* PrefillValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B289FCA129D6123B0071FFF4 /* PrefillValue.swift */; };
+		B291DED929EF09D1005DD810 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B291DED729EF09D1005DD810 /* Main.storyboard */; };
+		B2D31CA429E88C4B001A9891 /* Par.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D31CA329E88C4B001A9891 /* Par.swift */; };
 		D81A8B161C658A2800339C13 /* TimeEstimate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81A8B151C658A2800339C13 /* TimeEstimate.swift */; };
 		D81A8B181C658A4F00339C13 /* getTimeEstimates.json in Resources */ = {isa = PBXBuildFile; fileRef = D81A8B171C658A4F00339C13 /* getTimeEstimates.json */; };
 		D81A8B1A1C69186B00339C13 /* RequestLayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81A8B191C69186B00339C13 /* RequestLayerTests.swift */; };
@@ -99,7 +104,6 @@
 		DCD8060C1CFE50F300EF6EB1 /* requestEstimateNoCars.json in Resources */ = {isa = PBXBuildFile; fileRef = DCD8060B1CFE50F300EF6EB1 /* requestEstimateNoCars.json */; };
 		DCDD153E1D99A7F20053BC8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDD153D1D99A7F20053BC8F /* AppDelegate.swift */; };
 		DCDD15401D99A7F20053BC8F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDD153F1D99A7F20053BC8F /* ViewController.swift */; };
-		DCDD15431D99A7F20053BC8F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCDD15411D99A7F20053BC8F /* Main.storyboard */; };
 		DCDD15451D99A7F20053BC8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCDD15441D99A7F20053BC8F /* Assets.xcassets */; };
 		DCDD15481D99A7F20053BC8F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCDD15461D99A7F20053BC8F /* LaunchScreen.storyboard */; };
 		DF021B3E1F996158004A7893 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CC80FA1C7D3AA300385AD5 /* KeychainWrapper.swift */; };
@@ -215,6 +219,9 @@
 		AC0404931BFACDAF00AC1501 /* RequestDeeplink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDeeplink.swift; sourceTree = "<group>"; };
 		AC0404951BFACDC900AC1501 /* RidesClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesClient.swift; sourceTree = "<group>"; };
 		AC0404991BFACE5400AC1501 /* RequestDeeplinkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDeeplinkTests.swift; sourceTree = "<group>"; };
+		B289FCA129D6123B0071FFF4 /* PrefillValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefillValue.swift; sourceTree = "<group>"; };
+		B291DED829EF09D1005DD810 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B2D31CA329E88C4B001A9891 /* Par.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Par.swift; sourceTree = "<group>"; };
 		C1C60712D3DA8E230F9B36D2 /* Pods-UberRidesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberRidesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UberRidesTests/Pods-UberRidesTests.release.xcconfig"; sourceTree = "<group>"; };
 		D80D4A511CD01894000EE8A9 /* AuthorizationCodeGrantAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrantAuthenticator.swift; sourceTree = "<group>"; };
 		D81A8B151C658A2800339C13 /* TimeEstimate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeEstimate.swift; path = Model/TimeEstimate.swift; sourceTree = "<group>"; };
@@ -324,7 +331,6 @@
 		DCDD153B1D99A7F20053BC8F /* TestAppShim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestAppShim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCDD153D1D99A7F20053BC8F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCDD153F1D99A7F20053BC8F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		DCDD15421D99A7F20053BC8F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DCDD15441D99A7F20053BC8F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DCDD15471D99A7F20053BC8F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DCDD15491D99A7F20053BC8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -388,6 +394,8 @@
 			files = (
 				B261EBA429E4A973007CDCC3 /* OHHTTPStubs in Frameworks */,
 				B261EBA629E4A973007CDCC3 /* OHHTTPStubsSwift in Frameworks */,
+				B289FC9F29D5FB560071FFF4 /* UberCore.framework in Frameworks */,
+				B289FCA029D5FB7C0071FFF4 /* UberRides.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -577,10 +585,10 @@
 		DCDD153C1D99A7F20053BC8F /* TestAppShim */ = {
 			isa = PBXGroup;
 			children = (
+				B291DED729EF09D1005DD810 /* Main.storyboard */,
 				DCDD154D1D99A82D0053BC8F /* TestAppShim.entitlements */,
 				DCDD153D1D99A7F20053BC8F /* AppDelegate.swift */,
 				DCDD153F1D99A7F20053BC8F /* ViewController.swift */,
-				DCDD15411D99A7F20053BC8F /* Main.storyboard */,
 				DCDD15441D99A7F20053BC8F /* Assets.xcassets */,
 				DCDD15461D99A7F20053BC8F /* LaunchScreen.storyboard */,
 				DCDD15491D99A7F20053BC8F /* Info.plist */,
@@ -637,7 +645,9 @@
 				DCAEA9931CEE91D000E6F239 /* AuthenticationURLUtility.swift */,
 				DF021B501F998A1D004A7893 /* OAuthEndpoint.swift */,
 				DC8D42A81CF4C95000C16D16 /* UberAppDelegate.swift */,
+				B2D31CA329E88C4B001A9891 /* Par.swift */,
 				DC1AE1B81CF6BF3900B8CFCB /* LoginButton.swift */,
+				B289FCA129D6123B0071FFF4 /* PrefillValue.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -976,7 +986,7 @@
 				DFFCA8DC1F97F6860032E6BA /* testInfo.plist in Resources */,
 				DCDD15481D99A7F20053BC8F /* LaunchScreen.storyboard in Resources */,
 				DCDD15451D99A7F20053BC8F /* Assets.xcassets in Resources */,
-				DCDD15431D99A7F20053BC8F /* Main.storyboard in Resources */,
+				B291DED929EF09D1005DD810 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1100,7 +1110,9 @@
 				77370828212B366800BB1C01 /* EatsNativeAuthenticator.swift in Sources */,
 				DFFCA8CA1F96AADE0032E6BA /* BaseDeeplink.swift in Sources */,
 				DFFCA8D51F96C1160032E6BA /* UberError.swift in Sources */,
+				B289FCA229D6123B0071FFF4 /* PrefillValue.swift in Sources */,
 				DF0A44A91F998C7E002CFE5B /* ImplicitGrantAuthenticator.swift in Sources */,
+				B2D31CA429E88C4B001A9891 /* Par.swift in Sources */,
 				DF0A44AA1F998C7E002CFE5B /* AuthorizationCodeGrantAuthenticator.swift in Sources */,
 				772E1168212DF15800056C63 /* EatsAppStoreDeeplink.swift in Sources */,
 				77370822212B000200BB1C01 /* RidesAuthenticationDeeplink.swift in Sources */,
@@ -1170,6 +1182,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		B291DED729EF09D1005DD810 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B291DED829EF09D1005DD810 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		DC8FC3611CBDF4D000D58839 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1179,14 +1199,6 @@
 				DFD7096F1F159865007550C8 /* pt-BR */,
 			);
 			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		DCDD15411D99A7F20053BC8F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DCDD15421D99A7F20053BC8F /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		DCDD15461D99A7F20053BC8F /* LaunchScreen.storyboard */ = {

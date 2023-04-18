@@ -28,6 +28,7 @@ class LoginButtonTests : XCTestCase {
     
     private var keychain: KeychainWrapper!
     private var testToken: AccessToken!
+    private var testDataSource: TestDataSource!
 
     override func setUp() {
         super.setUp()
@@ -121,5 +122,40 @@ class LoginButtonTests : XCTestCase {
         XCTAssertNil(TokenManager.fetchToken(identifier: identifier))
         
         _ = keychain.deleteObjectForKey(identifier)
+    }
+    
+    func test_loginButton_callsDataSourceOnTap() {
+        let identifier = "testIdentifier"
+        
+        let loginManager = LoginManager(accessTokenIdentifier: identifier, keychainAccessGroup: nil, loginType: .implicit)
+        let loginButton = LoginButton(frame: CGRect.zero, scopes: [.profile], loginManager: loginManager)
+        
+        let expectation = self.expectation(description: "Prefill handler called")
+        
+        let prefillHandler: () -> Prefill? = {
+            expectation.fulfill()
+            return nil
+        }
+        
+        testDataSource = TestDataSource(prefillHandler)
+        loginButton.dataSource = testDataSource
+        loginButton.uberButtonTapped(loginButton)
+        
+        waitForExpectations(timeout: 0.2)
+    }
+    
+    // MARK: - TestDataSource
+    
+    fileprivate class TestDataSource: LoginButtonDataSource {
+        
+        private let prefillValueHandler: () -> Prefill?
+        
+        init(_ prefillValueHandler: @escaping () -> Prefill?) {
+            self.prefillValueHandler = prefillValueHandler
+        }
+        
+        func prefillValues(_ button: LoginButton) -> Prefill? {
+            prefillValueHandler()
+        }
     }
 }

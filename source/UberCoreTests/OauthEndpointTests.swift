@@ -45,7 +45,7 @@ class OauthEndpointTests: XCTestCase {
         Configuration.shared.isSandbox = true
         
         let scopes = [ UberScope.profile, UberScope.history ]
-        let expectedHost = "https://login.uber.com"
+        let expectedHost = "https://auth.uber.com"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toUberScopeString()
         let expectedClientID = Configuration.shared.clientID
@@ -70,7 +70,7 @@ class OauthEndpointTests: XCTestCase {
         Configuration.shared.isSandbox = false
         
         let scopes = [ UberScope.profile, UberScope.history ]
-        let expectedHost = "https://login.uber.com"
+        let expectedHost = "https://auth.uber.com"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toUberScopeString()
         let expectedClientID = Configuration.shared.clientID
@@ -93,7 +93,7 @@ class OauthEndpointTests: XCTestCase {
 
     func testLogin_forAuthorizationCodeGrant_defaultSettings() {
         let scopes = [ UberScope.allTrips, UberScope.history ]
-        let expectedHost = "https://login.uber.com"
+        let expectedHost = "https://auth.uber.com"
         let expectedPath = "/oauth/v2/authorize"
         let expectedScopes = scopes.toUberScopeString()
         let expectedClientID = Configuration.shared.clientID
@@ -115,5 +115,65 @@ class OauthEndpointTests: XCTestCase {
         XCTAssertEqual(login.host, expectedHost)
         XCTAssertEqual(login.path, expectedPath)
         XCTAssertEqual(login.query, expectedQueryItems)
+    }
+    
+    func testPar_forResponseTypeCode_defaultSettings() {
+        let expectedHost = "https://auth.uber.com"
+        let expectedPath = "/oauth/v2/par"
+        let expectedClientID = Configuration.shared.clientID
+        let expectedResponseType = OAuth.ResponseType.code
+        let expectedLoginHint: [String: String] = [
+            "email": "test@test.com",
+            "phone": "5555555555",
+            "first_name": "First",
+            "last_name": "Last"
+        ]
+        let expectedLoginHintString = try! JSONSerialization.data(withJSONObject: expectedLoginHint).base64EncodedString()
+
+        var components = URLComponents()
+        components.queryItems = [
+            URLQueryItem(name: "client_id", value: expectedClientID),
+            URLQueryItem(name: "response_type", value: expectedResponseType.rawValue),
+            URLQueryItem(name: "login_hint", value: expectedLoginHintString),
+        ]
+        let expectedQueryItems = components.query!
+        
+        let login = OAuth.par(clientID: expectedClientID, loginHint: expectedLoginHint, responseType: expectedResponseType)
+        
+        let queryString = String(data: login.body!, encoding: .utf8)
+        
+        XCTAssertEqual(login.host, expectedHost)
+        XCTAssertEqual(login.path, expectedPath)
+        XCTAssertEqual(queryString, expectedQueryItems)
+    }
+    
+    func testPar_forResponseTypeToken_defaultSettings() {
+        let expectedHost = "https://auth.uber.com"
+        let expectedPath = "/oauth/v2/par"
+        let expectedClientID = Configuration.shared.clientID
+        let expectedResponseType = OAuth.ResponseType.token
+        let expectedLoginHint: [String: String] = [
+            "email": "test@test.com",
+            "phone": "5555555555",
+            "first_name": "First",
+            "last_name": "Last"
+        ]
+        let expectedLoginHintString = try! JSONSerialization.data(withJSONObject: expectedLoginHint).base64EncodedString()
+
+        var components = URLComponents()
+        components.queryItems = [
+            URLQueryItem(name: "client_id", value: expectedClientID),
+            URLQueryItem(name: "response_type", value: expectedResponseType.rawValue),
+            URLQueryItem(name: "login_hint", value: expectedLoginHintString),
+        ]
+        let expectedQueryItems = components.query!
+        
+        let login = OAuth.par(clientID: expectedClientID, loginHint: expectedLoginHint, responseType: expectedResponseType)
+        
+        let queryString = String(data: login.body!, encoding: .utf8)
+        
+        XCTAssertEqual(login.host, expectedHost)
+        XCTAssertEqual(login.path, expectedPath)
+        XCTAssertEqual(queryString, expectedQueryItems)
     }
 }

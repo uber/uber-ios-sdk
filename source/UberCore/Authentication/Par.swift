@@ -1,8 +1,8 @@
 //
-//  RidesAuthenticationDeeplink.swift
+//  Ride.swift
 //  UberRides
 //
-//  Copyright © 2018 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,31 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
+// MARK: Par
 
 /**
- *  A Deeplinking object for authenticating a user via the native Uber rides app
+ *  Contains the status of an ongoing/completed trip created using the Ride Request endpoint
  */
-@objc(UBSDKRidesAuthenticationDeeplink) public class RidesAuthenticationDeeplink: BaseDeeplink {
+@objc(UBSDKPar) public class Par: NSObject, Decodable {
+    
+    /// An identifier used for profile sharing
+    @objc public private(set) var requestUri: String?
+    
+    /// Lifetime of the request_uri
+    @objc public private(set) var expiresIn: NSNumber?
 
-    /**
-     Initializes an Authentication Deeplink to request the provided scopes
-
-     - parameter scopes: An array of UberScopes you would like to request
-
-     - returns: An initialized AuthenticationDeeplink
-     */
-    @objc public init(scopes: [UberScope], requestUri: String? = nil) {
-        let queryItems = AuthenticationURLUtility.buildQueryParameters(scopes: scopes, requestUri: requestUri)
-        let scheme = "uberauth"
-        let domain = "connect"
-
-        super.init(scheme: scheme, host: domain, path: "", queryItems: queryItems)!
+    enum CodingKeys: String, CodingKey {
+        case requestUri = "request_uri"
+        case expiresIn  = "expires_in"
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        requestUri = try container.decodeIfPresent(String.self, forKey: .requestUri)
+        if let expiration = try container.decodeIfPresent(Int64.self, forKey: .expiresIn) {
+            expiresIn = NSNumber(value: expiration)
+        } else {
+            expiresIn = nil
+        }
     }
 }

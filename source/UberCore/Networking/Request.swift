@@ -114,10 +114,12 @@ public class Request {
         } else if let token = serverToken {
             urlRequest.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
         }
-        if let headers = endpoint.headers {
-            for (header,value) in headers {
-                urlRequest.setValue(value, forHTTPHeaderField: header)
-            }
+        var headers = endpoint.headers ?? [:]
+        if let contentType = endpoint.contentType {
+            headers["Content-Type"] = contentType
+        }
+        for (header,value) in headers {
+            urlRequest.setValue(value, forHTTPHeaderField: header)
         }
     }
     

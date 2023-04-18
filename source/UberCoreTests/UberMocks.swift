@@ -26,7 +26,10 @@
 class LoginManagerPartialMock: LoginManager {
     var executeLoginClosure: ((AuthenticationCompletionHandler?) -> ())?
 
-    @objc public override func login(requestedScopes scopes: [UberScope], presentingViewController: UIViewController? = nil, completion: AuthenticationCompletionHandler? = nil) {
+    @objc public override func login(requestedScopes scopes: [UberScope],
+                                     presentingViewController: UIViewController?,
+                                     prefillValues: Prefill?,
+                                     completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?) {
         executeLoginClosure?(completion)
     }
 }
@@ -45,11 +48,19 @@ class LoginManagerPartialMock: LoginManager {
         super.init()
     }
 
-    func login(requestedScopes scopes: [UberScope], presentingViewController: UIViewController?, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?) {
+    func login(requestedScopes scopes: [UberScope],
+               presentingViewController: UIViewController?,
+               prefillValues: Prefill?,
+               completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?) {
         if let closure = loginClosure {
             closure(scopes, presentingViewController, completion)
         } else if let manager = backingManager {
-            manager.login(requestedScopes: scopes, presentingViewController: presentingViewController, completion: completion)
+            manager.login(
+                requestedScopes: scopes,
+                presentingViewController: presentingViewController,
+                prefillValues: nil,
+                completion: completion
+            )
         }
     }
 

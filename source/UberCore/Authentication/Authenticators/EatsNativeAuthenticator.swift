@@ -41,8 +41,8 @@ import Foundation
 
      - returns: true if a redirect was handled, false otherwise.
      */
-    @objc public override init(scopes: [UberScope]) {
-        deeplink = EatsAuthenticationDeeplink(scopes: scopes)
-        super.init(scopes: scopes)
+    @objc public override init(scopes: [UberScope], requestUri: String?) {
+        deeplink = EatsAuthenticationDeeplink(scopes: scopes, requestUri: requestUri)
+        super.init(scopes: scopes, requestUri: requestUri)
     }
 }

@@ -27,6 +27,11 @@
  */
 @objc(UBSDKImplicitGrantAuthenticator) public class ImplicitGrantAuthenticator: BaseAuthenticator {
     @objc override var authorizationURL: URL {
-        return OAuth.implicitLogin(clientID: Configuration.shared.clientID, scopes: self.scopes, redirect: Configuration.shared.getCallbackURI(for: .implicit)).url
+        return OAuth.implicitLogin(
+            clientID: Configuration.shared.clientID,
+            scopes: scopes,
+            redirect: Configuration.shared.getCallbackURI(for: .implicit),
+            requestUri: requestUri
+        ).url
     }
 }

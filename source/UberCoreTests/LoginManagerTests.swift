@@ -22,6 +22,8 @@
 
 import XCTest
 import CoreLocation
+import OHHTTPStubs
+import OHHTTPStubsSwift
 import WebKit
 @testable import UberCore
 
@@ -87,7 +89,7 @@ class LoginManagerTests: XCTestCase {
             completionHandler?(nil, UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unavailable))
         }
 
-        loginManagerMock.login(requestedScopes: [.profile], presentingViewController: nil, completion: loginCompletion)
+        loginManagerMock.login(requestedScopes: [.profile], presentingViewController: nil, prefillValues: nil, completion: loginCompletion)
 
         waitForExpectations(timeout: 0.2, handler: nil)
     }
@@ -267,6 +269,129 @@ class LoginManagerTests: XCTestCase {
         loginManager.login(requestedScopes: scopes, presentingViewController: viewController, completion: nil)
 
         XCTAssertEqual(loginManager.loginType, LoginType.implicit)
+    }
+    
+    func testImplicitLogin_executesParRequest() {
+        
+        let expectation = expectation(description: "Implicit login PAR endpoint called")
+
+        stub(condition: isPath("/oauth/v2/par")) { _ in
+            expectation.fulfill()
+            return HTTPStubsResponse()
+        }
+        
+        let loginManager = LoginManager(
+            loginType: .implicit,
+            productFlowPriority: [UberAuthenticationProductFlow(.eats)]
+        )
+        
+        loginManager.login(
+            requestedScopes: [UberScope.profile],
+            presentingViewController: UIViewController(),
+            prefillValues: Prefill(email: "test@test.com"),
+            completion: nil
+        )
+
+        waitForExpectations(timeout: 0.2, handler: nil)
+    }
+        
+    func testAuthorizationCodeLogin_executesParRequest() {
+        
+        let expectation = expectation(description: "Authorization code login PAR endpoint called")
+
+        stub(condition: isPath("/oauth/v2/par")) { _ in
+            expectation.fulfill()
+            return HTTPStubsResponse()
+        }
+        
+        let loginManager = LoginManager(
+            loginType: .authorizationCode,
+            productFlowPriority: [UberAuthenticationProductFlow(.eats)]
+        )
+        
+        loginManager.login(
+            requestedScopes: [UberScope.profile],
+            presentingViewController: UIViewController(),
+            prefillValues: Prefill(email: "test@test.com"),
+            completion: nil
+        )
+
+        waitForExpectations(timeout: 0.2, handler: nil)
+    }
+    
+    func testLogin_withNoPrefillValues_doesNotExecutesParRequest() {
+        
+        let expectation = expectation(description: "No prefill login PAR endpoint not called")
+        expectation.isInverted = true
+
+        stub(condition: isPath("/oauth/v2/par")) { _ in
+            expectation.fulfill()
+            return HTTPStubsResponse()
+        }
+        
+        let loginManager = LoginManager(
+            loginType: .authorizationCode,
+            productFlowPriority: [UberAuthenticationProductFlow(.eats)]
+        )
+        
+        loginManager.login(
+            requestedScopes: [UberScope.profile],
+            presentingViewController: UIViewController(),
+            prefillValues: nil,
+            completion: nil
+        )
+
+        waitForExpectations(timeout: 0.2, handler: nil)
+    }
+    
+    func testLogin_withEmptyPrefillValues_doesNotExecutesParRequest() {
+        
+        let expectation = expectation(description: "EmptyPrefill login PAR endpoint not called")
+        expectation.isInverted = true
+
+        stub(condition: isPath("/oauth/v2/par")) { _ in
+            expectation.fulfill()
+            return HTTPStubsResponse()
+        }
+        
+        let loginManager = LoginManager(
+            loginType: .authorizationCode,
+            productFlowPriority: [UberAuthenticationProductFlow(.eats)]
+        )
+        
+        loginManager.login(
+            requestedScopes: [UberScope.profile],
+            presentingViewController: UIViewController(),
+            prefillValues: Prefill(),
+            completion: nil
+        )
+
+        waitForExpectations(timeout: 0.2, handler: nil)
+    }
+    
+    func testNativeLogin_doesNotExecuteParRequest() {
+        
+        let expectation = expectation(description: "Native login PAR endpoint not called")
+        expectation.isInverted = true
+
+        stub(condition: isPath("/oauth/v2/par")) { _ in
+            expectation.fulfill()
+            return HTTPStubsResponse()
+        }
+        
+        let loginManager = LoginManager(
+            loginType: .native,
+            productFlowPriority: [UberAuthenticationProductFlow(.eats)]
+        )
+        
+        loginManager.login(
+            requestedScopes: [UberScope.profile],
+            presentingViewController: UIViewController(),
+            prefillValues: Prefill(),
+            completion: nil
+        )
+
+        waitForExpectations(timeout: 0.2, handler: nil)
     }
 }
 

@@ -61,7 +61,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let expectedQueryItems = [scopeQueryItem, clientIDQueryItem, appNameQueryItem, callbackURIQueryItem, sdkQueryItem, sdkVersionQueryItem]
         let comparisonSet = NSSet(array: expectedQueryItems)
         
-        let testQueryItems = AuthenticationURLUtility.buildQueryParameters(scopes)
+        let testQueryItems = AuthenticationURLUtility.buildQueryParameters(scopes: scopes, requestUri: nil)
         let testComparisonSet = NSSet(array:testQueryItems)
         
         XCTAssertEqual(comparisonSet, testComparisonSet)
@@ -88,7 +88,7 @@ class AuthenticationURLUtilityTests: XCTestCase {
         let expectedQueryItems = [scopeQueryItem, clientIDQueryItem, appNameQueryItem, callbackURIQueryItem, sdkQueryItem, sdkVersionQueryItem]
         let comparisonSet = NSSet(array: expectedQueryItems)
         
-        let testQueryItems = AuthenticationURLUtility.buildQueryParameters(scopes)
+        let testQueryItems = AuthenticationURLUtility.buildQueryParameters(scopes: scopes, requestUri: nil)
         let testComparisonSet = NSSet(array:testQueryItems)
         
         XCTAssertEqual(comparisonSet, testComparisonSet)
