@@ -843,7 +843,7 @@ class RidesClientTests: XCTestCase {
     }
     
     func testRefreshToken() {
-        stub(condition: isHost("login.uber.com")) { _ in
+        stub(condition: isHost("auth.uber.com")) { _ in
             return HTTPStubsResponse(fileAtPath: OHPathForFile("refresh.json", type(of: self))!, statusCode: 200, headers: nil)
         }
         let refreshToken = "thisIsRefresh"
@@ -875,7 +875,7 @@ class RidesClientTests: XCTestCase {
     }
 
     func testRefreshTokenInvalid() {
-        stub(condition: isHost("login.uber.com")) { _ in
+        stub(condition: isHost("auth.uber.com")) { _ in
             return HTTPStubsResponse(jsonObject: ["error":"invalid_refresh_token"], statusCode: 400, headers: nil)
         }
         let refreshToken = "thisIsRefresh"

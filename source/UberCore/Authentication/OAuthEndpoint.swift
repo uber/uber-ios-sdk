@@ -61,7 +61,7 @@ public enum OAuth: APIEndpoint {
             components.queryItems = query
             return components.query?.data(using: String.Encoding.utf8)
         case .par(let clientID, let loginHint, let responseType):
-            let loginHintString = (try? JSONSerialization.data(withJSONObject: loginHint))?.base64EncodedString() ?? ""
+            let loginHintString = base64EncodedString(from: loginHint) ?? ""
             let query = queryBuilder(
                 ("client_id", clientID),
                 ("response_type", responseType.rawValue),
@@ -96,34 +96,19 @@ public enum OAuth: APIEndpoint {
         switch self {
         case .implicitLogin(let clientID, let scopes, let redirect, let requestUri):
             var loginQuery = baseLoginQuery(clientID, redirect: redirect, scopes: scopes)
-            let additionalQueryItems: [URLQueryItem] = [
+            let additionalQueryItems = buildQueryItems([
                 ("response_type", ResponseType.token.rawValue),
                 ("request_uri", requestUri)
-            ]
-            .compactMap { pair -> [URLQueryItem]? in
-                guard let value = pair.1 else {
-                    return nil
-                }
-                return self.queryBuilder((pair.0, value))
-            }
-            .flatMap { $0 }
-
+            ])
             loginQuery.append(contentsOf: additionalQueryItems)
             return loginQuery
         case .authorizationCodeLogin(let clientID, let redirect, let scopes, let state, let requestUri):
             var loginQuery = baseLoginQuery(clientID, redirect: redirect, scopes: scopes)
-            let additionalQueryItems: [URLQueryItem] = [
+            let additionalQueryItems = buildQueryItems([
                 ("response_type", ResponseType.code.rawValue),
                 ("state", state ?? ""),
                 ("request_uri", requestUri)
-            ]
-            .compactMap { pair -> [URLQueryItem]? in
-                guard let value = pair.1 else {
-                    return nil
-                }
-                return self.queryBuilder((pair.0, value))
-            }
-            .flatMap { $0 }
+            ])
             loginQuery.append(contentsOf: additionalQueryItems)
             return loginQuery
         case .par:
@@ -161,6 +146,20 @@ public enum OAuth: APIEndpoint {
         } catch _ as NSError {
             return ""
         }
+    }
+    
+    private func base64EncodedString(from dict: [String: String]) -> String? {
+        (try? JSONSerialization.data(withJSONObject: dict))?.base64EncodedString()
+    }
+    
+    private func buildQueryItems(_ items: [(String, String?)]) -> [URLQueryItem] {
+        items.compactMap { pair -> [URLQueryItem]? in
+            guard let value = pair.1 else {
+                return nil
+            }
+            return self.queryBuilder((pair.0, value))
+        }
+        .flatMap { $0 }
     }
     
     // MARK: - ResponseType
