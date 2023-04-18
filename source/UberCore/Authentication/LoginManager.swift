@@ -290,17 +290,10 @@ import SafariServices
     // Delegates a web login to SFAuthenticationSession, SFSafariViewController, or just Safari
     private func executeWebLogin(presentingViewController: UIViewController?, authenticator: UberAuthenticating) {
         self.authenticator = authenticator
-        if #available(iOS 11.0, *) {
-            executeSafariAuthLogin(authenticator: authenticator)
-        } else if #available(iOS 9.0, *) {
-            executeSafariVCLogin(presentingViewController: presentingViewController, authenticator: authenticator)
-        } else {
-            UIApplication.shared.openURL(authenticator.authorizationURL)
-        }
+        executeSafariAuthLogin(authenticator: authenticator)
     }
 
     /// Login using SFAuthenticationSession
-    @available(iOS 11.0, *)
     private func executeSafariAuthLogin(authenticator: UberAuthenticating) {
         guard let bundleID = Bundle.main.bundleIdentifier else {
             preconditionFailure("You do not have a Bundle ID set for your app. You need a Bundle ID to use Uber Authentication")
@@ -316,25 +309,6 @@ import SafariServices
         })
         safariAuthenticationSession.start()
         self.safariAuthenticationSession = safariAuthenticationSession
-    }
-
-    /// Login using SFSafariViewController
-    @available(iOS 9.0, *)
-    private func executeSafariVCLogin(presentingViewController: UIViewController?, authenticator: UberAuthenticating) {
-        // Find the topmost view controller, and present from it
-        var presentingViewController = presentingViewController
-        if presentingViewController == nil {
-            var topController = UIApplication.shared.keyWindow?.rootViewController
-            while let vc = topController?.presentedViewController {
-                topController = vc
-            }
-            presentingViewController = topController
-        }
-
-        let safariVC = SFSafariViewController(url: authenticator.authorizationURL)
-
-        presentingViewController?.present(safariVC, animated: true, completion: nil)
-        oauthViewController = safariVC
     }
 
     /// Login using native deeplink

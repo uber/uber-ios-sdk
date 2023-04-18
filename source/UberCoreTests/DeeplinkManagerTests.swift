@@ -19,14 +19,15 @@ class DeeplinkManagerTests: XCTestCase {
 
         deeplinkManager = DeeplinkManager()
         urlOpener = URLOpeningMock()
+        urlOpener.canOpenURLHandler = { _ in true }
         deeplinkManager.urlOpener = urlOpener
         testDeeplink = TestDeeplink()
     }
 
     func testDeeplinkOpensFirstURL() {
         let expectCallback = self.expectation(description: "Callback is run")
-        urlOpener.openURLHandler = { url in
-            return true // All URLS can open
+        urlOpener.openURLHandler = { url, completionHandler in
+            completionHandler?(true) // All URLS can open
         }
         openDeeplink(testDeeplink) { error in
             XCTAssertNil(error)
@@ -40,11 +41,11 @@ class DeeplinkManagerTests: XCTestCase {
     func testDeeplinkOpensSecondURL() {
         let expectCorrectURLScheme = self.expectation(description: "We need to open up the app2 URL scheme")
         let expectCallback = self.expectation(description: "Callback is run")
-        urlOpener.openURLHandler = { url in
+        urlOpener.openURLHandler = { url, completionHandler in
             if url.scheme == "app2" {
                 expectCorrectURLScheme.fulfill()
             }
-            return url.scheme == "app2"
+            completionHandler?(url.scheme == "app2")
         }
         openDeeplink(testDeeplink) { error in
             XCTAssertNil(error)
@@ -57,11 +58,11 @@ class DeeplinkManagerTests: XCTestCase {
 
     func testDeeplinkErrorsWhenNoFallbacks() {
         let expectCallback = self.expectation(description: "Callback is run")
-        urlOpener.openURLHandler = { url in
-            return false
+        urlOpener.openURLHandler = { url, completionHandler in
+            completionHandler?(false)
         }
         openDeeplink(testDeeplink) { error in
-            let expectedError = DeeplinkErrorFactory.errorForType(DeeplinkErrorType.unableToOpen)
+            let expectedError = DeeplinkErrorFactory.errorForType(DeeplinkErrorType.unableToFollow)
             XCTAssertNotNil(error)
             XCTAssertEqual(error, expectedError)
             expectCallback.fulfill()
@@ -73,26 +74,11 @@ class DeeplinkManagerTests: XCTestCase {
 
     func testDeeplinkOpensURLWhenIOSPromptsPermission() {
         let expectCallback = self.expectation(description: "Callback is run")
-        urlOpener.openURLHandler = { url in
-            return true // All URLS can open
+        urlOpener.openURLHandler = { url, completionHandler in
+            completionHandler?(true) // All URLS can open
         }
         openDeeplinkWithSuccessfulPrompt(testDeeplink) { error in
             XCTAssertNil(error)
-            expectCallback.fulfill()
-        }
-        XCTAssertEqual(urlOpener.openURLCallCount, 1)
-
-        self.waitForExpectations(timeout: 0.5, handler: nil)
-    }
-
-    func testDeeplinkErrorsWhenUserDeniesPermission() {
-        let expectCallback = self.expectation(description: "Callback is run")
-        urlOpener.openURLHandler = { url in
-            return true // All URLS can open
-        }
-        openDeeplinkWithCancelledPrompt(testDeeplink) { error in
-            let expectedError = DeeplinkErrorFactory.errorForType(.deeplinkNotFollowed)
-            XCTAssertEqual(error, expectedError)
             expectCallback.fulfill()
         }
         XCTAssertEqual(urlOpener.openURLCallCount, 1)
@@ -111,11 +97,6 @@ class DeeplinkManagerTests: XCTestCase {
         NotificationCenter.default.post(Notification(name: Notification.Name.UIApplicationDidBecomeActive))
         NotificationCenter.default.post(Notification(name: Notification.Name.UIApplicationDidEnterBackground))
     }
-
-    private func openDeeplinkWithCancelledPrompt(_ deeplink: Deeplinking, completion: @escaping DeeplinkCompletionHandler) {
-        deeplinkManager.open(deeplink, completion: completion)
-        NotificationCenter.default.post(Notification(name: Notification.Name.UIApplicationWillResignActive))
-        NotificationCenter.default.post(Notification(name: Notification.Name.UIApplicationDidBecomeActive))    }
 }
 
 private class TestDeeplink: Deeplinking {
@@ -137,10 +118,11 @@ private class URLOpeningMock: URLOpening {
     }
 
     var openURLCallCount = 0
-    var openURLHandler: ((URL) -> Bool)?
-    func openURL(_ url: URL) -> Bool {
+    var openURLHandler: ((URL, ((Bool) -> Void)?) -> Void)?
+    func open(_ url: URL,
+              completionHandler: ((Bool) -> Void)?) {
         openURLCallCount += 1
-
-        return openURLHandler?(url) ?? false
+        
+        openURLHandler?(url, completionHandler)
     }
 }
