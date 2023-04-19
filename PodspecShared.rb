@@ -9,7 +9,7 @@ def configure_podspec(spec, module_name)
   spec.screenshots  = "https://raw.githubusercontent.com/uber/rides-ios-sdk/master/img/example_app.png"
   spec.license      = { :type => "MIT", :file => "LICENSE" }
   spec.authors      = { "Edward Jiang" => "edjiang@uber.com", "Jay Bobzin" => "jbobzin@uber.com", "Ty Smith" => "tys@uber.com" }
-  spec.platform     = :ios, "8.0"
+  spec.platform     = :ios, "11.0"
   spec.source       = { :git => "https://github.com/uber/rides-ios-sdk.git", :tag => 'v' + spec.version.to_s }
   spec.source_files = ["source/" + module_name + "/**/*.{swift,h,m}"]
   spec.swift_version = '4.2'
