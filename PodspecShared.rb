@@ -1,6 +1,6 @@
 def configure_podspec(spec, module_name)
   spec.name         = module_name
-  spec.version      = "0.13.0"
+  spec.version      = "0.14.0"
   spec.summary      = "The Official Uber Rides iOS SDK."
   spec.description  = <<-DESC
     This Swift library allows you to integrate Uber into your iOS app. It is designed to make it quick and easy to add a 'Request a Ride' button in your application, seamlessly connecting your users with Uber.
@@ -15,5 +15,5 @@ def configure_podspec(spec, module_name)
   spec.swift_version = '4.2'
   spec.resource     = "source/" + module_name + "/Resources/**"
   spec.requires_arc = true
-  spec.ios.deployment_target = '8.0'
+  spec.ios.deployment_target = '11.0'
 end

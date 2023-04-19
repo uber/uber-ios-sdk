@@ -4,7 +4,7 @@ This [Swift library](https://developer.apple.com/library/ios/documentation/Gener
 
 ## Requirements
 
-- iOS 8.0+
+- iOS 11.0+
 - Xcode 10.0+
 - Swift 4.2+
 
@@ -13,12 +13,12 @@ This [Swift library](https://developer.apple.com/library/ios/documentation/Gener
 To install the Uber Rides SDK, you may use [CocoaPods](http://cocoapods.org), [Carthage](https://github.com/Carthage/Carthage), or add it to your project manually
 
 ```ruby
-pod 'UberRides', '~> 0.13'
+pod 'UberRides', '~> 0.14'
 ```
 
 ### Carthage
 ```
-github "uber/rides-ios-sdk" ~> 0.13
+github "uber/rides-ios-sdk" ~> 0.14
 ```
 
 ## Getting Started
@@ -306,7 +306,7 @@ If you want to provide a more custom experience in your app, there are a few cla
 ### Uber Rides API Endpoints
 The SDK exposes all the endpoints available in the [Uber Developers documentation](https://developer.uber.com/docs). Some endpoints can be authenticated with a server token, but for most endpoints, you will require a bearer token. A bearer token can be retrieved via implicit grant, authorization code grant, or SSO. To authorize [privileged scopes](https://developer.uber.com/docs/scopes#section-privileged-scopes), you must use authorization code grant or SSO.
 
-Read the full API documentation at [CocoaDocs](http://cocoadocs.org/docsets/UberRides/0.13.0/)
+Read the full API documentation at [CocoaDocs](http://cocoadocs.org/docsets/UberRides/0.14.0/)
 
 The `RidesClient` is your source to access all the endpoints available in the Uber Rides API. With just your server token, you can get a list of Uber products as well as price and time estimates. 
 
@@ -426,6 +426,47 @@ TokenManager.deleteToken()
 // Objective-C
 [UBSDKTokenManager fetchToken];
 [UBSDKTokenManager deleteToken];
+```
+
+### Prefilling User Information
+If you would like text fields during signup to be pre-populated with user information you can do so using the prefill API. Partial information is accepted.
+There are two ways to provide this information:
+
+**Using the LoginButton / DataSource**
+```
+// Conform to the LoginButtonDataSource
+class MyClass: NSObject, LoginButtonDataSource { 
+
+    // Implement the the delegate method to provide prefill values
+    
+    func prefillValues(_ button: LoginButton) -> Prefill? {
+        Prefill(
+            email: "jane@test.com",
+            phoneNumber: "12345678900",
+            firstName: "Jane",
+            lastName: "Doe"
+        )
+    }
+}
+```
+
+**Using LoginManager Directly**
+```
+let loginManager = LoginManager(loginType: .authorizationCode)
+
+let prefill = Prefill(
+    email: "jane@test.com",
+    phoneNumber: "12345678900",
+    firstName: "Jane",
+    lastName: "Doe"
+)
+
+loginManager.login(
+    scopes: [.profile],
+    presentingViewController: viewController,
+    prefillValues: prefill,
+    completion: nil
+)
 ```
 
 ## Getting help

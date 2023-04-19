@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.14.0] 2023-04-18
+
+* [Pull #278](https://github.com/uber/rides-ios-sdk/pull/278) Implementing PAR
+* [Pull #277](https://github.com/uber/rides-ios-sdk/pull/277) Bump deployment target to iOS 11
+
 ## [0.13.0] 2019-11-24
 
 * [Pull #264](https://github.com/uber/rides-ios-sdk/pull/264) iOS 13: Don't check for source application
