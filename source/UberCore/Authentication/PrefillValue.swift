@@ -5,13 +5,13 @@
 
 import Foundation
 
-@objc public class Prefill: NSObject {
-    public let email: String?
-    public let phoneNumber: String?
-    public let firstName: String?
-    public let lastName: String?
+@objc(UBSDKPrefill) public class Prefill: NSObject {
+    @objc public let email: String?
+    @objc public let phoneNumber: String?
+    @objc public let firstName: String?
+    @objc public let lastName: String?
     
-    public init(email: String? = nil,
+    @objc public init(email: String? = nil,
                 phoneNumber: String? = nil,
                 firstName: String? = nil,
                 lastName: String? = nil) {
@@ -21,7 +21,7 @@ import Foundation
         self.lastName = lastName
     }
     
-    var dictValue: [String: String] {
+    @objc var dictValue: [String: String] {
         [
             "email": email,
             "phone": phoneNumber,
