@@ -10,16 +10,11 @@ This [Swift library](https://developer.apple.com/library/ios/documentation/Gener
 
 ## Installing the Uber Rides SDK
 
-To install the Uber Rides SDK, you may use [CocoaPods](http://cocoapods.org), [Carthage](https://github.com/Carthage/Carthage), or add it to your project manually
+### Swift Package Manager
+[TODO]
 
-```ruby
-pod 'UberRides', '~> 0.14'
-```
-
-### Carthage
-```
-github "uber/rides-ios-sdk" ~> 0.14
-```
+### Manual
+[TODO]
 
 ## Getting Started
 
@@ -51,7 +46,7 @@ Add the following code snippet, replacing the placeholders within the square bra
 
 The `RideRequestButton` is a simple way to show price and time estimates for Uber products and can be customized to perform various actions. The button takes in `RideParameters` that can describe product ID, pickup location, and dropoff location. By default, the button shows no information.
 
-To display a time estimate, set the product ID and pickup location. To display a price estimate, you need to additionally set a dropoff location. 
+To display a time estimate, set the product ID and pickup location. To display a price estimate, you need to additionally set a dropoff location.
 
 <p align="center">
   <img src="img/button_metadata.png?raw=true" alt="Request Buttons Screenshot"/>
@@ -158,7 +153,7 @@ With the Ride Request deeplink, you can specify a fallback for users that don't 
 let deeplink = RequestDeeplink(rideParameters: rideParameters, fallbackType: .mobileWeb) // Or .appStore
 
 // Objective-C
-UBSDKRequestDeeplink *requestDeeplink = [[UBSDKRequestDeeplink alloc] initWithRideParameters:rideParameters 
+UBSDKRequestDeeplink *requestDeeplink = [[UBSDKRequestDeeplink alloc] initWithRideParameters:rideParameters
                                           fallbackType:UBSDKDeeplinkFallbackTypeMobileWeb];
 ```
 
@@ -199,20 +194,20 @@ In your Xcode project, you need to register your URL scheme as well as the callb
 </array>
 ```
 
-You also need to modify your application's **App Delegate** to make calls to the **RidesAppDelegate** to handle URLs. 
+You also need to modify your application's **App Delegate** to make calls to the **RidesAppDelegate** to handle URLs.
 
 ```swift
 // Swift
 // Add the following calls to your AppDelegate
 import UberCore
-    
+
 @available(iOS 9, *)
 func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
     let handledUberURL = UberAppDelegate.shared.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as Any)
 
     return handledUberURL
 }
-    
+
 func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
     let handledUberURL = UberAppDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
 
@@ -228,14 +223,14 @@ func application(_ application: UIApplication, open url: URL, sourceApplication:
 // iOS 9+
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
     BOOL handledURL = [[UBSDKAppDelegate shared] application:app open:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
-    
+
     return handledURL;
 }
 
 // iOS 8
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     BOOL handledURL = [[UBSDKAppDelegate shared] application:application open:url sourceApplication:sourceApplication annotation:annotation];
-    
+
     return handledURL;
 }
 ```
@@ -257,11 +252,11 @@ loginButton.delegate = self
 view.addSubview(loginButton)
 
 // Mark: LoginButtonDelegate
-    
+
 func loginButton(_ button: LoginButton, didLogoutWithSuccess success: Bool) {
 	// success is true if logout succeeded, false otherwise
 }
-    
+
 func loginButton(_ button: LoginButton, didCompleteLoginWithToken accessToken: AccessToken?, error: NSError?) {
     if let _ = accessToken {
         // AccessToken Saved
@@ -308,7 +303,7 @@ The SDK exposes all the endpoints available in the [Uber Developers documentatio
 
 Read the full API documentation at [CocoaDocs](http://cocoadocs.org/docsets/UberRides/0.14.0/)
 
-The `RidesClient` is your source to access all the endpoints available in the Uber Rides API. With just your server token, you can get a list of Uber products as well as price and time estimates. 
+The `RidesClient` is your source to access all the endpoints available in the Uber Rides API. With just your server token, you can get a list of Uber products as well as price and time estimates.
 
 ```swift
 // Swift example
@@ -343,7 +338,7 @@ CLLocation *pickupLocation = [[CLLocation alloc] initWithLatitude: 37.787654 lon
 ### Native / SSO Authorization
 To get access to more informative endpoints, you need to have the end user authorize your application to access their Uber data.
 
-The easiest form of authorization is using the `.native` login type. It allows you to request Privileged scopes and, if your user is logged into the Uber app, it doesn't require your user to enter a username and password. It requires the user to have the native Uber application on their device. 
+The easiest form of authorization is using the `.native` login type. It allows you to request Privileged scopes and, if your user is logged into the Uber app, it doesn't require your user to enter a username and password. It requires the user to have the native Uber application on their device.
 
 Native authentication can occur either through the main Uber rides app or through the Uber Eats app. You can also fallback from one app to another, so that for example if the user does not have the UberEats app installed on their device, you can instead authenticate through the main Uber rides app:
 
@@ -435,10 +430,10 @@ There are two ways to provide this information:
 **Using the LoginButton / DataSource**
 ```
 // Conform to the LoginButtonDataSource
-class MyClass: NSObject, LoginButtonDataSource { 
+class MyClass: NSObject, LoginButtonDataSource {
 
     // Implement the the delegate method to provide prefill values
-    
+
     func prefillValues(_ button: LoginButton) -> Prefill? {
         Prefill(
             email: "jane@test.com",
@@ -481,7 +476,7 @@ We :heart: contributions. Found a bug or looking for a new feature? Open an issu
 
 **Note:** All contributors also need to fill out the [Uber Contributor License Agreement](http://t.uber.com/cla) before we can merge in any of your changes.
 
-Please open any pull requests against the `develop` branch. 
+Please open any pull requests against the `develop` branch.
 
 ## License
 

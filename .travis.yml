@@ -1,9 +1,0 @@
-language: objective-c
-osx_image: xcode9
-before_install:
- - brew install carthage
-install:
- - carthage bootstrap --platform ios
-script:
- - xcodebuild clean build -sdk iphonesimulator -project source/UberRides.xcodeproj -scheme UberCore -destination "OS=9.3,name=iPhone 4S" CODE_SIGNING_REQUIRED=NO test
- - xcodebuild clean build -sdk iphonesimulator -project source/UberRides.xcodeproj -scheme UberRides -destination "OS=9.3,name=iPhone 4S" CODE_SIGNING_REQUIRED=NO test
