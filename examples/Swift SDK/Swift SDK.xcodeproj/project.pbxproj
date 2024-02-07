@@ -280,8 +280,12 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
+				"zh-Hans",
+				"zh-Hant",
+				"hi-IN",
 			);
 			mainGroup = AC04049B1BFAD0C800AC1501;
 			productRefGroup = AC0404A51BFAD0C800AC1501 /* Products */;
