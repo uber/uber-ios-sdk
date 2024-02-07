@@ -200,7 +200,6 @@
 
 /* Begin PBXFileReference section */
 		028E44771DF4ACC400734E84 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Resources/ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		0D40D6AA81C808FAABB243C9 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		772E1167212DF15800056C63 /* EatsAppStoreDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatsAppStoreDeeplink.swift; sourceTree = "<group>"; };
 		7737081B212AFA2600BB1C01 /* UberAuthenticationProductFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberAuthenticationProductFlow.swift; sourceTree = "<group>"; };
 		77370821212B000200BB1C01 /* RidesAuthenticationDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidesAuthenticationDeeplink.swift; sourceTree = "<group>"; };
@@ -210,7 +209,6 @@
 		7755F836212C9B6600599561 /* AuthenticationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationProvider.swift; sourceTree = "<group>"; };
 		77AD7369213F170100390251 /* AsyncDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncDispatcher.swift; sourceTree = "<group>"; };
 		77AD736C213F177E00390251 /* AsyncDispatcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncDispatcherTests.swift; sourceTree = "<group>"; };
-		8EA8F073A2E428216A862688 /* Pods-UberRidesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberRidesTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UberRidesTests/Pods-UberRidesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AC0404751BFACD1D00AC1501 /* UberRides.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UberRides.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC0404781BFACD1D00AC1501 /* UberRides.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UberRides.h; sourceTree = "<group>"; };
 		AC04047A1BFACD1D00AC1501 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -222,7 +220,6 @@
 		B289FCA129D6123B0071FFF4 /* PrefillValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefillValue.swift; sourceTree = "<group>"; };
 		B291DED829EF09D1005DD810 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B2D31CA329E88C4B001A9891 /* Par.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Par.swift; sourceTree = "<group>"; };
-		C1C60712D3DA8E230F9B36D2 /* Pods-UberRidesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberRidesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UberRidesTests/Pods-UberRidesTests.release.xcconfig"; sourceTree = "<group>"; };
 		D80D4A511CD01894000EE8A9 /* AuthorizationCodeGrantAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrantAuthenticator.swift; sourceTree = "<group>"; };
 		D81A8B151C658A2800339C13 /* TimeEstimate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeEstimate.swift; path = Model/TimeEstimate.swift; sourceTree = "<group>"; };
 		D81A8B171C658A4F00339C13 /* getTimeEstimates.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getTimeEstimates.json; sourceTree = "<group>"; };
@@ -366,7 +363,6 @@
 		DFFCA8B41F96A4800032E6BA /* UberCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UberCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFFCA8BD1F96A4800032E6BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DFFCA8D21F96BAAE0032E6BA /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
-		EA01FB909C9A04DC5D83A4D9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -436,7 +432,6 @@
 				DFFCA8AD1F96A4800032E6BA /* UberCore */,
 				DFFCA8BA1F96A4800032E6BA /* UberCoreTests */,
 				AC0404761BFACD1D00AC1501 /* Products */,
-				E0C87DA8C44B500B36E07963 /* Pods */,
 				F036511333B3B5067F8B6DC8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -721,17 +716,6 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		E0C87DA8C44B500B36E07963 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				EA01FB909C9A04DC5D83A4D9 /* Pods.debug.xcconfig */,
-				0D40D6AA81C808FAABB243C9 /* Pods.release.xcconfig */,
-				8EA8F073A2E428216A862688 /* Pods-UberRidesTests.debug.xcconfig */,
-				C1C60712D3DA8E230F9B36D2 /* Pods-UberRidesTests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		F036511333B3B5067F8B6DC8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -923,7 +907,7 @@
 			);
 			mainGroup = AC04046B1BFACD1D00AC1501;
 			packageReferences = (
-				B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
+				B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs.git" */,
 			);
 			productRefGroup = AC0404761BFACD1D00AC1501 /* Products */;
 			projectDirPath = "";
@@ -1656,7 +1640,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */ = {
+		B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AliSoftware/OHHTTPStubs.git";
 			requirement = {
@@ -1669,32 +1653,32 @@
 /* Begin XCSwiftPackageProductDependency section */
 		B261EBA329E4A973007CDCC3 /* OHHTTPStubs */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			package = B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs.git" */;
 			productName = OHHTTPStubs;
 		};
 		B261EBA529E4A973007CDCC3 /* OHHTTPStubsSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			package = B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs.git" */;
 			productName = OHHTTPStubsSwift;
 		};
 		B261EBA729E4A9A3007CDCC3 /* OHHTTPStubs */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			package = B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs.git" */;
 			productName = OHHTTPStubs;
 		};
 		B261EBA929E4A9A3007CDCC3 /* OHHTTPStubsSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			package = B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs.git" */;
 			productName = OHHTTPStubsSwift;
 		};
 		B261EBAB29E4A9A9007CDCC3 /* OHHTTPStubs */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			package = B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs.git" */;
 			productName = OHHTTPStubs;
 		};
 		B261EBAD29E4A9A9007CDCC3 /* OHHTTPStubsSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			package = B261EBA229E4A973007CDCC3 /* XCRemoteSwiftPackageReference "OHHTTPStubs.git" */;
 			productName = OHHTTPStubsSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
