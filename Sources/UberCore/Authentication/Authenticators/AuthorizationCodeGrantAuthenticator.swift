@@ -1,8 +1,8 @@
 //
-//  AuthorizationBaseViewController.swift
-//  Swift SDK
+//  AuthorizationCodeGrantAuthenticator.swift
+//  UberRides
 //
-//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +22,18 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import UberCore
-import UberRides
 import UIKit
 
-class AuthorizationBaseViewController: UIViewController {
+public class AuthorizationCodeGrantAuthenticator: BaseAuthenticator {
+    public var state: String?
     
-    func delay(_ delay: Int, closure: @escaping ()->()) {
-        let deadlineTime = DispatchTime.now() + DispatchTimeInterval.seconds(delay)
-        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-            closure()
-        }
-    }
-    
-    func showMessage(_ message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil)
-        alert.addAction(okayAction)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func checkError(_ response: Response) {
-        // Unauthorized
-        if response.statusCode == 401 {
-            _ = TokenManager.deleteToken()
-            DispatchQueue.main.async {
-                self.reset()
-            }
-        }
-    }
-    
-    func reset() {
+    override var authorizationURL: URL {
+        return OAuth.authorizationCodeLogin(
+            clientID: Configuration.shared.clientID,
+            redirect: Configuration.shared.getCallbackURI(for: .authorizationCode),
+            scopes: scopes,
+            state: state,
+            requestUri: requestUri
+        ).url
     }
 }

@@ -1,8 +1,8 @@
 //
-//  AuthorizationBaseViewController.swift
-//  Swift SDK
+//  Ride.swift
+//  UberRides
 //
-//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +22,33 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import UberCore
-import UberRides
-import UIKit
+import Foundation
 
-class AuthorizationBaseViewController: UIViewController {
+// MARK: Par
+
+/**
+ *  Contains the status of an ongoing/completed trip created using the Ride Request endpoint
+ */
+public class Par: NSObject, Decodable {
     
-    func delay(_ delay: Int, closure: @escaping ()->()) {
-        let deadlineTime = DispatchTime.now() + DispatchTimeInterval.seconds(delay)
-        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-            closure()
+    /// An identifier used for profile sharing
+    public private(set) var requestUri: String?
+    
+    /// Lifetime of the request_uri
+    public private(set) var expiresIn: NSNumber?
+
+    enum CodingKeys: String, CodingKey {
+        case requestUri = "request_uri"
+        case expiresIn  = "expires_in"
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        requestUri = try container.decodeIfPresent(String.self, forKey: .requestUri)
+        if let expiration = try container.decodeIfPresent(Int64.self, forKey: .expiresIn) {
+            expiresIn = NSNumber(value: expiration)
+        } else {
+            expiresIn = nil
         }
-    }
-    
-    func showMessage(_ message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil)
-        alert.addAction(okayAction)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func checkError(_ response: Response) {
-        // Unauthorized
-        if response.statusCode == 401 {
-            _ = TokenManager.deleteToken()
-            DispatchQueue.main.async {
-                self.reset()
-            }
-        }
-    }
-    
-    func reset() {
     }
 }

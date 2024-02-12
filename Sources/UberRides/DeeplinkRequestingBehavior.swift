@@ -1,6 +1,6 @@
 //
-//  AuthorizationBaseViewController.swift
-//  Swift SDK
+//  DeeplinkRequestingBehavior.swift
+//  UberRides
 //
 //  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
 //
@@ -22,36 +22,41 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+import Foundation
 import UberCore
-import UberRides
-import UIKit
 
-class AuthorizationBaseViewController: UIViewController {
-    
-    func delay(_ delay: Int, closure: @escaping ()->()) {
-        let deadlineTime = DispatchTime.now() + DispatchTimeInterval.seconds(delay)
-        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-            closure()
+public class DeeplinkRequestingBehavior : NSObject, RideRequesting {
+    private var fallbackType: DeeplinkFallbackType?
+
+    public init(fallbackType: DeeplinkFallbackType) {
+        self.fallbackType = fallbackType
+        super.init()
+    }
+
+    public override init() {
+        super.init()
+    }
+        
+    /**
+     Requests a ride using a RequestDeeplink that is constructed using the provided
+     rideParameters
+
+     - parameter rideParameters: The RideParameters to use for building and executing 
+     the deeplink
+     */
+    public func requestRide(parameters rideParameters: RideParameters?) {
+        guard let rideParameters = rideParameters else {
+            return
         }
+
+        createDeeplink(rideParameters: rideParameters).execute()
     }
-    
-    func showMessage(_ message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil)
-        alert.addAction(okayAction)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func checkError(_ response: Response) {
-        // Unauthorized
-        if response.statusCode == 401 {
-            _ = TokenManager.deleteToken()
-            DispatchQueue.main.async {
-                self.reset()
-            }
+
+    func createDeeplink(rideParameters: RideParameters) -> RequestDeeplink {
+        if let fallbackType = fallbackType {
+            return RequestDeeplink(rideParameters: rideParameters, fallbackType: fallbackType)
+        } else {
+            return RequestDeeplink(rideParameters: rideParameters)
         }
-    }
-    
-    func reset() {
     }
 }

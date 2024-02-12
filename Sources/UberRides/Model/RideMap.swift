@@ -1,8 +1,8 @@
 //
-//  AuthorizationBaseViewController.swift
-//  Swift SDK
+//  RideMap.swift
+//  UberRides
 //
-//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +22,28 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import UberCore
-import UberRides
-import UIKit
+import Foundation
 
-class AuthorizationBaseViewController: UIViewController {
+// MARK: RideMap
+
+/**
+ *  Visual representation of a ride request, only available after a request is accepted.
+ */
+public class RideMap: NSObject, Codable {
+    /// URL to a map representing the requested trip.
+    public private(set) var path: URL?
     
-    func delay(_ delay: Int, closure: @escaping ()->()) {
-        let deadlineTime = DispatchTime.now() + DispatchTimeInterval.seconds(delay)
-        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-            closure()
-        }
+    /// Unique identifier representing a ride request.
+    public private(set) var requestID: String?
+
+    enum CodingKeys: String, CodingKey {
+        case path      = "href"
+        case requestID = "request_id"
     }
-    
-    func showMessage(_ message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil)
-        alert.addAction(okayAction)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func checkError(_ response: Response) {
-        // Unauthorized
-        if response.statusCode == 401 {
-            _ = TokenManager.deleteToken()
-            DispatchQueue.main.async {
-                self.reset()
-            }
-        }
-    }
-    
-    func reset() {
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        path = try container.decodeIfPresent(URL.self, forKey: .path)
+        requestID = try container.decodeIfPresent(String.self, forKey: .requestID)
     }
 }

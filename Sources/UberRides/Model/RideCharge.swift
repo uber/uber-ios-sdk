@@ -1,8 +1,8 @@
 //
-//  AuthorizationBaseViewController.swift
-//  Swift SDK
+//  RideCharge.swift
+//  UberRides
 //
-//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +22,38 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import UberCore
-import UberRides
-import UIKit
+import Foundation
 
-class AuthorizationBaseViewController: UIViewController {
-    
-    func delay(_ delay: Int, closure: @escaping ()->()) {
-        let deadlineTime = DispatchTime.now() + DispatchTimeInterval.seconds(delay)
-        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-            closure()
+// MARK: RideCharge
+
+/**
+ *  Describes the charges made against the rider in a ride receipt.
+ */
+public class RideCharge: NSObject, Codable {
+    /// The amount of the charge.
+    @nonobjc public private(set) var amount: Double?
+
+    /// The amount of the charge.
+    public var objc_amount: NSNumber? {
+        if let amount = amount {
+            return NSNumber(value: amount)
+        } else {
+            return nil
         }
     }
     
-    func showMessage(_ message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil)
-        alert.addAction(okayAction)
-        self.present(alert, animated: true, completion: nil)
-    }
+    /// The name of the charge.
+    public private(set) var name: String?
     
-    func checkError(_ response: Response) {
-        // Unauthorized
-        if response.statusCode == 401 {
-            _ = TokenManager.deleteToken()
-            DispatchQueue.main.async {
-                self.reset()
-            }
+    /// The type of the charge.
+    public private(set) var type: String?
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if let amountString = try container.decodeIfPresent(String.self, forKey: .amount) {
+            amount = Double(amountString)
         }
-    }
-    
-    func reset() {
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        type = try container.decodeIfPresent(String.self, forKey: .type)
     }
 }

@@ -22,9 +22,10 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+import CoreLocation
 import UberCore
 import UberRides
-import CoreLocation
+import UIKit
 
 /// This class demonstrates how do use the LoginManager to complete Authorization Code Grant Authorization
 /// and how to use some of the request endpoints 
