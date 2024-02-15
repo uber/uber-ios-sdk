@@ -23,5 +23,3 @@ xcuserdata/
 *.xccheckout
 DerivedData/
 *~
-Pods/
-Carthage/

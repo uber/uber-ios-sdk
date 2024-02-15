@@ -26,7 +26,9 @@ import XCTest
 @testable import UberCore
 
 class AccessTokenFactoryTests: XCTestCase {
-    private let redirectURI = "http://localhost:1234/"
+    private let scheme = "http"
+    private let redirectURI = "localhost"
+    private let port = 1234
     private let tokenString = "token"
     private let tokenTypeString = "type"
     private let refreshTokenString = "refreshToken"
@@ -48,6 +50,9 @@ class AccessTokenFactoryTests: XCTestCase {
         var components = URLComponents()
         components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)&token_type=\(tokenTypeString)&expires_in=\(expirationTime)&scope=\(allowedScopesString)"
         components.host = redirectURI
+        components.scheme = scheme
+        components.port = port
+        
         guard let url = components.url else {
             XCTAssert(false)
             return
@@ -72,6 +77,8 @@ class AccessTokenFactoryTests: XCTestCase {
         var components = URLComponents()
         components.fragment = "access_token=\(tokenString)&refresh_token=\(refreshTokenString)&token_type=\(tokenTypeString)&expires_in=\(expirationTime)&scope=\(allowedScopesString)&error=\(errorString)"
         components.host = redirectURI
+        components.scheme = scheme
+        components.port = port
         guard let url = components.url else {
             XCTAssert(false)
             return
@@ -91,6 +98,8 @@ class AccessTokenFactoryTests: XCTestCase {
         var components = URLComponents()
         components.fragment = "error=\(errorString)"
         components.host = redirectURI
+        components.scheme = scheme
+        components.port = port
         guard let url = components.url else {
             XCTAssert(false)
             return
@@ -110,6 +119,8 @@ class AccessTokenFactoryTests: XCTestCase {
         var components = URLComponents()
         components.fragment = "access_token=\(tokenString)"
         components.host = redirectURI
+        components.scheme = scheme
+        components.port = port
         guard let url = components.url else {
             XCTAssert(false)
             return
@@ -134,6 +145,8 @@ class AccessTokenFactoryTests: XCTestCase {
         components.fragment = "access_token=\(tokenString)"
         components.query = "error=\(errorString)"
         components.host = redirectURI
+        components.scheme = scheme
+        components.port = port
         guard let url = components.url else {
             XCTAssert(false)
             return
@@ -175,6 +188,8 @@ class AccessTokenFactoryTests: XCTestCase {
         var components = URLComponents()
         components.fragment = "access_token=\(tokenString)&refresh_token"
         components.host = redirectURI
+        components.scheme = scheme
+        components.port = port
         guard let url = components.url else {
             XCTAssert(false)
             return
