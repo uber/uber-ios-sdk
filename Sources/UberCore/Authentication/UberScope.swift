@@ -77,7 +77,7 @@ public enum UberScopeType: Int {
 /**
  *  Object representing an access scope to the Uber API
  */
-public class UberScope : NSObject {
+public class UberScope: Equatable, Hashable {
     /// The UberScopeType of this UberScope
     public let uberScopeType: UberScopeType
     /// The ScopeType of this UberScope (General / Privileged)
@@ -98,16 +98,12 @@ public class UberScope : NSObject {
         rawValue = scopeString.lowercased()
     }
 
-    override public func isEqual(_ object: Any?) -> Bool {
-        if let object = object as? UberScope {
-            return self.uberScopeType == object.uberScopeType && self.rawValue == object.rawValue
-        } else {
-            return false
-        }
+    public static func ==(lhs: UberScope, rhs: UberScope) -> Bool {
+        lhs.uberScopeType == rhs.uberScopeType && lhs.rawValue == rhs.rawValue
     }
     
-    override public var hash: Int {
-        return uberScopeType.rawValue.hashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(uberScopeType.rawValue)
     }
     
     /// Convenience variable for the AllTrips scope

@@ -25,16 +25,11 @@
 import Foundation
 import UberCore
 
-public class DeeplinkRequestingBehavior : NSObject, RideRequesting {
+public class DeeplinkRequestingBehavior: RideRequesting {
     private var fallbackType: DeeplinkFallbackType?
 
-    public init(fallbackType: DeeplinkFallbackType) {
+    public init(fallbackType: DeeplinkFallbackType? = nil) {
         self.fallbackType = fallbackType
-        super.init()
-    }
-
-    public override init() {
-        super.init()
     }
         
     /**

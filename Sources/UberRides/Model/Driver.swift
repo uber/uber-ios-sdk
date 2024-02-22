@@ -29,7 +29,7 @@ import Foundation
 /**
  *  Contains information for an Uber driver dispatched for a ride request.
  */
-public class Driver: NSObject, Codable {
+public class Driver: Codable {
     
     /// The first name of the driver.
     public private(set) var name: String?

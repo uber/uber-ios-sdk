@@ -25,7 +25,10 @@
 import SafariServices
 
 /// Manages user login via SSO, authorization code grant, or implicit grant.
-public class LoginManager: NSObject, LoginManaging {
+public class LoginManager: LoginManaging, Identifiable, Equatable {
+    
+    public let id: String
+    
     private(set) public var accessTokenIdentifier: String
     private(set) public var keychainAccessGroup: String
     private(set) public var loginType: LoginType
@@ -48,14 +51,13 @@ public class LoginManager: NSObject, LoginManaging {
 
     - returns: An initialized LoginManager
     */
-    public init(accessTokenIdentifier: String, keychainAccessGroup: String?, loginType: LoginType, productFlowPriority: [UberAuthenticationProductFlow]) {
+    public init(id: String = UUID().uuidString, accessTokenIdentifier: String, keychainAccessGroup: String?, loginType: LoginType, productFlowPriority: [UberAuthenticationProductFlow]) {
 
+        self.id = id
         self.accessTokenIdentifier = accessTokenIdentifier
         self.keychainAccessGroup = keychainAccessGroup ?? Configuration.shared.defaultKeychainAccessGroup
         self.loginType = loginType
         self.productFlowPriority = productFlowPriority
-        
-        super.init()
     }
 
     /**
@@ -176,7 +178,7 @@ public class LoginManager: NSObject, LoginManaging {
 
      - returns: An initialized LoginManager
      */
-    public convenience override init() {
+    public convenience init() {
         self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, keychainAccessGroup: nil, loginType: LoginType.native, productFlowPriority: [UberAuthenticationProductFlow(.rides)])
     }
 
@@ -478,4 +480,9 @@ public class LoginManager: NSObject, LoginManaging {
         postCompletionHandler?(accessToken, error)
     }
 
+    // MARK: Equatable
+    
+    public static func == (lhs: LoginManager, rhs: LoginManager) -> Bool {
+        lhs.id == rhs.id
+    }
 }

@@ -5,7 +5,7 @@
 
 import Foundation
 
-public class Prefill: NSObject {
+public class Prefill {
     public let email: String?
     public let phoneNumber: String?
     public let firstName: String?

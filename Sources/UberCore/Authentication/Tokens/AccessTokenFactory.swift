@@ -27,7 +27,7 @@ import Foundation
 /**
 Factory class to build access tokens
 */
-public class AccessTokenFactory: NSObject {
+public class AccessTokenFactory {
     /**
      Builds an AccessToken from the provided redirect URL
      

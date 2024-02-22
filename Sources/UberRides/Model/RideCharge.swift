@@ -29,7 +29,7 @@ import Foundation
 /**
  *  Describes the charges made against the rider in a ride receipt.
  */
-public class RideCharge: NSObject, Codable {
+public class RideCharge: Codable {
     /// The amount of the charge.
     @nonobjc public private(set) var amount: Double?
 

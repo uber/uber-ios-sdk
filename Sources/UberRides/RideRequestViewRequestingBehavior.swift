@@ -31,7 +31,7 @@ import UIKit
  - Warning: The Ride Request Widget is deprecated, and will no longer work for new apps.
  Existing apps have until 05/31/2018 to migrate. See the Uber API Changelog for more details.
 */
-public class RideRequestViewRequestingBehavior : NSObject {
+public class RideRequestViewRequestingBehavior {
     
     /// The UIViewController to present the RideRequestViewController over
     unowned public var presentingViewController: UIViewController

@@ -25,7 +25,7 @@
 import MapKit
 
 /// Object to represent the parameters needed to request a ride.
-public class RideParameters: NSObject {
+public class RideParameters {
     /// ProductID to use for the ride
     public let productID: String?
 
@@ -124,7 +124,7 @@ public class RideParameters: NSObject {
 }
 
 // Builder for RideParameters
-public class RideParametersBuilder: NSObject {
+public class RideParametersBuilder {
     /// ProductID to use for the ride
     public var productID: String?
 
@@ -178,5 +178,21 @@ public class RideParametersBuilder: NSObject {
                               surgeConfirmationID: surgeConfirmationID,
                               source: source,
                               upfrontFare: upfrontFare)
+    }
+    
+    public init(productID: String? = nil, pickupLocation: CLLocation? = nil, pickupNickname: String? = nil, pickupAddress: String? = nil, pickupPlaceID: String? = nil, dropoffLocation: CLLocation? = nil, dropoffNickname: String? = nil, dropoffAddress: String? = nil, dropoffPlaceID: String? = nil, paymentMethod: String? = nil, surgeConfirmationID: String? = nil, upfrontFare: UpfrontFare? = nil, source: String? = nil) {
+        self.productID = productID
+        self.pickupLocation = pickupLocation
+        self.pickupNickname = pickupNickname
+        self.pickupAddress = pickupAddress
+        self.pickupPlaceID = pickupPlaceID
+        self.dropoffLocation = dropoffLocation
+        self.dropoffNickname = dropoffNickname
+        self.dropoffAddress = dropoffAddress
+        self.dropoffPlaceID = dropoffPlaceID
+        self.paymentMethod = paymentMethod
+        self.surgeConfirmationID = surgeConfirmationID
+        self.upfrontFare = upfrontFare
+        self.source = source
     }
 }

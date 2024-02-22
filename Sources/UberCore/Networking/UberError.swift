@@ -27,7 +27,7 @@ import Foundation
 // MARK: UberError
 
 /// Base class for errors that can be mapped from HTTP responses.
-public class UberError: NSObject, Decodable {
+public class UberError: Decodable {
     /// HTTP status code for error.
     public internal(set) var status: Int
     

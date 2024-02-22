@@ -43,7 +43,7 @@ struct UberProducts: Codable {
 /**
 *  Contains information for a single Uber product.
 */
-public class Product: NSObject, Codable {
+public class Product: Codable {
     /// Unique identifier representing a specific product for a given latitude & longitude.
     public private(set) var productID: String?
     
@@ -143,7 +143,7 @@ public class Product: NSObject, Codable {
 /**
 *  Contains basic price details for an Uber product.
 */
-public class PriceDetails: NSObject, Codable {
+public class PriceDetails: Codable {
     /// Unit of distance used to calculate fare (mile or km).
     public private(set) var distanceUnit: String?
     
@@ -242,7 +242,7 @@ public class PriceDetails: NSObject, Codable {
 /**
 *  Contains information for additional fees that can be added to the price of an Uber product.
 */
-public class ServiceFee: NSObject, Codable {
+public class ServiceFee: Codable {
     /// The name of the service fee.
     public private(set) var name: String?
     

@@ -27,7 +27,7 @@ import Foundation
 /**
  *  A Deeplinking object for authenticating a user via the native Uber app
  */
-open class BaseDeeplink: NSObject, Deeplinking {
+open class BaseDeeplink: Deeplinking {
     public var url: URL
 
     open var fallbackURLs: [URL] {

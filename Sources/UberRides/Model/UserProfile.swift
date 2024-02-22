@@ -29,7 +29,7 @@ import Foundation
 /**
 *  Information regarding an Uber user.
 */
-public class UserProfile: NSObject, Codable {
+public class UserProfile: Codable {
     /// First name of the Uber user.
     public private(set) var firstName: String?
     

@@ -29,7 +29,7 @@ import Foundation
 /**
  *  Visual representation of a ride request, only available after a request is accepted.
  */
-public class RideMap: NSObject, Codable {
+public class RideMap: Codable {
     /// URL to a map representing the requested trip.
     public private(set) var path: URL?
     

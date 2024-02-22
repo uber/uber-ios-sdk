@@ -29,7 +29,7 @@ import CoreLocation
 /**
  *  Contains the status of an ongoing/completed trip created using the Ride Request endpoint
  */
-public class Ride: NSObject, Decodable {
+public class Ride: Decodable {
     
     /// Contains the information about the destination of the trip, if one has been set.
     public private(set) var destination: RideRequestLocation?

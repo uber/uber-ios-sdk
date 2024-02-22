@@ -26,7 +26,7 @@ import CoreLocation
 import UberCore
 
 /// API client for the Uber Rides API.
-public class RidesClient: NSObject {
+public class RidesClient {
     
     /// Application client ID. Required for every instance of RidesClient.
     var clientID: String = Configuration.shared.clientID
@@ -127,7 +127,7 @@ public class RidesClient: NSObject {
      
      - returns: An initialized RidesClient
      */
-    public convenience override init() {
+    public convenience init() {
         self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier,
                   sessionConfiguration: URLSessionConfiguration.default,
                   keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup)

@@ -30,7 +30,7 @@ import UberCore
 /**
  *  Location of a pickup or destination in a ride request.
  */
-public class RideRequestLocation: NSObject, Codable {
+public class RideRequestLocation: Codable {
     /**
       The alias from an Uber user’s profile mapped to the pickup address (if available).
       Can be either work or home. Only exposed with a valid access token for places scope.

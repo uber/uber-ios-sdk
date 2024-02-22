@@ -30,7 +30,7 @@ import UberCore
 /**
 *  User's lifetime trip activity with Uber.
 */
-public class TripHistory: NSObject, Decodable {
+public class TripHistory: Decodable {
     /// Position in pagination.
     public private(set) var offset: Int
     
@@ -64,7 +64,7 @@ public class TripHistory: NSObject, Decodable {
 /**
 *  Information regarding an Uber trip in a user's activity history.
 */
-public class UserActivity: NSObject, Decodable {
+public class UserActivity: Decodable {
     /// Status of the activity. Only returns completed for now.
     public private(set) var status: RideStatus
     
@@ -126,7 +126,7 @@ public class UserActivity: NSObject, Decodable {
 /**
 *  Information relating to a city in a trip activity.
 */
-public class TripCity: NSObject, Decodable {
+public class TripCity: Decodable {
     /// Latitude of city location.
     /// - Warning: Deprecated. Use `location` instead.
     @nonobjc public var latitude: Double? {

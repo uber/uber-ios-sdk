@@ -21,7 +21,7 @@
 
 import Foundation
 
-public class UpfrontFare: NSObject, Codable {
+public class UpfrontFare: Codable {
     /// A unique upfront fare identifier.
     public private(set) var fareID: String?
 
@@ -69,7 +69,7 @@ public class UpfrontFare: NSObject, Codable {
     }
 }
 
-public class UpfrontFareComponent: NSObject, Codable {
+public class UpfrontFareComponent: Codable {
     /// Upfront fare type
     public private(set) var type: UpfrontFareComponentType
 

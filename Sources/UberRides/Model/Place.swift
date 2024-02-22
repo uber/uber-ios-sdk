@@ -27,7 +27,7 @@ import Foundation
 /**
  *  Describes a pre-set place for an Uber account (home or work).
  */
-public class Place: NSObject, Codable {
+public class Place: Codable {
     
     /// Convenience constant for "home" place ID
     public static let home = "home"

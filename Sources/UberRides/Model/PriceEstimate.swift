@@ -43,7 +43,7 @@ struct PriceEstimates: Codable {
 /**
 *  Contains information about estimated price range for each Uber product offered at a location.
 */
-public class PriceEstimate: NSObject, Codable {
+public class PriceEstimate: Codable {
     
     /// ISO 4217 currency code.
     public private(set) var currencyCode: String?

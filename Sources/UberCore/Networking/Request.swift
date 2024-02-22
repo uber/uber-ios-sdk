@@ -27,7 +27,7 @@ import Foundation
 /**
 *  Struct that packages the response from an executed NSURLRequest.
 */
-public class Response: NSObject {
+public class Response {
     /// String representing JSON response data.
     public var data: Data?
     

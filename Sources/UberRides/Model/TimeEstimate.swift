@@ -42,7 +42,7 @@ struct TimeEstimates: Codable {
 /**
 *  Contains information regarding the ETA of an Uber product.
 */
-public class TimeEstimate: NSObject, Codable {
+public class TimeEstimate: Codable {
     /// Unique identifier representing a specific product for a given latitude & longitude.
     public private(set) var productID: String?
     

@@ -40,7 +40,7 @@ struct PaymentMethods: Codable {
 }
 // MARK: PaymentMethod
 
-public class PaymentMethod: NSObject, Codable {
+public class PaymentMethod: Codable, Equatable {
     
     /// The account identification or description associated with the payment method.
     public private(set) var paymentDescription: String?
@@ -62,5 +62,13 @@ public class PaymentMethod: NSObject, Codable {
         paymentDescription = try container.decodeIfPresent(String.self, forKey: .paymentDescription)
         methodID = try container.decodeIfPresent(String.self, forKey: .methodID)
         type = try container.decodeIfPresent(String.self, forKey: .type)
+    }
+    
+    // MARK: Equatable
+    
+    public static func == (lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
+        lhs.paymentDescription == rhs.paymentDescription &&
+        lhs.methodID == rhs.methodID &&
+        lhs.type == rhs.type
     }
 }

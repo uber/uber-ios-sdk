@@ -34,7 +34,7 @@ public enum UberProductType : Int {
 /**
  * Represents an uber product flow to authenticate with (wrapped as an object for Obj-C compatibility)
  */
-open class UberAuthenticationProductFlow: NSObject {
+open class UberAuthenticationProductFlow {
 
     public let uberProductType: UberProductType
 

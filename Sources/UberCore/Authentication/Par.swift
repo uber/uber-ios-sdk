@@ -29,7 +29,7 @@ import Foundation
 /**
  *  Contains the status of an ongoing/completed trip created using the Ride Request endpoint
  */
-public class Par: NSObject, Decodable {
+public class Par: Decodable {
     
     /// An identifier used for profile sharing
     public private(set) var requestUri: String?

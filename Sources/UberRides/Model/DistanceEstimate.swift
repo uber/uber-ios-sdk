@@ -30,7 +30,7 @@ import UberCore
 /**
  *  Estimate information on an Uber trip.
  */
-public class DistanceEstimate: NSObject, Codable {
+public class DistanceEstimate: Codable {
     
     /// Expected activity distance.
     @nonobjc public private(set) var distance: Double?

@@ -30,7 +30,7 @@ import UIKit
  Designed to mimic methods from your application's AppDelegate and should
  be called inside their corresponding methods
  */
-public class UberAppDelegate : NSObject {
+public class UberAppDelegate {
     
     //MARK: Class variables
     
@@ -40,11 +40,7 @@ public class UberAppDelegate : NSObject {
     
     public var loginManager : LoginManaging?
     
-    //Mark: NSObject
-    
-    public override init() {
-        super.init()
-        
+    public init() {
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }

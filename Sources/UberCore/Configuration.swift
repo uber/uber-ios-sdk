@@ -82,7 +82,7 @@ public enum CallbackURIType : Int {
  default values for Application-wide configuration properties. All properties are 
  configurable via the respective setter method
 */
-public class Configuration : NSObject {
+public class Configuration {
     // MARK : Variables
     public static var shared: Configuration = Configuration()
     
@@ -163,11 +163,9 @@ public class Configuration : NSObject {
      */
     public var alwaysUseAuthCodeFallback: Bool = false
 
-    public override init() {
+    public init() {
         self.clientID = ""
         self.appDisplayName = ""
-
-        super.init()
 
         if let defaultValue = getDefaultValue(clientIDKey) {
             self.clientID = defaultValue

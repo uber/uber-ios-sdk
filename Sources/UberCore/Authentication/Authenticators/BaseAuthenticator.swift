@@ -25,7 +25,7 @@
 import UIKit
 
 /// Base class for authorization flows
-public class BaseAuthenticator: NSObject, UberAuthenticating {
+public class BaseAuthenticator: UberAuthenticating {
     /// Scopes to request during login
     public var scopes: [UberScope]
     
@@ -35,7 +35,6 @@ public class BaseAuthenticator: NSObject, UberAuthenticating {
                       requestUri: String? = nil) {
         self.scopes = scopes
         self.requestUri = requestUri
-        super.init()
     }
 
     /**

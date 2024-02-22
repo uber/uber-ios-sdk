@@ -29,7 +29,7 @@ import Foundation
 /**
  *  Contains information for an Uber driver's car.
  */
-public class Vehicle: NSObject, Codable {
+public class Vehicle: Codable {
     
     /// The license plate number of the vehicle.
     public private(set) var licensePlate: String?

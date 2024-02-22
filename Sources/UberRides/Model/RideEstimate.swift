@@ -30,7 +30,7 @@ import UberCore
 /**
  *  Contains estimates for a desired ride request.
  */
-public class RideEstimate: NSObject, Codable {
+public class RideEstimate: Codable {
 
     /// Details of the estimated fare.
     public private(set) var priceEstimate: PriceEstimate?

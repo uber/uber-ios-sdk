@@ -29,7 +29,7 @@ import Foundation
 /**
  *  Get the receipt information of a completed request that was made with the request endpoint.
  */
-public class RideReceipt: NSObject, Codable {
+public class RideReceipt: Codable {
     
     /// Adjustments made to the charges such as promotions, and fees.
     public private(set) var chargeAdjustments: [RideCharge]?
