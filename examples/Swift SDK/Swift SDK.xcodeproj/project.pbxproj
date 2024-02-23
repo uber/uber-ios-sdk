@@ -193,6 +193,13 @@
 		B206F2432B7ACAFA0006C554 /* BaseDeeplinkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseDeeplinkTests.swift; sourceTree = "<group>"; };
 		B206F2882B7ACBBC0006C554 /* testInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testInfo.plist; sourceTree = "<group>"; };
 		B206F2892B7ACBBC0006C554 /* testInfoMissingCallbacks.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testInfoMissingCallbacks.plist; sourceTree = "<group>"; };
+		B29302FD2B890D5800D28BAA /* UberSampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberSampleApp.swift; sourceTree = "<group>"; };
+		B29302FF2B890D5800D28BAA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B29303012B890D5800D28BAA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B29303042B890D5800D28BAA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B293030E2B890D5900D28BAA /* UberSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberSampleTests.swift; sourceTree = "<group>"; };
+		B29303182B890D5900D28BAA /* UberSampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberSampleUITests.swift; sourceTree = "<group>"; };
+		B293031A2B890D5900D28BAA /* UberSampleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberSampleUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D825C5C91CD19773001FE3A7 /* AuthorizationCodeGrantExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrantExampleViewController.swift; sourceTree = "<group>"; };
 		D825C5CB1CD267C0001FE3A7 /* AuthorizationBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationBaseViewController.swift; sourceTree = "<group>"; };
 		DC78EC771CB34AC600850814 /* ExampleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTableViewController.swift; sourceTree = "<group>"; };
@@ -243,6 +250,9 @@
 				AC0404A61BFAD0C800AC1501 /* Swift SDK */,
 				AC0404BB1BFAD0C800AC1501 /* Swift SDKTests */,
 				AC0404C61BFAD0C800AC1501 /* Swift SDKUITests */,
+				B29302FC2B890D5800D28BAA /* UberSample */,
+				B293030D2B890D5900D28BAA /* UberSampleTests */,
+				B29303172B890D5900D28BAA /* UberSampleUITests */,
 				AC0404A51BFAD0C800AC1501 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -395,6 +405,42 @@
 			path = TestData;
 			sourceTree = "<group>";
 		};
+		B29302FC2B890D5800D28BAA /* UberSample */ = {
+			isa = PBXGroup;
+			children = (
+				B29302FD2B890D5800D28BAA /* UberSampleApp.swift */,
+				B29302FF2B890D5800D28BAA /* ContentView.swift */,
+				B29303012B890D5800D28BAA /* Assets.xcassets */,
+				B29303032B890D5800D28BAA /* Preview Content */,
+			);
+			path = UberSample;
+			sourceTree = "<group>";
+		};
+		B29303032B890D5800D28BAA /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				B29303042B890D5800D28BAA /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B293030D2B890D5900D28BAA /* UberSampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				B293030E2B890D5900D28BAA /* UberSampleTests.swift */,
+			);
+			path = UberSampleTests;
+			sourceTree = "<group>";
+		};
+		B29303172B890D5900D28BAA /* UberSampleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B29303182B890D5900D28BAA /* UberSampleUITests.swift */,
+				B293031A2B890D5900D28BAA /* UberSampleUITestsLaunchTests.swift */,
+			);
+			path = UberSampleUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -467,7 +513,7 @@
 		AC04049C1BFAD0C800AC1501 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = Uber;
 				TargetAttributes = {
@@ -793,7 +839,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Swift SDK/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -814,7 +860,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Swift SDK/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -831,7 +877,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = "Swift SDKTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -850,7 +896,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = "Swift SDKTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -868,7 +914,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "Swift SDKUITests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -887,7 +933,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "Swift SDKUITests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

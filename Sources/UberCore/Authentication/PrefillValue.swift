@@ -5,7 +5,7 @@
 
 import Foundation
 
-public class Prefill {
+public class Prefill: Equatable {
     public let email: String?
     public let phoneNumber: String?
     public let firstName: String?
@@ -29,5 +29,14 @@ public class Prefill {
             "last_name": lastName
         ]
         .compactMapValues { $0 }
+    }
+    
+    // MARK: Equatable
+    
+    public static func == (lhs: Prefill, rhs: Prefill) -> Bool {
+        lhs.email == rhs.email &&
+        lhs.phoneNumber == rhs.phoneNumber &&
+        lhs.firstName == rhs.firstName &&
+        lhs.lastName == rhs.lastName
     }
 }
