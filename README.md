@@ -11,7 +11,20 @@ This [Swift library](https://developer.apple.com/library/ios/documentation/Gener
 ## Installing the Uber Rides SDK
 
 ### Swift Package Manager
-[TODO]
+[Swift Package Manager](https://www.swift.org/documentation/package-manager/) is the preferred installation method. To install the Rides iOS SDK via SPM, add a package dependency to your project's Package.swift.
+
+```
+// swift-tools-version: 5.9
+
+import PackageDescription
+
+let package = Package(
+  name: "My Project",
+  dependencies: [
+    .package(url: "https://github.com/uber/rides-ios-sdk.git", .upToNextMajor(from: "2.0.0"))
+  ]
+)
+```
 
 ### Manual
 [TODO]

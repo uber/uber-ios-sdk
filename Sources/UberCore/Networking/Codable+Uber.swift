@@ -1,6 +1,6 @@
 //
-//  AuthorizationBaseViewController.swift
-//  Swift SDK
+//  Codable+Uber.swift
+//  UberRides
 //
 //  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
 //
@@ -22,36 +22,13 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import UberCore
-import UberRides
-import UIKit
+import Foundation
 
-class AuthorizationBaseViewController: UIViewController {
-    
-    func delay(_ delay: Int, closure: @escaping ()->()) {
-        let deadlineTime = DispatchTime.now() + DispatchTimeInterval.seconds(delay)
-        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-            closure()
-        }
-    }
-    
-    func showMessage(_ message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        let okayAction = UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil)
-        alert.addAction(okayAction)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func checkError(_ response: Response) {
-        // Unauthorized
-        if response.statusCode == 401 {
-            _ = TokenManager.deleteToken()
-            DispatchQueue.main.async {
-                self.reset()
-            }
-        }
-    }
-    
-    func reset() {
+extension JSONDecoder {
+    /// JSON Decoder tailored to the Uber API JSON
+    public static var uberDecoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .secondsSince1970
+        return decoder
     }
 }
