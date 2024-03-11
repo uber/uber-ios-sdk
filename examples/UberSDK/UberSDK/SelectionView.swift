@@ -6,7 +6,9 @@
 import Foundation
 import SwiftUI
 
-struct SelectionView<Value: Hashable & Identifiable & CustomStringConvertible>: View {
+typealias SelectionOption = Hashable & Identifiable & CustomStringConvertible
+
+struct SelectionView<Value: SelectionOption>: View {
     
     @Environment(\.dismiss) var dismiss: DismissAction
     

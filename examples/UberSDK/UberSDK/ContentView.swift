@@ -7,9 +7,59 @@ import SwiftUI
 import UberAuth
 
 @Observable
-class Content {
-    var isAuthTypeSheetPresented: Bool = false
-    var authType: AuthType? = .authorizationCode
+final class Content {
+    var selection: Item?
+    var type: LoginType? = .authorizationCode
+    var destination: LoginDestination? = .inApp
+    var response: String?
+    
+    func login() {
+        
+        let authProvider: AuthProviding = .authorizationCode(
+            shouldExchangeAuthCode: false
+        )
+        
+        let authDestination: AuthDestination = {
+            guard let destination else { return .inApp }
+            switch destination {
+            case .inApp: return .inApp
+            case .native: return .native(appPriority: [.rides])
+            }
+        }()
+        
+        UberAuth.login(
+            context: .init(
+                authDestination: authDestination,
+                authProvider: authProvider,
+                prefill: nil
+            ),
+            completion: { result in
+                switch result {
+                case .success(let client):
+                    print(client)
+                    self.response = "\(client)"
+                case .failure(let error):
+                    self.response = error.localizedDescription
+                }
+            }
+        )
+    }
+    
+    enum Item: String, Hashable, Identifiable {
+        case type = "Auth Type"
+        case destination = "Destination"
+        
+        var id: String { rawValue }
+        
+        var options: [any SelectionOption] {
+            switch self {
+            case .type:
+                return LoginType.allCases
+            case .destination:
+                return LoginDestination.allCases
+            }
+        }
+    }
 }
 
 struct ContentView: View {
@@ -19,52 +69,80 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                Section(
-                    "Login",
-                    content: { loginSection }
-                )
+            VStack(spacing: 0) {
+                exampleList
+                Divider()
+                responseSection
             }
             .navigationTitle("Uber iOS SDK")
         }
-        .sheet(isPresented: $content.isAuthTypeSheetPresented, content: {
-            SelectionView(
-                selection: $content.authType,
-                options: AuthType.allCases
-            )
-            .presentationDetents([.height(200)])
-        })
-    }
-    
-    // MARK: Uber Auth
-    
-    private func login() {
-        UberAuth.login { result in
-            switch result {
-            case .success(let client):
-                print(client)
-            case .failure(let error):
-                print(error)
+        .sheet(item: $content.selection, content: { item in
+            switch item {
+            case .type:
+                SelectionView(
+                    selection: $content.type,
+                    options: LoginType.allCases
+                )
+                .presentationDetents([.height(200)])
+            case .destination:
+                SelectionView(
+                    selection: $content.destination,
+                    options: LoginDestination.allCases
+                )
+                .presentationDetents([.height(200)])
             }
-        }
+        })
     }
     
     // MARK: Subviews
     
+    private var responseSection: some View {
+        VStack {
+            Text("Response:")
+                .font(.title3)
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+            ScrollView(.horizontal) {
+                Text(content.response ?? "")
+                    .selectionDisabled(false)
+                    .padding()
+            }
+        }
+        .frame(maxWidth: .infinity, minHeight: 150)
+    }
+    
+    private var exampleList: some View {
+        List {
+            Section(
+                "Login",
+                content: { loginSection }
+            )
+        }
+    }
+    
     @ViewBuilder
     private var loginSection: some View {
+        
         row(
-            item: Item.authType,
+            item: .type,
             content: {
-                Text(content.authType?.description ?? "")
+                Text(content.type?.description ?? "")
                     .foregroundStyle(.gray)
             },
-            tapHandler: {
-                content.isAuthTypeSheetPresented = true
-            }
+            tapHandler: { content.selection = .type }
         )
+        
+        row(
+            item: .destination,
+            content: {
+                Text(content.destination?.description ?? "")
+                    .foregroundStyle(.gray)
+            },
+            tapHandler: { content.selection = .destination }
+        )
+        
         Button(
-            action: { login() },
+            action: { content.login() },
             label: {
                 Text("Login")
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -73,7 +151,7 @@ struct ContentView: View {
         .padding()
     }
     
-    private func row(item: Item? = nil,
+    private func row(item: Content.Item? = nil,
                      @ViewBuilder content: () -> (some View),
                      tapHandler: (() -> Void)? = nil) -> some View {
         Button(
@@ -93,17 +171,6 @@ struct ContentView: View {
     private let emptyNavigationLink: some View = NavigationLink.empty
         .frame(width: 17, height: 0)
         .frame(alignment: .leading)
-    
-    enum Item: String, Hashable {
-        case authType = "Auth Type"
-    }
-}
-
-enum AuthType: String, Hashable, Identifiable, CaseIterable, CustomStringConvertible {
-    case authorizationCode = "Authorization Code"
-
-    var description: String { rawValue }
-    var id: String { rawValue }
 }
 
 #Preview {

@@ -37,3 +37,17 @@ public struct Client: Equatable {
         self.scope = scope
     }
 }
+
+extension Client: CustomStringConvertible {
+    
+    public var description: String {
+        return """
+        Authorization Code: \(authorizationCode ?? "nil")
+        Access Token: \(accessToken ?? "nil")
+        Refresh Token: \(refreshToken ?? "nil")
+        Token Type: \(tokenType ?? "nil")
+        Expires In: \(expiresIn ?? -1)
+        Scopes: \(scope?.joined(separator: ", ") ?? "nil")
+        """
+    }
+}
