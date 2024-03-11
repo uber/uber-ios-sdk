@@ -20,7 +20,7 @@ public enum UberAuthError: Error {
     case invalidRequest
     
     // An OAuth standard error occurred
-    case oauth(OAuthError)
+    case oAuth(OAuthError)
     
     // An unknown error occurred
     case other(Error)
@@ -43,7 +43,7 @@ extension UberAuthError: LocalizedError {
             return "The auth code was not found or is malformed"
         case .invalidRequest:
             return "Failed to build the auth request"
-        case .oauth(let error):
+        case .oAuth(let error):
             return error.errorDescription
         case .other(let error):
             return "An unknown error occurred: \(error)"
@@ -68,12 +68,12 @@ extension UberAuthError {
         }
         
         guard let url = response.url else {
-            self = .oauth(.invalidRequest)
+            self = .oAuth(.invalidRequest)
             return
         }
         
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
-            self = .oauth(.invalidRequest)
+            self = .oAuth(.invalidRequest)
             return
         }
         
@@ -81,7 +81,7 @@ extension UberAuthError {
         guard let queryItems = components.queryItems,
               let errorString = queryItems.first(where: { $0.name == "error" })?.value,
               let error = OAuthError(rawValue: errorString) else {
-            self = .oauth(.invalidRequest)
+            self = .oAuth(.invalidRequest)
             return
         }
         
@@ -103,7 +103,7 @@ extension UberAuthError {
                 self = .other(error)
             }
         case let oauthError as OAuthError:
-            self = .oauth(oauthError)
+            self = .oAuth(oauthError)
         default:
             self = .other(error)
         }

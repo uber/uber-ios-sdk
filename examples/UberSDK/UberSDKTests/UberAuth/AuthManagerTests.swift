@@ -7,9 +7,9 @@ import XCTest
 import UberCore
 @testable import UberAuth
 
-final class AuthManagerTests: XCTestCase {
+final class UberAuthTests: XCTestCase {
 
-    let authManager = AuthManager()
+    let uberAuth = UberAuth()
     
     func test_login_triggersAuthProviderExecution() {
         
@@ -26,7 +26,30 @@ final class AuthManagerTests: XCTestCase {
         
         XCTAssertEqual(authProvider.executeCallCount, 0)
         
-        authManager.login(
+        uberAuth.login(
+            context: context,
+            completion: { _ in }
+        )
+        
+        XCTAssertEqual(authProvider.executeCallCount, 1)
+    }
+    
+    func test_staticLogin_triggersAuthProviderExecution() {
+        
+        let authProvider = AuthProvidingMock()
+        authProvider.executeHandler = { _, _, completion in
+            completion(.success(.init()))
+        }
+        
+        let context = AuthContext(
+            authDestination: .inApp,
+            authProvider: authProvider,
+            prefill: nil
+        )
+        
+        XCTAssertEqual(authProvider.executeCallCount, 0)
+        
+        UberAuth.login(
             context: context,
             completion: { _ in }
         )
@@ -61,7 +84,7 @@ final class AuthManagerTests: XCTestCase {
         
         XCTAssertEqual(authProvider.executeCallCount, 0)
         
-        authManager.login(
+        uberAuth.login(
             context: context,
             completion: completion
         )
@@ -96,7 +119,7 @@ final class AuthManagerTests: XCTestCase {
         
         XCTAssertEqual(authProvider.executeCallCount, 0)
         
-        authManager.login(
+        uberAuth.login(
             context: context,
             completion: completion
         )
@@ -122,7 +145,7 @@ final class AuthManagerTests: XCTestCase {
         
         XCTAssertEqual(authProvider.executeCallCount, 0)
         
-        authManager.login(
+        uberAuth.login(
             context: context,
             completion: { _ in }
         )
@@ -148,15 +171,56 @@ final class AuthManagerTests: XCTestCase {
         XCTAssertEqual(authProvider.executeCallCount, 0)
         XCTAssertEqual(authProvider.handleCallCount, 0)
         
-        authManager.login(
+        uberAuth.login(
             context: context,
             completion: { _ in }
         )
                 
-        let handled = authManager.handle(url)
+        let handled = uberAuth.handle(url)
         
         XCTAssertTrue(handled)
         XCTAssertEqual(authProvider.handleCallCount, 1)
         XCTAssertEqual(authProvider.executeCallCount, 1)
+    }
+
+    func test_handleUrl_notTriggeredIfNoAuthContext() {
+        
+        let authProvider = AuthProvidingMock()
+
+        XCTAssertEqual(authProvider.handleCallCount, 0)
+        
+        UberAuth.handle(
+            URL(string: "https://auth.uber.com/v2")!
+        )
+        
+        XCTAssertEqual(authProvider.handleCallCount, 0)
+    }
+
+    
+    func test_staticHandleUrl_triggersAuthProviderExecution() {
+        
+        let authProvider = AuthProvidingMock()
+        authProvider.executeHandler = { _, _, completion in
+            completion(.success(.init()))
+        }
+        
+        let context = AuthContext(
+            authDestination: .inApp,
+            authProvider: authProvider,
+            prefill: nil
+        )
+        
+        XCTAssertEqual(authProvider.handleCallCount, 0)
+        
+        UberAuth.login(
+            context: context,
+            completion: { _ in }
+        )
+        
+        UberAuth.handle(
+            URL(string: "https://auth.uber.com/v2")!
+        )
+        
+        XCTAssertEqual(authProvider.handleCallCount, 1)
     }
 }

@@ -5,23 +5,7 @@
 
 import Foundation
 
-public protocol ClientProvider {
-    
-    /// The OAuth2 Authorization Code returned by the provider
-    var authorizationCode: String? { get }
-    
-    var accessToken: String? { get }
-    
-    var refreshToken: String? { get }
-    
-    var tokenType: String? { get }
-    
-    var expiresIn: Int? { get }
-    
-    var scope: [String]? { get }
-}
-
-public struct Client: ClientProvider, Equatable {
+public struct Client: Equatable {
     
     // MARK: Properties
     

@@ -12,15 +12,11 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     
     public init() {}
     
-    // MARK: Public Properties
-    
-    public typealias Completion = (Result<Client, UberAuthError>) -> Void
-    
     // MARK: AutoProviding
     
     public func execute(authDestination: AuthDestination,
                         prefill: Prefill?,
-                        completion: @escaping Completion) {
+                        completion: @escaping AuthCompletion) {
         // TODO: Implement
     }
     

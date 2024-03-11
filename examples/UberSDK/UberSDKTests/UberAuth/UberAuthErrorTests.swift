@@ -53,7 +53,7 @@ final class UberAuthErrorTests: XCTestCase {
         
         let error = UberAuthError(response)
         
-        XCTAssertEqual(error, UberAuthError.oauth(.invalidRequest))
+        XCTAssertEqual(error, UberAuthError.oAuth(.invalidRequest))
     }
     
     func test_initHttpResponse_unsupportedErrorReturnsInvalidRequest() {
@@ -67,7 +67,7 @@ final class UberAuthErrorTests: XCTestCase {
         
         let error = UberAuthError(response)
         
-        XCTAssertEqual(error, UberAuthError.oauth(.invalidRequest))
+        XCTAssertEqual(error, UberAuthError.oAuth(.invalidRequest))
     }
     
     func test_initHttpResponse_errorMapsToOAuthError() {
@@ -81,6 +81,6 @@ final class UberAuthErrorTests: XCTestCase {
         
         let error = UberAuthError(response)
         
-        XCTAssertEqual(error, UberAuthError.oauth(.serverError))
+        XCTAssertEqual(error, UberAuthError.oAuth(.serverError))
     }
 }
