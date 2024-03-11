@@ -6,6 +6,9 @@ import PackageDescription
 let package = Package(
     name: "rides-ios-sdk",
     defaultLocalization: "en",
+    platforms: [
+        .iOS(.v13)
+    ],
     products: [
         .library(
             name: "UberAuth",
