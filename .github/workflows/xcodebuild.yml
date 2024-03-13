@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [ ci ]
+    branches: [ ci-2 ]
   pull_request:
     branches: [ master, 2.x ]
 
