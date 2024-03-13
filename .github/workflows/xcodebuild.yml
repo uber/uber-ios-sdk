@@ -1,8 +1,8 @@
 on:
   push:
-    branches: [ $GITHUB_REF ]
+    branches: [ $default-branch ]
   pull_request:
-    branches: [ $GITHUB_BASE_REF ]
+    branches: [ $default-branch ]
 
 jobs:
   build:
