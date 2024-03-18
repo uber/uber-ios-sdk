@@ -8,8 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		B28217C82B97A2E400EE786D /* AuthManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28217C72B97A2E400EE786D /* AuthManagerTests.swift */; };
+		B28CDD322BA403A900EB1BBD /* AuthorizationCodeAuthProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28CDD312BA403A900EB1BBD /* AuthorizationCodeAuthProviderTests.swift */; };
+		B28CDD342BA4BE2100EB1BBD /* RequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28CDD332BA4BE2100EB1BBD /* RequestTests.swift */; };
+		B28CDD362BA4C6CA00EB1BBD /* AuthorizeRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28CDD352BA4C6CA00EB1BBD /* AuthorizeRequestTests.swift */; };
 		B2D096932B97B8E70093B510 /* UberAuthMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D096922B97B8E70093B510 /* UberAuthMocks.swift */; };
 		B2D096952B97C4A00093B510 /* UberAuthErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D096942B97C4A00093B510 /* UberAuthErrorTests.swift */; };
+		B2D0969A2B98012A0093B510 /* SelectionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D096992B98012A0093B510 /* SelectionOptions.swift */; };
 		B2D7AE1C2B979EDA007F03FB /* UberSDKApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D7AE1B2B979EDA007F03FB /* UberSDKApp.swift */; };
 		B2D7AE1E2B979EDA007F03FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D7AE1D2B979EDA007F03FB /* ContentView.swift */; };
 		B2D7AE202B979EDB007F03FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2D7AE1F2B979EDB007F03FB /* Assets.xcassets */; };
@@ -42,10 +46,15 @@
 
 /* Begin PBXFileReference section */
 		B28217C72B97A2E400EE786D /* AuthManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManagerTests.swift; sourceTree = "<group>"; };
+		B28CDD312BA403A900EB1BBD /* AuthorizationCodeAuthProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeAuthProviderTests.swift; sourceTree = "<group>"; };
+		B28CDD332BA4BE2100EB1BBD /* RequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTests.swift; sourceTree = "<group>"; };
+		B28CDD352BA4C6CA00EB1BBD /* AuthorizeRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizeRequestTests.swift; sourceTree = "<group>"; };
 		B29303D62B891D3E00D28BAA /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
 		B29303D82B89408D00D28BAA /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		B2D096922B97B8E70093B510 /* UberAuthMocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberAuthMocks.swift; sourceTree = "<group>"; };
 		B2D096942B97C4A00093B510 /* UberAuthErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberAuthErrorTests.swift; sourceTree = "<group>"; };
+		B2D096982B9800020093B510 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B2D096992B98012A0093B510 /* SelectionOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionOptions.swift; sourceTree = "<group>"; };
 		B2D7AE192B979EDA007F03FB /* UberSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UberSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2D7AE1B2B979EDA007F03FB /* UberSDKApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberSDKApp.swift; sourceTree = "<group>"; };
 		B2D7AE1D2B979EDA007F03FB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -89,6 +98,9 @@
 			isa = PBXGroup;
 			children = (
 				B28217C72B97A2E400EE786D /* AuthManagerTests.swift */,
+				B28CDD312BA403A900EB1BBD /* AuthorizationCodeAuthProviderTests.swift */,
+				B28CDD352BA4C6CA00EB1BBD /* AuthorizeRequestTests.swift */,
+				B28CDD332BA4BE2100EB1BBD /* RequestTests.swift */,
 				B2D096942B97C4A00093B510 /* UberAuthErrorTests.swift */,
 			);
 			path = UberAuth;
@@ -125,10 +137,12 @@
 		B2D7AE1A2B979EDA007F03FB /* UberSDK */ = {
 			isa = PBXGroup;
 			children = (
+				B2D096982B9800020093B510 /* Info.plist */,
 				B2D7AE1B2B979EDA007F03FB /* UberSDKApp.swift */,
 				B29303D62B891D3E00D28BAA /* SelectionView.swift */,
 				B29303D82B89408D00D28BAA /* Helpers.swift */,
 				B2D7AE1D2B979EDA007F03FB /* ContentView.swift */,
+				B2D096992B98012A0093B510 /* SelectionOptions.swift */,
 				B2D7AE1F2B979EDB007F03FB /* Assets.xcassets */,
 				B2D7AE212B979EDB007F03FB /* Preview Content */,
 			);
@@ -302,6 +316,7 @@
 				B2D7AE1E2B979EDA007F03FB /* ContentView.swift in Sources */,
 				B2D7AE1C2B979EDA007F03FB /* UberSDKApp.swift in Sources */,
 				B2D7AE492B979F58007F03FB /* SelectionView.swift in Sources */,
+				B2D0969A2B98012A0093B510 /* SelectionOptions.swift in Sources */,
 				B2D7AE4A2B979F5D007F03FB /* Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -310,9 +325,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B28CDD342BA4BE2100EB1BBD /* RequestTests.swift in Sources */,
 				B2D096952B97C4A00093B510 /* UberAuthErrorTests.swift in Sources */,
 				B28217C82B97A2E400EE786D /* AuthManagerTests.swift in Sources */,
+				B28CDD362BA4C6CA00EB1BBD /* AuthorizeRequestTests.swift in Sources */,
 				B2D096932B97B8E70093B510 /* UberAuthMocks.swift in Sources */,
+				B28CDD322BA403A900EB1BBD /* AuthorizationCodeAuthProviderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,6 +489,7 @@
 				DEVELOPMENT_TEAM = 5F83KRY2FH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UberSDK/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -501,6 +520,7 @@
 				DEVELOPMENT_TEAM = 5F83KRY2FH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UberSDK/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

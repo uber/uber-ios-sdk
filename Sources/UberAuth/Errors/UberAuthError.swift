@@ -13,11 +13,14 @@ public enum UberAuthError: Error {
     // The application failed to open the Uber client app
     case couldNotOpenApp(UberApp)
     
+    // An existing authentication session is in progress
+    case existingAuthSession
+    
     // The auth code was not found or is malformed
     case invalidAuthCode
     
     // Failed to build the auth request
-    case invalidRequest
+    case invalidRequest(String)
     
     // An OAuth standard error occurred
     case oAuth(OAuthError)
@@ -39,12 +42,14 @@ extension UberAuthError: LocalizedError {
             return "The user cancelled the auth flow"
         case .couldNotOpenApp(let uberApp):
             return "The application failed to open the Uber client app: \(uberApp)"
+        case .existingAuthSession:
+            return "An existing authentication session is in progress"
         case .invalidAuthCode:
             return "The auth code was not found or is malformed"
-        case .invalidRequest:
-            return "Failed to build the auth request"
         case .oAuth(let error):
             return error.errorDescription
+        case .invalidRequest(let details):
+            return "Failed to build the auth request: \(details)"
         case .other(let error):
             return "An unknown error occurred: \(error)"
         case .serviceError:

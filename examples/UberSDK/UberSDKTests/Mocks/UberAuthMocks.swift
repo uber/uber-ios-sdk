@@ -6,10 +6,49 @@
 
 import AuthenticationServices
 import Foundation
-import UIKit
-import UberCore
 @testable import UberAuth
+import UberCore
 
+
+public class ConfigurationProvidingMock: ConfigurationProviding {
+    public init() { }
+    public init(clientID: String? = nil, redirectURI: String? = nil) {
+        self.clientID = clientID
+        self.redirectURI = redirectURI
+    }
+
+
+    public private(set) var clientIDSetCallCount = 0
+    public var clientID: String? = nil { didSet { clientIDSetCallCount += 1 } }
+
+    public private(set) var redirectURISetCallCount = 0
+    public var redirectURI: String? = nil { didSet { redirectURISetCallCount += 1 } }
+}
+
+class AuthenticationSessioningMock: AuthenticationSessioning {
+        private var _anchor: ASPresentationAnchor!
+    private var _callbackURLScheme: String!
+    private var _completion: AuthCompletion!
+    private var _url: URL!
+    init() { }
+    required init(anchor: ASPresentationAnchor, callbackURLScheme: String = "", url: URL = URL(fileURLWithPath: ""), completion: @escaping AuthCompletion) {
+        self._anchor = anchor
+        self._callbackURLScheme = callbackURLScheme
+        self._url = url
+        self._completion = completion
+    }
+
+
+    private(set) var startCallCount = 0
+    var startHandler: (() -> ())?
+    func start()  {
+        startCallCount += 1
+        if let startHandler = startHandler {
+            startHandler()
+        }
+        
+    }
+}
 
 public class AuthProvidingMock: AuthProviding {
     public init() { }
