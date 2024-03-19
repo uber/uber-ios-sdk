@@ -8,9 +8,16 @@ import XCTest
 
 final class AuthorizationCodeAuthProviderTests: XCTestCase {
 
+    private let configurationProvider: ConfigurationProviding = ConfigurationProvidingMock(
+        clientID: "test_client_id",
+        redirectURI: "test://"
+    )
+    
     func test_executeInAppLogin_createsAuthenticationSession() {
         
-        let provider = AuthorizationCodeAuthProvider()
+        let provider = AuthorizationCodeAuthProvider(
+            configurationProvider: configurationProvider
+        )
                 
         XCTAssertNil(provider.currentSession)
         
@@ -42,7 +49,9 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
     }
 
     func test_execute_existingSession_returnsExistingAuthSessionError() {
-        let provider = AuthorizationCodeAuthProvider()
+        let provider = AuthorizationCodeAuthProvider(
+            configurationProvider: configurationProvider
+        )
         
         provider.execute(
             authDestination: .inApp,
