@@ -159,7 +159,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         
     /// Performs login using one of the native Uber applications if available.
     ///
-    /// There are three possible desinations for auth through this method:
+    /// There are three possible destinations for auth through this method:
     ///     1. The native Uber app
     ///     2. The OS supplied Safari browser
     ///     3. In app auth through ASWebAuthenticationSession
@@ -167,13 +167,13 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     /// This method will run through the desired native app destinations supplied in `appPriority`.
     /// For each one it will:
     ///     * Use the configuration provider to determine if the app is installed, using UIApplication's openUrl.
-    ///       If the app's scheme has not been registered in the Info.plist and is not queyable it will default to true
+    ///       If the app's scheme has not been registered in the Info.plist and is not queryable it will default to true
     ///       and continue with the auth flow. If it is registered but not installed, we will continue to the next app.
     ///     * Build a universal link specific to the current app destination
     ///     * Attempt to launch the app using the `applicationLauncher`. If the app is installed, the native app
     ///       should be launched (1), if not the OS supplied browser will be launched (2)
     ///
-    /// If all app destinations have been exhausted and no url has been launced we fall back to in app auth (3)
+    /// If all app destinations have been exhausted and no url has been launched we fall back to in app auth (3)
     ///
     /// - Parameters:
     ///   - appPriority: An ordered list of Uber applications to use to perform login
