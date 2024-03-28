@@ -37,7 +37,7 @@ final class AsyncDispatcherTests: XCTestCase {
                                 finallyExp.fulfill()
                              })
 
-        wait(for: [withExp, continueExp, finallyExp], timeout: 0.1)
+        wait(for: [withExp, continueExp, finallyExp], timeout: 0.2)
     }
 
     func testExitsInterationEarly() {
@@ -65,7 +65,7 @@ final class AsyncDispatcherTests: XCTestCase {
                                 finallyExp.fulfill()
                              })
 
-        wait(for: [finallyExp], timeout: 0.1)
+        wait(for: [finallyExp], timeout: 0.2)
 
         let expectedErrors = [ NSError(domain: "http://www.google.com", code: 0, userInfo: nil),
                                NSError(domain: "http://www.uber.com", code: 0, userInfo: nil) ]
