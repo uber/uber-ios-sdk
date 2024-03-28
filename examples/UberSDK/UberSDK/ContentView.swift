@@ -5,13 +5,32 @@
 
 import SwiftUI
 import UberAuth
+import UberCore
+
+class PrefillBuilder {
+    var firstName: String = ""
+    var lastName: String = ""
+    var email: String = ""
+    var phoneNumber: String = ""
+    
+    var prefill: Prefill {
+        .init(
+            email: email,
+            phoneNumber: phoneNumber,
+            firstName: firstName,
+            lastName: lastName
+        )
+    }
+}
 
 @Observable
 final class Content {
     var selection: Item?
     var type: LoginType? = .authorizationCode
     var destination: LoginDestination? = .inApp
+    var isPrefillExpanded: Bool = false
     var response: String?
+    var prefillBuilder = PrefillBuilder()
     
     func login() {
         
@@ -31,7 +50,7 @@ final class Content {
             context: .init(
                 authDestination: authDestination,
                 authProvider: authProvider,
-                prefill: nil
+                prefill: isPrefillExpanded ? prefillBuilder.prefill : nil
             ),
             completion: { result in
                 switch result {
@@ -52,6 +71,12 @@ final class Content {
     enum Item: String, Hashable, Identifiable {
         case type = "Auth Type"
         case destination = "Destination"
+        case prefill = "Prefill Values"
+        case firstName = "First Name"
+        case lastName = "Last Name"
+        case email = "Email"
+        case phoneNumber = "Phone Number"
+        
         
         var id: String { rawValue }
         
@@ -61,6 +86,8 @@ final class Content {
                 return LoginType.allCases
             case .destination:
                 return LoginDestination.allCases
+            default:
+                return []
             }
         }
     }
@@ -95,6 +122,8 @@ struct ContentView: View {
                     options: LoginDestination.allCases
                 )
                 .presentationDetents([.height(200)])
+            default:
+                EmptyView()
             }
         })
     }
@@ -146,6 +175,54 @@ struct ContentView: View {
             tapHandler: { content.selection = .destination }
         )
         
+        row(
+            item: .prefill,
+            content: {
+                Toggle(isOn: $content.isPrefillExpanded, label: { EmptyView() })
+            },
+            showDisclosureIndicator: false,
+            tapHandler: nil
+        )
+        
+        if content.isPrefillExpanded {
+            row(
+                content: { 
+                    TextField(
+                        Content.Item.firstName.rawValue,
+                        text: $content.prefillBuilder.firstName
+                    )
+                },
+                showDisclosureIndicator: false
+            )
+            row(
+                content: { 
+                    TextField(
+                        Content.Item.lastName.rawValue,
+                        text: $content.prefillBuilder.lastName
+                    )
+                },
+                showDisclosureIndicator: false
+            )
+            row(
+                content: {
+                    TextField(
+                        Content.Item.email.rawValue,
+                        text: $content.prefillBuilder.email
+                    )
+                },
+                showDisclosureIndicator: false
+            )
+            row(
+                content: {
+                    TextField(
+                        Content.Item.phoneNumber.rawValue,
+                        text: $content.prefillBuilder.phoneNumber
+                    )
+                },
+                showDisclosureIndicator: false
+            )
+        }
+        
         Button(
             action: { content.login() },
             label: {
@@ -158,6 +235,7 @@ struct ContentView: View {
     
     private func row(item: Content.Item? = nil,
                      @ViewBuilder content: () -> (some View),
+                     showDisclosureIndicator: Bool = true,
                      tapHandler: (() -> Void)? = nil) -> some View {
         Button(
             action: { tapHandler?() },
@@ -166,7 +244,7 @@ struct ContentView: View {
                     if let item { Text(item.rawValue) }
                     Spacer()
                     content()
-                    emptyNavigationLink
+                    if showDisclosureIndicator { emptyNavigationLink }
                 }
             }
         )

@@ -6,7 +6,7 @@
 import Foundation
 
 /// @mockable
-public protocol AuthorizationCodeResponseParsing {
+protocol AuthorizationCodeResponseParsing {
     func isValidResponse(url: URL, matching redirectURI: String) -> Bool
     func callAsFunction(url: URL) -> Result<Client, UberAuthError>
 }
@@ -14,9 +14,9 @@ public protocol AuthorizationCodeResponseParsing {
 ///
 /// A struct that validates and extracts values from a url containing an authorization code response
 ///
-public struct AuthorizationCodeResponseParser: AuthorizationCodeResponseParsing {
+struct AuthorizationCodeResponseParser: AuthorizationCodeResponseParsing {
     
-    public init() {}
+    init() {}
     
     /// Determines whether the provided url corresponds to an authorization code response
     /// by verifying that the url matches the expected redirect URI
@@ -25,7 +25,7 @@ public struct AuthorizationCodeResponseParser: AuthorizationCodeResponseParsing 
     ///   - url: The url to parse
     ///   - redirectURI: The expected redirect url
     /// - Returns: A boolean indicating whether or not the URLs match
-    public func isValidResponse(url: URL, matching redirectURI: String) -> Bool {
+    func isValidResponse(url: URL, matching redirectURI: String) -> Bool {
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
               let expectedComponents = URLComponents(string: redirectURI) else {
             return false
@@ -53,7 +53,7 @@ public struct AuthorizationCodeResponseParser: AuthorizationCodeResponseParsing 
     ///
     /// - Parameter url: The url to parse
     /// - Returns: A Result containing a client object built from the parsed values
-    public func callAsFunction(url: URL) -> Result<Client, UberAuthError> {
+    func callAsFunction(url: URL) -> Result<Client, UberAuthError> {
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
             return .failure(.invalidResponse)
         }
