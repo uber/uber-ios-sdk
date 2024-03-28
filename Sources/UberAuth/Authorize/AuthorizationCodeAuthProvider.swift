@@ -184,45 +184,16 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
      
         var nativeLaunched = false
         
-        func launch(app: UberApp, completion: ((Bool) -> Void)?) {
-            guard configurationProvider.isInstalled(
-                app: app,
-                defaultIfUnregistered: true
-            ) else {
-                completion?(false)
-                return
-            }
-            
-            let request = AuthorizeRequest(
-                app: app,
-                clientID: clientID,
-                codeChallenge: pkce.codeChallenge,
-                redirectURI: redirectURI,
-                requestURI: requestURI
-            )
-            
-            guard let url = request.url(baseUrl: Constants.baseUrl) else {
-                completion?(false)
-                return
-            }
-            
-            applicationLauncher.open(
-                url,
-                options: [:],
-                completionHandler: { opened in
-                    if opened { nativeLaunched = true }
-                    completion?(opened)
-                }
-            )
-        }
-        
         // Executes the asynchronous operation `launch` serially for each app in appPriority
         // Stops the execution after the first app is successfully launched
         AsyncDispatcher.exec(
-            for: appPriority,
+            for: appPriority.map { ($0, requestURI) },
             with: { _ in },
-            asyncMethod: launch(app:completion:),
-            continue: { !$0 }, // Do not continue if app launched
+            asyncMethod: launch(context:completion:),
+            continue: { launched in
+                if launched { nativeLaunched = true }
+                return !launched // Continue only if app was not launched
+            },
             finally: { [weak self] in
                 guard !nativeLaunched else {
                     return
@@ -233,6 +204,39 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                     requestURI: requestURI,
                     completion: completion
                 )
+            }
+        )
+    }
+    
+    private func launch(context: (app: UberApp, requestURI: String?),
+                        completion: ((Bool) -> Void)?) {
+        let (app, requestURI) = context
+        guard configurationProvider.isInstalled(
+            app: app,
+            defaultIfUnregistered: true
+        ) else {
+            completion?(false)
+            return
+        }
+        
+        let request = AuthorizeRequest(
+            app: app,
+            clientID: clientID,
+            codeChallenge: pkce.codeChallenge,
+            redirectURI: redirectURI,
+            requestURI: requestURI
+        )
+        
+        guard let url = request.url(baseUrl: Constants.baseUrl) else {
+            completion?(false)
+            return
+        }
+        
+        applicationLauncher.open(
+            url,
+            options: [:],
+            completionHandler: { opened in
+                completion?(opened)
             }
         )
     }

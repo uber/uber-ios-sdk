@@ -36,7 +36,6 @@ final class Content {
             completion: { result in
                 switch result {
                 case .success(let client):
-                    print(client)
                     self.response = "\(client)"
                 case .failure(let error):
                     self.response = error.localizedDescription

@@ -6,7 +6,7 @@
 import XCTest
 @testable import UberCore
 
-class AsyncDispatcherTests: XCTestCase {
+final class AsyncDispatcherTests: XCTestCase {
     
     func testCallsAllClosures() {
         let urls: [URL] = [ URL(string: "http://www.google.com")! ]
