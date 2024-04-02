@@ -28,6 +28,7 @@ final class Content {
     var selection: Item?
     var type: LoginType? = .authorizationCode
     var destination: LoginDestination? = .inApp
+    var isTokenExchangeEnabled: Bool = true
     var isPrefillExpanded: Bool = false
     var response: String?
     var prefillBuilder = PrefillBuilder()
@@ -35,7 +36,7 @@ final class Content {
     func login() {
         
         let authProvider: AuthProviding = .authorizationCode(
-            shouldExchangeAuthCode: false
+            shouldExchangeAuthCode: isTokenExchangeEnabled
         )
         
         let authDestination: AuthDestination = {
@@ -70,6 +71,7 @@ final class Content {
     enum Item: String, Hashable, Identifiable {
         case type = "Auth Type"
         case destination = "Destination"
+        case tokenExchange = "Exchange Auth Code for Token"
         case prefill = "Prefill Values"
         case firstName = "First Name"
         case lastName = "Last Name"
@@ -172,6 +174,15 @@ struct ContentView: View {
                     .foregroundStyle(.gray)
             },
             tapHandler: { content.selection = .destination }
+        )
+        
+        row(
+            item: .tokenExchange,
+            content: {
+                Toggle(isOn: $content.isTokenExchangeEnabled, label: { EmptyView() })
+            },
+            showDisclosureIndicator: false,
+            tapHandler: nil
         )
         
         row(

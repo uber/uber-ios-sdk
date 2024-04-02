@@ -5,8 +5,8 @@
 
 import Foundation
 
-protocol Request {
-    
+protocol NetworkRequest {
+
     associatedtype Response: Codable
     
     var body: [String: String]? { get }
@@ -19,7 +19,7 @@ protocol Request {
     var scheme: String? { get }
 }
 
-extension Request {
+extension NetworkRequest {
     
     var contentType: String? { nil }
     var body: [String: String]? { nil }
@@ -30,7 +30,7 @@ extension Request {
     var scheme: String? { nil }
 }
 
-extension Request {
+extension NetworkRequest {
     
     func url(baseUrl: String) -> URL? {
         urlRequest(baseUrl: baseUrl)?.url

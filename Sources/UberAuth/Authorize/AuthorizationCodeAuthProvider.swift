@@ -42,7 +42,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     
     public init(presentationAnchor: ASPresentationAnchor = .init(),
                 scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
-                shouldExchangeAuthCode: Bool = true) {
+                shouldExchangeAuthCode: Bool = false) {
         self.configurationProvider = DefaultConfigurationProvider()
         
         guard let clientID: String = configurationProvider.clientID else {
@@ -64,7 +64,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     
     init(presentationAnchor: ASPresentationAnchor = .init(),
          scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
-         shouldExchangeAuthCode: Bool = true,
+         shouldExchangeAuthCode: Bool = false,
          configurationProvider: ConfigurationProviding = DefaultConfigurationProvider(),
          applicationLauncher: ApplicationLaunching = UIApplication.shared,
          responseParser: AuthorizationCodeResponseParsing = AuthorizationCodeResponseParser(),
@@ -93,25 +93,51 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     public func execute(authDestination: AuthDestination,
                         prefill: Prefill? = nil,
                         completion: @escaping Completion) {
-        self.completion = completion
         
+        // Completion is stored for native handle callback
+        // Upon completion, intercept result and exchange for token if enabled
+        let authCompletion: Completion = { [weak self] result in
+            guard let self else { return }
+            
+            switch result {
+            case .success(let client):
+                // Exchange auth code for token if needed
+                if shouldExchangeAuthCode,
+                   let code = client.authorizationCode {
+                    exchange(code: code, completion: completion)
+                    self.completion = nil
+                    return
+                }
+            case .failure:
+                break
+            }
+            
+            completion(result)
+            self.completion = nil
+        }
+
         executePar(
             prefill: prefill,
             completion: { [weak self] requestURI in
                 self?.executeLogin(
                     authDestination: authDestination,
                     requestURI: requestURI,
-                    completion: completion
+                    completion: authCompletion
                 )
             }
         )
+        
+        self.completion = authCompletion
     }
     
     public func handle(response url: URL) -> Bool {
         guard responseParser.isValidResponse(url: url, matching: redirectURI) else {
             return false
         }
-        completion?(responseParser(url: url))
+
+        let result = responseParser(url: url)
+        completion?(result)
+        
         return true
     }
     
@@ -170,16 +196,10 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             anchor: presentationAnchor,
             callbackURLScheme: callbackURLScheme,
             url: url,
-            completion: { result in
-                if self.shouldExchangeAuthCode,
-                   case .success(let client) = result,
-                   let code = client.authorizationCode {
-                    // TODO: Exchange auth code here
-                    self.currentSession = nil
-                    return
-                }
+            completion: { [weak self] result in
+                guard let self else { return }
                 completion(result)
-                self.currentSession = nil
+                currentSession = nil
             }
         )
         
@@ -237,6 +257,12 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         )
     }
     
+    /// Attempts to launch a native app with an SSO universal link.
+    /// Calls a closure with a boolean indicating if the application was successfully opened.
+    ///
+    /// - Parameters:
+    ///   - context: A tuple of the destination app and an optional requestURI
+    ///   - completion: An optional closure indicating whether or not the app was launched
     private func launch(context: (app: UberApp, requestURI: String?),
                         completion: ((Bool) -> Void)?) {
         let (app, requestURI) = context
@@ -271,7 +297,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     }
 
     private func executePar(prefill: Prefill?,
-                          completion: @escaping (_ requestURI: String?) -> Void) {
+                            completion: @escaping (_ requestURI: String?) -> Void) {
       guard let prefill else {
           completion(nil)
           return
@@ -295,11 +321,52 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
        )
     }
     
+    // MARK: Token Exchange
+    
+    /// Makes a request to the /token endpoing to exchange the authorization code
+    /// for an access token.
+    /// - Parameter code: The authorization code to exchange
+    private func exchange(code: String, completion: @escaping Completion) {
+        let request = TokenRequest(
+            clientID: clientID,
+            authorizationCode: code,
+            redirectURI: redirectURI,
+            codeVerifier: pkce.codeVerifier
+        )
+        
+        networkProvider.execute(
+            request: request,
+            completion: { [weak self] result in
+                switch result {
+                case .success(let response):
+                    let client = Client(tokenResponse: response)
+                    completion(.success(client))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        )
+    }
+    
     // MARK: Constants
     
     private enum Constants {
         static let clientIDKey = "ClientID"
         static let redirectURI = "RedirectURI"
         static let baseUrl = "https://auth.uber.com/v2"
+    }
+}
+
+
+fileprivate extension Client {
+    
+    init(tokenResponse: TokenRequest.Response) {
+        self = .init(
+            accessToken: tokenResponse.accessToken,
+            refreshToken: tokenResponse.refreshToken,
+            tokenType: tokenResponse.tokenType,
+            expiresIn: tokenResponse.expiresIn,
+            scope: tokenResponse.scope
+        )
     }
 }

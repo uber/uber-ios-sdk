@@ -3,6 +3,7 @@
 //
 
 
+@testable import UberCore
 @testable import UberAuth
 import XCTest
 
@@ -10,7 +11,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
 
     private let configurationProvider = ConfigurationProvidingMock(
         clientID: "test_client_id",
-        redirectURI: "test://"
+        redirectURI: "test://app"
     )
     
     func test_executeInAppLogin_createsAuthenticationSession() {
@@ -215,6 +216,33 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         XCTAssertNotNil(provider.currentSession)
     }
     
+    func test_executeNativeLogin_noOpens_triggersInAppLogin() {
+                
+        let applicationLauncher = ApplicationLaunchingMock()
+        applicationLauncher.openHandler = { _, _, completion in
+            completion?(false)
+        }
+        
+        configurationProvider.isInstalledHandler = { _, _ in
+            true
+        }
+        
+        let provider = AuthorizationCodeAuthProvider(
+            configurationProvider: configurationProvider,
+            applicationLauncher: applicationLauncher
+        )
+        
+        XCTAssertNil(provider.currentSession)
+        
+        provider.execute(
+            authDestination: .native(appPriority: UberApp.allCases),
+            prefill: nil,
+            completion: { _ in }
+        )
+        
+        XCTAssertNotNil(provider.currentSession)
+    }
+    
     func test_handleResponse_true_callsResponseParser() {
         
         let responseParser = AuthorizationCodeResponseParsingMock()
@@ -275,5 +303,193 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         XCTAssertEqual(responseParser.isValidResponseCallCount, 1)
         XCTAssertEqual(responseParser.callAsFunctionCallCount, 0)
         XCTAssertFalse(handled)
+    }
+    
+    func test_prefill_executesParRequest() {
+        
+        var hasCalledParRequest = false
+        
+        let networkProvider = NetworkProvidingMock()
+        networkProvider.executeHandler = { request, _ in
+            if request is ParRequest {
+                hasCalledParRequest = true
+            }
+        }
+        
+        let provider = AuthorizationCodeAuthProvider(
+            configurationProvider: configurationProvider,
+            networkProvider: networkProvider
+        )
+        
+        provider.execute(
+            authDestination: .native(appPriority: [.rides]),
+            prefill: Prefill(),
+            completion: { _ in }
+        )
+        
+        XCTAssertTrue(hasCalledParRequest)
+    }
+    
+    func test_noPrefill_doesNotExecuteParRequest() {
+        
+        var hasCalledParRequest = false
+        
+        let networkProvider = NetworkProvidingMock()
+        networkProvider.executeHandler = { request, _ in
+            if request is ParRequest {
+                hasCalledParRequest = true
+            }
+        }
+        
+        let provider = AuthorizationCodeAuthProvider(
+            configurationProvider: configurationProvider,
+            networkProvider: networkProvider
+        )
+        
+        provider.execute(
+            authDestination: .native(appPriority: [.rides]),
+            completion: { _ in }
+        )
+        
+        XCTAssertFalse(hasCalledParRequest)
+    }
+    
+    func test_nativeAuth_tokenExchange_triggersTokenRequest() {
+        
+        var hasCalledTokenRequest = false
+        
+        let networkProvider = NetworkProvidingMock()
+        networkProvider.executeHandler = { request, _ in
+            if request is TokenRequest {
+                hasCalledTokenRequest = true
+            }
+        }
+        
+        configurationProvider.isInstalledHandler = { _, _ in
+            true
+        }
+        
+        let applicationLauncher = ApplicationLaunchingMock()
+        applicationLauncher.openHandler = { _, _, completion in
+            completion?(true)
+        }
+        
+        let provider = AuthorizationCodeAuthProvider(
+            shouldExchangeAuthCode: true,
+            configurationProvider: configurationProvider,
+            applicationLauncher: applicationLauncher,
+            networkProvider: networkProvider
+        )
+        
+        provider.execute(
+            authDestination: .native(appPriority: [.rides]),
+            completion: { result in }
+        )
+        
+        let url = URL(string: "test://app?code=123")!
+        _ = provider.handle(response: url)
+        
+        XCTAssertTrue(hasCalledTokenRequest)
+    }
+    
+    func test_nativeAuth_noTokenExchange_doesNotTriggerTokenRequest() {
+        
+        var hasCalledTokenRequest = false
+        
+        let networkProvider = NetworkProvidingMock()
+        networkProvider.executeHandler = { request, _ in
+            if request is TokenRequest {
+                hasCalledTokenRequest = true
+            }
+        }
+        
+        configurationProvider.isInstalledHandler = { _, _ in
+            true
+        }
+        
+        let applicationLauncher = ApplicationLaunchingMock()
+        applicationLauncher.openHandler = { _, _, completion in
+            completion?(true)
+        }
+        
+        let provider = AuthorizationCodeAuthProvider(
+            configurationProvider: configurationProvider,
+            applicationLauncher: applicationLauncher,
+            networkProvider: networkProvider
+        )
+        
+        provider.execute(
+            authDestination: .native(appPriority: [.rides]),
+            completion: { result in }
+        )
+        
+        let url = URL(string: "test://app?code=123")!
+        _ = provider.handle(response: url)
+        
+        XCTAssertFalse(hasCalledTokenRequest)
+    }
+    
+    func test_nativeAuth_tokenExchange() {
+        
+        let token = Token(
+            accessToken: "123",
+            tokenType: "test_token"
+        )
+        
+        let networkProvider = NetworkProvidingMock()
+        networkProvider.executeHandler = { request, completion in
+            if request is TokenRequest {
+                let completion = completion as! (Result<TokenRequest.Response, UberAuthError>) -> ()
+                completion(.success(token))
+            }
+            else if request is ParRequest {
+                let completion = completion as! (Result<ParRequest.Response, UberAuthError>) -> ()
+                completion(.success(Par(requestURI: nil, expiresIn: .now)))
+            }
+        }
+        
+        configurationProvider.isInstalledHandler = { _, _ in
+            true
+        }
+        
+        let applicationLauncher = ApplicationLaunchingMock()
+        applicationLauncher.openHandler = { _, _, completion in
+            completion?(true)
+        }
+        
+        let provider = AuthorizationCodeAuthProvider(
+            shouldExchangeAuthCode: true, 
+            configurationProvider: configurationProvider,
+            applicationLauncher: applicationLauncher,
+            networkProvider: networkProvider
+        )
+        
+        let expectation = XCTestExpectation()
+        
+        provider.execute(
+            authDestination: .native(appPriority: [.rides]),
+            completion: { result in
+                expectation.fulfill()
+                
+                switch result {
+                case .failure:
+                    XCTFail()
+                case .success(let client):
+                    XCTAssertEqual(
+                        client,
+                        Client(
+                            accessToken: "123",
+                            tokenType: "test_token",
+                            scope: []
+                        )
+                    )
+                }
+            }
+        )
+        
+        let url = URL(string: "test://app?code=123")!
+        _ = provider.handle(response: url)
+        
+        wait(for: [expectation], timeout: 0.1)
     }
 }
