@@ -21,7 +21,7 @@ public class Prefill: Equatable {
         self.lastName = lastName
     }
     
-    var dictValue: [String: String] {
+    public var dictValue: [String: String] {
         [
             "email": email,
             "phone": phoneNumber,

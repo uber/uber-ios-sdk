@@ -36,15 +36,40 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     
     private let shouldExchangeAuthCode: Bool
     
+    private let networkProvider: NetworkProviding
+    
     // MARK: Initializers
     
     public init(presentationAnchor: ASPresentationAnchor = .init(),
                 scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
-                shouldExchangeAuthCode: Bool = true,
-                configurationProvider: ConfigurationProviding = DefaultConfigurationProvider(),
-                applicationLauncher: ApplicationLaunching = UIApplication.shared,
-                responseParser: AuthorizationCodeResponseParsing = AuthorizationCodeResponseParser()) {
-                
+                shouldExchangeAuthCode: Bool = true) {
+        self.configurationProvider = DefaultConfigurationProvider()
+        
+        guard let clientID: String = configurationProvider.clientID else {
+            preconditionFailure("No clientID specified in Info.plist")
+        }
+        
+        guard let redirectURI: String = configurationProvider.redirectURI else {
+            preconditionFailure("No redirectURI specified in Info.plist")
+        }
+        
+        self.applicationLauncher = UIApplication.shared
+        self.clientID = clientID
+        self.presentationAnchor = presentationAnchor
+        self.redirectURI = redirectURI
+        self.responseParser = AuthorizationCodeResponseParser()
+        self.shouldExchangeAuthCode = shouldExchangeAuthCode
+        self.networkProvider = NetworkProvider(baseUrl: Constants.baseUrl)
+    }
+    
+    init(presentationAnchor: ASPresentationAnchor = .init(),
+         scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
+         shouldExchangeAuthCode: Bool = true,
+         configurationProvider: ConfigurationProviding = DefaultConfigurationProvider(),
+         applicationLauncher: ApplicationLaunching = UIApplication.shared,
+         responseParser: AuthorizationCodeResponseParsing = AuthorizationCodeResponseParser(),
+         networkProvider: NetworkProviding = NetworkProvider(baseUrl: Constants.baseUrl)) {
+        
         guard let clientID: String = configurationProvider.clientID else {
             preconditionFailure("No clientID specified in Info.plist")
         }
@@ -60,21 +85,25 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.redirectURI = redirectURI
         self.responseParser = responseParser
         self.shouldExchangeAuthCode = shouldExchangeAuthCode
+        self.networkProvider = networkProvider
     }
     
     // MARK: AuthProviding
     
     public func execute(authDestination: AuthDestination,
-                        prefill: Prefill?,
+                        prefill: Prefill? = nil,
                         completion: @escaping Completion) {
         self.completion = completion
         
-        // TODO: Implement PAR
-        
-        executeLogin(
-            authDestination: authDestination,
-            requestURI: nil,
-            completion: completion
+        executePar(
+            prefill: prefill,
+            completion: { [weak self] requestURI in
+                self?.executeLogin(
+                    authDestination: authDestination,
+                    requestURI: requestURI,
+                    completion: completion
+                )
+            }
         )
     }
     
@@ -200,7 +229,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 }
                 
                 // If no native app was launched, fall back to in app login
-                 self?.executeInAppLogin(
+                self?.executeInAppLogin(
                     requestURI: requestURI,
                     completion: completion
                 )
@@ -239,6 +268,31 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 completion?(opened)
             }
         )
+    }
+
+    private func executePar(prefill: Prefill?,
+                          completion: @escaping (_ requestURI: String?) -> Void) {
+      guard let prefill else {
+          completion(nil)
+          return
+      }
+
+      let request = ParRequest(
+          clientID: clientID,
+          prefill: prefill.dictValue
+      )
+
+      networkProvider.execute(
+          request: request,
+          completion: { result in
+              switch result {
+              case .success(let response):
+                  completion(response.requestURI)
+              case .failure:
+                  completion(nil)
+              }
+          }
+       )
     }
     
     // MARK: Constants

@@ -11,13 +11,13 @@ import UIKit
 import UberCore
 
 
-public class AuthorizationCodeResponseParsingMock: AuthorizationCodeResponseParsing {
-    public init() { }
+class AuthorizationCodeResponseParsingMock: AuthorizationCodeResponseParsing {
+    init() { }
 
 
-    public private(set) var isValidResponseCallCount = 0
-    public var isValidResponseHandler: ((URL, String) -> (Bool))?
-    public func isValidResponse(url: URL, matching redirectURI: String) -> Bool {
+    private(set) var isValidResponseCallCount = 0
+    var isValidResponseHandler: ((URL, String) -> (Bool))?
+    func isValidResponse(url: URL, matching redirectURI: String) -> Bool {
         isValidResponseCallCount += 1
         if let isValidResponseHandler = isValidResponseHandler {
             return isValidResponseHandler(url, redirectURI)
@@ -25,9 +25,9 @@ public class AuthorizationCodeResponseParsingMock: AuthorizationCodeResponsePars
         return false
     }
 
-    public private(set) var callAsFunctionCallCount = 0
-    public var callAsFunctionHandler: ((URL) -> (Result<Client, UberAuthError>))?
-    public func callAsFunction(url: URL) -> Result<Client, UberAuthError> {
+    private(set) var callAsFunctionCallCount = 0
+    var callAsFunctionHandler: ((URL) -> (Result<Client, UberAuthError>))?
+    func callAsFunction(url: URL) -> Result<Client, UberAuthError> {
         callAsFunctionCallCount += 1
         if let callAsFunctionHandler = callAsFunctionHandler {
             return callAsFunctionHandler(url)
@@ -36,13 +36,13 @@ public class AuthorizationCodeResponseParsingMock: AuthorizationCodeResponsePars
     }
 }
 
-public class ApplicationLaunchingMock: ApplicationLaunching {
-    public init() { }
+class ApplicationLaunchingMock: ApplicationLaunching {
+    init() { }
 
 
-    public private(set) var openCallCount = 0
-    public var openHandler: ((URL, [UIApplication.OpenExternalURLOptionsKey: Any], ((Bool) -> Void)?) -> ())?
-    public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler: ((Bool) -> Void)?)  {
+    private(set) var openCallCount = 0
+    var openHandler: ((URL, [UIApplication.OpenExternalURLOptionsKey: Any], ((Bool) -> Void)?) -> ())?
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler: ((Bool) -> Void)?)  {
         openCallCount += 1
         if let openHandler = openHandler {
             openHandler(url, options, completionHandler)
@@ -51,23 +51,23 @@ public class ApplicationLaunchingMock: ApplicationLaunching {
     }
 }
 
-public class ConfigurationProvidingMock: ConfigurationProviding {
-    public init() { }
-    public init(clientID: String? = nil, redirectURI: String? = nil) {
+class ConfigurationProvidingMock: ConfigurationProviding {
+    init() { }
+    init(clientID: String? = nil, redirectURI: String? = nil) {
         self.clientID = clientID
         self.redirectURI = redirectURI
     }
 
 
-    public private(set) var clientIDSetCallCount = 0
-    public var clientID: String? = nil { didSet { clientIDSetCallCount += 1 } }
+    private(set) var clientIDSetCallCount = 0
+    var clientID: String? = nil { didSet { clientIDSetCallCount += 1 } }
 
-    public private(set) var redirectURISetCallCount = 0
-    public var redirectURI: String? = nil { didSet { redirectURISetCallCount += 1 } }
+    private(set) var redirectURISetCallCount = 0
+    var redirectURI: String? = nil { didSet { redirectURISetCallCount += 1 } }
 
-    public private(set) var isInstalledCallCount = 0
-    public var isInstalledHandler: ((UberApp, Bool) -> (Bool))?
-    public func isInstalled(app: UberApp, defaultIfUnregistered: Bool) -> Bool {
+    private(set) var isInstalledCallCount = 0
+    var isInstalledHandler: ((UberApp, Bool) -> (Bool))?
+    func isInstalled(app: UberApp, defaultIfUnregistered: Bool) -> Bool {
         isInstalledCallCount += 1
         if let isInstalledHandler = isInstalledHandler {
             return isInstalledHandler(app, defaultIfUnregistered)
