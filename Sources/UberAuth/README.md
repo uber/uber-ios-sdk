@@ -83,8 +83,7 @@ Upon success, the result of the callback will contain a Client object containing
 
 
 
-Upon failure, the result will contain an error of type UberAuthError. See Errors for more information.
-[TODO: Link Errors README]
+Upon failure, the result will contain an error of type UberAuthError. See [Errors](./Errors/README.md) for more information.
 
 
 ## Login Context
