@@ -5,8 +5,9 @@
 
 import Foundation
 
+/// @mockable
 protocol NetworkProviding {
-    func execute<R: Request>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ())
+    func execute<R: NetworkRequest>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ())
 }
 
 final class NetworkProvider: NetworkProviding {
@@ -20,7 +21,7 @@ final class NetworkProvider: NetworkProviding {
         self.session = URLSession(configuration: .default)
     }
     
-    func execute<R: Request>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ()) {
+    func execute<R: NetworkRequest>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ()) {
         guard let urlRequest = request.urlRequest(baseUrl: baseUrl) else {
             completion(.failure(UberAuthError.invalidRequest("")))
             return

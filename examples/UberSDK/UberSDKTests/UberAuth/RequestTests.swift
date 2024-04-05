@@ -87,7 +87,7 @@ final class RequestTests: XCTestCase {
         XCTAssertNotNil(urlRequest?.httpBody)
     }
     
-    fileprivate struct TestRequest: Request {
+    fileprivate struct TestRequest: NetworkRequest {
         var body: [String: String]? = nil
         var contentType: String? = nil
         var headers: [String: String]? = nil

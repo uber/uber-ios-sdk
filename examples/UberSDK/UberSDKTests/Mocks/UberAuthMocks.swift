@@ -36,6 +36,21 @@ class AuthorizationCodeResponseParsingMock: AuthorizationCodeResponseParsing {
     }
 }
 
+class NetworkProvidingMock: NetworkProviding {
+    init() { }
+
+
+    private(set) var executeCallCount = 0
+    var executeHandler: ((Any, Any) -> ())?
+    func execute<R: NetworkRequest>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ())  {
+        executeCallCount += 1
+        if let executeHandler = executeHandler {
+            executeHandler(request, completion)
+        }
+        
+    }
+}
+
 class ApplicationLaunchingMock: ApplicationLaunching {
     init() { }
 
