@@ -5,7 +5,7 @@
 
 import Foundation
 
-struct ParRequest: Request {
+struct ParRequest: NetworkRequest {
     
     // MARK: Private Properties
     
