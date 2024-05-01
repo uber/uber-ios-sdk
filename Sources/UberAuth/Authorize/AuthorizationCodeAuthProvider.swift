@@ -38,6 +38,8 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     
     private let networkProvider: NetworkProviding
     
+    private let tokenManager: TokenManaging
+    
     // MARK: Initializers
     
     public init(presentationAnchor: ASPresentationAnchor = .init(),
@@ -60,6 +62,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.responseParser = AuthorizationCodeResponseParser()
         self.shouldExchangeAuthCode = shouldExchangeAuthCode
         self.networkProvider = NetworkProvider(baseUrl: Constants.baseUrl)
+        self.tokenManager = TokenManager()
     }
     
     init(presentationAnchor: ASPresentationAnchor = .init(),
@@ -68,7 +71,8 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
          configurationProvider: ConfigurationProviding = DefaultConfigurationProvider(),
          applicationLauncher: ApplicationLaunching = UIApplication.shared,
          responseParser: AuthorizationCodeResponseParsing = AuthorizationCodeResponseParser(),
-         networkProvider: NetworkProviding = NetworkProvider(baseUrl: Constants.baseUrl)) {
+         networkProvider: NetworkProviding = NetworkProvider(baseUrl: Constants.baseUrl),
+         tokenManager: TokenManaging = TokenManager()) {
         
         guard let clientID: String = configurationProvider.clientID else {
             preconditionFailure("No clientID specified in Info.plist")
@@ -86,6 +90,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.responseParser = responseParser
         self.shouldExchangeAuthCode = shouldExchangeAuthCode
         self.networkProvider = networkProvider
+        self.tokenManager = tokenManager
     }
     
     // MARK: AuthProviding
@@ -340,6 +345,12 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 switch result {
                 case .success(let response):
                     let client = Client(tokenResponse: response)
+                    if let accessToken = client.accessToken {
+                        self?.tokenManager.saveToken(
+                            accessToken,
+                            identifier: TokenManager.defaultAccessTokenIdentifier
+                        )
+                    }
                     completion(.success(client))
                 case .failure(let error):
                     completion(.failure(error))

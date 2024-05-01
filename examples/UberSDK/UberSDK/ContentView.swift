@@ -152,7 +152,18 @@ struct ContentView: View {
                 "Login",
                 content: { loginSection }
             )
+            Section(
+                "Uber Button",
+                content: { uberButtonSection }
+            )
         }
+    }
+    
+    
+    @ViewBuilder
+    private var uberButtonSection: some View {
+        UberButtonView()
+            .padding()
     }
     
     @ViewBuilder

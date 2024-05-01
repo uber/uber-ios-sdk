@@ -7,7 +7,7 @@ let package = Package(
     name: "rides-ios-sdk",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v15)
     ],
     products: [
         .library(
@@ -34,6 +34,9 @@ let package = Package(
             name: "UberAuth",
             dependencies: [
                 "UberCore"
+            ],
+            resources: [
+                .process("Resources")
             ]
         ),
         .target(

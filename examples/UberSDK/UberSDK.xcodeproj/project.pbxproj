@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B21E42782BE2FF6500D9C5E1 /* KeychainUtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21E42772BE2FF6500D9C5E1 /* KeychainUtilityTests.swift */; };
+		B25D308A2BD03F50008A67CF /* UberButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25D30892BD03F50008A67CF /* UberButtonView.swift */; };
 		B28217C82B97A2E400EE786D /* AuthManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28217C72B97A2E400EE786D /* AuthManagerTests.swift */; };
 		B28A41712BACA97000F727C7 /* AuthorizationCodeResponseParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28A41702BACA97000F727C7 /* AuthorizationCodeResponseParserTests.swift */; };
 		B28A41752BAE331300F727C7 /* ParRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28A41742BAE331300F727C7 /* ParRequestTests.swift */; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		B21E42772BE2FF6500D9C5E1 /* KeychainUtilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainUtilityTests.swift; sourceTree = "<group>"; };
+		B25D30892BD03F50008A67CF /* UberButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberButtonView.swift; sourceTree = "<group>"; };
 		B28217C72B97A2E400EE786D /* AuthManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManagerTests.swift; sourceTree = "<group>"; };
 		B28A41702BACA97000F727C7 /* AuthorizationCodeResponseParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeResponseParserTests.swift; sourceTree = "<group>"; };
 		B28A41742BAE331300F727C7 /* ParRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParRequestTests.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				B29303D62B891D3E00D28BAA /* SelectionView.swift */,
 				B29303D82B89408D00D28BAA /* Helpers.swift */,
 				B2D7AE1D2B979EDA007F03FB /* ContentView.swift */,
+				B25D30892BD03F50008A67CF /* UberButtonView.swift */,
 				B2D096992B98012A0093B510 /* SelectionOptions.swift */,
 				B2D7AE1F2B979EDB007F03FB /* Assets.xcassets */,
 				B2D7AE212B979EDB007F03FB /* Preview Content */,
@@ -278,6 +281,7 @@
 				B2D7AE492B979F58007F03FB /* SelectionView.swift in Sources */,
 				B2D0969A2B98012A0093B510 /* SelectionOptions.swift in Sources */,
 				B2D7AE4A2B979F5D007F03FB /* Helpers.swift in Sources */,
+				B25D308A2BD03F50008A67CF /* UberButtonView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
