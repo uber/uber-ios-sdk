@@ -8,7 +8,7 @@ import AuthenticationServices
 import Foundation
 import UIKit
 @testable import UberAuth
-import UberCore
+@testable import UberCore
 
 
 class AuthorizationCodeResponseParsingMock: AuthorizationCodeResponseParsing {
@@ -161,6 +161,76 @@ class AuthManagingMock: AuthManaging {
         handleCallCount += 1
         if let handleHandler = handleHandler {
             return handleHandler(url)
+        }
+        return false
+    }
+}
+
+public class TokenManagingMock: TokenManaging {
+    public init() { }
+
+
+    public private(set) var saveTokenCallCount = 0
+    public var saveTokenHandler: ((AccessToken, String) -> (Bool))?
+    public func saveToken(_ token: AccessToken, identifier: String) -> Bool {
+        saveTokenCallCount += 1
+        if let saveTokenHandler = saveTokenHandler {
+            return saveTokenHandler(token, identifier)
+        }
+        return false
+    }
+
+    public private(set) var getTokenCallCount = 0
+    public var getTokenHandler: ((String) -> (AccessToken?))?
+    public func getToken(identifier: String) -> AccessToken? {
+        getTokenCallCount += 1
+        if let getTokenHandler = getTokenHandler {
+            return getTokenHandler(identifier)
+        }
+        return nil
+    }
+
+    public private(set) var deleteTokenCallCount = 0
+    public var deleteTokenHandler: ((String) -> (Bool))?
+    public func deleteToken(identifier: String) -> Bool {
+        deleteTokenCallCount += 1
+        if let deleteTokenHandler = deleteTokenHandler {
+            return deleteTokenHandler(identifier)
+        }
+        return false
+    }
+}
+
+public class KeychainUtilityProtocolMock: KeychainUtilityProtocol {
+    public init() { }
+
+
+    public private(set) var saveCallCount = 0
+    public var saveHandler: ((Any, String) -> (Bool))?
+    public func save<V: Codable>(_ value: V, for key: String) -> Bool {
+        saveCallCount += 1
+        if let saveHandler = saveHandler {
+            return saveHandler(value, key)
+        }
+        return false
+    }
+
+    public private(set) var getCallCount = 0
+    public var getHandler: ((String) -> (Any?))?
+    public func get<V: Codable>(key: String) -> V? {
+        getCallCount += 1
+        if let getHandler = getHandler {
+            return getHandler(key) as? V
+        }
+        return nil
+    }
+
+    public private(set) var deleteCallCount = 0
+    public var deleteHandler: ((String) -> (Bool))?
+    public func delete(key: String) -> Bool {
+        deleteCallCount += 1
+        if let deleteHandler = deleteHandler {
+            return deleteHandler(key)
         }
         return false
     }

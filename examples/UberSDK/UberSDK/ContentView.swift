@@ -139,7 +139,7 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             ScrollView(.horizontal) {
                 Text(content.response ?? "")
-                    .selectionDisabled(false)
+                    .textSelection(.enabled)
                     .padding()
             }
         }

@@ -478,9 +478,11 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
                     XCTAssertEqual(
                         client,
                         Client(
-                            accessToken: "123",
-                            tokenType: "test_token",
-                            scope: []
+                            accessToken: AccessToken(
+                                accessToken: "123",
+                                tokenType: "test_token",
+                                scope: []
+                            )
                         )
                     )
                 }

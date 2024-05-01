@@ -61,7 +61,7 @@ public class RideRequestViewController: UIViewController {
     static let sourceString = "ride_request_widget"
 
     private var accessTokenWasUnauthorizedOnPreviousAttempt = false
-    private var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
+    private var loginCompletion: ((_ accessToken: AccessToken_DEPRECATED?, _ error: NSError?) -> Void)?
     
     /**
      Initializes a RideRequestViewController using the provided coder. By default,
@@ -98,7 +98,7 @@ public class RideRequestViewController: UIViewController {
         rideParameters.source = rideParameters.source ?? RideRequestViewController.sourceString
         
         rideRequestView.rideParameters = rideParameters
-        rideRequestView.accessToken = TokenManager.fetchToken(identifier: loginManager.accessTokenIdentifier, accessGroup: loginManager.keychainAccessGroup)
+        rideRequestView.accessToken = TokenManager_DEPRECATED.fetchToken(identifier: loginManager.accessTokenIdentifier, accessGroup: loginManager.keychainAccessGroup)
     }
     
     // MARK: View Lifecycle
@@ -130,7 +130,7 @@ public class RideRequestViewController: UIViewController {
     // MARK: Internal
 
     func load() {
-        if let accessToken = TokenManager.fetchToken(identifier: loginManager.accessTokenIdentifier, accessGroup: loginManager.keychainAccessGroup) {
+        if let accessToken = TokenManager_DEPRECATED.fetchToken(identifier: loginManager.accessTokenIdentifier, accessGroup: loginManager.keychainAccessGroup) {
             rideRequestView.accessToken = accessToken
             rideRequestView.load()
         } else {
@@ -217,18 +217,18 @@ extension RideRequestViewController : RideRequestViewDelegate {
     private func attemptTokenRefresh() {
         let identifer = loginManager.accessTokenIdentifier
         let group = loginManager.keychainAccessGroup
-        guard let accessToken = TokenManager.fetchToken(identifier: identifer, accessGroup: group), let refreshToken = accessToken.refreshToken else {
+        guard let accessToken = TokenManager_DEPRECATED.fetchToken(identifier: identifer, accessGroup: group), let refreshToken = accessToken.refreshToken else {
             accessTokenWasUnauthorizedOnPreviousAttempt = true
-            _ = TokenManager.deleteToken(identifier: identifer, accessGroup: group)
+            _ = TokenManager_DEPRECATED.deleteToken(identifier: identifer, accessGroup: group)
             self.load()
             return
         }
-        _ = TokenManager.deleteToken(identifier: identifer, accessGroup: group)
+        _ = TokenManager_DEPRECATED.deleteToken(identifier: identifer, accessGroup: group)
 
         let ridesClient = RidesClient()
         ridesClient.refreshAccessToken(usingRefreshToken: refreshToken) { (accessToken, response) in
             if let token = accessToken {
-                _ = TokenManager.save(accessToken: token, tokenIdentifier: identifer, accessGroup: group)
+                _ = TokenManager_DEPRECATED.save(accessToken: token, tokenIdentifier: identifer, accessGroup: group)
             }
             self.load()
         }

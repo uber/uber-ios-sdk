@@ -361,12 +361,15 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
 fileprivate extension Client {
     
     init(tokenResponse: TokenRequest.Response) {
-        self = .init(
-            accessToken: tokenResponse.accessToken,
-            refreshToken: tokenResponse.refreshToken,
-            tokenType: tokenResponse.tokenType,
-            expiresIn: tokenResponse.expiresIn,
-            scope: tokenResponse.scope
+        self = Client(
+            authorizationCode: nil,
+            accessToken: AccessToken(
+                accessToken: tokenResponse.accessToken,
+                refreshToken: tokenResponse.refreshToken,
+                tokenType: tokenResponse.tokenType,
+                expiresIn: tokenResponse.expiresIn,
+                scope: tokenResponse.scope
+            )
         )
     }
 }

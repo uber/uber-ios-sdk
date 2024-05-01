@@ -35,7 +35,7 @@ public class AccessTokenFactory {
      - parameter url: The URL to parse the token from
      - returns: An initialized AccessToken, or nil if one couldn't be created
      */
-    public static func createAccessToken(fromRedirectURL redirectURL: URL) throws -> AccessToken {
+    public static func createAccessToken(fromRedirectURL redirectURL: URL) throws -> AccessToken_DEPRECATED {
         guard var components = URLComponents(url: redirectURL, resolvingAgainstBaseURL: false) else {
             throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
         }
@@ -71,20 +71,20 @@ public class AccessTokenFactory {
      - parameter jsonData: The JSON Data to parse the token from
      - returns: An initialized AccessToken
      */
-    public static func createAccessToken(fromJSONData jsonData: Data) throws -> AccessToken {
+    public static func createAccessToken(fromJSONData jsonData: Data) throws -> AccessToken_DEPRECATED {
         guard let responseDictionary = (try? JSONSerialization.jsonObject(with: jsonData, options: [])) as? [String: Any] else {
             throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
         }
         return try createAccessToken(from: responseDictionary)
     }
     
-    private static func createAccessToken(from oauthResponseDictionary: [String: Any]) throws -> AccessToken {
+    private static func createAccessToken(from oauthResponseDictionary: [String: Any]) throws -> AccessToken_DEPRECATED {
         if let error = oauthResponseDictionary["error"] as? String {
             guard let error = UberAuthenticationErrorFactory.createRidesAuthenticationError(rawValue: error) else {
                 throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
             }
             throw error
-        } else if let token = AccessToken(oauthDictionary: oauthResponseDictionary) {
+        } else if let token = AccessToken_DEPRECATED(oauthDictionary: oauthResponseDictionary) {
             return token
         }
         throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)

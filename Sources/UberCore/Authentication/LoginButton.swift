@@ -49,7 +49,7 @@ public protocol LoginButtonDelegate: AnyObject {
      - parameter accessToken: The access token that
      - parameter error:       The error that occured
      */
-    func loginButton(_ button: LoginButton, didCompleteLoginWithToken accessToken: AccessToken?, error: NSError?)
+    func loginButton(_ button: LoginButton, didCompleteLoginWithToken accessToken: AccessToken_DEPRECATED?, error: NSError?)
 }
 
 /**
@@ -87,7 +87,7 @@ public class LoginButton: UberButton {
     
     /// The current LoginButtonState of this button (signed in / signed out)
     public var buttonState: LoginButtonState {
-        if let _ = TokenManager.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup) {
+        if let _ = TokenManager_DEPRECATED.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup) {
             return .signedIn
         } else {
             return .signedOut
@@ -102,7 +102,7 @@ public class LoginButton: UberButton {
         return loginManager.keychainAccessGroup
     }
     
-    private var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
+    private var loginCompletion: ((_ accessToken: AccessToken_DEPRECATED?, _ error: NSError?) -> Void)?
     
     public init(frame: CGRect, scopes: [UberScope], loginManager: LoginManager) {
         self.loginManager = loginManager
@@ -129,8 +129,8 @@ public class LoginButton: UberButton {
      */
     override public func setup() {
         super.setup()
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshContent), name: Notification.Name(rawValue: TokenManager.tokenManagerDidSaveTokenNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshContent), name: Notification.Name(rawValue: TokenManager.tokenManagerDidDeleteTokenNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshContent), name: Notification.Name(rawValue: TokenManager_DEPRECATED.tokenManagerDidSaveTokenNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshContent), name: Notification.Name(rawValue: TokenManager_DEPRECATED.tokenManagerDidDeleteTokenNotification), object: nil)
         addTarget(self, action: #selector(uberButtonTapped), for: .touchUpInside)
         loginCompletion = { token, error in
             self.delegate?.loginButton(self, didCompleteLoginWithToken: token, error: error)
@@ -212,7 +212,7 @@ public class LoginButton: UberButton {
     @objc func uberButtonTapped(_ button: UIButton) {
         switch buttonState {
         case .signedIn:
-            let success = TokenManager.deleteToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup)
+            let success = TokenManager_DEPRECATED.deleteToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup)
             delegate?.loginButton(self, didLogoutWithSuccess: success)
             refreshContent()
         case .signedOut:
