@@ -1,6 +1,6 @@
 //
 //  KeychainUtility.swift
-//  UberAuth
+//  UberCore
 //
 //  Copyright © 2024 Uber Technologies, Inc. All rights reserved.
 //
@@ -28,14 +28,26 @@ import XCTest
 
 final class KeychainUtilityTests: XCTestCase {
     
+    private let keychainUtility = KeychainUtility()
+    
+    override func setUp() {
+        super.setUp()
+        
+        _ = keychainUtility.delete(key: "test_object")
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        
+        _ = keychainUtility.delete(key: "test_object")
+    }
+    
     func test_save() {
         let testObject = TestObject(
             name: "test",
             value: 5
         )
-        
-        let keychainUtility = KeychainUtility()
-        
+                
         let saved = keychainUtility.save(testObject, for: "test_object")
         XCTAssertTrue(saved)
     }
@@ -45,8 +57,6 @@ final class KeychainUtilityTests: XCTestCase {
             name: "test",
             value: 5
         )
-        
-        let keychainUtility = KeychainUtility()
         
         _ = keychainUtility.save(testObject, for: "test_object")
         let retrievedObject: TestObject? = keychainUtility.get(key: "test_object")
@@ -59,8 +69,6 @@ final class KeychainUtilityTests: XCTestCase {
             name: "test",
             value: 5
         )
-        
-        let keychainUtility = KeychainUtility()
         
         _ = keychainUtility.save(testObject, for: "test_object")
         let deleted = keychainUtility.delete(key: "test_object")

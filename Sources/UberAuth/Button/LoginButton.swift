@@ -58,20 +58,30 @@ public final class LoginButton: UberButton {
     // MARK: Private Properties
     
     private var buttonState: State {
-        tokenManager.getToken() != nil ? .loggedIn : .loggedOut
+        tokenManager.getToken(
+            identifier: Constants.tokenIdentifier
+        ) != nil ? .loggedIn : .loggedOut
     }
     
-    private let tokenManager = TokenManager()
+    private let tokenManager: TokenManaging
     
     // MARK: Initializers
 
     public override init(frame: CGRect) {
+        self.tokenManager = TokenManager()
         super.init(frame: frame)
         configure()
     }
     
     public required init?(coder: NSCoder) {
+        self.tokenManager = TokenManager()
         super.init(coder: coder)
+        configure()
+    }
+    
+    public init(tokenManager: TokenManaging = TokenManager()) {
+        self.tokenManager = tokenManager
+        super.init(frame: .zero)
         configure()
     }
         
@@ -120,9 +130,11 @@ public final class LoginButton: UberButton {
     
     private func logout() {
         // TODO: Implement UberAuth.logout()
-        tokenManager.deleteToken()
+        tokenManager.deleteToken(identifier: Constants.tokenIdentifier)
         update()
     }
+    
+    // MARK: State
     
     enum State {
         case loggedIn
@@ -146,6 +158,12 @@ public final class LoginButton: UberButton {
                 .uppercased()
             }
         }
+    }
+    
+    // MARK: Constants
+    
+    private enum Constants {
+        static let tokenIdentifier: String = TokenManager.defaultAccessTokenIdentifier
     }
 }
 

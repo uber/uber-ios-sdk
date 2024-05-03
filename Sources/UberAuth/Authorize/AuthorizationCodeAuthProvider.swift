@@ -375,7 +375,7 @@ fileprivate extension Client {
         self = Client(
             authorizationCode: nil,
             accessToken: AccessToken(
-                accessToken: tokenResponse.accessToken,
+                tokenString: tokenResponse.tokenString,
                 refreshToken: tokenResponse.refreshToken,
                 tokenType: tokenResponse.tokenType,
                 expiresIn: tokenResponse.expiresIn,

@@ -207,7 +207,7 @@ public class KeychainUtilityProtocolMock: KeychainUtilityProtocol {
 
     public private(set) var saveCallCount = 0
     public var saveHandler: ((Any, String) -> (Bool))?
-    public func save<V: Codable>(_ value: V, for key: String) -> Bool {
+    public func save<V: Encodable>(_ value: V, for key: String) -> Bool {
         saveCallCount += 1
         if let saveHandler = saveHandler {
             return saveHandler(value, key)
@@ -217,7 +217,7 @@ public class KeychainUtilityProtocolMock: KeychainUtilityProtocol {
 
     public private(set) var getCallCount = 0
     public var getHandler: ((String) -> (Any?))?
-    public func get<V: Codable>(key: String) -> V? {
+    public func get<V: Decodable>(key: String) -> V? {
         getCallCount += 1
         if let getHandler = getHandler {
             return getHandler(key) as? V

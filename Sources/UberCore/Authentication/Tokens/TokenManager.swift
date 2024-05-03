@@ -79,7 +79,6 @@ public final class TokenManager: TokenManaging {
     ///
     /// - Parameter identifier: The identifier string used when saving the Access Token
     /// - Returns: An optional Access Token if found
-    @discardableResult
     public func getToken(identifier: String = TokenManager.defaultAccessTokenIdentifier) -> AccessToken? {
         keychainUtility.get(key: identifier)
     }

@@ -1,6 +1,6 @@
 //
-//  KeychainUtility.swift
-//  UberAuth
+//  TokenManagerTests.swift
+//  UberCore
 //
 //  Copyright © 2024 Uber Technologies, Inc. All rights reserved.
 //
@@ -38,7 +38,7 @@ final class TokenManagerTests: XCTestCase {
         }
         
         let accessToken = AccessToken(
-            accessToken: "test_token_string"
+            tokenString: "test_token_string"
         )
         
         let tokenManager = TokenManager(
@@ -53,7 +53,7 @@ final class TokenManagerTests: XCTestCase {
     }
     
     func test_saveToken() {
-        let accessToken = AccessToken(accessToken: "test_token_string")
+        let accessToken = AccessToken(tokenString: "test_token_string")
         let tokenManager = TokenManager()
         let result = tokenManager.saveToken(accessToken)
         
@@ -63,7 +63,7 @@ final class TokenManagerTests: XCTestCase {
     func test_getToken_triggersKeychainUtilityGet() {
         
         let accessToken = AccessToken(
-            accessToken: "test_token_string"
+            tokenString: "test_token_string"
         )
         
         keychainUtility.getHandler = { identifier -> AccessToken? in
@@ -84,8 +84,22 @@ final class TokenManagerTests: XCTestCase {
     }
     
     func test_getToken() {
-        let accessToken = AccessToken(accessToken: "test_token_string")
-        let tokenManager = TokenManager()
+        
+        var savedToken: AccessToken?
+        keychainUtility.saveHandler = { value, _ in
+            savedToken = value as? AccessToken
+            return true
+        }
+        
+        keychainUtility.getHandler = { key in
+            XCTAssertEqual(key, TokenManager.defaultAccessTokenIdentifier)
+            return savedToken
+        }
+        
+        let accessToken = AccessToken(tokenString: "test_token_string")
+        let tokenManager = TokenManager(
+            keychainUtility: keychainUtility
+        )
         tokenManager.saveToken(accessToken)
         
         let token = tokenManager.getToken()
@@ -111,7 +125,7 @@ final class TokenManagerTests: XCTestCase {
     }
     
     func test_deleteToken() {
-        let accessToken = AccessToken(accessToken: "test_token_string")
+        let accessToken = AccessToken(tokenString: "test_token_string")
         let tokenManager = TokenManager()
         
         tokenManager.saveToken(accessToken)
@@ -152,7 +166,7 @@ final class TokenManagerTests: XCTestCase {
         XCTAssertEqual(cookieStorage.cookies!.count, 2)
         XCTAssertEqual(cookieStorage.cookies(for: usUrl)!.count, 2)
         
-        let accessToken = AccessToken(accessToken: "test_token_string")
+        let accessToken = AccessToken(tokenString: "test_token_string")
         let tokenManager = TokenManager()
 
         tokenManager.saveToken(accessToken)

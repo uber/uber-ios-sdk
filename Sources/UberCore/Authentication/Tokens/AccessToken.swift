@@ -25,9 +25,14 @@
 
 import Foundation
 
+///
+/// The Access Token response for the authorization code grant flow as
+/// defined by the OAuth 2.0 standard.
+/// https://datatracker.ietf.org/doc/html/rfc6749#section-5.1
+///
 public struct AccessToken: Codable, Equatable {
     
-    public let accessToken: String?
+    public let tokenString: String?
     
     public let refreshToken: String?
     
@@ -39,16 +44,45 @@ public struct AccessToken: Codable, Equatable {
     
     // MARK: Initializers
     
-    public init(accessToken: String? = nil,
+    public init(tokenString: String? = nil,
                 refreshToken: String? = nil,
                 tokenType: String? = nil,
                 expiresIn: Int? = nil,
                 scope: [String]? = nil) {
-        self.accessToken = accessToken
+        self.tokenString = tokenString
         self.refreshToken = refreshToken
         self.tokenType = tokenType
         self.expiresIn = expiresIn
         self.scope = scope
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let tokenString = try container.decode(String.self, forKey: .tokenString)
+        let tokenType = try container.decode(String.self, forKey: .tokenType)
+        let expiresIn = try container.decodeIfPresent(Int.self, forKey: .expiresIn)
+        let refreshToken = try container.decodeIfPresent(String.self, forKey: .refreshToken)
+        
+        let scopeString = try container.decodeIfPresent(String.self, forKey: .scope)
+        let scope = (scopeString ?? "")
+            .split(separator: " ")
+            .map(String.init)
+        
+        self = AccessToken(
+            tokenString: tokenString,
+            refreshToken: refreshToken,
+            tokenType: tokenType,
+            expiresIn: expiresIn,
+            scope: scope
+        )
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case tokenString = "access_token"
+        case tokenType = "token_type"
+        case expiresIn = "expires_in"
+        case refreshToken = "refresh_token"
+        case scope
     }
 }
 
@@ -56,7 +90,7 @@ extension AccessToken: CustomStringConvertible {
     
     public var description: String {
         return """
-        Access Token: \(accessToken ?? "nil")
+        Token String: \(tokenString ?? "nil")
         Refresh Token: \(refreshToken ?? "nil")
         Token Type: \(tokenType ?? "nil")
         Expires In: \(expiresIn ?? -1)

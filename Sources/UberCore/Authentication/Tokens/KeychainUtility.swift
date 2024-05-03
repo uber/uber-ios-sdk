@@ -34,14 +34,14 @@ public protocol KeychainUtilityProtocol {
     ///   - value: The object to save. Must conform to the Codable protocol.
     ///   - key: A string value used to identify the saved object
     /// - Returns: A boolean indicating whether or not the save operation was successful
-    func save<V: Codable>(_ value: V, for key: String) -> Bool
+    func save<V: Encodable>(_ value: V, for key: String) -> Bool
     
     /// Retrieves an object from the on device keychain using the supplied `key`
     ///
     /// - Parameters:
     ///   - key: The identifier string used when saving the object
     /// - Returns: If found, an optional type conforming to the Codable protocol
-    func get<V: Codable>(key: String) -> V?
+    func get<V: Decodable>(key: String) -> V?
     
     /// Removes the object from the on device keychain corresponding to the supplied `key`
     ///
@@ -76,7 +76,7 @@ public final class KeychainUtility: KeychainUtilityProtocol {
     ///   - value: The object to save. Must conform to the Codable protocol.
     ///   - key: A string value used to identify the saved object
     /// - Returns: A boolean indicating whether or not the save operation was successful
-    public func save<V: Codable>(_ value: V, for key: String) -> Bool {
+    public func save<V: Encodable>(_ value: V, for key: String) -> Bool {
         guard let data = try? encoder.encode(value) else {
             return false
         }
@@ -108,7 +108,7 @@ public final class KeychainUtility: KeychainUtilityProtocol {
     /// - Parameters:
     ///   - key: The identifier string used when saving the object
     /// - Returns: If found, an optional type conforming to the Codable protocol
-    public func get<V: Codable>(key: String) -> V? {
+    public func get<V: Decodable>(key: String) -> V? {
 
         var attributes = attributes(for: key)
         attributes[Attribute.matchLimit] = kSecMatchLimitOne

@@ -431,8 +431,8 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
     
     func test_nativeAuth_tokenExchange() {
         
-        let token = Token(
-            accessToken: "123",
+        let token = AccessToken(
+            tokenString: "123",
             tokenType: "test_token"
         )
         
@@ -479,9 +479,8 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
                         client,
                         Client(
                             accessToken: AccessToken(
-                                accessToken: "123",
-                                tokenType: "test_token",
-                                scope: []
+                                tokenString: "123",
+                                tokenType: "test_token"
                             )
                         )
                     )
