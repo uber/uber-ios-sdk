@@ -1,8 +1,8 @@
 //
 //  UberButton.swift
-//  UberRides
+//  UberCore
 //
-//  Copyright © 2016 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2024 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,79 @@
 
 import UIKit
 
-/// Base class for Uber buttons that sets up colors and some constraints.
 open class UberButton: UIButton {
+    
+    // MARK: Public Properties
+    
+    open var title: String { "" }
+    
+    open var image: UIImage? { nil }
+    
+    // MARK: Initializers
+    
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        configure()
+    }
+    
+    required public init?(coder: NSCoder) {
+        super.init(coder: coder)
+        configure()
+    }
+    
+    // MARK: UIButton
+        
+    open override var isHighlighted: Bool {
+        didSet { update() }
+    }
+
+    // MARK: Private
+    
+    private func configure() {
+        contentHorizontalAlignment = .fill
+        update()
+    }
+    
+    public func update() {
+        DispatchQueue.main.async { [self] in
+            configuration = .uber(
+                title: title,
+                image: image,
+                isHighlighted: isHighlighted
+            )
+            updateConfiguration()
+        }
+    }
+}
+
+extension UIButton.Configuration {
+    
+    static func uber(title: String? = nil,
+                     image: UIImage? = nil,
+                     isHighlighted: Bool = false) -> UIButton.Configuration {
+        
+        var style: UIButton.Configuration = .plain()
+        
+        // Background Color
+        var background = style.background
+        background.backgroundColor = isHighlighted ? .uberButtonHighlightedBackground : .uberButtonBackground
+        style.background = background
+        
+        // Image
+        style.image = image
+        style.imagePadding = 12.0
+        
+        // Text
+        style.title = title
+        style.titleAlignment = .trailing
+        style.baseForegroundColor = .uberButtonForeground
+        
+        return style
+    }
+}
+
+/// Base class for Uber buttons that sets up colors and some constraints.
+open class UberButton_DEPRECATED: UIButton {
     public let cornerRadius: CGFloat = 8
     public let horizontalEdgePadding: CGFloat = 16
     public let imageLabelPadding: CGFloat = 8

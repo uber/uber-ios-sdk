@@ -47,7 +47,7 @@ public protocol LoginManaging {
      - parameter prefillValues:            Optional values to pre-populate the signin form with.
      - parameter completion:               The LoginManagerRequestTokenHandler completion handler for login success/failure.
      */
-    func login(requestedScopes scopes: [UberScope], presentingViewController: UIViewController?, prefillValues: Prefill?, completion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?)
+    func login(requestedScopes scopes: [UberScope], presentingViewController: UIViewController?, prefillValues: Prefill?, completion: ((_ accessToken: AccessToken_DEPRECATED?, _ error: NSError?) -> Void)?)
     
     /**
      Called via the RidesAppDelegate when the application is opened via a URL. Responsible

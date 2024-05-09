@@ -1,8 +1,8 @@
 //
 //  TokenManager.swift
-//  UberRides
+//  UberCore
 //
-//  Copyright © 2015 Uber Technologies, Inc. All rights reserved.
+//  Copyright © 2024 Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,171 +22,92 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 
-/// Manager class for saving and deleting AccessTokens. Allows you to manage tokens based on token identifier & keychain access group
-public class TokenManager {
-
-    public static let tokenManagerDidSaveTokenNotification = "TokenManagerDidSaveTokenNotification"
-    public static let tokenManagerDidDeleteTokenNotification = "TokenManagerDidDeleteTokenNotification"
+/// @mockable
+public protocol TokenManaging {
     
-    private static let keychainWrapper = KeychainWrapper()
-
-    //MARK: Get
+    /// Saves the provided Access Token to the on device keychain using the supplied `identifier`
+    ///
+    /// - Parameters:
+    ///   - token: The Access Token to save
+    ///   - identifier: A string used to identify the Access Token upon retrieval
+    /// - Returns: A boolean indicating whether or not the save operation was successful
+    func saveToken(_ token: AccessToken, identifier: String) -> Bool
     
-    /**
-     Gets the AccessToken for the given tokenIdentifier and accessGroup.
+    /// Retrieves an Access Token from the on device keychain
+    ///
+    /// - Parameter identifier: The identifier string used when saving the Access Token
+    /// - Returns: An optional Access Token if found
+    func getToken(identifier: String) -> AccessToken?
+    
+    
+    /// Removes the Access Token corresponding with the supplied `identifier`
+    ///
+    /// - Parameter identifier: The identifier string used when saving the Access Token
+    /// - Returns: A boolean indicating whether or not the delete operation was successful
+    func deleteToken(identifier: String) -> Bool
+}
 
-     - parameter identifier:      The token identifier string to use
-     - parameter accessGroup:     The keychain access group to use
-
-     - returns: An AccessToken, or nil if one wasn't found
-     */
-    public static func fetchToken(identifier: String, accessGroup: String) -> AccessToken? {
-        keychainWrapper.setAccessGroup(accessGroup)
-        guard let token = keychainWrapper.getObjectForKey(identifier) as? AccessToken else {
-            return nil
-        }
-        return token
+public final class TokenManager: TokenManaging {
+    
+    public static let defaultAccessTokenIdentifier = "UberAccessTokenKey"
+    
+    private let keychainUtility: KeychainUtilityProtocol
+    
+    public init(keychainUtility: KeychainUtilityProtocol = KeychainUtility()) {
+        self.keychainUtility = keychainUtility
     }
     
-    /**
-     Gets the AccessToken for the given tokenIdentifier.
-     Uses the default value for keychain access group, as defined by your Configuration.
-     
-     - parameter tokenIdentifier: The token identifier string to use
-     
-     - returns: An AccessToken, or nil if one wasn't found
-     */
-    public static func fetchToken(identifier: String) -> AccessToken? {
-        return self.fetchToken(identifier: identifier,
-            accessGroup: Configuration.shared.defaultKeychainAccessGroup)
+    // MARK: Save
+    
+    /// Saves the provided Access Token to the on device keychain using the supplied `identifier`
+    ///
+    /// - Parameters:
+    ///   - token: The Access Token to save
+    ///   - identifier: A string used to identify the Access Token upon retrieval
+    /// - Returns: A boolean indicating whether or not the save operation was successful
+    @discardableResult
+    public func saveToken(_ token: AccessToken, identifier: String = TokenManager.defaultAccessTokenIdentifier) -> Bool {
+        keychainUtility.save(token, for: identifier)
     }
     
-    /**
-     Gets the AccessToken using the default tokenIdentifier and accessGroup. 
-     These values are the defined in your Configuration
-     
-     - returns: An AccessToken, or nil if one wasn't found
-     */
-    public static func fetchToken() -> AccessToken? {
-        return self.fetchToken(identifier: Configuration.shared.defaultAccessTokenIdentifier,
-            accessGroup: Configuration.shared.defaultKeychainAccessGroup)
-    }
-
-    //MARK: Save
+    // MARK: Get
     
-    /**
-     Saves the given AccessToken using the provided tokenIdentifier and acessGroup.If no values
-     are supplied, it uses the defaults defined in your Configuration.
-    
-    Access Token is saved syncronously
-
-     - parameter accessToken:     The AccessToken to save
-     - parameter tokenIdentifier: The token identifier string to use (defaults to Configuration.shared.defaultAccessTokenIdentifier)
-     - parameter accessGroup:     The keychain access group to use (defaults to Configuration.shared.defaultKeychainAccessGroup)
-
-     - returns: true if the accessToken was saved successfully, false otherwise
-     */
-    @discardableResult public static func save(accessToken: AccessToken, tokenIdentifier: String, accessGroup: String) -> Bool {
-        keychainWrapper.setAccessGroup(accessGroup)
-        let success = keychainWrapper.setObject(accessToken, key: tokenIdentifier)
-        if success {
-            NotificationCenter.default.post(name: Notification.Name(rawValue: tokenManagerDidSaveTokenNotification), object: self)
-        }
-        return success
+    /// Retrieves an Access Token from the on device keychain
+    ///
+    /// - Parameter identifier: The identifier string used when saving the Access Token
+    /// - Returns: An optional Access Token if found
+    public func getToken(identifier: String = TokenManager.defaultAccessTokenIdentifier) -> AccessToken? {
+        keychainUtility.get(key: identifier)
     }
     
-    /**
-     Saves the given AccessToken using the provided tokenIdentifier. 
-     Uses the default keychain access group defined by your Configuration.
-     
-     Access Token is saved syncronously
-     
-     - parameter accessToken:     The AccessToken to save
-     - parameter tokenIdentifier: The token identifier string to use
-     
-     - returns: true if the accessToken was saved successfully, false otherwise
-     */
-    @discardableResult public static func save(accessToken: AccessToken, tokenIdentifier: String) -> Bool {
-        return self.save(accessToken: accessToken, tokenIdentifier: tokenIdentifier, accessGroup: Configuration.shared.defaultKeychainAccessGroup)
-    }
+    // MARK: Delete
     
-    /**
-     Saves the given AccessToken. 
-     Uses the default access token identifier & keychain access group defined by your
-     Configuration.
-     
-     Access Token is saved syncronously
-     
-     - parameter accessToken: The AccessToken to save
-     
-     - returns: true if the accessToken was saved successfully, false otherwise
-     */
-    @discardableResult public static func save(accessToken: AccessToken) -> Bool {
-        return self.save(accessToken: accessToken,  tokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier, accessGroup: Configuration.shared.defaultKeychainAccessGroup)
-    }
-    
-    //MARK: Delete
-    
-    /**
-     Deletes the AccessToken for the givent tokenIdentifier and accessGroup. If no values
-     are supplied, it uses the defaults defined in your Configuration.
-
-     - parameter tokenIdentifier: The token identifier string to use (defaults to Configuration.shared.defaultAccessTokenIdentifier)
-     - parameter accessGroup:     The keychain access group to use (defaults to Configuration.shared.defaultKeychainAccessGroup)
-
-     - returns: true if the token was deleted, false otherwise
-     */
-    @discardableResult public static func deleteToken(identifier: String, accessGroup: String) -> Bool {
-        keychainWrapper.setAccessGroup(accessGroup)
+    /// Removes the Access Token corresponding with the supplied `identifier`
+    ///
+    /// - Parameter identifier: The identifier string used when saving the Access Token
+    /// - Returns: A boolean indicating whether or not the delete operation was successful
+    @discardableResult
+    public func deleteToken(identifier: String = TokenManager.defaultAccessTokenIdentifier) -> Bool {
         deleteCookies()
-        let success = keychainWrapper.deleteObjectForKey(identifier)
-        if success {
-            NotificationCenter.default.post(name: Notification.Name(rawValue: tokenManagerDidDeleteTokenNotification), object: self)
-        }
-        return success
-    }
-    
-    /**
-     Deletes the AccessToken for the given tokenIdentifier.
-     Uses the default keychain access group defined in your Configuration.
-     
-     - parameter tokenIdentifier: The token identifier string to use
-     
-     - returns: true if the token was deleted, false otherwise
-     */
-    @discardableResult public static func deleteToken(identifier: String) -> Bool {
-        return self.deleteToken(identifier: identifier, accessGroup: Configuration.shared.defaultKeychainAccessGroup)
-    }
-    
-    /**
-     Deletes an AccessToken.
-     Uses the default token identifier defined in your Configuration.
-     Uses the default keychain access group defined in your Configuration.
-     
-     - returns: true if the token was deleted, false otherwise
-     */
-    @discardableResult public static func deleteToken() -> Bool {
-        return self.deleteToken(identifier: Configuration.shared.defaultAccessTokenIdentifier, accessGroup: Configuration.shared.defaultKeychainAccessGroup)
+        return keychainUtility.delete(key: identifier)
     }
     
     // MARK: Private Interface
     
-    private static func deleteCookies() {
-        Configuration.shared.resetProcessPool()
-        var urlsToClear = [URL]()
-        if let loginURL = URL(string: OAuth.regionHost) {
-            urlsToClear.append(loginURL)
+    /// Removes all cookies in the shared cookie store corresponding with the auth.uber.com domain
+    private func deleteCookies() {
+        guard let loginUrl = URL(string: OAuth.regionHost) else {
+            return
         }
         
         let sharedCookieStorage = HTTPCookieStorage.shared
         
-        for url in urlsToClear {
-            if let cookies = sharedCookieStorage.cookies(for: url) {
-                for cookie in cookies {
-                    sharedCookieStorage.deleteCookie(cookie)
-                }
+        if let cookies = sharedCookieStorage.cookies(for: loginUrl) {
+            for cookie in cookies {
+                sharedCookieStorage.deleteCookie(cookie)
             }
         }
     }

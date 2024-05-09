@@ -139,7 +139,7 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             ScrollView(.horizontal) {
                 Text(content.response ?? "")
-                    .selectionDisabled(false)
+                    .textSelection(.enabled)
                     .padding()
             }
         }
@@ -152,7 +152,18 @@ struct ContentView: View {
                 "Login",
                 content: { loginSection }
             )
+            Section(
+                "Uber Button",
+                content: { uberButtonSection }
+            )
         }
+    }
+    
+    
+    @ViewBuilder
+    private var uberButtonSection: some View {
+        UberButtonView()
+            .padding()
     }
     
     @ViewBuilder

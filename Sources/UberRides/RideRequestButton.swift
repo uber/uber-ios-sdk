@@ -47,7 +47,7 @@ public protocol RideRequestButtonDelegate {
 }
 
 /// RequestButton implements a button on the touch screen to request a ride.
-public class RideRequestButton: UberButton {
+public class RideRequestButton: UberButton_DEPRECATED {
     /// Delegate is informed of events that occur with request button.
     public var delegate: RideRequestButtonDelegate?
     
