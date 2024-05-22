@@ -53,7 +53,7 @@ public class RideRequestView: UIView {
     public var delegate: RideRequestViewDelegate?
     
     /// The access token used to authorize the web view
-    public var accessToken: AccessToken_DEPRECATED?
+    public var accessToken: AccessToken?
     
     /// Ther RideParameters to use for prefilling the RideRequestView
     public var rideParameters: RideParameters
@@ -63,16 +63,18 @@ public class RideRequestView: UIView {
     
     static let sourceString = "ride_request_view"
     
+    private static let tokenManager = TokenManager()
+    
      /**
      Initializes to show the embedded Uber ride request view.
      
      - parameter rideParameters: The RideParameters to use for presetting values; defaults to using the current location for pickup
-     - parameter accessToken:    specific access token to use with web view; defaults to using TokenManager_DEPRECATED's default token
+     - parameter accessToken:    specific access token to use with web view; defaults to using TokenManager's default token
      - parameter frame:          frame of the view. Defaults to CGRectZero
      
      - returns: An initialized RideRequestView
      */
-    public required init(rideParameters: RideParameters, accessToken: AccessToken_DEPRECATED?, frame: CGRect) {
+    public required init(rideParameters: RideParameters, accessToken: AccessToken?, frame: CGRect) {
         self.rideParameters = rideParameters
         self.accessToken = accessToken
         let configuration = WKWebViewConfiguration()
@@ -84,7 +86,7 @@ public class RideRequestView: UIView {
     
     /**
      Initializes to show the embedded Uber ride request view.
-     Uses the TokenManager_DEPRECATED's default accessToken
+     Uses the TokenManager's default accessToken
      
      - parameter rideParameters: The RideParameters to use for presetting values
      - parameter frame:          frame of the view
@@ -92,45 +94,45 @@ public class RideRequestView: UIView {
      - returns: An initialized RideRequestView
      */
     public convenience init(rideParameters: RideParameters, frame: CGRect) {
-        self.init(rideParameters: rideParameters, accessToken: TokenManager_DEPRECATED.fetchToken(), frame: frame)
+        self.init(rideParameters: rideParameters, accessToken: Self.tokenManager.getToken(), frame: frame)
     }
 
     /**
      Initializes to show the embedded Uber ride request view.
      Frame defaults to CGRectZero
-     Uses the TokenManager_DEPRECATED's default accessToken
+     Uses the TokenManager's default accessToken
      
      - parameter rideParameters: The RideParameters to use for presetting values
      
      - returns: An initialized RideRequestView
      */
     public convenience init(rideParameters: RideParameters) {
-        self.init(rideParameters: rideParameters, accessToken: TokenManager_DEPRECATED.fetchToken(), frame: CGRect.zero)
+        self.init(rideParameters: rideParameters, accessToken: Self.tokenManager.getToken(), frame: CGRect.zero)
     }
     
     /**
      Initializes to show the embedded Uber ride request view.
      Uses the current location for pickup
-     Uses the TokenManager_DEPRECATED's default accessToken
+     Uses the TokenManager's default accessToken
      
      - parameter frame:          frame of the view
      
      - returns: An initialized RideRequestView
      */
     public convenience override init(frame: CGRect) {
-        self.init(rideParameters: RideParametersBuilder().build(), accessToken: TokenManager_DEPRECATED.fetchToken(), frame: frame)
+        self.init(rideParameters: RideParametersBuilder().build(), accessToken: Self.tokenManager.getToken(), frame: frame)
     }
     
     /**
      Initializes to show the embedded Uber ride request view.
      Uses the current location for pickup
-     Uses the TokenManager_DEPRECATED's default accessToken
+     Uses the TokenManager's default accessToken
      Frame defaults to CGRectZero
      
      - returns: An initialized RideRequestView
      */
     public convenience init() {
-        self.init(rideParameters: RideParametersBuilder().build(), accessToken: TokenManager_DEPRECATED.fetchToken(), frame: CGRect.zero)
+        self.init(rideParameters: RideParametersBuilder().build(), accessToken: Self.tokenManager.getToken(), frame: CGRect.zero)
     }
     
     required public init?(coder aDecoder: NSCoder) {

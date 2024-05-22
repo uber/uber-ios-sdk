@@ -49,6 +49,10 @@ public protocol KeychainUtilityProtocol {
     ///   - key: The identifier string used when saving the object
     /// - Returns: A boolean indicating whether or not the delete operation was successful
     func delete(key: String) -> Bool
+    
+    /// Updates the accessGroup used for subsequent operations
+    /// - Parameter accessGroup: The new accessGroup
+    func setAccessGroup(_ accessGroup: String)
 }
 
 public final class KeychainUtility: KeychainUtilityProtocol {
@@ -56,7 +60,7 @@ public final class KeychainUtility: KeychainUtilityProtocol {
     // MARK: Properties
     
     private let serviceName = "com.uber.uber-ios-sdk"
-    private let accessGroup: String
+    private var accessGroup: String
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
     
@@ -143,6 +147,12 @@ public final class KeychainUtility: KeychainUtilityProtocol {
         SecItemDelete(
             attributes(for: key) as CFDictionary
         ) == noErr
+    }
+    
+    /// Updates the accessGroup used for subsequent operations
+    /// - Parameter accessGroup: The new accessGroup
+    public func setAccessGroup(_ accessGroup: String) {
+        self.accessGroup = accessGroup
     }
     
     // MARK: Private

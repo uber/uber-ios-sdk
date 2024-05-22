@@ -24,7 +24,7 @@
 
 import UIKit
 
-public typealias AuthenticationCompletionHandler = (_ accessToken: AccessToken_DEPRECATED?, _ error: NSError?) -> Void
+public typealias AuthenticationCompletionHandler = (_ accessToken: AccessToken?, _ error: NSError?) -> Void
 
 /**
  *  Protocol to conform to for defining an authorization flow.

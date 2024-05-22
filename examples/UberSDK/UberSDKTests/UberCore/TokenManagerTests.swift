@@ -83,6 +83,55 @@ final class TokenManagerTests: XCTestCase {
         XCTAssertEqual(keychainUtility.getCallCount, 1)
     }
     
+    func test_saveToken_updatesKeychainUtilityAccessGroup() {
+        
+        let accessToken = AccessToken(
+            tokenString: "test_token_string"
+        )
+        
+        keychainUtility.setAccessGroupHandler = { accessGroup in
+            XCTAssertEqual(accessGroup, "test_access_group")
+        }
+        
+        let tokenManager = TokenManager(
+            keychainUtility: keychainUtility
+        )
+        
+        XCTAssertEqual(keychainUtility.setAccessGroupCallCount, 0)
+        
+        let token = tokenManager.saveToken(
+            accessToken,
+            identifier: "test_token_identifier",
+            accessGroup: "test_access_group"
+        )
+        
+        XCTAssertEqual(keychainUtility.setAccessGroupCallCount, 1)
+    }
+    
+    func test_getToken_updatesKeychainUtilityAccessGroup() {
+        
+        let accessToken = AccessToken(
+            tokenString: "test_token_string"
+        )
+        
+        keychainUtility.setAccessGroupHandler = { accessGroup in
+            XCTAssertEqual(accessGroup, "test_access_group")
+        }
+        
+        let tokenManager = TokenManager(
+            keychainUtility: keychainUtility
+        )
+        
+        XCTAssertEqual(keychainUtility.setAccessGroupCallCount, 0)
+        
+        let token = tokenManager.getToken(
+            identifier: "test_token_identifier",
+            accessGroup: "test_access_group"
+        )
+        
+        XCTAssertEqual(keychainUtility.setAccessGroupCallCount, 1)
+    }
+    
     func test_getToken() {
         
         var savedToken: AccessToken?

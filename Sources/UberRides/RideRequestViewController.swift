@@ -24,6 +24,7 @@
 
 import WebKit
 import MapKit
+import UberAuth
 import UberCore
 import UIKit
 
@@ -61,7 +62,8 @@ public class RideRequestViewController: UIViewController {
     static let sourceString = "ride_request_widget"
 
     private var accessTokenWasUnauthorizedOnPreviousAttempt = false
-    private var loginCompletion: ((_ accessToken: AccessToken_DEPRECATED?, _ error: NSError?) -> Void)?
+    private var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
+    private let tokenManager = TokenManager()
     
     /**
      Initializes a RideRequestViewController using the provided coder. By default,
@@ -98,7 +100,10 @@ public class RideRequestViewController: UIViewController {
         rideParameters.source = rideParameters.source ?? RideRequestViewController.sourceString
         
         rideRequestView.rideParameters = rideParameters
-        rideRequestView.accessToken = TokenManager_DEPRECATED.fetchToken(identifier: loginManager.accessTokenIdentifier, accessGroup: loginManager.keychainAccessGroup)
+        rideRequestView.accessToken = tokenManager.getToken(
+            identifier: loginManager.accessTokenIdentifier,
+            accessGroup: loginManager.keychainAccessGroup
+        )
     }
     
     // MARK: View Lifecycle
@@ -130,18 +135,30 @@ public class RideRequestViewController: UIViewController {
     // MARK: Internal
 
     func load() {
-        if let accessToken = TokenManager_DEPRECATED.fetchToken(identifier: loginManager.accessTokenIdentifier, accessGroup: loginManager.keychainAccessGroup) {
+        if let accessToken = tokenManager.getToken(identifier: loginManager.accessTokenIdentifier, accessGroup: loginManager.keychainAccessGroup) {
             rideRequestView.accessToken = accessToken
             rideRequestView.load()
         } else {
-            loginManager.login(requestedScopes: [.rideWidgets], presentingViewController: self) { accessToken, error in
-                if let accessToken = accessToken {
-                    self.rideRequestView.accessToken = accessToken
-                    self.rideRequestView.load()
-                } else {
-                    self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
+            let context = AuthContext(
+                authDestination: .inApp,
+                authProvider: .authorizationCode(scopes: [UberScope.rideWidgets.rawValue])
+            )
+            UberAuth.login(
+                context: context,
+                completion: { result in
+                    switch result {
+                    case .success(let client):
+                        if let accessToken = client.accessToken {
+                            self.rideRequestView.accessToken = accessToken
+                            self.rideRequestView.load()
+                        } else {
+                            self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
+                        }
+                    case .failure(let error):
+                        self.delegate?.rideRequestViewController(self, didReceiveError: RideRequestViewErrorFactory.errorForType(.accessTokenMissing))
+                    }
                 }
-            }
+            )
         }
     }
     
@@ -217,18 +234,19 @@ extension RideRequestViewController : RideRequestViewDelegate {
     private func attemptTokenRefresh() {
         let identifer = loginManager.accessTokenIdentifier
         let group = loginManager.keychainAccessGroup
-        guard let accessToken = TokenManager_DEPRECATED.fetchToken(identifier: identifer, accessGroup: group), let refreshToken = accessToken.refreshToken else {
+        guard let accessToken = tokenManager.getToken(identifier: identifer, accessGroup: group),
+                let refreshToken = accessToken.refreshToken else {
             accessTokenWasUnauthorizedOnPreviousAttempt = true
-            _ = TokenManager_DEPRECATED.deleteToken(identifier: identifer, accessGroup: group)
+            _ = tokenManager.deleteToken(identifier: identifer, accessGroup: group)
             self.load()
             return
         }
-        _ = TokenManager_DEPRECATED.deleteToken(identifier: identifer, accessGroup: group)
+        _ = tokenManager.deleteToken(identifier: identifer, accessGroup: group)
 
         let ridesClient = RidesClient()
         ridesClient.refreshAccessToken(usingRefreshToken: refreshToken) { (accessToken, response) in
             if let token = accessToken {
-                _ = TokenManager_DEPRECATED.save(accessToken: token, tokenIdentifier: identifer, accessGroup: group)
+                _ = self.tokenManager.saveToken(token, identifier: identifer, accessGroup: group)
             }
             self.load()
         }

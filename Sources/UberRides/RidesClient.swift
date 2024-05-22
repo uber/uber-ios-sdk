@@ -43,6 +43,8 @@ public class RidesClient {
     /// Developer server token.
     private var serverToken: String? = Configuration.shared.serverToken
     
+    private let tokenManager = TokenManager()
+    
     /**
      Initializer for the RidesClient. The RidesClient handles making requests to the API
      for you.
@@ -140,8 +142,8 @@ public class RidesClient {
      
      - returns: an AccessToken object, or nil if one can't be located
      */
-    public func fetchAccessToken() -> AccessToken_DEPRECATED? {
-        guard let accessToken = TokenManager_DEPRECATED.fetchToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup) else {
+    public func fetchAccessToken() -> AccessToken? {
+        guard let accessToken = tokenManager.getToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup) else {
             return nil
         }
         return accessToken
@@ -534,13 +536,13 @@ public class RidesClient {
      - parameter refreshToken: The Refresh Token String from an SSO access token
      - parameter completion:   completion handler for the new access token
      */
-    public func refreshAccessToken(usingRefreshToken refreshToken: String, completion:@escaping (_ accessToken: AccessToken_DEPRECATED?, _ response: Response) -> Void) {
+    public func refreshAccessToken(usingRefreshToken refreshToken: String, completion: @escaping (_ accessToken: AccessToken?, _ response: Response) -> Void) {
         let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
         apiCall(endpoint) { response in
-            var accessToken: AccessToken_DEPRECATED?
+            var accessToken: AccessToken?
             if let data = response.data,
                 response.error == nil {
-                accessToken = try? AccessTokenFactory.createAccessToken(fromJSONData: data)
+                accessToken = try? AccessToken(jsonData: data)
             }
             completion(accessToken, response)
         }

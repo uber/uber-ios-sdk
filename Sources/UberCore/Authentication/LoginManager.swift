@@ -40,6 +40,7 @@ public class LoginManager: LoginManaging, Identifiable, Equatable {
     var willEnterForegroundCalled: Bool = false
     private var postCompletionHandler: AuthenticationCompletionHandler?
     private let urlSession = URLSession(configuration: .default)
+    private let tokenManager = TokenManager()
 
     /**
     Create instance of login manager to authenticate user and retreive access token.
@@ -460,7 +461,7 @@ public class LoginManager: LoginManaging, Identifiable, Equatable {
         authenticator = nil
     }
     
-    func loginCompletion(accessToken: AccessToken_DEPRECATED?, error: NSError?) {
+    func loginCompletion(accessToken: AccessToken?, error: NSError?) {
         loggingIn = false
         willEnterForegroundCalled = false
         authenticator = nil
@@ -470,7 +471,7 @@ public class LoginManager: LoginManaging, Identifiable, Equatable {
         if let accessToken = accessToken {
             let tokenIdentifier = accessTokenIdentifier
             let accessGroup = keychainAccessGroup
-            let success = TokenManager_DEPRECATED.save(accessToken: accessToken, tokenIdentifier: tokenIdentifier, accessGroup: accessGroup)
+            let success = tokenManager.saveToken(accessToken, identifier: tokenIdentifier)
             if !success {
                 error = UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken)
                 print("Error: access token failed to save to keychain")

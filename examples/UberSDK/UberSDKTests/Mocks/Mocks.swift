@@ -171,31 +171,31 @@ public class TokenManagingMock: TokenManaging {
 
 
     public private(set) var saveTokenCallCount = 0
-    public var saveTokenHandler: ((AccessToken, String) -> (Bool))?
-    public func saveToken(_ token: AccessToken, identifier: String) -> Bool {
+    public var saveTokenHandler: ((AccessToken, String, String?) -> (Bool))?
+    public func saveToken(_ token: AccessToken, identifier: String, accessGroup: String?) -> Bool {
         saveTokenCallCount += 1
         if let saveTokenHandler = saveTokenHandler {
-            return saveTokenHandler(token, identifier)
+            return saveTokenHandler(token, identifier, accessGroup)
         }
         return false
     }
 
     public private(set) var getTokenCallCount = 0
-    public var getTokenHandler: ((String) -> (AccessToken?))?
-    public func getToken(identifier: String) -> AccessToken? {
+    public var getTokenHandler: ((String, String?) -> (AccessToken?))?
+    public func getToken(identifier: String, accessGroup: String?) -> AccessToken? {
         getTokenCallCount += 1
         if let getTokenHandler = getTokenHandler {
-            return getTokenHandler(identifier)
+            return getTokenHandler(identifier, accessGroup)
         }
         return nil
     }
 
     public private(set) var deleteTokenCallCount = 0
-    public var deleteTokenHandler: ((String) -> (Bool))?
-    public func deleteToken(identifier: String) -> Bool {
+    public var deleteTokenHandler: ((String, String?) -> (Bool))?
+    public func deleteToken(identifier: String, accessGroup: String?) -> Bool {
         deleteTokenCallCount += 1
         if let deleteTokenHandler = deleteTokenHandler {
-            return deleteTokenHandler(identifier)
+            return deleteTokenHandler(identifier, accessGroup)
         }
         return false
     }
@@ -233,6 +233,16 @@ public class KeychainUtilityProtocolMock: KeychainUtilityProtocol {
             return deleteHandler(key)
         }
         return false
+    }
+
+    public private(set) var setAccessGroupCallCount = 0
+    public var setAccessGroupHandler: ((String) -> ())?
+    public func setAccessGroup(_ accessGroup: String)  {
+        setAccessGroupCallCount += 1
+        if let setAccessGroupHandler = setAccessGroupHandler {
+            setAccessGroupHandler(accessGroup)
+        }
+        
     }
 }
 
