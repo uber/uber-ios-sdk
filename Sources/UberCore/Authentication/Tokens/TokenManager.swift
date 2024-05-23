@@ -87,8 +87,11 @@ public final class TokenManager: TokenManaging {
     public func saveToken(_ token: AccessToken, 
                           identifier: String = TokenManager.defaultAccessTokenIdentifier,
                           accessGroup: String? = nil) -> Bool {
-        updateAccessGroup(accessGroup)
-        return keychainUtility.save(token, for: identifier)
+        keychainUtility.save(
+            token,
+            for: identifier,
+            accessGroup: accessGroup
+        )
     }
     
     // MARK: Get
@@ -99,8 +102,10 @@ public final class TokenManager: TokenManaging {
     /// - Returns: An optional Access Token if found
     public func getToken(identifier: String = TokenManager.defaultAccessTokenIdentifier,
                          accessGroup: String? = nil) -> AccessToken? {
-        updateAccessGroup(accessGroup)
-        return keychainUtility.get(key: identifier)
+        keychainUtility.get(
+            key: identifier,
+            accessGroup: accessGroup
+        )
     }
     
     // MARK: Delete
@@ -113,8 +118,10 @@ public final class TokenManager: TokenManaging {
     public func deleteToken(identifier: String = TokenManager.defaultAccessTokenIdentifier,
                             accessGroup: String? = nil) -> Bool {
         deleteCookies()
-        updateAccessGroup(accessGroup)
-        return keychainUtility.delete(key: identifier)
+        return keychainUtility.delete(
+            key: identifier,
+            accessGroup: accessGroup
+        )
     }
     
     // MARK: Private Interface
@@ -132,10 +139,5 @@ public final class TokenManager: TokenManaging {
                 sharedCookieStorage.deleteCookie(cookie)
             }
         }
-    }
-    
-    private func updateAccessGroup(_ accessGroup: String?) {
-        guard let accessGroup else { return }
-        keychainUtility.setAccessGroup(accessGroup)
     }
 }
