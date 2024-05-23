@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B21E42782BE2FF6500D9C5E1 /* KeychainUtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21E42772BE2FF6500D9C5E1 /* KeychainUtilityTests.swift */; };
-		B243DF582BFE485E0086160C /* RidesClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B243DF572BFE485E0086160C /* RidesClientTests.swift */; };
 		B25D308A2BD03F50008A67CF /* UberButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25D30892BD03F50008A67CF /* UberButtonView.swift */; };
 		B28217C82B97A2E400EE786D /* AuthManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28217C72B97A2E400EE786D /* AuthManagerTests.swift */; };
 		B28A41712BACA97000F727C7 /* AuthorizationCodeResponseParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28A41702BACA97000F727C7 /* AuthorizationCodeResponseParserTests.swift */; };
@@ -44,7 +43,6 @@
 /* Begin PBXFileReference section */
 		B21E42772BE2FF6500D9C5E1 /* KeychainUtilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainUtilityTests.swift; sourceTree = "<group>"; };
 		B243DF562BFE474C0086160C /* UberSDK.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UberSDK.entitlements; sourceTree = "<group>"; };
-		B243DF572BFE485E0086160C /* RidesClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesClientTests.swift; sourceTree = "<group>"; };
 		B25D30892BD03F50008A67CF /* UberButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberButtonView.swift; sourceTree = "<group>"; };
 		B28217C72B97A2E400EE786D /* AuthManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManagerTests.swift; sourceTree = "<group>"; };
 		B28A41702BACA97000F727C7 /* AuthorizationCodeResponseParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeResponseParserTests.swift; sourceTree = "<group>"; };
@@ -88,14 +86,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B251C3872BFE431D00DECBF2 /* UberRides */ = {
-			isa = PBXGroup;
-			children = (
-				B243DF572BFE485E0086160C /* RidesClientTests.swift */,
-			);
-			path = UberRides;
-			sourceTree = "<group>";
-		};
 		B28217C62B97A2CE00EE786D /* UberAuth */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,7 +163,6 @@
 		B2D7AE2B2B979EDB007F03FB /* UberSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				B251C3872BFE431D00DECBF2 /* UberRides */,
 				B2D096912B97B8E70093B510 /* Mocks */,
 				B2983AE72BCF658E00159EA7 /* UberCore */,
 				B28217C62B97A2CE00EE786D /* UberAuth */,
@@ -310,7 +299,6 @@
 				B28A41752BAE331300F727C7 /* ParRequestTests.swift in Sources */,
 				B28CDD322BA403A900EB1BBD /* AuthorizationCodeAuthProviderTests.swift in Sources */,
 				B28A41712BACA97000F727C7 /* AuthorizationCodeResponseParserTests.swift in Sources */,
-				B243DF582BFE485E0086160C /* RidesClientTests.swift in Sources */,
 				B2983AE52BCF15FF00159EA7 /* TokenManagerTests.swift in Sources */,
 				B2983AE92BCF663100159EA7 /* Mocks.swift in Sources */,
 			);
