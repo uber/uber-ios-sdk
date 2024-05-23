@@ -86,8 +86,12 @@ final class KeychainUtilityTests: XCTestCase {
             value: 5
         )
                 
-        keychainUtility.setAccessGroup(accessGroup)
-        let saved = keychainUtility.save(testObject, for: "test_object")
+        let saved = keychainUtility.save(
+            testObject,
+            for: "test_object",
+            accessGroup: accessGroup
+        )
+        
         XCTAssertTrue(saved)
     }
     
@@ -97,9 +101,16 @@ final class KeychainUtilityTests: XCTestCase {
             value: 5
         )
         
-        keychainUtility.setAccessGroup(accessGroup)
-        _ = keychainUtility.save(testObject, for: "test_object")
-        let retrievedObject: TestObject? = keychainUtility.get(key: "test_object")
+        _ = keychainUtility.save(
+            testObject,
+            for: "test_object",
+            accessGroup: accessGroup
+        )
+        
+        let retrievedObject: TestObject? = keychainUtility.get(
+            key: "test_object",
+            accessGroup: accessGroup
+        )
         
         XCTAssertEqual(testObject, retrievedObject)
     }
@@ -110,12 +121,24 @@ final class KeychainUtilityTests: XCTestCase {
             value: 5
         )
         
-        keychainUtility.setAccessGroup(accessGroup)
-        _ = keychainUtility.save(testObject, for: "test_object")
-        let deleted = keychainUtility.delete(key: "test_object")
+        _ = keychainUtility.save(
+            testObject,
+            for: "test_object",
+            accessGroup: accessGroup
+        )
+        
+        let deleted = keychainUtility.delete(
+            key: "test_object",
+            accessGroup: accessGroup
+        )
+        
         XCTAssertTrue(deleted)
         
-        let retrievedObject: TestObject? = keychainUtility.get(key: "test_object")
+        let retrievedObject: TestObject? = keychainUtility.get(
+            key: "test_object",
+            accessGroup: accessGroup
+        )
+        
         XCTAssertNil(retrievedObject)
     }
     

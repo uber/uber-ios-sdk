@@ -206,43 +206,33 @@ public class KeychainUtilityProtocolMock: KeychainUtilityProtocol {
 
 
     public private(set) var saveCallCount = 0
-    public var saveHandler: ((Any, String) -> (Bool))?
-    public func save<V: Encodable>(_ value: V, for key: String) -> Bool {
+    public var saveHandler: ((Any, String, String?) -> (Bool))?
+    public func save<V: Encodable>(_ value: V, for key: String, accessGroup: String?) -> Bool {
         saveCallCount += 1
         if let saveHandler = saveHandler {
-            return saveHandler(value, key)
+            return saveHandler(value, key, accessGroup)
         }
         return false
     }
 
     public private(set) var getCallCount = 0
-    public var getHandler: ((String) -> (Any?))?
-    public func get<V: Decodable>(key: String) -> V? {
+    public var getHandler: ((String, String?) -> (Any?))?
+    public func get<V: Decodable>(key: String, accessGroup: String?) -> V? {
         getCallCount += 1
         if let getHandler = getHandler {
-            return getHandler(key) as? V
+            return getHandler(key, accessGroup) as? V
         }
         return nil
     }
 
     public private(set) var deleteCallCount = 0
-    public var deleteHandler: ((String) -> (Bool))?
-    public func delete(key: String) -> Bool {
+    public var deleteHandler: ((String, String?) -> (Bool))?
+    public func delete(key: String, accessGroup: String?) -> Bool {
         deleteCallCount += 1
         if let deleteHandler = deleteHandler {
-            return deleteHandler(key)
+            return deleteHandler(key, accessGroup)
         }
         return false
-    }
-
-    public private(set) var setAccessGroupCallCount = 0
-    public var setAccessGroupHandler: ((String) -> ())?
-    public func setAccessGroup(_ accessGroup: String)  {
-        setAccessGroupCallCount += 1
-        if let setAccessGroupHandler = setAccessGroupHandler {
-            setAccessGroupHandler(accessGroup)
-        }
-        
     }
 }
 

@@ -32,7 +32,7 @@ final class TokenManagerTests: XCTestCase {
     
     func test_saveToken_triggersKeychainUtilitySave() {
         
-        keychainUtility.saveHandler = { _, identifier -> Bool in
+        keychainUtility.saveHandler = { _, identifier, _ -> Bool in
             XCTAssertEqual(identifier, "test_token_identifier")
             return true
         }
@@ -66,7 +66,7 @@ final class TokenManagerTests: XCTestCase {
             tokenString: "test_token_string"
         )
         
-        keychainUtility.getHandler = { identifier -> AccessToken? in
+        keychainUtility.getHandler = { identifier, _ -> AccessToken? in
             XCTAssertEqual(identifier, "test_token_identifier")
             return accessToken
         }
@@ -83,64 +83,15 @@ final class TokenManagerTests: XCTestCase {
         XCTAssertEqual(keychainUtility.getCallCount, 1)
     }
     
-    func test_saveToken_updatesKeychainUtilityAccessGroup() {
-        
-        let accessToken = AccessToken(
-            tokenString: "test_token_string"
-        )
-        
-        keychainUtility.setAccessGroupHandler = { accessGroup in
-            XCTAssertEqual(accessGroup, "test_access_group")
-        }
-        
-        let tokenManager = TokenManager(
-            keychainUtility: keychainUtility
-        )
-        
-        XCTAssertEqual(keychainUtility.setAccessGroupCallCount, 0)
-        
-        let token = tokenManager.saveToken(
-            accessToken,
-            identifier: "test_token_identifier",
-            accessGroup: "test_access_group"
-        )
-        
-        XCTAssertEqual(keychainUtility.setAccessGroupCallCount, 1)
-    }
-    
-    func test_getToken_updatesKeychainUtilityAccessGroup() {
-        
-        let accessToken = AccessToken(
-            tokenString: "test_token_string"
-        )
-        
-        keychainUtility.setAccessGroupHandler = { accessGroup in
-            XCTAssertEqual(accessGroup, "test_access_group")
-        }
-        
-        let tokenManager = TokenManager(
-            keychainUtility: keychainUtility
-        )
-        
-        XCTAssertEqual(keychainUtility.setAccessGroupCallCount, 0)
-        
-        let token = tokenManager.getToken(
-            identifier: "test_token_identifier",
-            accessGroup: "test_access_group"
-        )
-        
-        XCTAssertEqual(keychainUtility.setAccessGroupCallCount, 1)
-    }
-    
     func test_getToken() {
         
         var savedToken: AccessToken?
-        keychainUtility.saveHandler = { value, _ in
+        keychainUtility.saveHandler = { value, _, _ in
             savedToken = value as? AccessToken
             return true
         }
         
-        keychainUtility.getHandler = { key in
+        keychainUtility.getHandler = { key, _ in
             XCTAssertEqual(key, TokenManager.defaultAccessTokenIdentifier)
             return savedToken
         }
@@ -157,7 +108,7 @@ final class TokenManagerTests: XCTestCase {
     
     func test_deleteToken_triggersKeychainUtilityDelete() {
         
-        keychainUtility.deleteHandler = { identifier -> Bool in
+        keychainUtility.deleteHandler = { identifier, _ -> Bool in
             XCTAssertEqual(identifier, "test_token_identifier")
             return true
         }
