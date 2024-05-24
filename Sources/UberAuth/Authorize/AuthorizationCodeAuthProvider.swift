@@ -15,18 +15,24 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     public let redirectURI: String
     
     public typealias Completion = (Result<Client, UberAuthError>) -> Void
-    
+        
     public static let defaultScopes = ["profile"]
 
+    // MARK: Internal Properties
+    
+    var currentSession: AuthenticationSessioning?
+    
+    typealias AuthenticationSessionBuilder = (ASPresentationAnchor, String, URL, AuthCompletion) -> (AuthenticationSessioning)
+    
     // MARK: Private Properties
 
     private let applicationLauncher: ApplicationLaunching
     
+    private let authenticationSessionBuilder: AuthenticationSessionBuilder?
+    
     private var completion: Completion?
     
     private let configurationProvider: ConfigurationProviding
-    
-    var currentSession: AuthenticationSessioning?
     
     private let pkce = PKCE()
     
@@ -39,6 +45,8 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     private let networkProvider: NetworkProviding
     
     private let tokenManager: TokenManaging
+    
+    private let scopes: [String]
     
     // MARK: Initializers
     
@@ -56,6 +64,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         }
         
         self.applicationLauncher = UIApplication.shared
+        self.authenticationSessionBuilder = nil
         self.clientID = clientID
         self.presentationAnchor = presentationAnchor
         self.redirectURI = redirectURI
@@ -63,9 +72,11 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.shouldExchangeAuthCode = shouldExchangeAuthCode
         self.networkProvider = NetworkProvider(baseUrl: Constants.baseUrl)
         self.tokenManager = TokenManager()
+        self.scopes = scopes
     }
     
     init(presentationAnchor: ASPresentationAnchor = .init(),
+         authenticationSessionBuilder: AuthenticationSessionBuilder? = nil,
          scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
          shouldExchangeAuthCode: Bool = false,
          configurationProvider: ConfigurationProviding = DefaultConfigurationProvider(),
@@ -83,6 +94,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         }
         
         self.applicationLauncher = applicationLauncher
+        self.authenticationSessionBuilder = authenticationSessionBuilder
         self.clientID = clientID
         self.configurationProvider = configurationProvider
         self.presentationAnchor = presentationAnchor
@@ -91,6 +103,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.shouldExchangeAuthCode = shouldExchangeAuthCode
         self.networkProvider = networkProvider
         self.tokenManager = tokenManager
+        self.scopes = scopes
     }
     
     // MARK: AuthProviding
@@ -183,7 +196,8 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             clientID: clientID,
             codeChallenge: pkce.codeChallenge,
             redirectURI: redirectURI,
-            requestURI: requestURI
+            requestURI: requestURI,
+            scopes: scopes
         )
         
         guard let url = request.url(baseUrl: Constants.baseUrl) else {
@@ -197,16 +211,17 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             return
         }
         
-        currentSession = AuthenticationSession(
-            anchor: presentationAnchor,
-            callbackURLScheme: callbackURLScheme,
-            url: url,
-            completion: { [weak self] result in
-                guard let self else { return }
-                completion(result)
-                currentSession = nil
-            }
-        )
+        currentSession = authenticationSessionBuilder?(ASPresentationAnchor(), callbackURLScheme, url, completion) ??
+            AuthenticationSession(
+                anchor: presentationAnchor,
+                callbackURLScheme: callbackURLScheme,
+                url: url,
+                completion: { [weak self] result in
+                    guard let self else { return }
+                    completion(result)
+                    currentSession = nil
+                }
+            )
         
         currentSession?.start()
     }
@@ -284,7 +299,8 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             clientID: clientID,
             codeChallenge: pkce.codeChallenge,
             redirectURI: redirectURI,
-            requestURI: requestURI
+            requestURI: requestURI,
+            scopes: scopes
         )
         
         guard let url = request.url(baseUrl: Constants.baseUrl) else {
@@ -292,13 +308,15 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             return
         }
         
-        applicationLauncher.open(
-            url,
-            options: [:],
-            completionHandler: { opened in
-                completion?(opened)
-            }
-        )
+        DispatchQueue.main.async {
+            self.applicationLauncher.open(
+                url,
+                options: [:],
+                completionHandler: { opened in
+                    completion?(opened)
+                }
+            )
+        }
     }
 
     private func executePar(prefill: Prefill?,

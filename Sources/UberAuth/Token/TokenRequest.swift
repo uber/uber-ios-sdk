@@ -42,7 +42,7 @@ struct TokenRequest: NetworkRequest {
     
     typealias Response = AccessToken
     
-    var parameters: [String : String]? {
+    var body: [String : String]? {
         [
             "code": authorizationCode,
             "client_id": clientID,
