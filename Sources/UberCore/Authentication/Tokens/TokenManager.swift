@@ -34,20 +34,35 @@ public protocol TokenManaging {
     ///   - token: The Access Token to save
     ///   - identifier: A string used to identify the Access Token upon retrieval
     /// - Returns: A boolean indicating whether or not the save operation was successful
-    func saveToken(_ token: AccessToken, identifier: String) -> Bool
+    func saveToken(_ token: AccessToken, identifier: String, accessGroup: String?) -> Bool
     
     /// Retrieves an Access Token from the on device keychain
     ///
     /// - Parameter identifier: The identifier string used when saving the Access Token
     /// - Returns: An optional Access Token if found
-    func getToken(identifier: String) -> AccessToken?
+    func getToken(identifier: String, accessGroup: String?) -> AccessToken?
     
     
     /// Removes the Access Token corresponding with the supplied `identifier`
     ///
     /// - Parameter identifier: The identifier string used when saving the Access Token
     /// - Returns: A boolean indicating whether or not the delete operation was successful
-    func deleteToken(identifier: String) -> Bool
+    func deleteToken(identifier: String, accessGroup: String?) -> Bool
+}
+
+public extension TokenManaging {
+    
+    func saveToken(_ token: AccessToken, identifier: String, accessGroup: String? = nil) -> Bool {
+        return saveToken(token, identifier: identifier, accessGroup: accessGroup)
+    }
+    
+    func getToken(identifier: String, accessGroup: String? = nil) -> AccessToken? {
+        getToken(identifier: identifier, accessGroup: accessGroup)
+    }
+    
+    func deleteToken(identifier: String, accessGroup: String? = nil) -> Bool {
+        deleteToken(identifier: identifier, accessGroup: accessGroup)
+    }
 }
 
 public final class TokenManager: TokenManaging {
@@ -69,8 +84,14 @@ public final class TokenManager: TokenManaging {
     ///   - identifier: A string used to identify the Access Token upon retrieval
     /// - Returns: A boolean indicating whether or not the save operation was successful
     @discardableResult
-    public func saveToken(_ token: AccessToken, identifier: String = TokenManager.defaultAccessTokenIdentifier) -> Bool {
-        keychainUtility.save(token, for: identifier)
+    public func saveToken(_ token: AccessToken, 
+                          identifier: String = TokenManager.defaultAccessTokenIdentifier,
+                          accessGroup: String? = nil) -> Bool {
+        keychainUtility.save(
+            token,
+            for: identifier,
+            accessGroup: accessGroup
+        )
     }
     
     // MARK: Get
@@ -79,8 +100,12 @@ public final class TokenManager: TokenManaging {
     ///
     /// - Parameter identifier: The identifier string used when saving the Access Token
     /// - Returns: An optional Access Token if found
-    public func getToken(identifier: String = TokenManager.defaultAccessTokenIdentifier) -> AccessToken? {
-        keychainUtility.get(key: identifier)
+    public func getToken(identifier: String = TokenManager.defaultAccessTokenIdentifier,
+                         accessGroup: String? = nil) -> AccessToken? {
+        keychainUtility.get(
+            key: identifier,
+            accessGroup: accessGroup
+        )
     }
     
     // MARK: Delete
@@ -90,9 +115,13 @@ public final class TokenManager: TokenManaging {
     /// - Parameter identifier: The identifier string used when saving the Access Token
     /// - Returns: A boolean indicating whether or not the delete operation was successful
     @discardableResult
-    public func deleteToken(identifier: String = TokenManager.defaultAccessTokenIdentifier) -> Bool {
+    public func deleteToken(identifier: String = TokenManager.defaultAccessTokenIdentifier,
+                            accessGroup: String? = nil) -> Bool {
         deleteCookies()
-        return keychainUtility.delete(key: identifier)
+        return keychainUtility.delete(
+            key: identifier,
+            accessGroup: accessGroup
+        )
     }
     
     // MARK: Private Interface

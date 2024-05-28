@@ -33,22 +33,40 @@ public protocol KeychainUtilityProtocol {
     /// - Parameters:
     ///   - value: The object to save. Must conform to the Codable protocol.
     ///   - key: A string value used to identify the saved object
+    ///   - accessGroup: The accessGroup for which the operation should be performed
     /// - Returns: A boolean indicating whether or not the save operation was successful
-    func save<V: Encodable>(_ value: V, for key: String) -> Bool
+    func save<V: Encodable>(_ value: V, for key: String, accessGroup: String?) -> Bool
     
     /// Retrieves an object from the on device keychain using the supplied `key`
     ///
     /// - Parameters:
     ///   - key: The identifier string used when saving the object
+    ///   - accessGroup: The accessGroup for which the operation should be performed
     /// - Returns: If found, an optional type conforming to the Codable protocol
-    func get<V: Decodable>(key: String) -> V?
+    func get<V: Decodable>(key: String, accessGroup: String?) -> V?
     
     /// Removes the object from the on device keychain corresponding to the supplied `key`
     ///
     /// - Parameters:
     ///   - key: The identifier string used when saving the object
+    ///   - accessGroup: The accessGroup for which the operation should be performed
     /// - Returns: A boolean indicating whether or not the delete operation was successful
-    func delete(key: String) -> Bool
+    func delete(key: String, accessGroup: String?) -> Bool
+}
+
+public extension KeychainUtilityProtocol {
+    
+    func save<V: Encodable>(_ value: V, for key: String) -> Bool {
+        save(value, for: key, accessGroup: nil)
+    }
+    
+    func get<V: Decodable>(key: String) -> V? {
+        get(key: key, accessGroup: nil)
+    }
+    
+    func delete(key: String) -> Bool {
+        delete(key: key, accessGroup: nil)
+    }
 }
 
 public final class KeychainUtility: KeychainUtilityProtocol {
@@ -56,15 +74,12 @@ public final class KeychainUtility: KeychainUtilityProtocol {
     // MARK: Properties
     
     private let serviceName = "com.uber.uber-ios-sdk"
-    private let accessGroup: String
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
     
     // MARK: Initializers
     
-    public init(accessGroup: String = "") {
-        self.accessGroup = accessGroup
-    }
+    public init() {}
     
     // MARK: KeychainUtilityProtocol
     
@@ -75,14 +90,15 @@ public final class KeychainUtility: KeychainUtilityProtocol {
     /// - Parameters:
     ///   - value: The object to save. Must conform to the Codable protocol.
     ///   - key: A string value used to identify the saved object
+    ///   - accessGroup: The accessGroup for which the operation should be performed
     /// - Returns: A boolean indicating whether or not the save operation was successful
-    public func save<V: Encodable>(_ value: V, for key: String) -> Bool {
+    public func save<V: Encodable>(_ value: V, for key: String, accessGroup: String? = nil) -> Bool {
         guard let data = try? encoder.encode(value) else {
             return false
         }
         
         let valueData = NSData(data: data)
-        var attributes = attributes(for: key)
+        var attributes = attributes(for: key, accessGroup: accessGroup)
         attributes[Attribute.accessible] = kSecAttrAccessibleWhenUnlocked
         attributes[Attribute.valueData] = valueData
         
@@ -107,10 +123,11 @@ public final class KeychainUtility: KeychainUtilityProtocol {
     ///
     /// - Parameters:
     ///   - key: The identifier string used when saving the object
+    ///   - accessGroup: The accessGroup for which the operation should be performed
     /// - Returns: If found, an optional type conforming to the Codable protocol
-    public func get<V: Decodable>(key: String) -> V? {
+    public func get<V: Decodable>(key: String, accessGroup: String? = nil) -> V? {
 
-        var attributes = attributes(for: key)
+        var attributes = attributes(for: key, accessGroup: accessGroup)
         attributes[Attribute.matchLimit] = kSecMatchLimitOne
         attributes[Attribute.returnData] = kCFBooleanTrue
         
@@ -138,19 +155,23 @@ public final class KeychainUtility: KeychainUtilityProtocol {
     ///
     /// - Parameters:
     ///   - key: The identifier string used when saving the object
+    ///   - accessGroup: The accessGroup for which the operation should be performed
     /// - Returns: A boolean indicating whether or not the delete operation was successful
-    public func delete(key: String) -> Bool {
+    public func delete(key: String, accessGroup: String? = nil) -> Bool {
         SecItemDelete(
-            attributes(for: key) as CFDictionary
+            attributes(for: key, accessGroup: accessGroup) as CFDictionary
         ) == noErr
     }
     
     // MARK: Private
     
     /// Builds a base set of attributes used to perform a keychain storage operation
-    /// - Parameter key: The object identifier
+    ///
+    /// - Parameters:
+    ///   - key: The object identifier
+    ///   -  accessGroup: An optional access group identifier
     /// - Returns: A dictionary containing the attributes
-    private func attributes(for key: String) -> [String: Any] {
+    private func attributes(for key: String, accessGroup: String?) -> [String: Any] {
 
         let identifier = key.data(using: .utf8)
         
@@ -160,7 +181,8 @@ public final class KeychainUtility: KeychainUtilityProtocol {
         itemData[Attribute.service] = serviceName as AnyObject
         itemData[Attribute.class] = kSecClassGenericPassword
         
-        if !accessGroup.isEmpty {
+        if let accessGroup,
+            !accessGroup.isEmpty {
             itemData[Attribute.accessGroup] = accessGroup as AnyObject
         }
         

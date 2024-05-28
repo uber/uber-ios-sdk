@@ -47,7 +47,7 @@ public class BaseAuthenticator: UberAuthenticating {
     public func consumeResponse(url: URL, completion: AuthenticationCompletionHandler?) {
         if AuthenticationURLUtility.shouldHandleRedirectURL(url) {
             do {
-                let accessToken = try AccessTokenFactory.createAccessToken(fromRedirectURL: url)
+                let accessToken = try AccessToken(redirectURL: url)
                 
                 completion?(accessToken, nil)
             } catch let error as NSError {

@@ -30,6 +30,8 @@ final class KeychainUtilityTests: XCTestCase {
     
     private let keychainUtility = KeychainUtility()
     
+    private let accessGroup = "group.com.uber.UberSDK"
+    
     override func setUp() {
         super.setUp()
         
@@ -75,6 +77,68 @@ final class KeychainUtilityTests: XCTestCase {
         XCTAssertTrue(deleted)
         
         let retrievedObject: TestObject? = keychainUtility.get(key: "test_object")
+        XCTAssertNil(retrievedObject)
+    }
+    
+    func test_save_customAccessGroup() {
+        let testObject = TestObject(
+            name: "test",
+            value: 5
+        )
+                
+        let saved = keychainUtility.save(
+            testObject,
+            for: "test_object",
+            accessGroup: accessGroup
+        )
+        
+        XCTAssertTrue(saved)
+    }
+    
+    func test_get_customAccessGroup() {
+        let testObject = TestObject(
+            name: "test",
+            value: 5
+        )
+        
+        _ = keychainUtility.save(
+            testObject,
+            for: "test_object",
+            accessGroup: accessGroup
+        )
+        
+        let retrievedObject: TestObject? = keychainUtility.get(
+            key: "test_object",
+            accessGroup: accessGroup
+        )
+        
+        XCTAssertEqual(testObject, retrievedObject)
+    }
+    
+    func test_delete_customAccessGroup() {
+        let testObject = TestObject(
+            name: "test",
+            value: 5
+        )
+        
+        _ = keychainUtility.save(
+            testObject,
+            for: "test_object",
+            accessGroup: accessGroup
+        )
+        
+        let deleted = keychainUtility.delete(
+            key: "test_object",
+            accessGroup: accessGroup
+        )
+        
+        XCTAssertTrue(deleted)
+        
+        let retrievedObject: TestObject? = keychainUtility.get(
+            key: "test_object",
+            accessGroup: accessGroup
+        )
+        
         XCTAssertNil(retrievedObject)
     }
     
