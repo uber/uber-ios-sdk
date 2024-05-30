@@ -19,6 +19,7 @@ struct AuthorizeRequest: NetworkRequest {
     private let clientID: String
     private let redirectURI: String
     private let requestURI: String?
+    private let scopes: [String]
     
     // MARK: Initializers
     
@@ -26,12 +27,14 @@ struct AuthorizeRequest: NetworkRequest {
          clientID: String,
          codeChallenge: String,
          redirectURI: String,
-         requestURI: String?) {
+         requestURI: String?,
+         scopes: [String] = []) {
         self.app = app
         self.clientID = clientID
         self.codeChallenge = codeChallenge
         self.redirectURI = redirectURI
         self.requestURI = requestURI
+        self.scopes = scopes
     }
     
     // MARK: Request
@@ -45,7 +48,8 @@ struct AuthorizeRequest: NetworkRequest {
             "code_challenge": codeChallenge,
             "code_challenge_method": "S256",
             "redirect_uri": redirectURI,
-            "request_uri": requestURI
+            "request_uri": requestURI,
+            "scope": scopes.joined(separator: " ")
         ]
         .compactMapValues { $0 }
     }

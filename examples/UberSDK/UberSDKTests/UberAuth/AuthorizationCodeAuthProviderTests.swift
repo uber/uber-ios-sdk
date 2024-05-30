@@ -167,9 +167,14 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
     }
     
     func test_executeNativeLogin_triggersApplicationLauncher() {
-                
+        
+        let expectation = XCTestExpectation()
+        
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.openHandler = { _, _, _ in }
+        applicationLauncher.openHandler = { _, _, completion in
+            expectation.fulfill()
+            completion?(true)
+        }
         
         configurationProvider.isInstalledHandler = { _, _ in
             true
@@ -180,15 +185,13 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
             applicationLauncher: applicationLauncher
         )
         
-        XCTAssertEqual(applicationLauncher.openCallCount, 0)
-        
         provider.execute(
             authDestination: .native(appPriority: UberApp.allCases),
             prefill: nil,
             completion: { _ in }
         )
         
-        XCTAssertEqual(applicationLauncher.openCallCount, 1)
+        wait(for: [expectation], timeout: 0.2)
     }
     
     func test_executeNativeLogin_noDestinations_triggersInAppLogin() {
@@ -226,13 +229,22 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         configurationProvider.isInstalledHandler = { _, _ in
             true
         }
+                
+        let expectation = XCTestExpectation()
+        
+        let authenticationSession = AuthenticationSessioningMock()
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _ in
+            expectation.fulfill()
+            return authenticationSession
+        }
         
         let provider = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: authenticationSessionBuilder,
             configurationProvider: configurationProvider,
             applicationLauncher: applicationLauncher
         )
-        
-        XCTAssertNil(provider.currentSession)
+                
+        XCTAssertEqual(authenticationSession.startCallCount, 0)
         
         provider.execute(
             authDestination: .native(appPriority: UberApp.allCases),
@@ -240,7 +252,9 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
             completion: { _ in }
         )
         
-        XCTAssertNotNil(provider.currentSession)
+        wait(for: [expectation], timeout: 0.2)
+        
+        XCTAssertEqual(authenticationSession.startCallCount, 1)
     }
     
     func test_handleResponse_true_callsResponseParser() {
