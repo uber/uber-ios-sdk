@@ -128,7 +128,7 @@ public final class TokenManager: TokenManaging {
     
     /// Removes all cookies in the shared cookie store corresponding with the auth.uber.com domain
     private func deleteCookies() {
-        guard let loginUrl = URL(string: OAuth.regionHost) else {
+        guard let loginUrl = URL(string: Constants.regionHost) else {
             return
         }
         
@@ -139,5 +139,11 @@ public final class TokenManager: TokenManaging {
                 sharedCookieStorage.deleteCookie(cookie)
             }
         }
+    }
+    
+    // MARK: Constants
+    
+    private enum Constants {
+        static let regionHost = "https://auth.uber.com"
     }
 }

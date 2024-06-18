@@ -6,10 +6,10 @@
 import Foundation
 
 /// A helper class to execute dependent asynchronous methods on an array of elements serially
-class AsyncDispatcher<T, U> {
+public class AsyncDispatcher<T, U> {
 
-    typealias AsyncCompletion = ((T) -> Void)?
-    typealias AsyncContinue = (T) -> Bool
+    public typealias AsyncCompletion = ((T) -> Void)?
+    public typealias AsyncContinue = (T) -> Bool
 
     /// Executes the given asyncMethod for each element in the list serially. Allows for aborting the list early if required.
     ///
@@ -19,7 +19,7 @@ class AsyncDispatcher<T, U> {
     ///   - asyncMethod: the async method to execute.
     ///   - continue: block called with the results of asyncMethod; return true to move onto the next element, or false to abort the loop.
     ///   - finally: block called after the asyncMethod loop has completed, either due to reaching the end of the list or aborting early.
-    static func exec(for elements: [U],
+    public static func exec(for elements: [U],
                      with: @escaping (U) -> (),
                      asyncMethod: @escaping (U, AsyncCompletion) -> (),
                      continue: @escaping AsyncContinue,

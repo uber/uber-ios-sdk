@@ -24,6 +24,7 @@
 
 import Foundation
 import CoreLocation
+import UberAuth
 import UberCore
 import WebKit
 

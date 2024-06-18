@@ -36,38 +36,8 @@ public class RideRequestViewRequestingBehavior {
     /// The UIViewController to present the RideRequestViewController over
     unowned public var presentingViewController: UIViewController
     
-    /**
-     The LoginManager to use with the RideRequestViewController. Uses the
-     accessTokenIdentifier & keychainAccessGroup to get an AccessToken. Will be used
-     to log a user in, if necessary
-     */
-    public var loginManager: LoginManager {
-        get {
-            return self.modalRideRequestViewController.rideRequestViewController.loginManager
-        }
-        set {
-            self.modalRideRequestViewController.rideRequestViewController.loginManager = newValue
-        }
-    }
-    
     /// The ModalRideRequestViewController that is created by this behavior, only exists after requestRide() is called
     public internal(set) var modalRideRequestViewController: ModalRideRequestViewController
-    
-    /**
-     Creates the RideRequestViewRequestingBehavior with the given presenting view controller.
-     This view controller will be used to modally present the ModalRideRequestViewController
-     when this behavior is executed
-     
-     - parameter presentingViewController: The UIViewController to present the ModalRideRequestViewController over
-     - parameter loginManager:             The LoginManager to use for managing the AccessToken for the RideRequestView
-     
-     - returns: An initialized RideRequestViewRequestingBehavior object
-     */
-    public init(presentingViewController: UIViewController, loginManager: LoginManager) {
-        self.presentingViewController = presentingViewController
-        let rideRequestViewController = RideRequestViewController(rideParameters: RideParametersBuilder().build(), loginManager: loginManager)
-        modalRideRequestViewController = ModalRideRequestViewController(rideRequestViewController: rideRequestViewController)
-    }
     
     /**
      Creates the RideRequestViewRequestingBehavior with the given presenting view controller.
@@ -80,8 +50,10 @@ public class RideRequestViewRequestingBehavior {
      
      - returns: An initialized RideRequestViewRequestingBehavior object
      */
-    public convenience init(presentingViewController: UIViewController) {
-        self.init(presentingViewController: presentingViewController, loginManager: LoginManager())
+    public init(presentingViewController: UIViewController) {
+        self.presentingViewController = presentingViewController
+        let rideRequestViewController = RideRequestViewController(rideParameters: RideParametersBuilder().build())
+        modalRideRequestViewController = ModalRideRequestViewController(rideRequestViewController: rideRequestViewController)
     }
 }
 

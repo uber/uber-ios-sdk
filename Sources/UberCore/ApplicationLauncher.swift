@@ -7,7 +7,7 @@ import Foundation
 import UIKit
 
 /// @mockable
-protocol ApplicationLaunching {
+public protocol ApplicationLaunching {
     
     func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler: ((Bool) -> Void)?)
 }
