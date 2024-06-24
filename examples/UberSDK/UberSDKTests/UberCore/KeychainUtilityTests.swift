@@ -24,7 +24,7 @@
 
 
 import XCTest
-@testable import UberCore
+@testable import UberAuth
 
 final class KeychainUtilityTests: XCTestCase {
     
