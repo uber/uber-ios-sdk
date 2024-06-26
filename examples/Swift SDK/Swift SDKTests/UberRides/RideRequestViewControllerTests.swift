@@ -23,43 +23,27 @@
 import XCTest
 import CoreLocation
 import WebKit
+@testable import UberAuth
 @testable import UberCore
 @testable import UberRides
 
 class RideRequestViewControllerTests: XCTestCase {
     private let timeout: Double = 2
     private let testIdentifier = "testAccessTokenIdentifier"
-
+    private let tokenManager = TokenManager()
+    private var accessGroup: String { Configuration.shared.defaultKeychainAccessGroup }
+    
     override func setUp() {
         super.setUp()
         Configuration.plistName = "testInfo"
         Configuration.restoreDefaults()
         Configuration.shared.isSandbox = true
-        _ = TokenManager.deleteToken(identifier: testIdentifier)
+        tokenManager.deleteToken(identifier: testIdentifier, accessGroup: accessGroup)
     }
 
     override func tearDown() {
         Configuration.restoreDefaults()
         super.tearDown()
-    }
-
-    func testAccessTokenMissing_whenNoAccessToken_loginFailed() {
-        var expectation = false
-
-        let expectationClosure: (RideRequestViewController, NSError) -> () = {vc, error in
-            XCTAssertEqual(error.code, RideRequestViewErrorType.accessTokenMissing.rawValue)
-            XCTAssertEqual(error.domain, RideRequestViewErrorFactory.errorDomain)
-            expectation = true
-        }
-        let loginManager = LoginManager(loginType: .implicit)
-        let rideRequestVC = RideRequestViewController(rideParameters: RideParametersBuilder().build(), loginManager: loginManager)
-        let rideRequestVCDelegateMock = RideRequestViewControllerDelegateMock(testClosure: expectationClosure)
-        rideRequestVC.delegate = rideRequestVCDelegateMock
-        XCTAssertNotNil(rideRequestVC.view)
-        rideRequestVC.load()
-        loginManager.loginCompletion(accessToken: nil, error: UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .unableToSaveAccessToken))
-
-        XCTAssertTrue(expectation)
     }
 
     func testRideRequestViewLoads_withValidAccessToken() {
@@ -68,13 +52,17 @@ class RideRequestViewControllerTests: XCTestCase {
         let expectationClosure: () -> () = {
             expectation = true
         }
+        let accessGroup = Configuration.shared.defaultKeychainAccessGroup
         let testToken = AccessToken(tokenString: "testTokenString")
-        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
+        tokenManager.saveToken(testToken, identifier: testIdentifier, accessGroup: accessGroup)
         defer {
-            _ = TokenManager.deleteToken(identifier: testIdentifier)
+            tokenManager.deleteToken(identifier: testIdentifier, accessGroup: accessGroup)
         }
-        let loginManager = LoginManager(accessTokenIdentifier: testIdentifier, keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup, loginType: .implicit)
-        let rideRequestVC = RideRequestViewController(rideParameters: RideParametersBuilder().build(), loginManager: loginManager)
+        let rideRequestVC = RideRequestViewController(
+            rideParameters: RideParametersBuilder().build(),
+            accessTokenIdentifier: testIdentifier,
+            keychainAccessGroup: accessGroup
+        )
         rideRequestVC.rideRequestView = RideRequestViewMock(rideRequestView: rideRequestVC.rideRequestView, testClosure: expectationClosure)
         XCTAssertNotNil(rideRequestVC.view)
         rideRequestVC.load()
@@ -84,31 +72,14 @@ class RideRequestViewControllerTests: XCTestCase {
     }
 
     func testLoginViewLoads_whenNoAccessToken() {
-        _ = TokenManager.deleteToken(identifier: testIdentifier)
-        let loginManager = LoginManager(accessTokenIdentifier: testIdentifier, keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup, loginType: .native)
-        let rideRequestVC = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), loginManager: loginManager)
+        tokenManager.deleteToken(identifier: testIdentifier, accessGroup: accessGroup)
+        let rideRequestVC = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build())
 
         XCTAssertNotNil(rideRequestVC.view)
 
         rideRequestVC.load()
 
-        XCTAssert(loginManager.loggingIn)
-    }
-
-    func testWidgetLoads_whenLoginSuccess() {
-        let testToken = AccessToken(tokenString: "test")
-
-        _ = TokenManager.deleteToken(identifier: testIdentifier)
-        let loginManager = LoginManager(accessTokenIdentifier: testIdentifier, keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup, loginType: .native)
-        let rideRequestVC = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), loginManager: loginManager)
-
-        XCTAssertNotNil(rideRequestVC.view)
-
-        rideRequestVC.load()
-        loginManager.loginCompletion(accessToken: testToken, error: nil)
-
-        XCTAssertFalse(rideRequestVC.rideRequestView.isHidden)
-        XCTAssertEqual(rideRequestVC.rideRequestView.accessToken, testToken)
+//        XCTAssert(loginManager.loggingIn)
     }
 
     func testRequestUsesCorrectSource_whenPresented() {
@@ -135,12 +106,16 @@ class RideRequestViewControllerTests: XCTestCase {
         }
 
         let testToken = AccessToken(tokenString: "testTokenString")
-        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
+        tokenManager.saveToken(testToken, identifier: testIdentifier, accessGroup: accessGroup)
         defer {
-            _ = TokenManager.deleteToken(identifier: testIdentifier)
+            tokenManager.deleteToken(identifier: testIdentifier, accessGroup: accessGroup)
         }
-        let loginManager = LoginManager(accessTokenIdentifier: testIdentifier, keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup, loginType: .implicit)
-        let rideRequestVC = RideRequestViewController(rideParameters: RideParametersBuilder().build(), loginManager: loginManager)
+        let rideRequestVC = RideRequestViewController(
+            rideParameters: RideParametersBuilder().build(),
+            accessTokenIdentifier: testIdentifier,
+            keychainAccessGroup: accessGroup
+        )
+        
         XCTAssertNotNil(rideRequestVC.view)
 
         let webViewMock = WebViewMock(frame: CGRect.zero, configuration: WKWebViewConfiguration(), testClosure: expectationClosure)
@@ -159,13 +134,12 @@ class RideRequestViewControllerTests: XCTestCase {
             expectation = true
         }
         let testToken = AccessToken(tokenString: "testTokenString")
-        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
+        tokenManager.saveToken(testToken, identifier: testIdentifier, accessGroup: accessGroup)
         defer {
-            _ = TokenManager.deleteToken(identifier: testIdentifier)
+            tokenManager.deleteToken(identifier: testIdentifier, accessGroup: accessGroup)
         }
-        let loginManager = LoginManager(accessTokenIdentifier: testIdentifier, keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup, loginType: .implicit)
 
-        let rideRequestViewControllerMock = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), loginManager: loginManager, loadClosure: nil, networkClosure: networkClosure, presentViewControllerClosure: nil)
+        let rideRequestViewControllerMock = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), loadClosure: nil, networkClosure: networkClosure, presentViewControllerClosure: nil)
 
         (rideRequestViewControllerMock as RideRequestViewDelegate).rideRequestView(rideRequestViewControllerMock.rideRequestView, didReceiveError: RideRequestViewErrorFactory.errorForType(.networkError))
 
@@ -178,11 +152,9 @@ class RideRequestViewControllerTests: XCTestCase {
         let networkClosure: () -> () = {
             expectation = true
         }
-        _ = TokenManager.deleteToken(identifier: testIdentifier)
+        tokenManager.deleteToken(identifier: testIdentifier, accessGroup: accessGroup)
 
-        let loginManager = LoginManager(accessTokenIdentifier: testIdentifier, keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup, loginType: .implicit)
-
-        let rideRequestViewControllerMock = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), loginManager: loginManager, loadClosure: nil, networkClosure: networkClosure, presentViewControllerClosure: nil)
+        let rideRequestViewControllerMock = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), loadClosure: nil, networkClosure: networkClosure, presentViewControllerClosure: nil)
 
         (rideRequestViewControllerMock as RideRequestViewDelegate).rideRequestView(rideRequestViewControllerMock.rideRequestView, didReceiveError: RideRequestViewErrorFactory.errorForType(.networkError))
 
@@ -198,13 +170,12 @@ class RideRequestViewControllerTests: XCTestCase {
             XCTAssertTrue(type(of: viewController) == UIAlertController.self)
         }
         let testToken = AccessToken(tokenString: "testTokenString")
-        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
+        tokenManager.saveToken(testToken, identifier: testIdentifier, accessGroup: accessGroup)
         defer {
-            _ = TokenManager.deleteToken(identifier: testIdentifier)
+            tokenManager.deleteToken(identifier: testIdentifier, accessGroup: accessGroup)
         }
-        let loginManager = LoginManager(accessTokenIdentifier: testIdentifier, keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup, loginType: .implicit)
 
-        let rideRequestViewControllerMock = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), loginManager: loginManager, loadClosure: nil, networkClosure: nil, presentViewControllerClosure: presentViewControllerClosure)
+        let rideRequestViewControllerMock = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), loadClosure: nil, networkClosure: nil, presentViewControllerClosure: presentViewControllerClosure)
 
         let requestViewMock = RideRequestViewMock(rideRequestView: rideRequestViewControllerMock.rideRequestView) { () -> () in
             requestViewExpectation = true
@@ -224,11 +195,9 @@ class RideRequestViewControllerTests: XCTestCase {
         let notSupportedClosure: () -> () = {
             expectation = true
         }
-        _ = TokenManager.deleteToken(identifier: testIdentifier)
+        tokenManager.deleteToken(identifier: testIdentifier, accessGroup: accessGroup)
 
-        let loginManager = LoginManager(accessTokenIdentifier: testIdentifier, keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup, loginType: .implicit)
-
-        let rideRequestViewControllerMock = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), loginManager: loginManager, notSupportedClosure: notSupportedClosure)
+        let rideRequestViewControllerMock = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), notSupportedClosure: notSupportedClosure)
 
         (rideRequestViewControllerMock as RideRequestViewDelegate).rideRequestView(rideRequestViewControllerMock.rideRequestView, didReceiveError: RideRequestViewErrorFactory.errorForType(.notSupported))
 
@@ -243,11 +212,9 @@ class RideRequestViewControllerTests: XCTestCase {
             XCTAssertTrue(type(of: viewController) == UIAlertController.self)
         }
 
-        _ = TokenManager.deleteToken(identifier: testIdentifier)
+        tokenManager.deleteToken(identifier: testIdentifier, accessGroup: accessGroup)
 
-        let loginManager = LoginManager(accessTokenIdentifier: testIdentifier, keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup, loginType: .implicit)
-
-        let rideRequestViewControllerMock = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), loginManager: loginManager, presentViewControllerClosure: presentViewControllerClosure)
+        let rideRequestViewControllerMock = RideRequestViewControllerMock(rideParameters: RideParametersBuilder().build(), presentViewControllerClosure: presentViewControllerClosure)
 
         (rideRequestViewControllerMock as RideRequestViewDelegate).rideRequestView(rideRequestViewControllerMock.rideRequestView, didReceiveError: RideRequestViewErrorFactory.errorForType(.notSupported))
 

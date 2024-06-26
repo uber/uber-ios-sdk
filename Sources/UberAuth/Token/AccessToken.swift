@@ -59,7 +59,7 @@ public struct AccessToken: Codable, Equatable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let tokenString = try container.decode(String.self, forKey: .tokenString)
-        let tokenType = try container.decode(String.self, forKey: .tokenType)
+        let tokenType = try container.decodeIfPresent(String.self, forKey: .tokenType)
         let expiresIn = try container.decodeIfPresent(Int.self, forKey: .expiresIn)
         let refreshToken = try container.decodeIfPresent(String.self, forKey: .refreshToken)
         

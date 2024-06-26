@@ -33,6 +33,8 @@
 	<string>1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>uberdriver</string>
+		<string>ubereats</string>
 		<string>uberauth</string>
 		<string>uber</string>
 	</array>
@@ -54,18 +56,16 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UberCallbackURIs</key>
-	<array>
-		<dict>
-			<key>URIString</key>
-			<string>com.uber.sdk.Swift-SDK://oauth/consumer</string>
-			<key>UberCallbackURIType</key>
-			<string>General</string>
-		</dict>
-	</array>
 	<key>UberClientID</key>
-	<string>fNuupfZ-F6YinKzoGLSo_ktxipTx0M-5</string>
+	<string>9QZcD_Ki6NbhGCrVXSUHCxfevm-C9Khj</string>
 	<key>UberDisplayName</key>
 	<string>Rides SDK Demo App</string>
+	<key>UberAuth</key>
+	<dict>
+		<key>ClientID</key>
+		<string>9QZcD_Ki6NbhGCrVXSUHCxfevm-C9Khj</string>
+		<key>RedirectURI</key>
+		<string>com.uber.sdk.Swift-SDK://oauth/consumer</string>
+	</dict>
 </dict>
 </plist>

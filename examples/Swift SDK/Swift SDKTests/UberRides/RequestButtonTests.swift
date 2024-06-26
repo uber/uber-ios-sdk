@@ -27,6 +27,7 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 import CoreLocation
 import WebKit
+import UberAuth
 import UberCore
 @testable import UberRides
 
@@ -37,6 +38,7 @@ class RequestButtonTests: XCTestCase {
     weak var errorExpectation: XCTestExpectation?
     var rideButtonError: UberError!
     let timeout: Double = 5
+    private let tokenManager = TokenManager()
     
     override func setUp() {
         super.setUp()
@@ -85,16 +87,21 @@ class RequestButtonTests: XCTestCase {
 
         let testIdentifier = "testAccessTokenIdentifier"
         let testToken = AccessToken(tokenString: "testTokenString")
-        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
+        tokenManager.saveToken(testToken, identifier: testIdentifier)
         defer {
-            _ = TokenManager.deleteToken(identifier: testIdentifier)
+            tokenManager.deleteToken(identifier: testIdentifier)
         }
         let baseViewController = UIViewControllerMock()
-        let requestBehavior = RideRequestViewRequestingBehavior(presentingViewController: baseViewController)
+        let requestBehavior = RideRequestViewRequestingBehavior(
+            presentingViewController: baseViewController,
+            accessTokenIdentifier: testIdentifier
+        )
         let button = RideRequestButton(rideParameters: RideParametersBuilder().build(), requestingBehavior: requestBehavior)
     
-        let loginManger = LoginManager(accessTokenIdentifier: testIdentifier)
-        let rideRequestVC = RideRequestViewController(rideParameters: RideParametersBuilder().build(), loginManager: loginManger)
+        let rideRequestVC = RideRequestViewController(
+            rideParameters: RideParametersBuilder().build(),
+            accessTokenIdentifier: testIdentifier
+        )
         XCTAssertNotNil(rideRequestVC.view)
         
         let webViewMock = WebViewMock(frame: CGRect.zero, configuration: WKWebViewConfiguration(), testClosure: expectationClosure)

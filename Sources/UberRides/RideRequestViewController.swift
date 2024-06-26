@@ -54,7 +54,7 @@ public class RideRequestViewController: UIViewController {
     /// The RideRequestViewControllerDelegate to handle the errors
     public var delegate: RideRequestViewControllerDelegate?
         
-    lazy var rideRequestView: RideRequestView = RideRequestView()
+    lazy var rideRequestView: RideRequestView = RideRequestView(accessTokenIdentifier: accessTokenIdentifier)
 
     static let sourceString = "ride_request_widget"
 
@@ -62,10 +62,8 @@ public class RideRequestViewController: UIViewController {
     private var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
     
     private let tokenManager = TokenManager()
-    
-    // TODO: Support custom accessTokenIdentifier, keychainAccessGroup
-    private let accessTokenIdentifier: String = ""
-    private let keychainAccessGroup: String = ""
+    private let accessTokenIdentifier: String
+    private let keychainAccessGroup: String
     
     /**
      Initializes a RideRequestViewController using the provided coder. By default,
@@ -76,6 +74,9 @@ public class RideRequestViewController: UIViewController {
      - returns: An initialized RideRequestViewController, or nil if something went wrong
      */
     public required init?(coder aDecoder: NSCoder) {
+        self.accessTokenIdentifier = Configuration.shared.defaultAccessTokenIdentifier
+        self.keychainAccessGroup = Configuration.shared.defaultKeychainAccessGroup
+        
         super.init(coder: aDecoder)
 
         let defaultRideParameters = RideParametersBuilder()
@@ -92,7 +93,13 @@ public class RideRequestViewController: UIViewController {
      
      - returns: An initialized RideRequestViewController
      */
-    public init(rideParameters: RideParameters) {
+    public init(rideParameters: RideParameters,
+                accessTokenIdentifier: String = Configuration.shared.defaultAccessTokenIdentifier,
+                keychainAccessGroup: String = Configuration.shared.defaultKeychainAccessGroup) {
+        
+        self.accessTokenIdentifier = accessTokenIdentifier
+        self.keychainAccessGroup = keychainAccessGroup
+        
         super.init(nibName: nil, bundle: nil)
         
         rideParameters.source = rideParameters.source ?? RideRequestViewController.sourceString

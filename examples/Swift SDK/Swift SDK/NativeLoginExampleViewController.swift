@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UberAuth
 import UberCore
 import UberRides
 import CoreLocation
@@ -31,23 +32,17 @@ import CoreLocation
 open class NativeLoginExampleViewController: ButtonExampleViewController, LoginButtonDelegate {
     
     let scopes: [UberScope]
-    let loginManager: LoginManager
     let blackLoginButton: LoginButton
     let whiteLoginButton: LoginButton
     
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         scopes = [.profile, .places, .request]
-        
-        loginManager = LoginManager(loginType: .native)
-        blackLoginButton = LoginButton(frame: CGRect.zero, scopes: scopes, loginManager: loginManager)
-        whiteLoginButton = LoginButton(frame: CGRect.zero, scopes: scopes, loginManager: loginManager)
-        
-        whiteLoginButton.colorStyle = .white
+
+        // TODO: Light/Dark override
+        blackLoginButton = LoginButton()
+        whiteLoginButton = LoginButton()
         
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-
-        blackLoginButton.presentingViewController = self
-        whiteLoginButton.presentingViewController = self
         
         blackLoginButton.delegate = self
         whiteLoginButton.delegate = self
@@ -106,13 +101,12 @@ open class NativeLoginExampleViewController: ButtonExampleViewController, LoginB
         }
     }
     
-    open func loginButton(_ button: LoginButton, didCompleteLoginWithToken accessToken: AccessToken?, error: NSError?) {
-        if let _ = accessToken {
+    open func loginButton(_ button: LoginButton, didCompleteLoginWithResult result: Result<Client, UberAuthError>) {
+        switch result {
+        case .success:
             showMessage("Saved access token!")
-        } else if let error = error {
+        case .failure(let error):
             showMessage(error.localizedDescription)
-        } else {
-            showMessage("Error")
         }
     }
 }

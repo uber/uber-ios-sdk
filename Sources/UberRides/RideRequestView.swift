@@ -107,8 +107,10 @@ public class RideRequestView: UIView {
      
      - returns: An initialized RideRequestView
      */
-    public convenience init(rideParameters: RideParameters) {
-        self.init(rideParameters: rideParameters, accessToken: Self.tokenManager.getToken(), frame: CGRect.zero)
+    public convenience init(rideParameters: RideParameters,
+                            accessTokenIdentifier: String = TokenManager.defaultAccessTokenIdentifier,
+                            accessGroup: String? = nil) {
+        self.init(rideParameters: rideParameters, accessToken: Self.tokenManager.getToken(identifier: accessTokenIdentifier, accessGroup: accessGroup), frame: CGRect.zero)
     }
     
     /**
@@ -132,8 +134,12 @@ public class RideRequestView: UIView {
      
      - returns: An initialized RideRequestView
      */
-    public convenience init() {
-        self.init(rideParameters: RideParametersBuilder().build(), accessToken: Self.tokenManager.getToken(), frame: CGRect.zero)
+    public convenience init(accessTokenIdentifier: String = TokenManager.defaultAccessTokenIdentifier) {
+        self.init(
+            rideParameters: RideParametersBuilder().build(),
+            accessToken: Self.tokenManager.getToken(identifier: accessTokenIdentifier),
+            frame: CGRect.zero
+        )
     }
     
     required public init?(coder aDecoder: NSCoder) {

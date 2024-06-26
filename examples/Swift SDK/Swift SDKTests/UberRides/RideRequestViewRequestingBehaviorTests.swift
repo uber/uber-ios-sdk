@@ -22,7 +22,8 @@
 
 import XCTest
 import CoreLocation
-import UberCore
+@testable import UberAuth
+@testable import UberCore
 @testable import UberRides
 
 class RideRequestViewRequestingBehaviorTests : XCTestCase {
@@ -39,19 +40,6 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
         Configuration.restoreDefaults()
     }
     
-    func testUpdateLoginManager() {
-        let baseVC = UIViewController()
-        let initialLoginManger = LoginManager(loginType: .native)
-        let behavior = RideRequestViewRequestingBehavior(presentingViewController: baseVC, loginManager: initialLoginManger)
-        XCTAssertNotNil(behavior.loginManager)
-        XCTAssertEqual(behavior.modalRideRequestViewController.rideRequestViewController.loginManager, initialLoginManger)
-        
-        let newLoginManager = LoginManager(accessTokenIdentifier: "testToken")
-        behavior.loginManager = newLoginManager
-        XCTAssertNotNil(behavior.loginManager)
-        XCTAssertEqual(behavior.modalRideRequestViewController.rideRequestViewController.loginManager, newLoginManager)
-    }
-    
     func testRideParametersUpdated() {
         class UIViewControllerMock : UIViewController {
             override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)?) {
@@ -60,8 +48,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
         }
         
         let baseVC = UIViewControllerMock()
-        let initialLoginManger = LoginManager(loginType: .native)
-        let behavior = RideRequestViewRequestingBehavior(presentingViewController: baseVC, loginManager: initialLoginManger)
+        let behavior = RideRequestViewRequestingBehavior(presentingViewController: baseVC)
         XCTAssertNotNil(behavior.modalRideRequestViewController)
         XCTAssertNotNil(behavior.modalRideRequestViewController.rideRequestViewController)
         let pickupLocation = CLLocation(latitude: -32.0, longitude: 42.2)
@@ -97,8 +84,7 @@ class RideRequestViewRequestingBehaviorTests : XCTestCase {
         }
         
         let baseVC = UIViewControllerMock(testClosure: expectationClosure)
-        let initialLoginManger = LoginManager(loginType: .native)
-        let behavior = RideRequestViewRequestingBehavior(presentingViewController: baseVC, loginManager: initialLoginManger)
+        let behavior = RideRequestViewRequestingBehavior(presentingViewController: baseVC)
         behavior.requestRide(parameters: RideParametersBuilder().build())
         waitForExpectations(timeout: 2.0) {error in
             XCTAssertNil(error)

@@ -21,6 +21,7 @@
 //  THE SOFTWARE.
 
 import WebKit
+@testable import UberAuth
 @testable import UberCore
 @testable import UberRides
 
@@ -54,12 +55,16 @@ class RideRequestViewControllerMock : RideRequestViewController {
     var notSupportedClosure: (() -> ())?
     var presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ())?
     
-    init(rideParameters: RideParameters, loginManager: LoginManager, loadClosure: (() -> ())? = nil, networkClosure: (() -> ())? = nil, presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ())? = nil, notSupportedClosure: (() -> ())? = nil) {
+    init(rideParameters: RideParameters, loadClosure: (() -> ())? = nil, networkClosure: (() -> ())? = nil, presentViewControllerClosure: ((UIViewController, Bool, (() -> Void)?) -> ())? = nil, notSupportedClosure: (() -> ())? = nil, accessTokenIdentifier: String = Configuration.shared.defaultAccessTokenIdentifier, keychainAccessGroup: String = Configuration.shared.defaultKeychainAccessGroup) {
         self.loadClosure = loadClosure
         self.networkClosure = networkClosure
         self.notSupportedClosure = notSupportedClosure
         self.presentViewControllerClosure = presentViewControllerClosure
-        super.init(rideParameters: rideParameters, loginManager: loginManager)
+        super.init(
+            rideParameters: rideParameters,
+            accessTokenIdentifier: accessTokenIdentifier,
+            keychainAccessGroup: keychainAccessGroup
+        )
     }
     
     required init?(coder aDecoder: NSCoder) {

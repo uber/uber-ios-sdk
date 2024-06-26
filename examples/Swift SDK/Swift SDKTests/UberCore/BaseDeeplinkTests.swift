@@ -22,7 +22,9 @@
 
 import XCTest
 
+@testable import UberAuth
 @testable import UberCore
+@testable import UberRides
 
 class BaseDeeplinkTests: XCTestCase {
     

@@ -50,9 +50,15 @@ public class RideRequestViewRequestingBehavior {
      
      - returns: An initialized RideRequestViewRequestingBehavior object
      */
-    public init(presentingViewController: UIViewController) {
+    public init(presentingViewController: UIViewController, 
+                accessTokenIdentifier: String = Configuration.shared.defaultAccessTokenIdentifier,
+                keychainAccessGroup: String = Configuration.shared.defaultKeychainAccessGroup) {
         self.presentingViewController = presentingViewController
-        let rideRequestViewController = RideRequestViewController(rideParameters: RideParametersBuilder().build())
+        let rideRequestViewController = RideRequestViewController(
+            rideParameters: RideParametersBuilder().build(),
+            accessTokenIdentifier: accessTokenIdentifier,
+            keychainAccessGroup: keychainAccessGroup
+        )
         modalRideRequestViewController = ModalRideRequestViewController(rideRequestViewController: rideRequestViewController)
     }
 }

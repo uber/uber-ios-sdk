@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import CoreLocation
+import UberAuth
 import UberCore
 import UberRides
 import UIKit
@@ -34,13 +35,11 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
     
     fileprivate let states = ["accepted", "arriving", "in_progress", "completed"]
     
-    /// The LoginManager to use for login
-    /// Specify authorization code grant as the loginType to use privileged scopes
-    let loginManager = LoginManager(loginType: .authorizationCode)
-    
     /// The RidesClient to use for endpoints
     let ridesClient = RidesClient()
 
+    private let tokenManager = TokenManager()
+    
     @IBOutlet weak var driverImageView: UIImageView!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var loginButton: UIBarButtonItem!
@@ -58,7 +57,7 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        let loggedIn = TokenManager.fetchToken() != nil
+        let loggedIn = tokenManager.getToken() != nil
         loginButton.isEnabled = !loggedIn
         requestButton.isEnabled = loggedIn
         
@@ -78,38 +77,33 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
         // Need to be authorized on your developer dashboard at developer.uber.com
         // Privileged scopes can be used by anyone in sandbox for your own account but must be approved for production
         let requestedScopes = [UberScope.request, UberScope.allTrips]
-        // Use your loginManager to login with the requested scopes, viewcontroller to present over, and completion block
-        loginManager.login(requestedScopes: requestedScopes, presentingViewController: self) { (accessToken, error) -> () in
-            // Error
-            if let error = error {
-                self.showMessage(error.localizedDescription)
-                return
-            }
-            
-            // Poll backend for access token
-            // Replace "YOUR_URL" with the path for your backend service
-            if let url = URL(string: "YOUR_URL") {
-                let request = URLRequest(url: url)
-                URLSession.shared.dataTask(with: request) { (data, response, error) in
-                    DispatchQueue.main.async {
-                        guard let data = data,
-                            let jsonString = String(data: data, encoding: String.Encoding.utf8) else {
-                                self.showMessage("Unable to retrieve access token")
-                                return
-                        }
-                        let token = AccessToken(tokenString: jsonString)
-
-                        // Do any additional work to verify the state passed in earlier
-                        
-                        if !TokenManager.save(accessToken: token) {
-                            self.showMessage("Unable to save access token")
-                        } else {
-                            self.showMessage("Saved an AccessToken!")
-                            self.loginButton.isEnabled = false
-                            self.requestButton.isEnabled = true
-                        }
+        let scopes = requestedScopes.map { $0.rawValue }
+        
+        let context = AuthContext(
+            authDestination: .inApp,
+            authProvider: .authorizationCode(scopes: scopes, shouldExchangeAuthCode: true)
+        )
+        
+        UberAuth.login(context: context) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let client):
+                    guard let accessToken = client.accessToken else {
+                        self.showMessage("Unable to retrieve access token")
+                        return
                     }
-                }.resume()
+                    
+                    if !self.tokenManager.saveToken(accessToken) {
+                        self.showMessage("Unable to save access token")
+                    } else {
+                        self.showMessage("Saved an AccessToken!")
+                        self.loginButton.isEnabled = false
+                        self.requestButton.isEnabled = true
+                    }
+                    
+                case .failure(let error):
+                    self.showMessage(error.localizedDescription)
+                }
             }
         }
     }
@@ -194,7 +188,7 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
     // Simulates stepping through ride statuses recursively
     func updateRideStatus(_ requestID: String, index: Int) {
         guard index < states.count,
-            let token = TokenManager.fetchToken() else {
+              let token = tokenManager.getToken()?.tokenString else {
             return
         }
         
@@ -204,7 +198,7 @@ class AuthorizationCodeGrantExampleViewController: AuthorizationBaseViewControll
         let updateStatusEndpoint = URL(string: "https://sandbox-api.uber.com/v1/sandbox/requests/\(requestID)")!
         var request = URLRequest(url: updateStatusEndpoint)
         request.httpMethod = "PUT"
-        request.setValue("Bearer \(token.tokenString)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         do {
             let data = try JSONSerialization.data(withJSONObject: ["status":status], options: .prettyPrinted)
