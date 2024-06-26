@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UberAuth
 import UberCore
 import UberRides
 
@@ -30,6 +31,8 @@ class ExampleTableViewController: UITableViewController {
     
     let authorizationCodeGrantSegueIdentifier = "AuthorizationCodeGrantSegue"
     let implicitGrantSegueIdentifier = "ImplicitGrantSegue"
+    
+    private let tokenManager = TokenManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,7 +104,7 @@ class ExampleTableViewController: UITableViewController {
             }
         case 1:
             viewControllerToPush = nil
-            _ = TokenManager.deleteToken()
+            _ = tokenManager.deleteToken()
         default:
             viewControllerToPush = nil
         }

@@ -24,13 +24,15 @@
 
 import XCTest
 import WebKit
-import UberCore
+@testable import UberAuth
+@testable import UberCore
 @testable import UberRides
 
 class RideRequestViewTests: XCTestCase {
     var testExpectation: XCTestExpectation!
     var error: NSError?
     let timeout: TimeInterval = 10
+    private let tokenManager = TokenManager()
     
     override func setUp() {
         super.setUp()
@@ -49,7 +51,11 @@ class RideRequestViewTests: XCTestCase {
      */
     func testAccessTokenExpired() {
         testExpectation = expectation(description: "access token expired delegate call")
-        let view = RideRequestView(rideParameters: RideParametersBuilder().build())
+        let view = RideRequestView(
+            rideParameters: RideParametersBuilder().build(),
+            accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier,
+            accessGroup: Configuration.shared.defaultKeychainAccessGroup
+        )
         view.delegate = self
         let request = URLRequest(url: URL(string: "uberConnect://oauth#error=unauthorized")!)
         view.webView.load(request)
@@ -92,13 +98,13 @@ class RideRequestViewTests: XCTestCase {
      */
     func testAuthorizeWithTokenManagerAccessToken() {
         let token = AccessToken(tokenString: "accessToken1234")
-        _ = TokenManager.save(accessToken: token)
+        _ = tokenManager.saveToken(token)
         
         let view = RideRequestView()
         XCTAssertNotNil(view.accessToken)
-        XCTAssertEqual(view.accessToken?.tokenString, TokenManager.fetchToken()?.tokenString)
+        XCTAssertEqual(view.accessToken?.tokenString, tokenManager.getToken()?.tokenString)
         
-        _ = TokenManager.deleteToken()
+        _ = tokenManager.deleteToken()
     }
     
     /**
@@ -118,7 +124,7 @@ class RideRequestViewTests: XCTestCase {
         testExpectation = expectation(description: "access token missing delegate call")
         let view = RideRequestView()
         view.delegate = self
-        _ = TokenManager.deleteToken()
+        _ = tokenManager.deleteToken()
         
         view.load()
         
@@ -153,14 +159,14 @@ class RideRequestViewTests: XCTestCase {
         }
         
         let testIdentifier = "testAccessTokenIdentifier"
-        _ = TokenManager.deleteToken(identifier: testIdentifier)
+        _ = tokenManager.deleteToken(identifier: testIdentifier)
         let testToken = AccessToken(tokenString: "testTokenString")
-        _ = TokenManager.save(accessToken: testToken, tokenIdentifier: testIdentifier)
+        _ = tokenManager.saveToken(testToken, identifier: testIdentifier)
         defer {
-            _ = TokenManager.deleteToken(identifier: testIdentifier)
+            _ = tokenManager.deleteToken(identifier: testIdentifier)
         }
         
-        let rideRequestView = RideRequestView(rideParameters: RideParametersBuilder().build(), accessToken: TokenManager.fetchToken(identifier: testIdentifier), frame: CGRect.zero)
+        let rideRequestView = RideRequestView(rideParameters: RideParametersBuilder().build(), accessToken: tokenManager.getToken(identifier: testIdentifier), frame: CGRect.zero)
         XCTAssertNotNil(rideRequestView)
         
         let webViewMock = WebViewMock(frame: CGRect.zero, configuration: WKWebViewConfiguration(), testClosure: expectationClosure)

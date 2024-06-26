@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import UberCore
+@testable import UberRides
 
 class DeeplinkManagerTests: XCTestCase {
     private var deeplinkManager: DeeplinkManager!

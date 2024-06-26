@@ -26,6 +26,7 @@ import XCTest
 import OHHTTPStubs
 import OHHTTPStubsSwift
 import CoreLocation
+@testable import UberAuth
 @testable import UberCore
 @testable import UberRides
 
@@ -843,60 +844,11 @@ class RidesClientTests: XCTestCase {
     }
     
     func testRefreshToken() {
-        stub(condition: isHost("auth.uber.com")) { _ in
-            return HTTPStubsResponse(fileAtPath: OHPathForFile("refresh.json", type(of: self))!, statusCode: 200, headers: nil)
-        }
-        let refreshToken = "thisIsRefresh"
-        let expectedScopeString = "request all_trips profile ride_widgets history places history_lite"
-        let expectedScopes = expectedScopeString.toUberScopesArray()
-        let expectedScopeSet = Set(expectedScopes)
-        
-        let expectation = self.expectation(description: "Refresh token completion")
-        client.refreshAccessToken(usingRefreshToken: refreshToken, completion: { accessToken, response in
-            guard let accessToken = accessToken else {
-                XCTAssert(false)
-                return
-            }
-            let scopes = accessToken.grantedScopes
-            
-            XCTAssertEqual(accessToken.tokenString, "Access999Token")
-            XCTAssertEqual(accessToken.refreshToken, "888RefreshToken")
-            
-            let testScopeSet = Set(scopes)
-            XCTAssertEqual(testScopeSet, expectedScopeSet)
-            
-            XCTAssertEqual(response.statusCode, 200)
-            expectation.fulfill()
-        })
-        
-        waitForExpectations(timeout: timeout, handler: { error in
-            XCTAssertNil(error)
-        })
+        // TODO: Will update after refresh token implementation
     }
 
     func testRefreshTokenInvalid() {
-        stub(condition: isHost("auth.uber.com")) { _ in
-            return HTTPStubsResponse(jsonObject: ["error":"invalid_refresh_token"], statusCode: 400, headers: nil)
-        }
-        let refreshToken = "thisIsRefresh"
-
-        let expectation = self.expectation(description: "Refresh token completion")
-        client.refreshAccessToken(usingRefreshToken: refreshToken, completion: { accessToken, response in
-            XCTAssertNil(accessToken)
-            
-            guard let error = response.error else {
-                XCTFail()
-                return
-            }
-            XCTAssertEqual(error.title, "invalid_refresh_token")
-            
-            XCTAssertEqual(response.statusCode, 400)
-            expectation.fulfill()
-        })
-        
-        waitForExpectations(timeout: timeout, handler: { error in
-            XCTAssertNil(error)
-        })
+        // TODO: Will update after refresh token implementation
     }
     
     func testTokenType() {
@@ -912,15 +864,14 @@ class RidesClientTests: XCTestCase {
     func testGetAccessTokenSuccess_defaultId_defaultGroup() {
         let token = AccessToken(tokenString: "testAccessToken")
 
-        let keychainHelper = KeychainWrapper()
+        let keychainHelper = KeychainUtility()
         
         let tokenKey = Configuration.shared.defaultAccessTokenIdentifier
         let tokenGroup = Configuration.shared.defaultKeychainAccessGroup
         
-        keychainHelper.setAccessGroup(tokenGroup)
-        XCTAssertTrue(keychainHelper.setObject(token, key: tokenKey))
+        XCTAssertTrue(keychainHelper.save(token, for: tokenKey, accessGroup: tokenGroup))
         defer {
-            XCTAssertTrue(keychainHelper.deleteObjectForKey(tokenKey))
+            XCTAssertTrue(keychainHelper.delete(key: tokenKey, accessGroup: tokenGroup))
         }
         
         let ridesClient = RidesClient()
@@ -947,15 +898,14 @@ class RidesClientTests: XCTestCase {
      */
     func testGetAccessTokenSuccess_customId_defaultGroup() {
         let token = AccessToken(tokenString: "testAccessToken")
-        let keychainHelper = KeychainWrapper()
+        let keychainHelper = KeychainUtility()
         
         let tokenKey = "newTokenKey"
         let tokenGroup = Configuration.shared.defaultKeychainAccessGroup
         
-        keychainHelper.setAccessGroup(tokenGroup)
-        XCTAssertTrue(keychainHelper.setObject(token, key: tokenKey))
+        XCTAssertTrue(keychainHelper.save(token, for: tokenKey, accessGroup: tokenGroup))
         defer {
-            XCTAssertTrue(keychainHelper.deleteObjectForKey(tokenKey))
+            XCTAssertTrue(keychainHelper.delete(key: tokenKey, accessGroup: tokenGroup))
         }
         
         let ridesClient = RidesClient(accessTokenIdentifier: tokenKey)

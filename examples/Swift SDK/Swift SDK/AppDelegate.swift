@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UberAuth
 import UberCore
 import UberRides
 
@@ -32,16 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        
-        // Uncomment if your app is registered in China
-        //Configuration.setRegion(.China)
-        
-        // Make requests to sandbox by default
-        Configuration.shared.isSandbox = true
-        
-        // Handle incoming SSO Requests
-        _ = UberAppDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         return true
     }
 
@@ -69,15 +60,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     @available(iOS 9, *)
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
-        let handledUberURL = UberAppDelegate.shared.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as Any)
-        
-        return handledUberURL
+        if UberAuth.handle(url) {
+            return false
+        }
+        return true
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        let handledUberURL = UberAppDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
-        
-        return handledUberURL
+        if UberAuth.handle(url) {
+            return false
+        }
+        return true
     }
 }
 

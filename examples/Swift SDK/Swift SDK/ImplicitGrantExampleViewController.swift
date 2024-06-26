@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import UIKit
+import UberAuth
 import UberRides
 import UberCore
 import CoreLocation
@@ -30,8 +31,8 @@ import CoreLocation
 /// This class demonstrates how do use the LoginManager to complete Implicit Grant Authorization
 /// and how to use the user profile, trip history, and places endpoints.
 class ImplicitGrantExampleViewController: AuthorizationBaseViewController {
-    /// The LoginManager to use for login
-    let loginManager = LoginManager(loginType: .implicit)
+    
+    private let tokenManager = TokenManager()
     
     /// The RidesClient to use for endpoints
     let ridesClient = RidesClient()
@@ -70,7 +71,7 @@ class ImplicitGrantExampleViewController: AuthorizationBaseViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if let _ = TokenManager.fetchToken() {
+        if let _ = tokenManager.getToken() {
             loginButton.isEnabled = false
             getData()
         }
@@ -87,17 +88,17 @@ class ImplicitGrantExampleViewController: AuthorizationBaseViewController {
         // Need to be authorized on your developer dashboard at developer.uber.com
         let requestedScopes = [UberScope.rideWidgets, UberScope.profile, UberScope.places, UberScope.history, UberScope.places]
         // Use your loginManager to login with the requested scopes, viewcontroller to present over, and completion block
-        loginManager.login(requestedScopes: requestedScopes, presentingViewController: self) { (accessToken, error) -> () in
-            if accessToken != nil {
-                //Success! AccessToken is automatically saved in keychain
+        
+        let context = AuthContext(
+            authProvider: .authorizationCode(scopes: requestedScopes.map { $0.rawValue })
+        )
+        
+        UberAuth.login(context: context) { result in
+            switch result {
+            case .success:
                 self.showMessage("Got an AccessToken!")
-            } else {
-                // Error
-                if let error = error {
-                    self.showMessage(error.localizedDescription)
-                } else {
-                    self.showMessage("An Unknown Error Occured")
-                }
+            case .failure(let error):
+                self.showMessage(error.localizedDescription)
             }
         }
     }

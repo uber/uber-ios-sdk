@@ -22,11 +22,14 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+import UberAuth
 import UberCore
 import UberRides
 import UIKit
 
 class AuthorizationBaseViewController: UIViewController {
+    
+    private let tokenManager = TokenManager()
     
     func delay(_ delay: Int, closure: @escaping ()->()) {
         let deadlineTime = DispatchTime.now() + DispatchTimeInterval.seconds(delay)
@@ -45,7 +48,7 @@ class AuthorizationBaseViewController: UIViewController {
     func checkError(_ response: Response) {
         // Unauthorized
         if response.statusCode == 401 {
-            _ = TokenManager.deleteToken()
+            _ = tokenManager.deleteToken()
             DispatchQueue.main.async {
                 self.reset()
             }
