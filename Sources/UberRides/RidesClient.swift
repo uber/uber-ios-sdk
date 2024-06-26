@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import CoreLocation
+import UberAuth
 import UberCore
 
 /// API client for the Uber Rides API.
@@ -537,14 +538,6 @@ public class RidesClient {
      - parameter completion:   completion handler for the new access token
      */
     public func refreshAccessToken(usingRefreshToken refreshToken: String, completion: @escaping (_ accessToken: AccessToken?, _ response: Response) -> Void) {
-        let endpoint = OAuth.refresh(clientID: clientID, refreshToken: refreshToken)
-        apiCall(endpoint) { response in
-            var accessToken: AccessToken?
-            if let data = response.data,
-                response.error == nil {
-                accessToken = try? AccessToken(jsonData: data)
-            }
-            completion(accessToken, response)
-        }
+        // TODO: Replace with Auth.refreshToken
     }
 }

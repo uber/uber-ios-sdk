@@ -53,17 +53,19 @@ public protocol RideRequestViewControllerDelegate {
 public class RideRequestViewController: UIViewController {
     /// The RideRequestViewControllerDelegate to handle the errors
     public var delegate: RideRequestViewControllerDelegate?
-    
-    /// The LoginManager to use for managing the login process
-    public var loginManager: LoginManager
-    
+        
     lazy var rideRequestView: RideRequestView = RideRequestView()
 
     static let sourceString = "ride_request_widget"
 
     private var accessTokenWasUnauthorizedOnPreviousAttempt = false
     private var loginCompletion: ((_ accessToken: AccessToken?, _ error: NSError?) -> Void)?
+    
     private let tokenManager = TokenManager()
+    
+    // TODO: Support custom accessTokenIdentifier, keychainAccessGroup
+    private let accessTokenIdentifier: String = ""
+    private let keychainAccessGroup: String = ""
     
     /**
      Initializes a RideRequestViewController using the provided coder. By default,
@@ -74,8 +76,6 @@ public class RideRequestViewController: UIViewController {
      - returns: An initialized RideRequestViewController, or nil if something went wrong
      */
     public required init?(coder aDecoder: NSCoder) {
-        loginManager = LoginManager()
-        
         super.init(coder: aDecoder)
 
         let defaultRideParameters = RideParametersBuilder()
@@ -92,17 +92,15 @@ public class RideRequestViewController: UIViewController {
      
      - returns: An initialized RideRequestViewController
      */
-    public init(rideParameters: RideParameters, loginManager: LoginManager) {
-        self.loginManager = loginManager
-        
+    public init(rideParameters: RideParameters) {
         super.init(nibName: nil, bundle: nil)
         
         rideParameters.source = rideParameters.source ?? RideRequestViewController.sourceString
         
         rideRequestView.rideParameters = rideParameters
         rideRequestView.accessToken = tokenManager.getToken(
-            identifier: loginManager.accessTokenIdentifier,
-            accessGroup: loginManager.keychainAccessGroup
+            identifier: accessTokenIdentifier,
+            accessGroup: keychainAccessGroup
         )
     }
     
@@ -135,7 +133,7 @@ public class RideRequestViewController: UIViewController {
     // MARK: Internal
 
     func load() {
-        if let accessToken = tokenManager.getToken(identifier: loginManager.accessTokenIdentifier, accessGroup: loginManager.keychainAccessGroup) {
+        if let accessToken = tokenManager.getToken(identifier: accessTokenIdentifier, accessGroup: keychainAccessGroup) {
             rideRequestView.accessToken = accessToken
             rideRequestView.load()
         } else {
@@ -232,8 +230,8 @@ extension RideRequestViewController : RideRequestViewDelegate {
     }
 
     private func attemptTokenRefresh() {
-        let identifer = loginManager.accessTokenIdentifier
-        let group = loginManager.keychainAccessGroup
+        let identifer = accessTokenIdentifier
+        let group = keychainAccessGroup
         guard let accessToken = tokenManager.getToken(identifier: identifer, accessGroup: group),
                 let refreshToken = accessToken.refreshToken else {
             accessTokenWasUnauthorizedOnPreviousAttempt = true

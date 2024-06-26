@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import Foundation
+import UberCore
 
 /**
 *  Struct that packages the response from an executed NSURLRequest.

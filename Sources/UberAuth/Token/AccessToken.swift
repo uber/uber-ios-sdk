@@ -98,7 +98,7 @@ extension AccessToken {
     
     public init(jsonData: Data) throws {
         guard let responseDictionary = (try? JSONSerialization.jsonObject(with: jsonData, options: [])) as? [String: Any] else {
-            throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
+            throw UberAuthError.invalidResponse
         }
         self = try AccessToken(oAuthDictionary: responseDictionary)
     }
@@ -110,7 +110,7 @@ extension AccessToken {
     /// - Returns: An initialized AccessToken
     public init(oAuthDictionary: [String: Any]) throws {
         guard let tokenString = oAuthDictionary["access_token"] as? String else {
-            throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
+            throw UberAuthError.invalidResponse
         }
         self.tokenString = tokenString
         self.refreshToken = oAuthDictionary["refresh_token"] as? String
@@ -135,7 +135,7 @@ extension AccessToken {
     /// - Returns: An initialized AccessToken, or nil if one couldn't be created
     public init(redirectURL: URL) throws {
         guard var components = URLComponents(url: redirectURL, resolvingAgainstBaseURL: false) else {
-            throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidResponse)
+            throw UberAuthError.invalidResponse
         }
 
         var finalQueryArray = [String]()
@@ -149,7 +149,7 @@ extension AccessToken {
         components.query = finalQueryArray.joined(separator: "&")
         
         guard let queryItems = components.queryItems else {
-            throw UberAuthenticationErrorFactory.errorForType(ridesAuthenticationErrorType: .invalidRequest)
+            throw UberAuthError.invalidRequest(redirectURL.absoluteString)
         }
         var queryDictionary = [String: Any]()
         for queryItem in queryItems {

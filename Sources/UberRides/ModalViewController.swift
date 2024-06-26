@@ -185,7 +185,7 @@ public class ModalViewController : UIViewController {
     //MARK: Private Helpers
     
     private func setupStyle() {
-        let coreBundle = Bundle(for: UberAppDelegate.self)
+        let coreBundle = Bundle(for: UberButton.self)
         let bundle = Bundle(for: RideRequestButton.self)
         self.wrappedViewController.navigationItem.leftBarButtonItem = nil
         self.wrappedViewController.navigationItem.rightBarButtonItem = nil

@@ -5,7 +5,7 @@
 
 import Foundation
 
-struct PlistParser {
+public struct PlistParser {
     
     private let contents: [String: Any]
     
@@ -16,7 +16,7 @@ struct PlistParser {
     /// - Parameters:
     ///   - name: The name of the plist to access
     ///   - bundle: The bundle the plist is contained in
-    init(plistName: String,
+    public init(plistName: String,
          bundle: Bundle = .main) {
         guard let plistUrl = bundle.url(forResource: plistName, withExtension: "plist") else {
             self.contents = [:]
@@ -38,7 +38,7 @@ struct PlistParser {
     /// - Parameters:
     ///   - name: The name of the plist to access
     ///   - bundle: The bundle the plist is contained in
-    init(name: String,
+    public init(name: String,
          bundle: Bundle = .main) throws {
         guard let plistUrl = bundle.url(forResource: name, withExtension: "plist") else {
             throw ParserError.noResourceFound
@@ -47,11 +47,11 @@ struct PlistParser {
         self.contents = contents
     }
     
-    subscript<T>(key: String) -> T? {
+    public subscript<T>(key: String) -> T? {
         contents[key] as? T
     }
     
-    enum ParserError: Error {
+    public enum ParserError: Error {
         
         // A plist with the supplied name was not found
         case noResourceFound
