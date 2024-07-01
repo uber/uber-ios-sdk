@@ -1,11 +1,11 @@
 on:
   pull_request:
-    branches: [ master, 2.x ]
+    branches: [ master, 2.x, testing-ci ]
 
 jobs:
   build:
     name: Build and Test default scheme using any available iPhone simulator
-    runs-on: macos-14
+    runs-on: macos-latest
 
     defaults:
       run:
