@@ -194,7 +194,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         let request = AuthorizeRequest(
             app: nil,
             clientID: clientID,
-            codeChallenge: pkce.codeChallenge,
+            codeChallenge: shouldExchangeAuthCode ? pkce.codeChallenge : nil,
             redirectURI: redirectURI,
             requestURI: requestURI,
             scopes: scopes
@@ -297,7 +297,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         let request = AuthorizeRequest(
             app: app,
             clientID: clientID,
-            codeChallenge: pkce.codeChallenge,
+            codeChallenge: shouldExchangeAuthCode ? pkce.codeChallenge : nil,
             redirectURI: redirectURI,
             requestURI: requestURI,
             scopes: scopes

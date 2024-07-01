@@ -15,7 +15,7 @@ struct AuthorizeRequest: NetworkRequest {
     // MARK: Private Properties
     
     private let app: UberApp?
-    private let codeChallenge: String
+    private let codeChallenge: String?
     private let clientID: String
     private let redirectURI: String
     private let requestURI: String?
@@ -25,7 +25,7 @@ struct AuthorizeRequest: NetworkRequest {
     
     init(app: UberApp?,
          clientID: String,
-         codeChallenge: String,
+         codeChallenge: String?,
          redirectURI: String,
          requestURI: String?,
          scopes: [String] = []) {
@@ -46,7 +46,7 @@ struct AuthorizeRequest: NetworkRequest {
             "response_type": "code",
             "client_id": clientID,
             "code_challenge": codeChallenge,
-            "code_challenge_method": "S256",
+            "code_challenge_method": codeChallenge != nil ? "S256" : nil,
             "redirect_uri": redirectURI,
             "request_uri": requestURI,
             "scope": scopes.joined(separator: " ")

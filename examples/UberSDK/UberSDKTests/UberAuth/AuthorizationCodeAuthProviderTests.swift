@@ -48,6 +48,44 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         
         XCTAssertEqual(authSession.startCallCount, 0)
     }
+    
+    func test_executeInAppLogin_noTokenExchange_doesNotIncludeCodeChallenge() {
+
+        configurationProvider.isInstalledHandler = { _, _ in
+            true
+        }
+        
+        let applicationLauncher = ApplicationLaunchingMock()
+        applicationLauncher.openHandler = { _, _, completion in
+            completion?(true)
+        }
+
+        var hasCalledAuthenticationSessionBuilder: Bool = false
+
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _ in
+            XCTAssertFalse(url.absoluteString.contains("code_challenge"))
+            XCTAssertFalse(url.absoluteString.contains("code_challenge_method"))
+            hasCalledAuthenticationSessionBuilder = true
+            return AuthenticationSessioningMock()
+        }
+        
+        let provider = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: authenticationSessionBuilder,
+            shouldExchangeAuthCode: false,
+            configurationProvider: configurationProvider,
+            applicationLauncher: applicationLauncher
+        )
+                
+        provider.execute(
+            authDestination: .inApp,
+            completion: { result in }
+        )
+        
+        let url = URL(string: "test://app?code=123")!
+        _ = provider.handle(response: url)
+        
+        XCTAssertTrue(hasCalledAuthenticationSessionBuilder)
+    }
 
     func test_execute_existingSession_returnsExistingAuthSessionError() {
         let provider = AuthorizationCodeAuthProvider(
@@ -255,6 +293,47 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         wait(for: [expectation], timeout: 0.2)
         
         XCTAssertEqual(authenticationSession.startCallCount, 1)
+    }
+    
+    func test_executeNativeLogin_noTokenExchange_doesNotIncludeCodeChallenge() {
+
+        let applicationLauncher = ApplicationLaunchingMock()
+        applicationLauncher.openHandler = { url, _, completion in
+            XCTAssertFalse(url.absoluteString.contains("code_challenge"))
+            XCTAssertFalse(url.absoluteString.contains("code_challenge_method"))
+            completion?(false)
+        }
+        
+        configurationProvider.isInstalledHandler = { _, _ in
+            true
+        }
+                
+        let expectation = XCTestExpectation()
+        
+        let authenticationSession = AuthenticationSessioningMock()
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _ in
+            expectation.fulfill()
+            return authenticationSession
+        }
+        
+        let provider = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: authenticationSessionBuilder,
+            shouldExchangeAuthCode: false,
+            configurationProvider: configurationProvider,
+            applicationLauncher: applicationLauncher
+        )
+                
+        XCTAssertEqual(applicationLauncher.openCallCount, 0)
+        
+        provider.execute(
+            authDestination: .native(appPriority: [.eats]),
+            prefill: nil,
+            completion: { _ in }
+        )
+        
+        wait(for: [expectation], timeout: 0.2)
+        
+        XCTAssertEqual(applicationLauncher.openCallCount, 1)
     }
     
     func test_handleResponse_true_callsResponseParser() {
