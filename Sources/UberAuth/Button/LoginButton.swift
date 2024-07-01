@@ -94,7 +94,7 @@ public final class LoginButton: UberButton {
     override public var image: UIImage? {
         UIImage(
             named: "uber_logo_white",
-            in: .module,
+            in: .resource(for: LoginButton.self),
             compatibleWith: nil
         )?.withRenderingMode(.alwaysTemplate)
     }
@@ -145,14 +145,14 @@ public final class LoginButton: UberButton {
             case .loggedIn:
                 return NSLocalizedString(
                     "Sign Out",
-                    bundle: .module,
+                    bundle: .resource(for: LoginButton.self),
                     comment: "Login Button Sign Out Description"
                 )
                 .uppercased()
             case .loggedOut:
                 return NSLocalizedString(
                     "Sign In",
-                    bundle: .module,
+                    bundle: .resource(for: LoginButton.self),
                     comment: "Login Button Sign In Description"
                 )
                 .uppercased()

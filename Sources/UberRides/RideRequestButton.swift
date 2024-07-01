@@ -466,7 +466,7 @@ public class RideRequestButton: UberButton_DEPRECATED {
     
     // get image from media directory
     private func getImage(name: String) -> UIImage {
-        let image = UIImage(named: name, in: Bundle.module, compatibleWith: nil)
+        let image = UIImage(named: name, in: .resource(for: RideRequestButton.self), compatibleWith: nil)
         return image!
     }
 }
