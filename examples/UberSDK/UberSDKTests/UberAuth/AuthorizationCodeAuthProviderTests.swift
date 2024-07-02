@@ -86,6 +86,43 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         
         XCTAssertTrue(hasCalledAuthenticationSessionBuilder)
     }
+    
+    func test_executeInAppLogin_prompt_includedInAuthorizeRequest() {
+
+        configurationProvider.isInstalledHandler = { _, _ in
+            true
+        }
+        
+        let applicationLauncher = ApplicationLaunchingMock()
+        applicationLauncher.openHandler = { _, _, completion in
+            completion?(true)
+        }
+
+        var hasCalledAuthenticationSessionBuilder: Bool = false
+        let prompt: Prompt = [.login, .consent]
+        let promptString = prompt.stringValue.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _ in
+            XCTAssertTrue(url.query()!.contains("prompt=\(promptString)"))
+            hasCalledAuthenticationSessionBuilder = true
+            return AuthenticationSessioningMock()
+        }
+        
+        let provider = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: authenticationSessionBuilder,
+            prompt: [.login, .consent],
+            shouldExchangeAuthCode: false,
+            configurationProvider: configurationProvider,
+            applicationLauncher: applicationLauncher
+        )
+                
+        provider.execute(
+            authDestination: .inApp,
+            completion: { result in }
+        )
+        
+        XCTAssertTrue(hasCalledAuthenticationSessionBuilder)
+    }
 
     func test_execute_existingSession_returnsExistingAuthSessionError() {
         let provider = AuthorizationCodeAuthProvider(

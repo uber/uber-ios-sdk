@@ -48,11 +48,14 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     
     private let scopes: [String]
     
+    private let prompt: Prompt?
+    
     // MARK: Initializers
     
     public init(presentationAnchor: ASPresentationAnchor = .init(),
                 scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
-                shouldExchangeAuthCode: Bool = false) {
+                shouldExchangeAuthCode: Bool = false,
+                prompt: Prompt? = nil) {
         self.configurationProvider = DefaultConfigurationProvider()
         
         guard let clientID: String = configurationProvider.clientID else {
@@ -73,11 +76,13 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.networkProvider = NetworkProvider(baseUrl: Constants.baseUrl)
         self.tokenManager = TokenManager()
         self.scopes = scopes
+        self.prompt = prompt
     }
     
     init(presentationAnchor: ASPresentationAnchor = .init(),
          authenticationSessionBuilder: AuthenticationSessionBuilder? = nil,
          scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
+         prompt: Prompt? = nil,
          shouldExchangeAuthCode: Bool = false,
          configurationProvider: ConfigurationProviding = DefaultConfigurationProvider(),
          applicationLauncher: ApplicationLaunching = UIApplication.shared,
@@ -104,6 +109,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.networkProvider = networkProvider
         self.tokenManager = tokenManager
         self.scopes = scopes
+        self.prompt = prompt
     }
     
     // MARK: AuthProviding
@@ -195,6 +201,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             app: nil,
             clientID: clientID,
             codeChallenge: shouldExchangeAuthCode ? pkce.codeChallenge : nil,
+            prompt: prompt,
             redirectURI: redirectURI,
             requestURI: requestURI,
             scopes: scopes

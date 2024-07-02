@@ -10,10 +10,14 @@ final class AuthorizeRequestTests: XCTestCase {
 
     func test_generatedUrl() {
         
+        let prompt: Prompt = [.consent, .login]
+        let promptString = prompt.stringValue.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
+        
         let request = AuthorizeRequest(
             app: nil,
             clientID: "test_client_id",
             codeChallenge: "code_challenge",
+            prompt: prompt,
             redirectURI: "redirect_uri",
             requestURI: "request_url"
         )
@@ -30,6 +34,7 @@ final class AuthorizeRequestTests: XCTestCase {
         XCTAssertTrue(url.query()!.contains("request_uri=request_url"))
         XCTAssertTrue(url.query()!.contains("code_challenge_method=S256"))
         XCTAssertTrue(url.query()!.contains("redirect_uri=redirect_uri"))
+        XCTAssertTrue(url.query()!.contains("prompt=\(promptString)"))
     }
     
     func test_appSpecific_generatedUrls() {
