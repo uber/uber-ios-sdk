@@ -20,11 +20,13 @@ extension AuthProviding where Self == AuthorizationCodeAuthProvider {
     
     public static func authorizationCode(presentationAnchor: ASPresentationAnchor = .init(),
                                          scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
-                                         shouldExchangeAuthCode: Bool = true) -> Self {
+                                         shouldExchangeAuthCode: Bool = true,
+                                         prompt: Prompt? = nil) -> Self {
         AuthorizationCodeAuthProvider(
             presentationAnchor: presentationAnchor,
             scopes: scopes,
-            shouldExchangeAuthCode: shouldExchangeAuthCode
+            shouldExchangeAuthCode: shouldExchangeAuthCode,
+            prompt: prompt
         )
     }
 }

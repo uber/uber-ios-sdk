@@ -17,6 +17,7 @@ struct AuthorizeRequest: NetworkRequest {
     private let app: UberApp?
     private let codeChallenge: String?
     private let clientID: String
+    private let prompt: Prompt?
     private let redirectURI: String
     private let requestURI: String?
     private let scopes: [String]
@@ -26,12 +27,14 @@ struct AuthorizeRequest: NetworkRequest {
     init(app: UberApp?,
          clientID: String,
          codeChallenge: String?,
+         prompt: Prompt? = nil,
          redirectURI: String,
          requestURI: String?,
          scopes: [String] = []) {
         self.app = app
         self.clientID = clientID
         self.codeChallenge = codeChallenge
+        self.prompt = prompt
         self.redirectURI = redirectURI
         self.requestURI = requestURI
         self.scopes = scopes
@@ -47,6 +50,7 @@ struct AuthorizeRequest: NetworkRequest {
             "client_id": clientID,
             "code_challenge": codeChallenge,
             "code_challenge_method": codeChallenge != nil ? "S256" : nil,
+            "prompt": prompt?.stringValue,
             "redirect_uri": redirectURI,
             "request_uri": requestURI,
             "scope": scopes.joined(separator: " ")

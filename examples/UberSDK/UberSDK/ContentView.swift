@@ -29,14 +29,21 @@ final class Content {
     var type: LoginType? = .authorizationCode
     var destination: LoginDestination? = .inApp
     var isTokenExchangeEnabled: Bool = true
+    var shouldForceLogin: Bool = false
+    var shouldForceConsent: Bool = false
     var isPrefillExpanded: Bool = false
     var response: String?
     var prefillBuilder = PrefillBuilder()
     
     func login() {
         
+        var promt: Prompt = []
+        if shouldForceLogin { promt.insert(.login) }
+        if shouldForceConsent { promt.insert(.consent) }
+        
         let authProvider: AuthProviding = .authorizationCode(
-            shouldExchangeAuthCode: isTokenExchangeEnabled
+            shouldExchangeAuthCode: isTokenExchangeEnabled,
+            prompt: promt
         )
         
         let authDestination: AuthDestination = {
@@ -72,6 +79,8 @@ final class Content {
         case type = "Auth Type"
         case destination = "Destination"
         case tokenExchange = "Exchange Auth Code for Token"
+        case forceLogin = "Always ask for Login"
+        case forceConsent = "Always ask for Consent"
         case prefill = "Prefill Values"
         case firstName = "First Name"
         case lastName = "Last Name"
@@ -169,41 +178,12 @@ struct ContentView: View {
     @ViewBuilder
     private var loginSection: some View {
         
-        row(
-            item: .type,
-            content: {
-                Text(content.type?.description ?? "")
-                    .foregroundStyle(.gray)
-            },
-            tapHandler: { content.selection = .type }
-        )
-        
-        row(
-            item: .destination,
-            content: {
-                Text(content.destination?.description ?? "")
-                    .foregroundStyle(.gray)
-            },
-            tapHandler: { content.selection = .destination }
-        )
-        
-        row(
-            item: .tokenExchange,
-            content: {
-                Toggle(isOn: $content.isTokenExchangeEnabled, label: { EmptyView() })
-            },
-            showDisclosureIndicator: false,
-            tapHandler: nil
-        )
-        
-        row(
-            item: .prefill,
-            content: {
-                Toggle(isOn: $content.isPrefillExpanded, label: { EmptyView() })
-            },
-            showDisclosureIndicator: false,
-            tapHandler: nil
-        )
+        textRow(.type, value: content.type?.description)
+        textRow(.destination, value: content.destination?.description)
+        toggleRow(.tokenExchange, value: $content.isTokenExchangeEnabled)
+        toggleRow(.forceLogin, value: $content.shouldForceLogin)
+        toggleRow(.forceConsent, value: $content.shouldForceConsent)
+        toggleRow(.prefill, value: $content.isPrefillExpanded)
         
         if content.isPrefillExpanded {
             row(
@@ -263,13 +243,32 @@ struct ContentView: View {
             label: {
                 HStack(spacing: 0) {
                     if let item { Text(item.rawValue) }
-                    Spacer()
                     content()
+                        .frame(maxWidth: .infinity, alignment: .trailing)
                     if showDisclosureIndicator { emptyNavigationLink }
                 }
             }
         )
         .tint(.black)
+    }
+    
+    private func textRow(_ item: Content.Item, value: String?) -> some View {
+        row(
+            item: item,
+            content: { Text(value ?? "").foregroundStyle(.gray) },
+            tapHandler: { content.selection = item }
+        )
+    }
+    
+    private func toggleRow(_ item: Content.Item, value: Binding<Bool>) -> some View {
+        row(
+            item: item,
+            content: {
+                Toggle(isOn: value, label: { EmptyView() })
+            },
+            showDisclosureIndicator: false,
+            tapHandler: nil
+        )
     }
     
     private let emptyNavigationLink: some View = NavigationLink.empty
