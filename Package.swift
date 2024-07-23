@@ -7,7 +7,7 @@ let package = Package(
     name: "rides-ios-sdk",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v15)
+        .iOS(.v14)
     ],
     products: [
         .library(

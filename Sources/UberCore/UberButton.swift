@@ -59,16 +59,46 @@ open class UberButton: UIButton {
     
     public func update() {
         DispatchQueue.main.async { [self] in
-            configuration = .uber(
-                title: title,
-                image: image,
-                isHighlighted: isHighlighted
-            )
-            updateConfiguration()
+            if #available(iOS 15, *) {
+                configuration = .uber(
+                    title: title,
+                    image: image,
+                    isHighlighted: isHighlighted
+                )
+                updateConfiguration()
+            } 
+            else {
+                clipsToBounds = true
+                layer.cornerRadius = Constants.cornerRadius
+
+                setImage(
+                    image?.withRenderingMode(.alwaysTemplate),
+                    for: .normal
+                )
+                imageView?.tintColor = .uberButtonForeground
+                imageView?.contentMode = .left
+                
+                setTitle(title, for: .normal)
+                titleLabel?.textAlignment = .right
+                
+                setTitleColor(.uberButtonForeground, for: .normal)
+                backgroundColor = isHighlighted ? .uberButtonHighlightedBackground : .uberButtonBackground
+                
+                contentEdgeInsets = Constants.contentInsets
+            }
         }
+    }
+    
+    private enum Constants {
+        static let cornerRadius: CGFloat = 8
+        static let horizontalPadding: CGFloat = 16
+        static let verticalPadding: CGFloat = 10
+        static let contentInsets: UIEdgeInsets = .init(top: 0, left: 16, bottom: 0, right: 16)
     }
 }
 
+
+@available(iOS 15, *)
 extension UIButton.Configuration {
     
     static func uber(title: String? = nil,
@@ -94,6 +124,7 @@ extension UIButton.Configuration {
         return style
     }
 }
+    
 
 /// Base class for Uber buttons that sets up colors and some constraints.
 open class UberButton_DEPRECATED: UIButton {
