@@ -41,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B21C2DCC2C656BFC00337E93 /* UberSDK.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UberSDK.xctestplan; sourceTree = "<group>"; };
 		B21E42772BE2FF6500D9C5E1 /* KeychainUtilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainUtilityTests.swift; sourceTree = "<group>"; };
 		B243DF562BFE474C0086160C /* UberSDK.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UberSDK.entitlements; sourceTree = "<group>"; };
 		B25D30892BD03F50008A67CF /* UberButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberButtonView.swift; sourceTree = "<group>"; };
@@ -103,6 +104,7 @@
 		B29303992B89113F00D28BAA = {
 			isa = PBXGroup;
 			children = (
+				B21C2DCC2C656BFC00337E93 /* UberSDK.xctestplan */,
 				B2D7AE1A2B979EDA007F03FB /* UberSDK */,
 				B2D7AE2B2B979EDB007F03FB /* UberSDKTests */,
 				B29303A32B89113F00D28BAA /* Products */,

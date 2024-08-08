@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import CoreLocation
+import UberAuth
 import UberCore
 
 /// Convenience enum for managing versions of resources.
@@ -82,7 +83,7 @@ enum Components: APIEndpoint {
     var query: [URLQueryItem] {
         switch self {
         case .rideRequestWidget(let rideParameters):
-            let environment = Configuration.shared.isSandbox ? "sandbox" : "production"
+            let environment = ConfigurationProvider.isSandbox ? "sandbox" : "production"
             var queryItems = queryBuilder( ("env", "\(environment)") )
             
             if let rideParameters = rideParameters {

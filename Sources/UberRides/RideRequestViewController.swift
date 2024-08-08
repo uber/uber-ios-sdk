@@ -74,8 +74,8 @@ public class RideRequestViewController: UIViewController {
      - returns: An initialized RideRequestViewController, or nil if something went wrong
      */
     public required init?(coder aDecoder: NSCoder) {
-        self.accessTokenIdentifier = Configuration.shared.defaultAccessTokenIdentifier
-        self.keychainAccessGroup = Configuration.shared.defaultKeychainAccessGroup
+        self.accessTokenIdentifier = ""
+        self.keychainAccessGroup = ""
         
         super.init(coder: aDecoder)
 
@@ -94,8 +94,8 @@ public class RideRequestViewController: UIViewController {
      - returns: An initialized RideRequestViewController
      */
     public init(rideParameters: RideParameters,
-                accessTokenIdentifier: String = Configuration.shared.defaultAccessTokenIdentifier,
-                keychainAccessGroup: String = Configuration.shared.defaultKeychainAccessGroup) {
+                accessTokenIdentifier: String = TokenManager.defaultAccessTokenIdentifier,
+                keychainAccessGroup: String = TokenManager.defaultKeychainAccessGroup) {
         
         self.accessTokenIdentifier = accessTokenIdentifier
         self.keychainAccessGroup = keychainAccessGroup

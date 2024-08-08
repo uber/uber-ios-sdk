@@ -67,7 +67,9 @@ public extension TokenManaging {
 
 public final class TokenManager: TokenManaging {
     
-    public static let defaultAccessTokenIdentifier = "UberAccessTokenKey"
+    public static let defaultAccessTokenIdentifier: String = "UberAccessTokenKey"
+    
+    public static let defaultKeychainAccessGroup: String = ""
     
     private let keychainUtility: KeychainUtilityProtocol
     

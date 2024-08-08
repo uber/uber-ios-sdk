@@ -79,7 +79,6 @@ public class RideRequestView: UIView {
         self.rideParameters = rideParameters
         self.accessToken = accessToken
         let configuration = WKWebViewConfiguration()
-        configuration.processPool = Configuration.shared.processPool
         webView = WKWebView(frame: CGRect.zero, configuration: configuration)
         super.init(frame: frame)
         initialSetup()
@@ -145,7 +144,6 @@ public class RideRequestView: UIView {
     required public init?(coder aDecoder: NSCoder) {
         rideParameters = RideParametersBuilder().build()
         let configuration = WKWebViewConfiguration()
-        configuration.processPool = Configuration.shared.processPool
         webView = WKWebView(frame: CGRect.zero, configuration: configuration)
         super.init(coder: aDecoder)
         initialSetup()

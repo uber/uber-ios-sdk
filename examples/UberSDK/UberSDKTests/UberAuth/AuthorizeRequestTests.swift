@@ -4,6 +4,7 @@
 
 
 @testable import UberAuth
+import UberCore
 import XCTest
 
 final class AuthorizeRequestTests: XCTestCase {

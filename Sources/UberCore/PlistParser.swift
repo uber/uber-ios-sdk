@@ -17,7 +17,7 @@ public struct PlistParser {
     ///   - name: The name of the plist to access
     ///   - bundle: The bundle the plist is contained in
     public init(plistName: String,
-         bundle: Bundle = .main) {
+                bundle: Bundle = .main) {
         guard let plistUrl = bundle.url(forResource: plistName, withExtension: "plist") else {
             self.contents = [:]
             return
@@ -39,7 +39,7 @@ public struct PlistParser {
     ///   - name: The name of the plist to access
     ///   - bundle: The bundle the plist is contained in
     public init(name: String,
-         bundle: Bundle = .main) throws {
+                bundle: Bundle = .main) throws {
         guard let plistUrl = bundle.url(forResource: name, withExtension: "plist") else {
             throw ParserError.noResourceFound
         }

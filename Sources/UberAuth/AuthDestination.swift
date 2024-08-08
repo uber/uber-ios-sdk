@@ -4,6 +4,7 @@
 
 
 import Foundation
+import UberCore
 
 /// An enum that describes where login should occur
 public enum AuthDestination {
@@ -18,39 +19,4 @@ public enum AuthDestination {
     case native(
         appPriority: [UberApp] = [.rides, .eats, .driver]
     )
-}
-
-/// An enum corresponding to each Uber client application
-public enum UberApp: CaseIterable {
-    
-    // Uber Eats
-    case eats
-    
-    // Uber Driver
-    case driver
-    
-    // Uber
-    case rides
-    
-    var deeplinkScheme: String {
-        switch self {
-        case .eats:
-            return "ubereats"
-        case .driver:
-            return "uberdriver"
-        case .rides:
-            return "uber"
-        }
-    }
-    
-    var urlIdentifier: String {
-        switch self {
-        case .eats:
-            return "eats"
-        case .driver:
-            return "drivers"
-        case .rides:
-            return "riders"
-        }
-    }
 }

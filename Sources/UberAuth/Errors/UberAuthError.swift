@@ -4,6 +4,7 @@
 
 
 import AuthenticationServices
+import UberCore
 import Foundation
 
 public enum UberAuthError: Error {

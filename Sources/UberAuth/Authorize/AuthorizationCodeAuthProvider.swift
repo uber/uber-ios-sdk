@@ -56,21 +56,12 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
                 shouldExchangeAuthCode: Bool = false,
                 prompt: Prompt? = nil) {
-        self.configurationProvider = DefaultConfigurationProvider()
-        
-        guard let clientID: String = configurationProvider.clientID else {
-            preconditionFailure("No clientID specified in Info.plist")
-        }
-        
-        guard let redirectURI: String = configurationProvider.redirectURI else {
-            preconditionFailure("No redirectURI specified in Info.plist")
-        }
-        
+        self.configurationProvider = ConfigurationProvider()
         self.applicationLauncher = UIApplication.shared
         self.authenticationSessionBuilder = nil
-        self.clientID = clientID
+        self.clientID = configurationProvider.clientID
         self.presentationAnchor = presentationAnchor
-        self.redirectURI = redirectURI
+        self.redirectURI = configurationProvider.redirectURI
         self.responseParser = AuthorizationCodeResponseParser()
         self.shouldExchangeAuthCode = shouldExchangeAuthCode
         self.networkProvider = NetworkProvider(baseUrl: Constants.baseUrl)
@@ -84,26 +75,18 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
          scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
          prompt: Prompt? = nil,
          shouldExchangeAuthCode: Bool = false,
-         configurationProvider: ConfigurationProviding = DefaultConfigurationProvider(),
+         configurationProvider: ConfigurationProviding = ConfigurationProvider(),
          applicationLauncher: ApplicationLaunching = UIApplication.shared,
          responseParser: AuthorizationCodeResponseParsing = AuthorizationCodeResponseParser(),
          networkProvider: NetworkProviding = NetworkProvider(baseUrl: Constants.baseUrl),
          tokenManager: TokenManaging = TokenManager()) {
         
-        guard let clientID: String = configurationProvider.clientID else {
-            preconditionFailure("No clientID specified in Info.plist")
-        }
-        
-        guard let redirectURI: String = configurationProvider.redirectURI else {
-            preconditionFailure("No redirectURI specified in Info.plist")
-        }
-        
         self.applicationLauncher = applicationLauncher
         self.authenticationSessionBuilder = authenticationSessionBuilder
-        self.clientID = clientID
+        self.clientID = configurationProvider.clientID
         self.configurationProvider = configurationProvider
         self.presentationAnchor = presentationAnchor
-        self.redirectURI = redirectURI
+        self.redirectURI = configurationProvider.redirectURI
         self.responseParser = responseParser
         self.shouldExchangeAuthCode = shouldExchangeAuthCode
         self.networkProvider = networkProvider

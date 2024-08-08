@@ -25,6 +25,7 @@
 
 import Foundation
 import CoreLocation
+import UberAuth
 import UberCore
 import UIKit
 
@@ -97,6 +98,7 @@ class RequestURLUtil {
         case Dropoff = "dropoff"
     }
     
+    private static let configurationProvider = ConfigurationProvider()
     static let actionKey = "action"
     static let setPickupValue = "setPickup"
     static let clientIDKey = "client_id"
@@ -112,7 +114,7 @@ class RequestURLUtil {
         
         var queryItems = [URLQueryItem]()
         queryItems.append(URLQueryItem(name: RequestURLUtil.actionKey, value: RequestURLUtil.setPickupValue))
-        queryItems.append(URLQueryItem(name: RequestURLUtil.clientIDKey, value: Configuration.shared.clientID))
+        queryItems.append(URLQueryItem(name: RequestURLUtil.clientIDKey, value: configurationProvider.clientID))
         
         if let productID = rideParameters.productID {
             queryItems.append(URLQueryItem(name: RequestURLUtil.productIDKey, value: productID))

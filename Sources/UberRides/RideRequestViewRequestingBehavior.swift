@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import Foundation
+import UberAuth
 import UberCore
 import UIKit
 
@@ -51,8 +52,8 @@ public class RideRequestViewRequestingBehavior {
      - returns: An initialized RideRequestViewRequestingBehavior object
      */
     public init(presentingViewController: UIViewController, 
-                accessTokenIdentifier: String = Configuration.shared.defaultAccessTokenIdentifier,
-                keychainAccessGroup: String = Configuration.shared.defaultKeychainAccessGroup) {
+                accessTokenIdentifier: String = TokenManager.defaultAccessTokenIdentifier,
+                keychainAccessGroup: String = TokenManager.defaultKeychainAccessGroup) {
         self.presentingViewController = presentingViewController
         let rideRequestViewController = RideRequestViewController(
             rideParameters: RideParametersBuilder().build(),
