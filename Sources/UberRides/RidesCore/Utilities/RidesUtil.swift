@@ -98,7 +98,6 @@ class RequestURLUtil {
         case Dropoff = "dropoff"
     }
     
-    private static let configurationProvider = ConfigurationProvider()
     static let actionKey = "action"
     static let setPickupValue = "setPickup"
     static let clientIDKey = "client_id"
@@ -110,7 +109,7 @@ class RequestURLUtil {
     static let formattedAddressKey = "[formatted_address]"
     static let userAgentKey = "user-agent"
     
-    static func buildRequestQueryParameters(_ rideParameters: RideParameters) -> [URLQueryItem] {
+    static func buildRequestQueryParameters(_ rideParameters: RideParameters, configurationProvider: ConfigurationProviding = ConfigurationProvider()) -> [URLQueryItem] {
         
         var queryItems = [URLQueryItem]()
         queryItems.append(URLQueryItem(name: RequestURLUtil.actionKey, value: RequestURLUtil.setPickupValue))
