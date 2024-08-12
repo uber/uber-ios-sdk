@@ -25,6 +25,7 @@
 
 import CoreLocation
 import UIKit
+import UberAuth
 import UberCore
 
 /**
@@ -35,6 +36,7 @@ public class RequestDeeplink: BaseDeeplink {
 
     private let rideParameters: RideParameters
     private let fallbackType: DeeplinkFallbackType
+    private let configurationProvider: ConfigurationProviding
 
     /**
      Initialize a ride request deeplink. If the Uber app is not installed, fallback to the App Store.
@@ -46,10 +48,13 @@ public class RequestDeeplink: BaseDeeplink {
     /**
      Initialize a ride request deeplink.
      */
-    public init(rideParameters: RideParameters, fallbackType: DeeplinkFallbackType) {
+    public init(rideParameters: RideParameters, 
+                fallbackType: DeeplinkFallbackType,
+                configurationProvider: ConfigurationProviding = ConfigurationProvider()) {
         self.rideParameters = rideParameters
         self.fallbackType = fallbackType
         self.rideParameters.source = rideParameters.source ?? RequestDeeplink.sourceString
+        self.configurationProvider = configurationProvider
 
         let queryItems = RequestURLUtil.buildRequestQueryParameters(rideParameters)
         let scheme = "uber"
@@ -75,7 +80,11 @@ public class RequestDeeplink: BaseDeeplink {
                 return urlComponents.url
             }
         case .appStore:
-            let deeplink = RidesAppStoreDeeplink(userAgent: rideParameters.userAgent)
+            let deeplink = RidesAppStoreDeeplink(
+                userAgent: rideParameters.userAgent,
+                clientID: configurationProvider.clientID ?? "",
+                sdkVersion: configurationProvider.sdkVersion
+            )
             return deeplink.url
         default:
             break

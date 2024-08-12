@@ -4,6 +4,7 @@
 
 
 import Foundation
+import UberCore
 
 ///
 /// Defines a network request conforming to the OAuth 2.0 standard authorization request

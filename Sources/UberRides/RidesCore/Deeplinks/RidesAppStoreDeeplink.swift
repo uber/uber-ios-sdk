@@ -34,14 +34,14 @@ public class RidesAppStoreDeeplink: BaseDeeplink {
      
      - returns: An initialized AppStoreDeeplink
      */
-    public init(userAgent: String?) {
+    public init(userAgent: String?, clientID: String, sdkVersion: String) {
         let scheme = "https"
         let domain = "m.uber.com"
         let path = "/sign-up"
         
-        let clientIDQueryItem = URLQueryItem(name: "client_id", value: Configuration.shared.clientID)
+        let clientIDQueryItem = URLQueryItem(name: "client_id", value: clientID)
         
-        let userAgent = userAgent ?? "rides-ios-v\(Configuration.shared.sdkVersion)"
+        let userAgent = userAgent ?? "rides-ios-v\(sdkVersion)"
         
         let userAgentQueryItem = URLQueryItem(name: "user-agent", value: userAgent)
         

@@ -30,7 +30,7 @@ import UberCore
 public class RidesClient {
     
     /// Application client ID. Required for every instance of RidesClient.
-    var clientID: String = Configuration.shared.clientID
+    var clientID: String
 
     /// The Access Token Identifier. The identifier to use for looking up this client's accessToken
     let accessTokenIdentifier: String
@@ -42,7 +42,7 @@ public class RidesClient {
     var session: URLSession
 
     /// Developer server token.
-    private var serverToken: String? = Configuration.shared.serverToken
+    private let serverToken: String?
     
     private let tokenManager = TokenManager()
     
@@ -60,7 +60,12 @@ public class RidesClient {
      
      - returns: An initialized RidesClient
      */
-    public init(accessTokenIdentifier: String, sessionConfiguration: URLSessionConfiguration, keychainAccessGroup: String) {
+    public init(accessTokenIdentifier: String,
+                sessionConfiguration: URLSessionConfiguration,
+                keychainAccessGroup: String,
+                configurationProvider: ConfigurationProviding = ConfigurationProvider()) {
+        self.clientID = configurationProvider.clientID
+        self.serverToken = configurationProvider.serverToken
         self.accessTokenIdentifier = accessTokenIdentifier
         self.keychainAccessGroup = keychainAccessGroup
         self.session = URLSession(configuration: sessionConfiguration)
@@ -101,7 +106,7 @@ public class RidesClient {
     public convenience init(accessTokenIdentifier: String, sessionConfiguration: URLSessionConfiguration) {
         self.init(accessTokenIdentifier: accessTokenIdentifier,
                   sessionConfiguration: sessionConfiguration,
-                  keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup)
+                  keychainAccessGroup: TokenManager.defaultKeychainAccessGroup)
     }
     
     /**
@@ -118,7 +123,7 @@ public class RidesClient {
     public convenience init(accessTokenIdentifier: String) {
         self.init(accessTokenIdentifier: accessTokenIdentifier,
                   sessionConfiguration: URLSessionConfiguration.default,
-                  keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup)
+                  keychainAccessGroup: TokenManager.defaultKeychainAccessGroup)
     }
     
     /**
@@ -131,9 +136,9 @@ public class RidesClient {
      - returns: An initialized RidesClient
      */
     public convenience init() {
-        self.init(accessTokenIdentifier: Configuration.shared.defaultAccessTokenIdentifier,
+        self.init(accessTokenIdentifier: TokenManager.defaultAccessTokenIdentifier,
                   sessionConfiguration: URLSessionConfiguration.default,
-                  keychainAccessGroup: Configuration.shared.defaultKeychainAccessGroup)
+                  keychainAccessGroup: TokenManager.defaultKeychainAccessGroup)
     }
     
     /**

@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "8CD61FA7-BDD2-412E-9260-8986DEF21914",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:UberSDK.xcodeproj",
+      "identifier" : "B2D7AE182B979EDA007F03FB",
+      "name" : "UberSDK"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:UberSDK.xcodeproj",
+        "identifier" : "B2D7AE272B979EDB007F03FB",
+        "name" : "UberSDKTests"
+      }
+    }
+  ],
+  "version" : 1
+}

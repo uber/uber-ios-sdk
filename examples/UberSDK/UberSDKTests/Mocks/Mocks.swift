@@ -51,13 +51,13 @@ class NetworkProvidingMock: NetworkProviding {
     }
 }
 
-class ApplicationLaunchingMock: ApplicationLaunching {
-    init() { }
+public class ApplicationLaunchingMock: ApplicationLaunching {
+    public init() { }
 
 
-    private(set) var openCallCount = 0
-    var openHandler: ((URL, [UIApplication.OpenExternalURLOptionsKey: Any], ((Bool) -> Void)?) -> ())?
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler: ((Bool) -> Void)?)  {
+    public private(set) var openCallCount = 0
+    public var openHandler: ((URL, [UIApplication.OpenExternalURLOptionsKey: Any], ((Bool) -> Void)?) -> ())?
+    public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler: ((Bool) -> Void)?)  {
         openCallCount += 1
         if let openHandler = openHandler {
             openHandler(url, options, completionHandler)
@@ -66,23 +66,38 @@ class ApplicationLaunchingMock: ApplicationLaunching {
     }
 }
 
-class ConfigurationProvidingMock: ConfigurationProviding {
-    init() { }
-    init(clientID: String? = nil, redirectURI: String? = nil) {
+public class ConfigurationProvidingMock: ConfigurationProviding {
+    public init() { }
+    public init(clientID: String = "", redirectURI: String = "", sdkVersion: String = "", serverToken: String? = nil) {
         self.clientID = clientID
         self.redirectURI = redirectURI
+        self.sdkVersion = sdkVersion
+        self.serverToken = serverToken
     }
 
 
-    private(set) var clientIDSetCallCount = 0
-    var clientID: String? = nil { didSet { clientIDSetCallCount += 1 } }
+    public private(set) var clientIDSetCallCount = 0
+    public var clientID: String = "" { didSet { clientIDSetCallCount += 1 } }
 
-    private(set) var redirectURISetCallCount = 0
-    var redirectURI: String? = nil { didSet { redirectURISetCallCount += 1 } }
+    public private(set) var redirectURISetCallCount = 0
+    public var redirectURI: String = "" { didSet { redirectURISetCallCount += 1 } }
 
-    private(set) var isInstalledCallCount = 0
-    var isInstalledHandler: ((UberApp, Bool) -> (Bool))?
-    func isInstalled(app: UberApp, defaultIfUnregistered: Bool) -> Bool {
+    public private(set) var sdkVersionSetCallCount = 0
+    public var sdkVersion: String = "" { didSet { sdkVersionSetCallCount += 1 } }
+
+    public private(set) var serverTokenSetCallCount = 0
+    public var serverToken: String? = nil { didSet { serverTokenSetCallCount += 1 } }
+
+    public static private(set) var isSandboxSetCallCount = 0
+    static private var _isSandbox: Bool = false { didSet { isSandboxSetCallCount += 1 } }
+    public static var isSandbox: Bool {
+        get { return _isSandbox }
+        set { _isSandbox = newValue }
+    }
+
+    public private(set) var isInstalledCallCount = 0
+    public var isInstalledHandler: ((UberApp, Bool) -> (Bool))?
+    public func isInstalled(app: UberApp, defaultIfUnregistered: Bool) -> Bool {
         isInstalledCallCount += 1
         if let isInstalledHandler = isInstalledHandler {
             return isInstalledHandler(app, defaultIfUnregistered)

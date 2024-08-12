@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 
 import Foundation
+import UberCore
 
 /**
  *  Protocol for all endpoints to conform to.
@@ -47,7 +48,7 @@ public extension APIEndpoint {
     }
 
     var host: String {
-        if Configuration.shared.isSandbox {
+        if ConfigurationProvider.isSandbox {
             return "https://sandbox-api.uber.com"
         } else {
             return "https://api.uber.com"
