@@ -37,6 +37,11 @@ class RideRequestViewControllerTests: XCTestCase {
         super.setUp()
         tokenManager.deleteToken(identifier: testIdentifier, accessGroup: accessGroup)
     }
+    
+    override func tearDown() {
+        super.tearDown()
+        tokenManager.deleteToken(identifier: testIdentifier, accessGroup: accessGroup)
+    }
 
     func testRideRequestViewLoads_withValidAccessToken() {
         var expectation = false

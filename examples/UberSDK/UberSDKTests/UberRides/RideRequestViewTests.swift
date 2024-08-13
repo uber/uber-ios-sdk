@@ -110,9 +110,11 @@ class RideRequestViewTests: XCTestCase {
      */
     func testAuthorizeFailsWithoutAccessToken() {
         testExpectation = expectation(description: "access token missing delegate call")
+        
+        _ = tokenManager.deleteToken()
+        
         let view = RideRequestView()
         view.delegate = self
-        _ = tokenManager.deleteToken()
         
         view.load()
         

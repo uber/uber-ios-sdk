@@ -17,7 +17,6 @@
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:UberSDK.xcodeproj",
         "identifier" : "B2D7AE272B979EDB007F03FB",
