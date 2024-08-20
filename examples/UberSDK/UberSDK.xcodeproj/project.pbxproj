@@ -7,6 +7,55 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B21C2DD82C6574D300337E93 /* DeeplinkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DD62C6574D300337E93 /* DeeplinkManagerTests.swift */; };
+		B21C2DD92C6574D300337E93 /* BaseDeeplinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DD72C6574D300337E93 /* BaseDeeplinkTests.swift */; };
+		B21C2E072C6574D900337E93 /* getHistory.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DDA2C6574D900337E93 /* getHistory.json */; };
+		B21C2E082C6574D900337E93 /* getMe.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DDB2C6574D900337E93 /* getMe.json */; };
+		B21C2E092C6574D900337E93 /* getPaymentMethods.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DDC2C6574D900337E93 /* getPaymentMethods.json */; };
+		B21C2E0A2C6574D900337E93 /* getPriceEstimates.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DDD2C6574D900337E93 /* getPriceEstimates.json */; };
+		B21C2E0B2C6574D900337E93 /* getPriceEstimatesEmpty.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DDE2C6574D900337E93 /* getPriceEstimatesEmpty.json */; };
+		B21C2E0C2C6574D900337E93 /* getProductID.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DDF2C6574D900337E93 /* getProductID.json */; };
+		B21C2E0D2C6574D900337E93 /* getProducts.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DE02C6574D900337E93 /* getProducts.json */; };
+		B21C2E0E2C6574D900337E93 /* getRequestAccepted.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DE12C6574D900337E93 /* getRequestAccepted.json */; };
+		B21C2E0F2C6574D900337E93 /* getRequestArriving.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DE22C6574D900337E93 /* getRequestArriving.json */; };
+		B21C2E102C6574D900337E93 /* getRequestCompleted.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DE32C6574D900337E93 /* getRequestCompleted.json */; };
+		B21C2E112C6574D900337E93 /* getRequestInProgress.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DE42C6574D900337E93 /* getRequestInProgress.json */; };
+		B21C2E122C6574D900337E93 /* getRequestProcessing.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DE52C6574D900337E93 /* getRequestProcessing.json */; };
+		B21C2E132C6574D900337E93 /* getTimeEstimateProduct.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DE62C6574D900337E93 /* getTimeEstimateProduct.json */; };
+		B21C2E142C6574D900337E93 /* getTimeEstimates.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DE72C6574D900337E93 /* getTimeEstimates.json */; };
+		B21C2E152C6574D900337E93 /* getTimeEstimatesEmpty.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DE82C6574D900337E93 /* getTimeEstimatesEmpty.json */; };
+		B21C2E162C6574D900337E93 /* place.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DE92C6574D900337E93 /* place.json */; };
+		B21C2E172C6574D900337E93 /* postRequests.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DEA2C6574D900337E93 /* postRequests.json */; };
+		B21C2E182C6574D900337E93 /* refresh.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DEB2C6574D900337E93 /* refresh.json */; };
+		B21C2E192C6574D900337E93 /* requestEstimate.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DEC2C6574D900337E93 /* requestEstimate.json */; };
+		B21C2E1A2C6574D900337E93 /* requestEstimateNoCars.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DED2C6574D900337E93 /* requestEstimateNoCars.json */; };
+		B21C2E1B2C6574D900337E93 /* requestEstimateNoUpfront.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DEE2C6574D900337E93 /* requestEstimateNoUpfront.json */; };
+		B21C2E1C2C6574D900337E93 /* rideMap.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DEF2C6574D900337E93 /* rideMap.json */; };
+		B21C2E1D2C6574D900337E93 /* rideReceipt.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DF02C6574D900337E93 /* rideReceipt.json */; };
+		B21C2E1F2C6574D900337E93 /* APIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DF32C6574D900337E93 /* APIManagerTests.swift */; };
+		B21C2E202C6574D900337E93 /* DeeplinkRequestingBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DF42C6574D900337E93 /* DeeplinkRequestingBehaviorTests.swift */; };
+		B21C2E212C6574D900337E93 /* ModalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DF52C6574D900337E93 /* ModalViewControllerTests.swift */; };
+		B21C2E222C6574D900337E93 /* ObjectMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DF62C6574D900337E93 /* ObjectMappingTests.swift */; };
+		B21C2E232C6574D900337E93 /* RequestButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DF72C6574D900337E93 /* RequestButtonTests.swift */; };
+		B21C2E242C6574D900337E93 /* RequestDeeplinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DF82C6574D900337E93 /* RequestDeeplinkTests.swift */; };
+		B21C2E252C6574D900337E93 /* RequestLayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DF92C6574D900337E93 /* RequestLayerTests.swift */; };
+		B21C2E262C6574D900337E93 /* RequestURLUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DFA2C6574D900337E93 /* RequestURLUtilTests.swift */; };
+		B21C2E272C6574D900337E93 /* RideParametersTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DFB2C6574D900337E93 /* RideParametersTest.swift */; };
+		B21C2E282C6574D900337E93 /* RideRequestViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DFC2C6574D900337E93 /* RideRequestViewControllerTests.swift */; };
+		B21C2E292C6574D900337E93 /* RideRequestViewErrorFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DFD2C6574D900337E93 /* RideRequestViewErrorFactoryTests.swift */; };
+		B21C2E2A2C6574D900337E93 /* RideRequestViewRequestingBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DFE2C6574D900337E93 /* RideRequestViewRequestingBehaviorTests.swift */; };
+		B21C2E2B2C6574D900337E93 /* RideRequestViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DFF2C6574D900337E93 /* RideRequestViewTests.swift */; };
+		B21C2E2C2C6574D900337E93 /* RidesAuthenticationErrorFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2E002C6574D900337E93 /* RidesAuthenticationErrorFactoryTests.swift */; };
+		B21C2E2D2C6574D900337E93 /* RidesClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2E012C6574D900337E93 /* RidesClientTests.swift */; };
+		B21C2E2E2C6574D900337E93 /* RidesMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2E022C6574D900337E93 /* RidesMocks.swift */; };
+		B21C2E2F2C6574D900337E93 /* RidesScopeExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2E032C6574D900337E93 /* RidesScopeExtensionsTests.swift */; };
+		B21C2E302C6574D900337E93 /* URLComponentsExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2E042C6574D900337E93 /* URLComponentsExtensionsTests.swift */; };
+		B21C2E312C6574D900337E93 /* WidgetsEndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2E052C6574D900337E93 /* WidgetsEndpointTests.swift */; };
+		B21C2E342C6574FD00337E93 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B21C2E332C6574FD00337E93 /* OHHTTPStubsSwift */; };
+		B21C2E382C65826E00337E93 /* testInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = B21C2E352C6581C900337E93 /* testInfo.plist */; };
+		B21C2E3B2C65846F00337E93 /* testInfoNoServerToken.plist in Resources */ = {isa = PBXBuildFile; fileRef = B21C2E3A2C65846F00337E93 /* testInfoNoServerToken.plist */; };
+		B21C2E3C2C6585A700337E93 /* testInfoNoServerToken.plist in Resources */ = {isa = PBXBuildFile; fileRef = B21C2E3A2C65846F00337E93 /* testInfoNoServerToken.plist */; };
+		B21C2E3D2C6585AA00337E93 /* testInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = B21C2E352C6581C900337E93 /* testInfo.plist */; };
 		B21E42782BE2FF6500D9C5E1 /* KeychainUtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21E42772BE2FF6500D9C5E1 /* KeychainUtilityTests.swift */; };
 		B25D308A2BD03F50008A67CF /* UberButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25D30892BD03F50008A67CF /* UberButtonView.swift */; };
 		B28217C82B97A2E400EE786D /* AuthManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28217C72B97A2E400EE786D /* AuthManagerTests.swift */; };
@@ -42,6 +91,52 @@
 
 /* Begin PBXFileReference section */
 		B21C2DCC2C656BFC00337E93 /* UberSDK.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UberSDK.xctestplan; sourceTree = "<group>"; };
+		B21C2DD62C6574D300337E93 /* DeeplinkManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkManagerTests.swift; sourceTree = "<group>"; };
+		B21C2DD72C6574D300337E93 /* BaseDeeplinkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseDeeplinkTests.swift; sourceTree = "<group>"; };
+		B21C2DDA2C6574D900337E93 /* getHistory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getHistory.json; sourceTree = "<group>"; };
+		B21C2DDB2C6574D900337E93 /* getMe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getMe.json; sourceTree = "<group>"; };
+		B21C2DDC2C6574D900337E93 /* getPaymentMethods.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getPaymentMethods.json; sourceTree = "<group>"; };
+		B21C2DDD2C6574D900337E93 /* getPriceEstimates.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getPriceEstimates.json; sourceTree = "<group>"; };
+		B21C2DDE2C6574D900337E93 /* getPriceEstimatesEmpty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getPriceEstimatesEmpty.json; sourceTree = "<group>"; };
+		B21C2DDF2C6574D900337E93 /* getProductID.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getProductID.json; sourceTree = "<group>"; };
+		B21C2DE02C6574D900337E93 /* getProducts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getProducts.json; sourceTree = "<group>"; };
+		B21C2DE12C6574D900337E93 /* getRequestAccepted.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getRequestAccepted.json; sourceTree = "<group>"; };
+		B21C2DE22C6574D900337E93 /* getRequestArriving.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getRequestArriving.json; sourceTree = "<group>"; };
+		B21C2DE32C6574D900337E93 /* getRequestCompleted.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getRequestCompleted.json; sourceTree = "<group>"; };
+		B21C2DE42C6574D900337E93 /* getRequestInProgress.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getRequestInProgress.json; sourceTree = "<group>"; };
+		B21C2DE52C6574D900337E93 /* getRequestProcessing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getRequestProcessing.json; sourceTree = "<group>"; };
+		B21C2DE62C6574D900337E93 /* getTimeEstimateProduct.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getTimeEstimateProduct.json; sourceTree = "<group>"; };
+		B21C2DE72C6574D900337E93 /* getTimeEstimates.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getTimeEstimates.json; sourceTree = "<group>"; };
+		B21C2DE82C6574D900337E93 /* getTimeEstimatesEmpty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getTimeEstimatesEmpty.json; sourceTree = "<group>"; };
+		B21C2DE92C6574D900337E93 /* place.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = place.json; sourceTree = "<group>"; };
+		B21C2DEA2C6574D900337E93 /* postRequests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = postRequests.json; sourceTree = "<group>"; };
+		B21C2DEB2C6574D900337E93 /* refresh.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = refresh.json; sourceTree = "<group>"; };
+		B21C2DEC2C6574D900337E93 /* requestEstimate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = requestEstimate.json; sourceTree = "<group>"; };
+		B21C2DED2C6574D900337E93 /* requestEstimateNoCars.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = requestEstimateNoCars.json; sourceTree = "<group>"; };
+		B21C2DEE2C6574D900337E93 /* requestEstimateNoUpfront.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = requestEstimateNoUpfront.json; sourceTree = "<group>"; };
+		B21C2DEF2C6574D900337E93 /* rideMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rideMap.json; sourceTree = "<group>"; };
+		B21C2DF02C6574D900337E93 /* rideReceipt.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rideReceipt.json; sourceTree = "<group>"; };
+		B21C2DF32C6574D900337E93 /* APIManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
+		B21C2DF42C6574D900337E93 /* DeeplinkRequestingBehaviorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkRequestingBehaviorTests.swift; sourceTree = "<group>"; };
+		B21C2DF52C6574D900337E93 /* ModalViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalViewControllerTests.swift; sourceTree = "<group>"; };
+		B21C2DF62C6574D900337E93 /* ObjectMappingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectMappingTests.swift; sourceTree = "<group>"; };
+		B21C2DF72C6574D900337E93 /* RequestButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestButtonTests.swift; sourceTree = "<group>"; };
+		B21C2DF82C6574D900337E93 /* RequestDeeplinkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDeeplinkTests.swift; sourceTree = "<group>"; };
+		B21C2DF92C6574D900337E93 /* RequestLayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestLayerTests.swift; sourceTree = "<group>"; };
+		B21C2DFA2C6574D900337E93 /* RequestURLUtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestURLUtilTests.swift; sourceTree = "<group>"; };
+		B21C2DFB2C6574D900337E93 /* RideParametersTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideParametersTest.swift; sourceTree = "<group>"; };
+		B21C2DFC2C6574D900337E93 /* RideRequestViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestViewControllerTests.swift; sourceTree = "<group>"; };
+		B21C2DFD2C6574D900337E93 /* RideRequestViewErrorFactoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestViewErrorFactoryTests.swift; sourceTree = "<group>"; };
+		B21C2DFE2C6574D900337E93 /* RideRequestViewRequestingBehaviorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestViewRequestingBehaviorTests.swift; sourceTree = "<group>"; };
+		B21C2DFF2C6574D900337E93 /* RideRequestViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideRequestViewTests.swift; sourceTree = "<group>"; };
+		B21C2E002C6574D900337E93 /* RidesAuthenticationErrorFactoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesAuthenticationErrorFactoryTests.swift; sourceTree = "<group>"; };
+		B21C2E012C6574D900337E93 /* RidesClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesClientTests.swift; sourceTree = "<group>"; };
+		B21C2E022C6574D900337E93 /* RidesMocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesMocks.swift; sourceTree = "<group>"; };
+		B21C2E032C6574D900337E93 /* RidesScopeExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RidesScopeExtensionsTests.swift; sourceTree = "<group>"; };
+		B21C2E042C6574D900337E93 /* URLComponentsExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLComponentsExtensionsTests.swift; sourceTree = "<group>"; };
+		B21C2E052C6574D900337E93 /* WidgetsEndpointTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetsEndpointTests.swift; sourceTree = "<group>"; };
+		B21C2E352C6581C900337E93 /* testInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = testInfo.plist; sourceTree = "<group>"; };
+		B21C2E3A2C65846F00337E93 /* testInfoNoServerToken.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testInfoNoServerToken.plist; sourceTree = "<group>"; };
 		B21E42772BE2FF6500D9C5E1 /* KeychainUtilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainUtilityTests.swift; sourceTree = "<group>"; };
 		B243DF562BFE474C0086160C /* UberSDK.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UberSDK.entitlements; sourceTree = "<group>"; };
 		B25D30892BD03F50008A67CF /* UberButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberButtonView.swift; sourceTree = "<group>"; };
@@ -81,12 +176,70 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B21C2E342C6574FD00337E93 /* OHHTTPStubsSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B21C2DF22C6574D900337E93 /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				B21C2DDA2C6574D900337E93 /* getHistory.json */,
+				B21C2DDB2C6574D900337E93 /* getMe.json */,
+				B21C2DDC2C6574D900337E93 /* getPaymentMethods.json */,
+				B21C2DDD2C6574D900337E93 /* getPriceEstimates.json */,
+				B21C2DDE2C6574D900337E93 /* getPriceEstimatesEmpty.json */,
+				B21C2DDF2C6574D900337E93 /* getProductID.json */,
+				B21C2DE02C6574D900337E93 /* getProducts.json */,
+				B21C2DE12C6574D900337E93 /* getRequestAccepted.json */,
+				B21C2DE22C6574D900337E93 /* getRequestArriving.json */,
+				B21C2DE32C6574D900337E93 /* getRequestCompleted.json */,
+				B21C2DE42C6574D900337E93 /* getRequestInProgress.json */,
+				B21C2DE52C6574D900337E93 /* getRequestProcessing.json */,
+				B21C2DE62C6574D900337E93 /* getTimeEstimateProduct.json */,
+				B21C2DE72C6574D900337E93 /* getTimeEstimates.json */,
+				B21C2DE82C6574D900337E93 /* getTimeEstimatesEmpty.json */,
+				B21C2DE92C6574D900337E93 /* place.json */,
+				B21C2DEA2C6574D900337E93 /* postRequests.json */,
+				B21C2DEB2C6574D900337E93 /* refresh.json */,
+				B21C2DEC2C6574D900337E93 /* requestEstimate.json */,
+				B21C2DED2C6574D900337E93 /* requestEstimateNoCars.json */,
+				B21C2DEE2C6574D900337E93 /* requestEstimateNoUpfront.json */,
+				B21C2DEF2C6574D900337E93 /* rideMap.json */,
+				B21C2DF02C6574D900337E93 /* rideReceipt.json */,
+			);
+			path = TestData;
+			sourceTree = "<group>";
+		};
+		B21C2E062C6574D900337E93 /* UberRides */ = {
+			isa = PBXGroup;
+			children = (
+				B21C2DF22C6574D900337E93 /* TestData */,
+				B21C2DF32C6574D900337E93 /* APIManagerTests.swift */,
+				B21C2DF42C6574D900337E93 /* DeeplinkRequestingBehaviorTests.swift */,
+				B21C2DF52C6574D900337E93 /* ModalViewControllerTests.swift */,
+				B21C2DF62C6574D900337E93 /* ObjectMappingTests.swift */,
+				B21C2DF72C6574D900337E93 /* RequestButtonTests.swift */,
+				B21C2DF82C6574D900337E93 /* RequestDeeplinkTests.swift */,
+				B21C2DF92C6574D900337E93 /* RequestLayerTests.swift */,
+				B21C2DFA2C6574D900337E93 /* RequestURLUtilTests.swift */,
+				B21C2DFB2C6574D900337E93 /* RideParametersTest.swift */,
+				B21C2DFC2C6574D900337E93 /* RideRequestViewControllerTests.swift */,
+				B21C2DFD2C6574D900337E93 /* RideRequestViewErrorFactoryTests.swift */,
+				B21C2DFE2C6574D900337E93 /* RideRequestViewRequestingBehaviorTests.swift */,
+				B21C2DFF2C6574D900337E93 /* RideRequestViewTests.swift */,
+				B21C2E002C6574D900337E93 /* RidesAuthenticationErrorFactoryTests.swift */,
+				B21C2E012C6574D900337E93 /* RidesClientTests.swift */,
+				B21C2E022C6574D900337E93 /* RidesMocks.swift */,
+				B21C2E032C6574D900337E93 /* RidesScopeExtensionsTests.swift */,
+				B21C2E042C6574D900337E93 /* URLComponentsExtensionsTests.swift */,
+				B21C2E052C6574D900337E93 /* WidgetsEndpointTests.swift */,
+			);
+			path = UberRides;
+			sourceTree = "<group>";
+		};
 		B28217C62B97A2CE00EE786D /* UberAuth */ = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +276,8 @@
 		B2983AE72BCF658E00159EA7 /* UberCore */ = {
 			isa = PBXGroup;
 			children = (
+				B21C2DD72C6574D300337E93 /* BaseDeeplinkTests.swift */,
+				B21C2DD62C6574D300337E93 /* DeeplinkManagerTests.swift */,
 				B2983AE42BCF15FF00159EA7 /* TokenManagerTests.swift */,
 				B21E42772BE2FF6500D9C5E1 /* KeychainUtilityTests.swift */,
 			);
@@ -165,6 +320,9 @@
 		B2D7AE2B2B979EDB007F03FB /* UberSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				B21C2E352C6581C900337E93 /* testInfo.plist */,
+				B21C2E3A2C65846F00337E93 /* testInfoNoServerToken.plist */,
+				B21C2E062C6574D900337E93 /* UberRides */,
 				B2D096912B97B8E70093B510 /* Mocks */,
 				B2983AE72BCF658E00159EA7 /* UberCore */,
 				B28217C62B97A2CE00EE786D /* UberAuth */,
@@ -211,6 +369,9 @@
 				B2D7AE2A2B979EDB007F03FB /* PBXTargetDependency */,
 			);
 			name = UberSDKTests;
+			packageProductDependencies = (
+				B21C2E332C6574FD00337E93 /* OHHTTPStubsSwift */,
+			);
 			productName = UberSDKTests;
 			productReference = B2D7AE282B979EDB007F03FB /* UberSDKTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -245,6 +406,7 @@
 			mainGroup = B29303992B89113F00D28BAA;
 			packageReferences = (
 				B29303CF2B89115800D28BAA /* XCLocalSwiftPackageReference "../.." */,
+				B21C2E322C6574FD00337E93 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 			);
 			productRefGroup = B29303A32B89113F00D28BAA /* Products */;
 			projectDirPath = "";
@@ -261,6 +423,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B21C2E3D2C6585AA00337E93 /* testInfo.plist in Resources */,
+				B21C2E3C2C6585A700337E93 /* testInfoNoServerToken.plist in Resources */,
 				B2D7AE232B979EDB007F03FB /* Preview Assets.xcassets in Resources */,
 				B2D7AE202B979EDB007F03FB /* Assets.xcassets in Resources */,
 			);
@@ -270,6 +434,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B21C2E112C6574D900337E93 /* getRequestInProgress.json in Resources */,
+				B21C2E1A2C6574D900337E93 /* requestEstimateNoCars.json in Resources */,
+				B21C2E3B2C65846F00337E93 /* testInfoNoServerToken.plist in Resources */,
+				B21C2E182C6574D900337E93 /* refresh.json in Resources */,
+				B21C2E1B2C6574D900337E93 /* requestEstimateNoUpfront.json in Resources */,
+				B21C2E1C2C6574D900337E93 /* rideMap.json in Resources */,
+				B21C2E102C6574D900337E93 /* getRequestCompleted.json in Resources */,
+				B21C2E0A2C6574D900337E93 /* getPriceEstimates.json in Resources */,
+				B21C2E0E2C6574D900337E93 /* getRequestAccepted.json in Resources */,
+				B21C2E192C6574D900337E93 /* requestEstimate.json in Resources */,
+				B21C2E0D2C6574D900337E93 /* getProducts.json in Resources */,
+				B21C2E0F2C6574D900337E93 /* getRequestArriving.json in Resources */,
+				B21C2E0B2C6574D900337E93 /* getPriceEstimatesEmpty.json in Resources */,
+				B21C2E162C6574D900337E93 /* place.json in Resources */,
+				B21C2E1D2C6574D900337E93 /* rideReceipt.json in Resources */,
+				B21C2E122C6574D900337E93 /* getRequestProcessing.json in Resources */,
+				B21C2E132C6574D900337E93 /* getTimeEstimateProduct.json in Resources */,
+				B21C2E172C6574D900337E93 /* postRequests.json in Resources */,
+				B21C2E382C65826E00337E93 /* testInfo.plist in Resources */,
+				B21C2E092C6574D900337E93 /* getPaymentMethods.json in Resources */,
+				B21C2E152C6574D900337E93 /* getTimeEstimatesEmpty.json in Resources */,
+				B21C2E082C6574D900337E93 /* getMe.json in Resources */,
+				B21C2E072C6574D900337E93 /* getHistory.json in Resources */,
+				B21C2E0C2C6574D900337E93 /* getProductID.json in Resources */,
+				B21C2E142C6574D900337E93 /* getTimeEstimates.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,13 +482,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B21C2E252C6574D900337E93 /* RequestLayerTests.swift in Sources */,
+				B21C2E2A2C6574D900337E93 /* RideRequestViewRequestingBehaviorTests.swift in Sources */,
+				B21C2E232C6574D900337E93 /* RequestButtonTests.swift in Sources */,
+				B21C2E2E2C6574D900337E93 /* RidesMocks.swift in Sources */,
+				B21C2E202C6574D900337E93 /* DeeplinkRequestingBehaviorTests.swift in Sources */,
 				B21E42782BE2FF6500D9C5E1 /* KeychainUtilityTests.swift in Sources */,
 				B28CDD342BA4BE2100EB1BBD /* RequestTests.swift in Sources */,
 				B2D096952B97C4A00093B510 /* UberAuthErrorTests.swift in Sources */,
+				B21C2E312C6574D900337E93 /* WidgetsEndpointTests.swift in Sources */,
+				B21C2E212C6574D900337E93 /* ModalViewControllerTests.swift in Sources */,
+				B21C2E2F2C6574D900337E93 /* RidesScopeExtensionsTests.swift in Sources */,
 				B28217C82B97A2E400EE786D /* AuthManagerTests.swift in Sources */,
+				B21C2E2D2C6574D900337E93 /* RidesClientTests.swift in Sources */,
 				B28CDD362BA4C6CA00EB1BBD /* AuthorizeRequestTests.swift in Sources */,
+				B21C2E1F2C6574D900337E93 /* APIManagerTests.swift in Sources */,
+				B21C2E282C6574D900337E93 /* RideRequestViewControllerTests.swift in Sources */,
+				B21C2E292C6574D900337E93 /* RideRequestViewErrorFactoryTests.swift in Sources */,
+				B21C2E2B2C6574D900337E93 /* RideRequestViewTests.swift in Sources */,
+				B21C2E242C6574D900337E93 /* RequestDeeplinkTests.swift in Sources */,
+				B21C2E2C2C6574D900337E93 /* RidesAuthenticationErrorFactoryTests.swift in Sources */,
+				B21C2E302C6574D900337E93 /* URLComponentsExtensionsTests.swift in Sources */,
+				B21C2E272C6574D900337E93 /* RideParametersTest.swift in Sources */,
 				B28A41752BAE331300F727C7 /* ParRequestTests.swift in Sources */,
+				B21C2E222C6574D900337E93 /* ObjectMappingTests.swift in Sources */,
+				B21C2E262C6574D900337E93 /* RequestURLUtilTests.swift in Sources */,
 				B28CDD322BA403A900EB1BBD /* AuthorizationCodeAuthProviderTests.swift in Sources */,
+				B21C2DD82C6574D300337E93 /* DeeplinkManagerTests.swift in Sources */,
+				B21C2DD92C6574D300337E93 /* BaseDeeplinkTests.swift in Sources */,
 				B28A41712BACA97000F727C7 /* AuthorizationCodeResponseParserTests.swift in Sources */,
 				B2983AE52BCF15FF00159EA7 /* TokenManagerTests.swift in Sources */,
 				B2983AE92BCF663100159EA7 /* Mocks.swift in Sources */,
@@ -579,7 +789,23 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		B21C2E322C6574FD00337E93 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AliSoftware/OHHTTPStubs.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		B21C2E332C6574FD00337E93 /* OHHTTPStubsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B21C2E322C6574FD00337E93 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubsSwift;
+		};
 		B2D7AE432B979F4E007F03FB /* UberAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = UberAuth;

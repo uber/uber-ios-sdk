@@ -19,7 +19,11 @@ public protocol ConfigurationProviding {
 }
 
 public struct ConfigurationProvider: ConfigurationProviding {
-        
+    
+    // MARK: Public Properties
+    
+    public static var plistName: String = "Info"
+    
     // MARK: Private Properties
     
     private let parser: PlistParser
@@ -27,10 +31,10 @@ public struct ConfigurationProvider: ConfigurationProviding {
     // MARK: Initializers
     
     public init() {
-        let parser = PlistParser(plistName: "Info")
+        let parser = PlistParser(plistName: Self.plistName)
         self.parser = parser
         
-        guard let contents: [String: String] = parser[ConfigurationKey.base] else {
+        guard let contents: [String: Any] = parser[ConfigurationKey.base] else {
             preconditionFailure("Configuration item not found: \(ConfigurationKey.base)")
         }
         
@@ -44,8 +48,8 @@ public struct ConfigurationProvider: ConfigurationProviding {
         
         self.clientID = clientID
         self.redirectURI = redirectURI
-        Self.isSandbox = Bool(contents[ConfigurationKey.sandbox] ?? "") ?? false
-        self.serverToken = contents[ConfigurationKey.serverToken]
+        Self.isSandbox = (contents[ConfigurationKey.sandbox] as? Bool) ?? false
+        self.serverToken = contents[ConfigurationKey.serverToken] as? String
     }
     
     // MARK: ConfigurationProviding
@@ -90,7 +94,7 @@ public struct ConfigurationProvider: ConfigurationProviding {
         static let base = "Uber"
         static let clientID = "ClientID"
         static let redirectURI = "RedirectURI"
-        static let serverToken = "RedirectURI"
+        static let serverToken = "ServerToken"
         static let sandbox = "Sandbox"
     }
 }
