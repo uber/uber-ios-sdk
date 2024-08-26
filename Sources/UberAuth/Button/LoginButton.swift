@@ -87,8 +87,8 @@ public final class LoginButton: UberButton {
         
     // MARK: UberButton
     
-    override public var title: String {
-        buttonState.title
+    public override var title: NSAttributedString? {
+        NSAttributedString(string: buttonState.title)
     }
     
     override public var image: UIImage? {

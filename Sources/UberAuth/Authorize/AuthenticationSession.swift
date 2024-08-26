@@ -38,7 +38,7 @@ final class AuthenticationSession: AuthenticationSessioning {
                     completion(.failure(UberAuthError.invalidAuthCode))
                 case (.some(let url), _):
                     guard let code = Self.parse(url: url) else {
-                        completion(.failure(UberAuthError.invalidAuthCode))
+                        completion(.failure(Self.parseError(url: url)))
                         return
                     }
                     completion(.success(.init(authorizationCode: code)))
@@ -67,6 +67,19 @@ final class AuthenticationSession: AuthenticationSessioning {
             return nil
         }
         return codeParameter.value
+    }
+    
+    private static func parseError(url: URL) -> UberAuthError {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let errorParameter = components.queryItems?.first(where: { $0.name == "error" })?.value else {
+            return .invalidAuthCode
+        }
+        switch OAuthError(rawValue: errorParameter) {
+        case .some(let error):
+            return UberAuthError.oAuth(error)
+        case .none:
+            return .invalidAuthCode
+        }
     }
 }
 

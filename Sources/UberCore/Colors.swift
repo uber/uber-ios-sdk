@@ -5,7 +5,7 @@
 
 import UIKit
 
-extension UIColor {
+public extension UIColor {
     
     static let uberButtonBackground: UIColor = UIColor(
         named: "UberButtonBackground",
@@ -13,9 +13,15 @@ extension UIColor {
         compatibleWith: nil
     ) ?? UIColor.darkText
     
-    static let uberButtonHighlightedBackground: UIColor = UIColor(
-        named: "UberButtonHighlightedBackground",
-        in: .resource(for: UberButton.self),
+    static let uberButtonHighlightedDarkBackground: UIColor = UIColor(
+        named: "UberButtonHighlightedDarkBackground",
+        in: .module,
+        compatibleWith: nil
+    ) ?? UIColor.darkText
+    
+    static let uberButtonHighlightedLightBackground: UIColor = UIColor(
+        named: "UberButtonHighlightedLightBackground",
+        in: .module,
         compatibleWith: nil
     ) ?? UIColor.darkText
     
