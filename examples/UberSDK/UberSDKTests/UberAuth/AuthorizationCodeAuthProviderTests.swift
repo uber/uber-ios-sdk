@@ -123,6 +123,74 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         
         XCTAssertTrue(hasCalledAuthenticationSessionBuilder)
     }
+    
+    func test_executeNativeLogin_prompt_includedInAuthorizeRequest() {
+
+        configurationProvider.isInstalledHandler = { _, _ in
+            true
+        }
+        
+        let expectation = XCTestExpectation()
+        
+        let prompt: Prompt = [.consent]
+        let promptString = prompt.stringValue.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        
+        let applicationLauncher = ApplicationLaunchingMock()
+        applicationLauncher.openHandler = { url, _, completion in
+            XCTAssertTrue(url.query()!.contains("prompt=\(promptString)"))
+            expectation.fulfill()
+            completion?(true)
+        }
+        
+        let provider = AuthorizationCodeAuthProvider(
+            prompt: [.consent],
+            shouldExchangeAuthCode: false,
+            configurationProvider: configurationProvider,
+            applicationLauncher: applicationLauncher
+        )
+        
+                      
+        provider.execute(
+            authDestination: .native(),
+            completion: { _ in }
+        )
+        
+        wait(for: [expectation], timeout: 0.2)
+    }
+    
+    func test_executeNativeLogin_prompt_doesNotIncluideLogin() {
+
+        configurationProvider.isInstalledHandler = { _, _ in
+            true
+        }
+        
+        let expectation = XCTestExpectation()
+        
+        let prompt: Prompt = [.consent]
+        let promptString = prompt.stringValue.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        
+        let applicationLauncher = ApplicationLaunchingMock()
+        applicationLauncher.openHandler = { url, _, completion in
+            XCTAssertTrue(url.query()!.contains("prompt=\(promptString)"))
+            expectation.fulfill()
+            completion?(true)
+        }
+        
+        let provider = AuthorizationCodeAuthProvider(
+            prompt: [.consent, .login],
+            shouldExchangeAuthCode: false,
+            configurationProvider: configurationProvider,
+            applicationLauncher: applicationLauncher
+        )
+        
+                      
+        provider.execute(
+            authDestination: .native(),
+            completion: { _ in }
+        )
+        
+        wait(for: [expectation], timeout: 0.2)
+    }
 
     func test_execute_existingSession_returnsExistingAuthSessionError() {
         let provider = AuthorizationCodeAuthProvider(
