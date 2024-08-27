@@ -28,7 +28,7 @@ import OHHTTPStubsSwift
 import CoreLocation
 import WebKit
 import UberAuth
-import UberCore
+@testable import UberCore
 @testable import UberRides
 
 class RequestButtonTests: XCTestCase {
@@ -51,7 +51,7 @@ class RequestButtonTests: XCTestCase {
      */
     func testInitRequestButtonDefaultText() {
         button = RideRequestButton(client: client)
-        XCTAssertEqual(button.uberTitleLabel.text!, "Ride there with Uber")
+        XCTAssertEqual(button.titleLabel!.text!, "Ride there with Uber")
     }
     
     func testCorrectSource_whenRideRequestViewRequestingBehavior() {
@@ -88,7 +88,7 @@ class RequestButtonTests: XCTestCase {
             presentingViewController: baseViewController,
             accessTokenIdentifier: testIdentifier
         )
-        let button = RideRequestButton(rideParameters: RideParametersBuilder().build(), requestingBehavior: requestBehavior)
+        let button = RideRequestButton(rideParameters: RideParametersBuilder().build(), requestBehavior: requestBehavior)
     
         let rideRequestVC = RideRequestViewController(
             rideParameters: RideParametersBuilder().build(),
@@ -101,7 +101,7 @@ class RequestButtonTests: XCTestCase {
 
         requestBehavior.modalRideRequestViewController.rideRequestViewController = rideRequestVC
         
-        button.uberButtonTapped(button)
+        button.buttonTapped(button)
         
         waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
@@ -134,9 +134,9 @@ class RequestButtonTests: XCTestCase {
         }
         
         let requestBehavior = DeeplinkRequestingBehaviorMock(testClosure: expectationClosure)
-        let button = RideRequestButton(rideParameters: RideParametersBuilder().build(), requestingBehavior: requestBehavior)
+        let button = RideRequestButton(rideParameters: RideParametersBuilder().build(), requestBehavior: requestBehavior)
     
-        button.uberButtonTapped(button)
+        button.buttonTapped(button)
         
         waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
@@ -150,7 +150,7 @@ class RequestButtonTests: XCTestCase {
         let builder = RideParametersBuilder()
         builder.productID = productID
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.loadRideInformation()
         XCTAssertEqual(button.metadata.productID, productID)
     }
@@ -163,7 +163,7 @@ class RequestButtonTests: XCTestCase {
         let builder = RideParametersBuilder()
         builder.pickupLocation = location
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.loadRideInformation()
         XCTAssertEqual(button.metadata.pickupLatitude, pickupLat)
         XCTAssertEqual(button.metadata.pickupLongitude, pickupLong)
@@ -177,7 +177,7 @@ class RequestButtonTests: XCTestCase {
         let builder = RideParametersBuilder()
         builder.dropoffLocation = location
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.loadRideInformation()
         XCTAssertEqual(button.metadata.dropoffLatitude, dropoffLat)
         XCTAssertEqual(button.metadata.dropoffLongitude, dropoffLong)
@@ -198,14 +198,14 @@ class RequestButtonTests: XCTestCase {
         builder.pickupLocation = location
         builder.productID = productID
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
         
         waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(self.button.uberTitleLabel.text!, "Get a ride")
-            XCTAssertEqual(self.button.uberMetadataLabel.text!, "4 MINS AWAY")
+            XCTAssertEqual(self.button.titleLabel!.text!, "Get a ride")
+            XCTAssertEqual(self.button.secondaryLabel.text!, "4 MINS AWAY")
         })
     }
     
@@ -232,14 +232,14 @@ class RequestButtonTests: XCTestCase {
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
         
         waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(self.button.uberTitleLabel.text!, "Get a ride")
-            XCTAssertEqual(self.button.uberMetadataLabel.text!, "4 MINS AWAY\n$15 for uberX")
+            XCTAssertEqual(self.button.titleLabel!.text!, "Get a ride")
+            XCTAssertEqual(self.button.secondaryLabel.text!, "4 MINS AWAY\n$15 for uberX")
         })
     }
     
@@ -264,14 +264,14 @@ class RequestButtonTests: XCTestCase {
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
         
         waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(self.button.uberTitleLabel.text!, "Get a ride")
-            XCTAssertEqual(self.button.uberMetadataLabel.text!, "4 MINS AWAY")
+            XCTAssertEqual(self.button.titleLabel!.text!, "Get a ride")
+            XCTAssertEqual(self.button.secondaryLabel.text!, "4 MINS AWAY")
             XCTAssertEqual(self.rideButtonError.code, "price_estimate_error")
         })
     }
@@ -297,14 +297,14 @@ class RequestButtonTests: XCTestCase {
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
         
         waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(self.button.uberTitleLabel.text!, "Get a ride")
-            XCTAssertEqual(self.button.uberMetadataLabel.text!, "$15 for uberX")
+            XCTAssertEqual(self.button.titleLabel!.text!, "Get a ride")
+            XCTAssertEqual(self.button.subtitle!.string, "$15 for uberX")
             XCTAssertEqual(self.rideButtonError.code, "time_estimate_error")
         })
     }
@@ -331,14 +331,14 @@ class RequestButtonTests: XCTestCase {
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
 
         waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(self.button.uberTitleLabel.text!, "Get a ride")
-            XCTAssertEqual(self.button.uberMetadataLabel.text!, "$15 for uberX")
+            XCTAssertEqual(self.button.titleLabel!.text!, "Get a ride")
+            XCTAssertEqual(self.button.secondaryLabel.text!, "$15 for uberX")
         })
     }
 
@@ -362,14 +362,14 @@ class RequestButtonTests: XCTestCase {
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
 
         waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(self.button.uberTitleLabel.text!, "Get a ride")
-            XCTAssertEqual(self.button.uberMetadataLabel.text!, "4 MINS AWAY")
+            XCTAssertEqual(self.button.titleLabel!.text!, "Get a ride")
+            XCTAssertEqual(self.button.secondaryLabel.text!, "4 MINS AWAY")
         })
     }
 
@@ -393,14 +393,14 @@ class RequestButtonTests: XCTestCase {
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
 
         waitForExpectations(timeout: timeout, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(self.button.uberTitleLabel.text!, "Ride there with Uber")
-            XCTAssertNil(self.button.uberMetadataLabel.text)
+            XCTAssertEqual(self.button.titleLabel!.text!, "Ride there with Uber")
+            XCTAssertNil(self.button.secondaryLabel.text)
         })
     }
 
@@ -413,7 +413,7 @@ class RequestButtonTests: XCTestCase {
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.client = nil
         button.loadRideInformation()
@@ -436,7 +436,7 @@ class RequestButtonTests: XCTestCase {
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
 
@@ -458,7 +458,7 @@ class RequestButtonTests: XCTestCase {
         builder.dropoffLocation = dropoffLocation
         builder.productID = productID
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.delegate = self
         button.loadRideInformation()
 
@@ -483,10 +483,10 @@ class RequestButtonTests: XCTestCase {
         builder.pickupLocation = pickupLocation
         builder.dropoffLocation = dropoffLocation
         let rideParams = builder.build()
-        button = RideRequestButton(client: client, rideParameters:rideParams, requestingBehavior: DeeplinkRequestingBehavior())
+        button = RideRequestButton(client: client, rideParameters:rideParams, requestBehavior: DeeplinkRequestingBehavior())
         button.loadRideInformation()
         
-        XCTAssertEqual(self.button.uberTitleLabel.text!, "Ride there with Uber")
+        XCTAssertEqual(self.button.titleLabel!.text!, "Ride there with Uber")
     }
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B206A5622C6BEF6400F51AB0 /* AuthResponseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B206A5612C6BEF6400F51AB0 /* AuthResponseView.swift */; };
 		B21C2DD82C6574D300337E93 /* DeeplinkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DD62C6574D300337E93 /* DeeplinkManagerTests.swift */; };
 		B21C2DD92C6574D300337E93 /* BaseDeeplinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21C2DD72C6574D300337E93 /* BaseDeeplinkTests.swift */; };
 		B21C2E072C6574D900337E93 /* getHistory.json in Resources */ = {isa = PBXBuildFile; fileRef = B21C2DDA2C6574D900337E93 /* getHistory.json */; };
@@ -90,6 +91,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B206A5612C6BEF6400F51AB0 /* AuthResponseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponseView.swift; sourceTree = "<group>"; };
 		B21C2DCC2C656BFC00337E93 /* UberSDK.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UberSDK.xctestplan; sourceTree = "<group>"; };
 		B21C2DD62C6574D300337E93 /* DeeplinkManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkManagerTests.swift; sourceTree = "<group>"; };
 		B21C2DD72C6574D300337E93 /* BaseDeeplinkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseDeeplinkTests.swift; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 				B29303D62B891D3E00D28BAA /* SelectionView.swift */,
 				B29303D82B89408D00D28BAA /* Helpers.swift */,
 				B2D7AE1D2B979EDA007F03FB /* ContentView.swift */,
+				B206A5612C6BEF6400F51AB0 /* AuthResponseView.swift */,
 				B25D30892BD03F50008A67CF /* UberButtonView.swift */,
 				B2D096992B98012A0093B510 /* SelectionOptions.swift */,
 				B2D7AE1F2B979EDB007F03FB /* Assets.xcassets */,
@@ -470,6 +473,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2D7AE1E2B979EDA007F03FB /* ContentView.swift in Sources */,
+				B206A5622C6BEF6400F51AB0 /* AuthResponseView.swift in Sources */,
 				B2D7AE1C2B979EDA007F03FB /* UberSDKApp.swift in Sources */,
 				B2D7AE492B979F58007F03FB /* SelectionView.swift in Sources */,
 				B2D0969A2B98012A0093B510 /* SelectionOptions.swift in Sources */,
