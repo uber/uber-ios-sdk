@@ -27,7 +27,7 @@ import CoreLocation
 import UberCore
 
 /// A protocol used to response to Uber RideRequestButton events
-public protocol RideRequestButtonDelegate {
+public protocol RideRequestButtonDelegate: AnyObject {
     /**
      The button finished loading ride information successfully.
      
@@ -49,7 +49,7 @@ public class RideRequestButton: UberButton {
     // MARK: Public Properties
     
     /// Delegate is informed of events that occur with request button.
-    public var delegate: RideRequestButtonDelegate?
+    public weak var delegate: RideRequestButtonDelegate?
     
     /// The RideParameters object this button will use to make a request
     public var rideParameters: RideParameters
