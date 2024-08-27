@@ -1,8 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>FILEHEADER</key>
+	<string>
 //
-//  Bundle.swift
-//  UberAuth
+//  ___FILENAME___
+//  ___PACKAGENAME___
 //
-//  Copyright © 2024 Uber Technologies, Inc. All rights reserved.
+//  Copyright © ___YEAR___ Uber Technologies, Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -20,20 +26,6 @@
 //  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//  THE SOFTWARE.
-
-
-import Foundation
-
-extension Bundle {
-    
-    static func resource(for targetClass: AnyClass?) -> Bundle {
-#if SWIFT_PACKAGE
-        return .module
-#endif
-        if let targetClass {
-            return Bundle(for: targetClass)
-        }
-        return .main
-    }
-}
+//  THE SOFTWARE.</string>
+</dict>
+</plist>
