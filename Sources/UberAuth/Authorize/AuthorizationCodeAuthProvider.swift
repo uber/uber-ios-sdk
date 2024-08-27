@@ -284,10 +284,15 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             return
         }
         
+        // .login not supported for native auth
+        var prompt = prompt
+        prompt?.remove(.login)
+        
         let request = AuthorizeRequest(
             app: app,
             clientID: clientID,
             codeChallenge: shouldExchangeAuthCode ? pkce.codeChallenge : nil,
+            prompt: prompt,
             redirectURI: redirectURI,
             requestURI: requestURI,
             scopes: scopes
