@@ -23,12 +23,6 @@ let package = Package(
             targets: ["UberCore"]
         )
     ],
-    dependencies: [
-        .package(
-            url: "https://github.com/AliSoftware/OHHTTPStubs.git",
-            exact: .init(stringLiteral: "9.1.0")
-        )
-    ],
     targets: [
         .target(
             name: "UberAuth",
