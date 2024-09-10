@@ -4,7 +4,7 @@ This library allows you to authenticate with Uber services and  interact with th
 
 ## Requirements
 
-- iOS 13.0+
+- iOS 14.0+
 - Xcode 14.0+
 - Swift 5.0+
 
@@ -50,7 +50,7 @@ Add the following code snippet, replacing the placeholders within the square bra
     <string>ubereats</string>
     <string>uberdriver</string>
 </array>
-<key>UberAuth</key>
+<key>Uber</key>
 <dict>
     <key>ClientID</key>
     <string>[Client ID]</string>

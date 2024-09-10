@@ -3,16 +3,16 @@
 2. [Setup](#setup)
     1. [SDK Configuration](#sdk-configuration)
 3. [Authenticating](#authenticating)
-    1. [Login](#login)
-    2. [Login Context](#login-context)
-    3. [Auth Destination](#auth-destination)
+    1. [Simple Login](#simple-login)
+    2. [Customized Login](#customized-login)
+    3. [Auth Destinations](#auth-destinations)
     4. [Auth Providers](#auth-providers)
-        1. [AuthorizationCodeAuthProvider](#wip-authorizationcoreauthprovider)
-    5. [Prefilling User Information](#wip-prefilling-user-information)
-    6. [Responding to Redirects](#wip-responding-to-redirects)
-        1. [Using UIKit](#using-uikit)
-        2. [Using SwiftUI](#using-swiftui)
-    7. [Exchanging Authorization Code](#exchanging-authorization-code)
+        * [AuthorizationCodeAuthProvider](#authorizationcoreauthprovider)
+    5. [Responding to Redirects](#responding-to-redirects)
+        * [Using UIKit](#using-uikit)
+        * [Using SwiftUI](#using-swiftui)
+    6. [Exchanging Authorization Code](#exchanging-authorization-code)
+    7. [Prefilling User Information](#prefilling-user-information)
     8. [Login Button](#login-button)
 
 # Prerequisites
@@ -48,7 +48,7 @@ Once registered in the developer portal, add your redirect URI to your Xcode pro
 			</array>
 		</dict>
 	</array>
-<key>UberAuth</key>
+<key>Uber</key>
 <dict>
 
     ...
@@ -61,16 +61,16 @@ Once registered in the developer portal, add your redirect URI to your Xcode pro
 
 # Authenticating
 
-## Login
+## Simple Login
 To authenticate your app's user with Uber's backend, use the UberAuth API. In the simplest case, call the login method and respond to the result.
 
 ```swift
-UberAuth.login { result in
+UberAuth.login { result: Result<Client, UberAuthError> in
     // Handle result
 }
 ```
 
-Upon success, the result of the callback will contain a Client object containing all credentials necessary to authenticate your user.
+Upon success, the result of the callback will contain a `Client` object containing all credentials necessary to authenticate your user.
 
 | Property  | Type | Description |
 | ------------- | ------------- | ------------- |
@@ -86,7 +86,7 @@ Upon success, the result of the callback will contain a Client object containing
 Upon failure, the result will contain an error of type UberAuthError. See [Errors](./Errors/README.md) for more information.
 
 
-## Login Context
+## Customized Login
 
 For more complicated use cases, an auth context may be supplied to the login function. Use this type to specify additional customizations for the login experience:
 
@@ -110,7 +110,7 @@ UberAuth.login(
 ```
 
 
-## Auth Destination
+## Auth Destinations
 
 There are two locations or `AuthDestination`s where authentication can be handled.
 
@@ -140,37 +140,9 @@ UberAuth.login(
 
 An Auth Provider supplies logic for a specific authentication grant flow. Currently, the only supported auth provider is `AuthorizationCoreAuthProvider`.
 
-### [WIP] AuthorizationCoreAuthProvider
+### AuthorizationCoreAuthProvider
 
-An Auth Provider that supplies performs the Authorization Code Grant Flow as specified in the [OAuth 2.0 Framework](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1).
-
-
-## [WIP] Prefilling User Information
-If you would like text fields during signup to be pre-populated with user information you can do so using the prefill API. Partial information is accepted.
-There are two ways to provide this information:
-
-**Using the LoginButton / DataSource**
-
-WIP
-
-**Using LoginManager Directly**
-```
-let loginManager = LoginManager(loginType: .authorizationCode)
-
-let prefill = Prefill(
-    email: "jane@test.com",
-    phoneNumber: "12345678900",
-    firstName: "Jane",
-    lastName: "Doe"
-)
-
-loginManager.login(
-    scopes: [.profile],
-    presentingViewController: viewController,
-    prefillValues: prefill,
-    completion: nil
-)
-```
+AuthorizationCoreAuthProvider performs the Authorization Code Grant Flow as specified in the [OAuth 2.0 Framework](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1). AuthorizationCoreAuthProvider is currently the only supported auth provider.
 
 
 ## Responding to Redirects
@@ -257,6 +229,91 @@ Upon successful authentication, the Client object returned will contain a valid 
 
 **Note:** Authorization Code **will be nil** as it has been used for the token exchange and is no longer valid.
 
+## Prefilling User Information
+The SDK supports the OpenID `login_hint` parameter for prefilling user information when authenticating with Uber.
+To pass user information into the login page, ise the Prefill API when constructing the AuthContext. Partial information is accepted.
+
+**Note:** Prefill information is only supported using the `.inApp` login type.
+
+**Using UberAuth**
+```
+let prefill = Prefill(
+    email: "jane@email.com",
+    phoneNumber: "5555555555",
+    firstName: "Jane",
+    lastName: "Doe"
+)
+
+UberAuth.login(
+    context: AuthContext(
+        authDestination: .inApp,
+        authProvider: .authorizationCode(),
+        prefill: prefill
+    ),
+    completion: { _ in }
+)
+```
+
+**Using the LoginButton / DataSource**
+
+```
+final class MyLoginButtonDataSource: LoginButtonDataSource {
+
+    func authContext(_ button: LoginButton) -> AuthContext {
+        let prefill = Prefill(
+            email: "jane@email.com",
+            phoneNumber: "5555555555",
+            firstName: "Jane",
+            lastName: "Doe"
+        )
+
+        return AuthContext(
+            authDestination: .inApp,
+            authProvider: .authorizationCode(),
+            prefill: prefill
+        )
+    }
+}
+```
+
 
 ### Login Button
-Coming Soon
+
+As a convenience, the SDK provides a `LoginButton` class that can be used to log a user in or out.
+
+<img src="../../img/login_button.png?raw=true" width=600 alt="Login Button"/>
+
+For simple cases, construct the button using the default initializer.
+```
+import UberAuth
+
+let loginButton = LoginButton()
+```
+
+
+To receive the login result, conform to the `LoginButtonDelegate`.
+
+```
+
+loginButton.delegate = MyLoginButtonDelegate()
+
+...
+
+final class MyLoginButtonDelegate: LoginButtonDelegate {
+
+    func loginButton(_ button: LoginButton, didLogoutWithSuccess success: Bool) {
+        // Successful logout
+    }
+
+    func loginButton(_ button: LoginButton, didCompleteLoginWithResult result: Result<Client, UberAuthError>) {
+        switch result {
+        case .success(let client):
+            // Handle Client response
+            break
+        case .failure(let error):
+            // Handle UberAuthError
+            break
+        }
+    }
+}
+```
