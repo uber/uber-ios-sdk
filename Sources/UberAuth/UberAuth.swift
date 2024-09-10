@@ -32,7 +32,11 @@ protocol AuthManaging {
     
     func login(context: AuthContext, completion: @escaping AuthCompletion)
     
+    func logout()
+    
     func handle(_ url: URL) -> Bool
+    
+    var isLoggedIn: Bool { get }
 }
 
 /// Public interface for the uber-auth-ios library
@@ -53,6 +57,13 @@ public final class UberAuth: AuthManaging {
         )
     }
     
+    /// Clears any saved auth information from the keychain
+    /// If `currentAuthContext` exists, logs out using the stored auth context
+    /// Otherwise, attempts to delete the saved auth token directly using the internal TokenManager
+    public static func logout() {
+        auth.logout()
+    }
+    
     /// Attempts to extract auth information from the provided URL.
     /// This method should be called from the implemeting application's openURL function.
     ///
@@ -63,8 +74,21 @@ public final class UberAuth: AuthManaging {
         auth.handle(url)
     }
     
+    /// A computed property that indicates if auth information is saved in the keychain
+    /// First checks for saved token information using the current auth provider
+    /// If no auth provider exists, falls back to the default token identifier
+    public static var isLoggedIn: Bool {
+        auth.isLoggedIn
+    }
+    
     // MARK: Internal
     // MARK: AuthManaging
+    
+    init(currentContext: AuthContext? = nil,
+         tokenManager: TokenManaging = TokenManager()) {
+        self.currentContext = currentContext
+        self.tokenManager = tokenManager
+    }
     
     func login(context: AuthContext = .init(),
                completion: @escaping AuthCompletion) {
@@ -76,6 +100,15 @@ public final class UberAuth: AuthManaging {
         currentContext = context
     }
     
+    func logout() {
+        guard let currentContext else {
+            tokenManager.deleteToken(identifier: TokenManager.defaultAccessTokenIdentifier)
+            return
+        }
+        currentContext.authProvider.logout()
+        self.currentContext = nil
+    }
+    
     func handle(_ url: URL) -> Bool {
         guard let currentContext else {
             return false
@@ -83,8 +116,14 @@ public final class UberAuth: AuthManaging {
         return currentContext.authProvider.handle(response: url)
     }
     
+    var isLoggedIn: Bool {
+        currentContext?.authProvider.isLoggedIn ?? (tokenManager.getToken(identifier: TokenManager.defaultAccessTokenIdentifier) != nil)
+    }
+    
     private static let auth = UberAuth()
     
-    private var currentContext: AuthContext?
+    var currentContext: AuthContext?
+    
+    var tokenManager: TokenManaging = TokenManager()
 }
 

@@ -11,6 +11,91 @@ import UIKit
 @testable import UberCore
 
 
+public class TokenManagingMock: TokenManaging {
+    public init() { }
+
+
+    public private(set) var saveTokenCallCount = 0
+    public var saveTokenHandler: ((AccessToken, String, String?) -> (Bool))?
+    public func saveToken(_ token: AccessToken, identifier: String, accessGroup: String?) -> Bool {
+        saveTokenCallCount += 1
+        if let saveTokenHandler = saveTokenHandler {
+            return saveTokenHandler(token, identifier, accessGroup)
+        }
+        return false
+    }
+
+    public private(set) var getTokenCallCount = 0
+    public var getTokenHandler: ((String, String?) -> (AccessToken?))?
+    public func getToken(identifier: String, accessGroup: String?) -> AccessToken? {
+        getTokenCallCount += 1
+        if let getTokenHandler = getTokenHandler {
+            return getTokenHandler(identifier, accessGroup)
+        }
+        return nil
+    }
+
+    public private(set) var deleteTokenCallCount = 0
+    public var deleteTokenHandler: ((String, String?) -> (Bool))?
+    public func deleteToken(identifier: String, accessGroup: String?) -> Bool {
+        deleteTokenCallCount += 1
+        if let deleteTokenHandler = deleteTokenHandler {
+            return deleteTokenHandler(identifier, accessGroup)
+        }
+        return false
+    }
+}
+
+class NetworkProvidingMock: NetworkProviding {
+    init() { }
+
+
+    private(set) var executeCallCount = 0
+    var executeHandler: ((Any, Any) -> ())?
+    func execute<R: NetworkRequest>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ())  {
+        executeCallCount += 1
+        if let executeHandler = executeHandler {
+            executeHandler(request, completion)
+        }
+        
+    }
+}
+
+public class KeychainUtilityProtocolMock: KeychainUtilityProtocol {
+    public init() { }
+
+
+    public private(set) var saveCallCount = 0
+    public var saveHandler: ((Any, String, String?) -> (Bool))?
+    public func save<V: Encodable>(_ value: V, for key: String, accessGroup: String?) -> Bool {
+        saveCallCount += 1
+        if let saveHandler = saveHandler {
+            return saveHandler(value, key, accessGroup)
+        }
+        return false
+    }
+
+    public private(set) var getCallCount = 0
+    public var getHandler: ((String, String?) -> (Any?))?
+    public func get<V: Decodable>(key: String, accessGroup: String?) -> V? {
+        getCallCount += 1
+        if let getHandler = getHandler {
+            return getHandler(key, accessGroup) as? V
+        }
+        return nil
+    }
+
+    public private(set) var deleteCallCount = 0
+    public var deleteHandler: ((String, String?) -> (Bool))?
+    public func delete(key: String, accessGroup: String?) -> Bool {
+        deleteCallCount += 1
+        if let deleteHandler = deleteHandler {
+            return deleteHandler(key, accessGroup)
+        }
+        return false
+    }
+}
+
 class AuthorizationCodeResponseParsingMock: AuthorizationCodeResponseParsing {
     init() { }
 
@@ -33,21 +118,6 @@ class AuthorizationCodeResponseParsingMock: AuthorizationCodeResponseParsing {
             return callAsFunctionHandler(url)
         }
         fatalError("callAsFunctionHandler returns can't have a default value thus its handler must be set")
-    }
-}
-
-class NetworkProvidingMock: NetworkProviding {
-    init() { }
-
-
-    private(set) var executeCallCount = 0
-    var executeHandler: ((Any, Any) -> ())?
-    func execute<R: NetworkRequest>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ())  {
-        executeCallCount += 1
-        if let executeHandler = executeHandler {
-            executeHandler(request, completion)
-        }
-        
     }
 }
 
@@ -133,6 +203,9 @@ class AuthenticationSessioningMock: AuthenticationSessioning {
 
 public class AuthProvidingMock: AuthProviding {
     public init() { }
+    public init(isLoggedIn: Bool = false) {
+        self.isLoggedIn = isLoggedIn
+    }
 
 
     public private(set) var executeCallCount = 0
@@ -145,6 +218,16 @@ public class AuthProvidingMock: AuthProviding {
         
     }
 
+    public private(set) var logoutCallCount = 0
+    public var logoutHandler: (() -> (Bool))?
+    public func logout() -> Bool {
+        logoutCallCount += 1
+        if let logoutHandler = logoutHandler {
+            return logoutHandler()
+        }
+        return false
+    }
+
     public private(set) var handleCallCount = 0
     public var handleHandler: ((URL) -> (Bool))?
     public func handle(response url: URL) -> Bool {
@@ -154,10 +237,16 @@ public class AuthProvidingMock: AuthProviding {
         }
         return false
     }
+
+    public private(set) var isLoggedInSetCallCount = 0
+    public var isLoggedIn: Bool = false { didSet { isLoggedInSetCallCount += 1 } }
 }
 
 class AuthManagingMock: AuthManaging {
     init() { }
+    init(isLoggedIn: Bool = false) {
+        self.isLoggedIn = isLoggedIn
+    }
 
 
     private(set) var loginCallCount = 0
@@ -166,6 +255,16 @@ class AuthManagingMock: AuthManaging {
         loginCallCount += 1
         if let loginHandler = loginHandler {
             loginHandler(context, completion)
+        }
+        
+    }
+
+    private(set) var logoutCallCount = 0
+    var logoutHandler: (() -> ())?
+    func logout()  {
+        logoutCallCount += 1
+        if let logoutHandler = logoutHandler {
+            logoutHandler()
         }
         
     }
@@ -179,75 +278,8 @@ class AuthManagingMock: AuthManaging {
         }
         return false
     }
-}
 
-public class TokenManagingMock: TokenManaging {
-    public init() { }
-
-
-    public private(set) var saveTokenCallCount = 0
-    public var saveTokenHandler: ((AccessToken, String, String?) -> (Bool))?
-    public func saveToken(_ token: AccessToken, identifier: String, accessGroup: String?) -> Bool {
-        saveTokenCallCount += 1
-        if let saveTokenHandler = saveTokenHandler {
-            return saveTokenHandler(token, identifier, accessGroup)
-        }
-        return false
-    }
-
-    public private(set) var getTokenCallCount = 0
-    public var getTokenHandler: ((String, String?) -> (AccessToken?))?
-    public func getToken(identifier: String, accessGroup: String?) -> AccessToken? {
-        getTokenCallCount += 1
-        if let getTokenHandler = getTokenHandler {
-            return getTokenHandler(identifier, accessGroup)
-        }
-        return nil
-    }
-
-    public private(set) var deleteTokenCallCount = 0
-    public var deleteTokenHandler: ((String, String?) -> (Bool))?
-    public func deleteToken(identifier: String, accessGroup: String?) -> Bool {
-        deleteTokenCallCount += 1
-        if let deleteTokenHandler = deleteTokenHandler {
-            return deleteTokenHandler(identifier, accessGroup)
-        }
-        return false
-    }
-}
-
-public class KeychainUtilityProtocolMock: KeychainUtilityProtocol {
-    public init() { }
-
-
-    public private(set) var saveCallCount = 0
-    public var saveHandler: ((Any, String, String?) -> (Bool))?
-    public func save<V: Encodable>(_ value: V, for key: String, accessGroup: String?) -> Bool {
-        saveCallCount += 1
-        if let saveHandler = saveHandler {
-            return saveHandler(value, key, accessGroup)
-        }
-        return false
-    }
-
-    public private(set) var getCallCount = 0
-    public var getHandler: ((String, String?) -> (Any?))?
-    public func get<V: Decodable>(key: String, accessGroup: String?) -> V? {
-        getCallCount += 1
-        if let getHandler = getHandler {
-            return getHandler(key, accessGroup) as? V
-        }
-        return nil
-    }
-
-    public private(set) var deleteCallCount = 0
-    public var deleteHandler: ((String, String?) -> (Bool))?
-    public func delete(key: String, accessGroup: String?) -> Bool {
-        deleteCallCount += 1
-        if let deleteHandler = deleteHandler {
-            return deleteHandler(key, accessGroup)
-        }
-        return false
-    }
+    private(set) var isLoggedInSetCallCount = 0
+    var isLoggedIn: Bool = false { didSet { isLoggedInSetCallCount += 1 } }
 }
 

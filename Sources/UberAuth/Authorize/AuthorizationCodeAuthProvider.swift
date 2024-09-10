@@ -157,6 +157,10 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.completion = authCompletion
     }
     
+    public func logout() -> Bool {
+        tokenManager.deleteToken(identifier: TokenManager.defaultAccessTokenIdentifier)
+    }
+    
     public func handle(response url: URL) -> Bool {
         guard responseParser.isValidResponse(url: url, matching: redirectURI) else {
             return false
@@ -166,6 +170,10 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         completion?(result)
         
         return true
+    }
+    
+    public var isLoggedIn: Bool {
+        tokenManager.getToken(identifier: TokenManager.defaultAccessTokenIdentifier) != nil
     }
     
     // MARK: - Private

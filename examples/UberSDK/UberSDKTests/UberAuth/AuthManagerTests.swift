@@ -243,4 +243,65 @@ final class UberAuthTests: XCTestCase {
         
         XCTAssertEqual(authProvider.handleCallCount, 1)
     }
+    
+    func test_isLoggedIn_noCurrentContext_returnsFalseIfNoToken() {
+        UberAuth.logout()
+        XCTAssertFalse(UberAuth.isLoggedIn)
+    }
+    
+    func test_isLoggedIn_callsCurrentContextIsLoggedIn() {
+        let authProvider = AuthProvidingMock()
+        
+        let context = AuthContext(
+            authDestination: .inApp,
+            authProvider: authProvider,
+            prefill: nil
+        )
+        
+        UberAuth.login(
+            context: context,
+            completion: { _ in }
+        )
+        
+        XCTAssertFalse(UberAuth.isLoggedIn)
+        
+        authProvider.isLoggedIn = true
+        
+        XCTAssertTrue(UberAuth.isLoggedIn)
+    }
+    
+    func test_logout_triggersAuthProviderLogout() {
+        let tokenManager = TokenManagingMock()
+        let auth = UberAuth(tokenManager: tokenManager)
+        let authProvider = AuthProvidingMock()
+        
+        let context = AuthContext(
+            authDestination: .inApp,
+            authProvider: authProvider,
+            prefill: nil
+        )
+        
+        auth.login(
+            context: context,
+            completion: { _ in }
+        )
+        
+        XCTAssertNotNil(auth.currentContext)
+        XCTAssertEqual(authProvider.logoutCallCount, 0)
+        
+        auth.logout()
+        
+        XCTAssertEqual(authProvider.logoutCallCount, 1)
+    }
+    
+    func test_logout_noCurrentContext_deletesToken() {
+        let tokenManager = TokenManagingMock()
+        let auth = UberAuth(tokenManager: tokenManager)
+        
+        XCTAssertEqual(tokenManager.deleteTokenCallCount, 0)
+        
+        auth.logout()
+        
+        XCTAssertEqual(tokenManager.deleteTokenCallCount, 1)
+    }
 }

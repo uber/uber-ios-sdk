@@ -54,16 +54,19 @@ final class Content {
     var isPrefillExpanded: Bool = false
     var response: AuthReponse?
     var prefillBuilder = PrefillBuilder()
+    var isLoggedIn: Bool {
+        UberAuth.isLoggedIn
+    }
     
     func login() {
         
-        var promt: Prompt = []
-        if shouldForceLogin { promt.insert(.login) }
-        if shouldForceConsent { promt.insert(.consent) }
+        var prompt: Prompt = []
+        if shouldForceLogin { prompt.insert(.login) }
+        if shouldForceConsent { prompt.insert(.consent) }
         
         let authProvider: AuthProviding = .authorizationCode(
             shouldExchangeAuthCode: isTokenExchangeEnabled,
-            prompt: promt
+            prompt: prompt
         )
         
         let authDestination: AuthDestination = {
@@ -92,6 +95,11 @@ final class Content {
                 }
             }
         )
+    }
+    
+    func logout() {
+        UberAuth.logout()
+        response = nil
     }
     
     func openUrl(_ url: URL) {
@@ -219,9 +227,11 @@ struct ContentView: View {
         }
         
         Button(
-            action: { content.login() },
+            action: {
+                content.isLoggedIn ? content.logout() : content.login()
+            },
             label: {
-                Text("Login")
+                Text(content.isLoggedIn ? "Logout" : "Login")
                     .frame(maxWidth: .infinity, alignment: .center)
             }
         )
