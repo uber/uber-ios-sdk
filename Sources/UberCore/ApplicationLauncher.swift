@@ -29,7 +29,14 @@ import UIKit
 /// @mockable
 public protocol ApplicationLaunching {
     
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler: ((Bool) -> Void)?)
+    func launch(_ url: URL, completion: ((Bool) -> ())?)
 }
 
-extension UIApplication: ApplicationLaunching {}
+extension UIApplication: ApplicationLaunching {
+    
+    public func launch(_ url: URL, completion: ((Bool) -> ())?) {
+        open(url, options: [:]) {
+            completion?($0)
+        }
+    }
+}

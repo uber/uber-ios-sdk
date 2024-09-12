@@ -332,10 +332,9 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         }
         
         DispatchQueue.main.async {
-            self.applicationLauncher.open(
+            self.applicationLauncher.launch(
                 url,
-                options: [:],
-                completionHandler: { opened in
+                completion: { opened in
                     completion?(opened)
                 }
             )
