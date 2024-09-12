@@ -33,7 +33,11 @@ public protocol AuthProviding {
                  prefill: Prefill?,
                  completion: @escaping (Result<Client, UberAuthError>) -> ())
     
+    func logout() -> Bool
+    
     func handle(response url: URL) -> Bool
+    
+    var isLoggedIn: Bool { get }
 }
 
 extension AuthProviding where Self == AuthorizationCodeAuthProvider {
