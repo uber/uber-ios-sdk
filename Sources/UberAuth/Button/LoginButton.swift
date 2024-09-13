@@ -149,7 +149,6 @@ public final class LoginButton: UberButton {
     }
     
     private func logout() {
-        // TODO: Implement UberAuth.logout()
         tokenManager.deleteToken(identifier: Constants.tokenIdentifier)
         update()
     }
