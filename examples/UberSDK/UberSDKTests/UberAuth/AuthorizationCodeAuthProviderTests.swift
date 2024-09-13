@@ -76,7 +76,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         }
         
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.openHandler = { _, _, completion in
+        applicationLauncher.launchHandler = { _, completion in
             completion?(true)
         }
 
@@ -114,7 +114,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         }
         
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.openHandler = { _, _, completion in
+        applicationLauncher.launchHandler = { _, completion in
             completion?(true)
         }
 
@@ -156,7 +156,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         let promptString = prompt.stringValue.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.openHandler = { url, _, completion in
+        applicationLauncher.launchHandler = { url, completion in
             XCTAssertTrue(url.query()!.contains("prompt=\(promptString)"))
             expectation.fulfill()
             completion?(true)
@@ -190,7 +190,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         let promptString = prompt.stringValue.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.openHandler = { url, _, completion in
+        applicationLauncher.launchHandler = { url, completion in
             XCTAssertTrue(url.query()!.contains("prompt=\(promptString)"))
             expectation.fulfill()
             completion?(true)
@@ -334,7 +334,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         let expectation = XCTestExpectation()
         
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.openHandler = { _, _, completion in
+        applicationLauncher.launchHandler = { _, completion in
             expectation.fulfill()
             completion?(true)
         }
@@ -360,7 +360,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
     func test_executeNativeLogin_noDestinations_triggersInAppLogin() {
                 
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.openHandler = { _, _, _ in }
+        applicationLauncher.launchHandler = { _, _ in }
         
         configurationProvider.isInstalledHandler = { _, _ in
             false
@@ -385,7 +385,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
     func test_executeNativeLogin_noOpens_triggersInAppLogin() {
                 
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.openHandler = { _, _, completion in
+        applicationLauncher.launchHandler = { _, completion in
             completion?(false)
         }
         
@@ -423,7 +423,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
     func test_executeNativeLogin_noTokenExchange_doesNotIncludeCodeChallenge() {
 
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.openHandler = { url, _, completion in
+        applicationLauncher.launchHandler = { url, completion in
             XCTAssertFalse(url.absoluteString.contains("code_challenge"))
             XCTAssertFalse(url.absoluteString.contains("code_challenge_method"))
             completion?(false)
@@ -448,7 +448,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
             applicationLauncher: applicationLauncher
         )
                 
-        XCTAssertEqual(applicationLauncher.openCallCount, 0)
+        XCTAssertEqual(applicationLauncher.launchCallCount, 0)
         
         provider.execute(
             authDestination: .native(appPriority: [.eats]),
@@ -458,7 +458,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         
         wait(for: [expectation], timeout: 0.2)
         
-        XCTAssertEqual(applicationLauncher.openCallCount, 1)
+        XCTAssertEqual(applicationLauncher.launchCallCount, 1)
     }
     
     func test_handleResponse_true_callsResponseParser() {
@@ -588,7 +588,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         }
         
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.openHandler = { _, _, completion in
+        applicationLauncher.launchHandler = { _, completion in
             completion?(true)
         }
         
@@ -626,7 +626,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         }
         
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.openHandler = { _, _, completion in
+        applicationLauncher.launchHandler = { _, completion in
             completion?(true)
         }
         
@@ -671,7 +671,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         }
         
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.openHandler = { _, _, completion in
+        applicationLauncher.launchHandler = { _, completion in
             completion?(true)
         }
         

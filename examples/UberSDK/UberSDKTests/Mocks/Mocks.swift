@@ -125,12 +125,12 @@ public class ApplicationLaunchingMock: ApplicationLaunching {
     public init() { }
 
 
-    public private(set) var openCallCount = 0
-    public var openHandler: ((URL, [UIApplication.OpenExternalURLOptionsKey: Any], ((Bool) -> Void)?) -> ())?
-    public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler: ((Bool) -> Void)?)  {
-        openCallCount += 1
-        if let openHandler = openHandler {
-            openHandler(url, options, completionHandler)
+    public private(set) var launchCallCount = 0
+    public var launchHandler: ((URL, ((Bool) -> ())?) -> ())?
+    public func launch(_ url: URL, completion: ((Bool) -> ())?)  {
+        launchCallCount += 1
+        if let launchHandler = launchHandler {
+            launchHandler(url, completion)
         }
         
     }
