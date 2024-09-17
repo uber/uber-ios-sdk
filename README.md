@@ -2,6 +2,9 @@
 
 This library allows you to authenticate with Uber services and  interact with the Uber Rides API in your iOS application.
 
+## Migrating to 2.0.0
+Check the [Migration Guide](./documentation/migration-guide-2.0.0.md) for instructions on how to upgrade.
+
 ## Requirements
 
 - iOS 14.0+
