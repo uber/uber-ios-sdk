@@ -13,7 +13,7 @@ Authenticating with Uber has now been moved behind a simplified API. Now, less s
 ### Auth Code Grant Flow + PKCE
 The Authorization Code Grant Flow is now the default method for requesting auth credentials. In addition, support for PKCE and client access token exchange has been added.
 
-Support for the Implicit Grand Flow has been removed.
+Support for the Implicit Grant Flow has been removed.
 
 ### Prefill User Information
 A convenient growth feature has been added for in app authentication. Supply optional user information to be prefilled on the signup + login page when asking the user to authenticate.
