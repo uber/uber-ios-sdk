@@ -302,7 +302,7 @@ public class RideRequestButton: UberButton {
     }
     
     private func image(name: String) -> UIImage? {
-        UIImage(named: name, in: Bundle.module, compatibleWith: nil)
+        UIImage(named: name, in: .resource(for: RideRequestButton.self), compatibleWith: nil)
     }
 }
 
