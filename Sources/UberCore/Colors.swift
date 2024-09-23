@@ -35,13 +35,13 @@ public extension UIColor {
     
     static let uberButtonHighlightedDarkBackground: UIColor = UIColor(
         named: "UberButtonHighlightedDarkBackground",
-        in: .module,
+        in: .resource(for: UberButton.self),
         compatibleWith: nil
     ) ?? UIColor.darkText
     
     static let uberButtonHighlightedLightBackground: UIColor = UIColor(
         named: "UberButtonHighlightedLightBackground",
-        in: .module,
+        in: .resource(for: UberButton.self),
         compatibleWith: nil
     ) ?? UIColor.darkText
     
