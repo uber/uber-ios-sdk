@@ -28,6 +28,34 @@ import Foundation
 public typealias AuthCompletion = (Result<Client, UberAuthError>) -> ()
 
 /// @mockable
+public protocol UberAuthInterface {
+    
+    /// Executes a single login session using the provided context
+    ///
+    /// - Parameters:
+    ///   - context: An `AuthContext` instance providing all information needed to execute authentication
+    ///   - completion: A closure to be called upon completion
+    static func login(context: AuthContext, completion: @escaping AuthCompletion)
+    
+    
+    /// Clears any saved auth information from the keychain
+    /// If `currentAuthContext` exists, logs out using the stored auth context
+    /// Otherwise, attempts to delete the saved auth token directly using the internal TokenManager
+    static func logout()
+    
+    /// Attempts to extract auth information from the provided URL.
+    /// This method should be called from the implemeting application's openURL function.
+    ///
+    /// - Parameter url: The URL that was passed into the implementing app
+    /// - Returns: A boolean indicating if the URL was handled or not
+    static func handle(_ url: URL) -> Bool
+}
+
+
+///
+/// An internal protocol that translates the class -> instance methods for UberAuth
+///
+/// @mockable
 protocol AuthManaging {
     
     func login(context: AuthContext, completion: @escaping AuthCompletion)
@@ -40,7 +68,7 @@ protocol AuthManaging {
 }
 
 /// Public interface for the uber-auth-ios library
-public final class UberAuth: AuthManaging {
+public final class UberAuth: UberAuthInterface, AuthManaging {
     
     // MARK: Public
     
