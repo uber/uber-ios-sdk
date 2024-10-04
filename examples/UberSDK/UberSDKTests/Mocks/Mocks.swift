@@ -242,6 +242,41 @@ public class AuthProvidingMock: AuthProviding {
     public var isLoggedIn: Bool = false { didSet { isLoggedInSetCallCount += 1 } }
 }
 
+public class UberAuthInterfaceMock: UberAuthInterface {
+    public init() { }
+
+
+    public static private(set) var loginCallCount = 0
+    public static var loginHandler: ((AuthContext, @escaping AuthCompletion) -> ())?
+    public static func login(context: AuthContext, completion: @escaping AuthCompletion)  {
+        loginCallCount += 1
+        if let loginHandler = loginHandler {
+            loginHandler(context, completion)
+        }
+        
+    }
+
+    public static private(set) var logoutCallCount = 0
+    public static var logoutHandler: (() -> ())?
+    public static func logout()  {
+        logoutCallCount += 1
+        if let logoutHandler = logoutHandler {
+            logoutHandler()
+        }
+        
+    }
+
+    public static private(set) var handleCallCount = 0
+    public static var handleHandler: ((URL) -> (Bool))?
+    public static func handle(_ url: URL) -> Bool {
+        handleCallCount += 1
+        if let handleHandler = handleHandler {
+            return handleHandler(url)
+        }
+        return false
+    }
+}
+
 class AuthManagingMock: AuthManaging {
     init() { }
     init(isLoggedIn: Bool = false) {
