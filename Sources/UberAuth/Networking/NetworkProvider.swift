@@ -27,7 +27,9 @@ import Foundation
 
 /// @mockable
 protocol NetworkProviding {
+    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     func execute<R: NetworkRequest>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ())
+    func execute<R: NetworkRequest>(request: R) async throws -> R.Response
 }
 
 final class NetworkProvider: NetworkProviding {
@@ -40,7 +42,7 @@ final class NetworkProvider: NetworkProviding {
         self.baseUrl = baseUrl
         self.session = URLSession(configuration: .default)
     }
-    
+    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     func execute<R: NetworkRequest>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ()) {
         guard let urlRequest = request.urlRequest(baseUrl: baseUrl) else {
             completion(.failure(UberAuthError.invalidRequest("")))
@@ -78,4 +80,33 @@ final class NetworkProvider: NetworkProviding {
         
         dataTask.resume()
     }
+    
+    func execute<R: NetworkRequest>(request: R) async throws -> R.Response {
+        guard let urlRequest = request.urlRequest(baseUrl: baseUrl) else {
+            throw UberAuthError.invalidRequest("")
+        }
+        
+        let (data, response): (Data, URLResponse)
+        do {
+            (data, response) = try await session.data(for: urlRequest)
+        } catch {
+            throw UberAuthError.other(error)
+        }
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw UberAuthError.oAuth(.unsupportedResponseType)
+        }
+        
+        if let error = UberAuthError(httpResponse) {
+            throw error
+        }
+        
+        do {
+            let decodedResponse = try decoder.decode(R.Response.self, from: data)
+            return decodedResponse
+        } catch {
+            throw UberAuthError.serviceError
+        }
+    }
 }
+
