@@ -340,7 +340,8 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             )
         }
     }
-
+    
+    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     private func executePar(prefill: Prefill?,
                             completion: @escaping (_ requestURI: String?) -> Void) {
       guard let prefill else {
@@ -366,11 +367,22 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
        )
     }
     
+    private func executePar(prefill: Prefill?) async -> String? {
+        guard let prefill else { return nil }
+        
+        let request = ParRequest(clientID: clientID, prefill: prefill.dictValue)
+        
+        let result = try? await networkProvider.execute(request: request)
+        
+        return result?.requestURI
+    }
+    
     // MARK: Token Exchange
     
     /// Makes a request to the /token endpoing to exchange the authorization code
     /// for an access token.
     /// - Parameter code: The authorization code to exchange
+    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     private func exchange(code: String, completion: @escaping Completion) {
         let request = TokenRequest(
             clientID: clientID,
@@ -386,7 +398,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 case .success(let response):
                     let client = Client(tokenResponse: response)
                     if let accessToken = client.accessToken {
-                        self?.tokenManager.saveToken(
+                        _ = self?.tokenManager.saveToken(
                             accessToken,
                             identifier: TokenManager.defaultAccessTokenIdentifier
                         )
@@ -397,6 +409,28 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 }
             }
         )
+    }
+    
+    private func exchange(code: String) async throws -> Client {
+        let request = TokenRequest(
+            clientID: clientID,
+            authorizationCode: code,
+            redirectURI: redirectURI,
+            codeVerifier: pkce.codeVerifier
+        )
+        
+        let response = try await networkProvider.execute(request: request)
+        
+        let client = Client(tokenResponse: response)
+        if let accessToken = client.accessToken {
+            _ = tokenManager
+                .saveToken(
+                    accessToken,
+                    identifier: TokenManager.defaultAccessTokenIdentifier
+                )
+        }
+        
+        return client
     }
     
     // MARK: Constants
