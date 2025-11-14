@@ -35,8 +35,10 @@ public protocol UberAuthInterface {
     /// - Parameters:
     ///   - context: An `AuthContext` instance providing all information needed to execute authentication
     ///   - completion: A closure to be called upon completion
+    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     static func login(context: AuthContext, completion: @escaping AuthCompletion)
     
+    static func login(context: AuthContext) async throws -> Client
     
     /// Clears any saved auth information from the keychain
     /// If `currentAuthContext` exists, logs out using the stored auth context
@@ -58,7 +60,10 @@ public protocol UberAuthInterface {
 /// @mockable
 protocol AuthManaging {
     
+    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     func login(context: AuthContext, completion: @escaping AuthCompletion)
+    
+    func login(context: AuthContext) async throws -> Client
     
     func logout()
     
@@ -77,12 +82,17 @@ public final class UberAuth: UberAuthInterface, AuthManaging {
     /// - Parameters:
     ///   - context: An `AuthContext` instance providing all information needed to execute authentication
     ///   - completion: A closure to be called upon completion
+    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     public static func login(context: AuthContext = .init(),
                              completion: @escaping AuthCompletion) {
         auth.login(
             context: context,
             completion: completion
         )
+    }
+    
+    public static func login(context: AuthContext = .init()) async throws -> Client {
+        try await auth.login(context: context)
     }
     
     /// Clears any saved auth information from the keychain
@@ -126,6 +136,15 @@ public final class UberAuth: UberAuthInterface, AuthManaging {
             completion: completion
         )
         currentContext = context
+    }
+    
+    func login(context: AuthContext = .init()) async throws -> Client {
+        let client = try await context.authProvider.execute(
+            authDestination: context.authDestination,
+            prefill: context.prefill
+        )
+        currentContext = context
+        return client
     }
     
     func logout() {

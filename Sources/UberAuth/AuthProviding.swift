@@ -33,6 +33,9 @@ public protocol AuthProviding {
                  prefill: Prefill?,
                  completion: @escaping (Result<Client, UberAuthError>) -> ())
     
+    func execute(authDestination: AuthDestination,
+                 prefill: Prefill?) async throws -> Client
+    
     func logout() -> Bool
     
     func handle(response url: URL) -> Bool
