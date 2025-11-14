@@ -30,6 +30,8 @@ import UIKit
 public protocol ApplicationLaunching {
     
     func launch(_ url: URL, completion: ((Bool) -> ())?)
+    
+    func launch(_ url: URL) async -> Bool
 }
 
 extension UIApplication: ApplicationLaunching {
@@ -38,5 +40,9 @@ extension UIApplication: ApplicationLaunching {
         open(url, options: [:]) {
             completion?($0)
         }
+    }
+    
+    public func launch(_ url: URL) async -> Bool {
+        await open(url, options: [:])
     }
 }

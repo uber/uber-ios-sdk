@@ -157,6 +157,20 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.completion = authCompletion
     }
     
+    public func execute(authDestination: AuthDestination,
+                        prefill: Prefill? = nil) async throws -> Client {
+        
+        let requestURI = await executePar(prefill: prefill)
+        
+        let client = try await executeLogin(authDestination: authDestination, requestURI: requestURI)
+        
+        if shouldExchangeAuthCode, let code = client.authorizationCode {
+            return try await exchange(code: code)
+        }
+        
+        return client
+    }
+    
     public func logout() -> Bool {
         tokenManager.deleteToken(identifier: TokenManager.defaultAccessTokenIdentifier)
     }
@@ -196,9 +210,21 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         }
     }
     
+    func executeLogin(authDestination: AuthDestination,
+                      requestURI: String?) async throws -> Client {
+        switch authDestination {
+        case .inApp:
+            try await executeInAppLogin(requestURI: requestURI)
+        case.native(let appPriority):
+            try await executeNativeLogin(appPriority: appPriority, requestURI: requestURI)
+        }
+        
+    }
+    
     /// Performs login using an embedded browser within the third party client.
     /// - Parameters:
     ///   - completion: A closure to handle the login result
+    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     private func executeInAppLogin(requestURI: String?,
                                    completion: @escaping Completion) {
         
@@ -242,6 +268,52 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             )
         
         currentSession?.start()
+    }
+    
+    private func executeInAppLogin(requestURI: String?) async throws -> Client {
+        // Only execute one authentication session at a time
+        guard currentSession == nil else { throw UberAuthError.existingAuthSession }
+        
+        let request = AuthorizeRequest(
+            app: nil,
+            clientID: clientID,
+            codeChallenge: shouldExchangeAuthCode ? pkce.codeChallenge : nil,
+            prompt: prompt,
+            redirectURI: redirectURI,
+            requestURI: requestURI,
+            scopes: scopes
+        )
+        
+        guard let url = request.url(baseUrl: Constants.baseUrl) else {
+            throw UberAuthError.invalidRequest("Invalid base URL")
+        }
+        
+        guard let callbackURL = URL(string: redirectURI),
+              let callbackURLScheme = callbackURL.scheme else {
+            throw UberAuthError.invalidRequest("Invalid redirect URI")
+        }
+#warning("Why we were passing a new instance of ASPresentationAnchor at 274?")
+        return try await withCheckedThrowingContinuation { continuation in
+            if let sessionBuilder = authenticationSessionBuilder {
+                currentSession = sessionBuilder(
+                    presentationAnchor,
+                    callbackURLScheme,
+                    url,
+                    { [weak self] result in
+                        continuation.resume(with: result)
+                        self?.currentSession = nil
+                    })
+            } else {
+                currentSession = AuthenticationSession(anchor: presentationAnchor, callbackURLScheme: callbackURLScheme, url: url) { [weak self] result in
+                    continuation.resume(with: result)
+                    self?.currentSession = nil
+                    
+                }
+            }
+            
+            currentSession?.start()
+            
+        }
     }
         
     /// Performs login using one of the native Uber applications if available.
@@ -295,6 +367,23 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         )
     }
     
+    private func executeNativeLogin(appPriority: [UberApp], requestURI: String?) async throws -> Client {
+        for app in appPriority {
+            let launched = await launch(context: (app, requestURI))
+            
+            if launched {
+                return try await withCheckedThrowingContinuation { continuation in
+                    self.completion = { result in
+                        continuation.resume(with: result)
+                        self.completion = nil
+                    }
+                }
+            }
+        }
+        
+        return try await executeInAppLogin(requestURI: requestURI)
+    }
+    
     /// Attempts to launch a native app with an SSO universal link.
     /// Calls a closure with a boolean indicating if the application was successfully opened.
     ///
@@ -341,6 +430,30 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         }
     }
     
+    func launch(context: (app: UberApp, requestURI: String?)) async -> Bool {
+        let (app, requestURI) = context
+        guard configurationProvider.isInstalled(app: app, defaultIfUnregistered: true) else { return false }
+        
+        // .login not supported for native auth
+        var prompt = prompt
+        prompt?.remove(.login)
+        
+        let request = AuthorizeRequest(
+            app: app,
+            clientID: clientID,
+            codeChallenge: shouldExchangeAuthCode ? pkce.codeChallenge : nil,
+            prompt: prompt,
+            redirectURI: redirectURI,
+            requestURI: requestURI,
+            scopes: scopes
+        )
+        
+        guard let url = request.url(baseUrl: Constants.baseUrl) else { return false }
+        
+        return await applicationLauncher.launch(url)
+    }
+    
+    
     @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     private func executePar(prefill: Prefill?,
                             completion: @escaping (_ requestURI: String?) -> Void) {
@@ -367,7 +480,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
        )
     }
     
-    private func executePar(prefill: Prefill?) async -> String? {
+    func executePar(prefill: Prefill?) async -> String? {
         guard let prefill else { return nil }
         
         let request = ParRequest(clientID: clientID, prefill: prefill.dictValue)
@@ -411,7 +524,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         )
     }
     
-    private func exchange(code: String) async throws -> Client {
+    func exchange(code: String) async throws -> Client {
         let request = TokenRequest(
             clientID: clientID,
             authorizationCode: code,
