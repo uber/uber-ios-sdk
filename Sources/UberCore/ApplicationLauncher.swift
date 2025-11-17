@@ -29,6 +29,7 @@ import UIKit
 /// @mockable
 public protocol ApplicationLaunching {
     
+    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     func launch(_ url: URL, completion: ((Bool) -> ())?)
     
     func launch(_ url: URL) async -> Bool
@@ -36,6 +37,7 @@ public protocol ApplicationLaunching {
 
 extension UIApplication: ApplicationLaunching {
     
+    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     public func launch(_ url: URL, completion: ((Bool) -> ())?) {
         open(url, options: [:]) {
             completion?($0)
