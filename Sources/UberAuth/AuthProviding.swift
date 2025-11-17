@@ -29,6 +29,7 @@ import UberCore
 /// @mockable
 public protocol AuthProviding {
 
+    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     func execute(authDestination: AuthDestination,
                  prefill: Prefill?,
                  completion: @escaping (Result<Client, UberAuthError>) -> ())
