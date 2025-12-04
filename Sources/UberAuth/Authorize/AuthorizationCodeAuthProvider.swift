@@ -294,7 +294,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
               let callbackURLScheme = callbackURL.scheme else {
             throw UberAuthError.invalidRequest("Invalid redirect URI")
         }
-#warning("Why we were passing a new instance of ASPresentationAnchor at 274?")
+        
         return try await withCheckedThrowingContinuation { continuation in
             if let sessionBuilder = authenticationSessionBuilder {
                 currentSession = sessionBuilder(

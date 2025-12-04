@@ -54,12 +54,24 @@ final class Content {
     var isPrefillExpanded: Bool = false
     var response: AuthReponse?
     var prefillBuilder = PrefillBuilder()
+    var loginTask: Task<Void, Never>?
     var isLoggedIn: Bool {
         UberAuth.isLoggedIn
     }
     
     func login() {
-        
+        loginTask?.cancel()
+        loginTask = Task {
+            do {
+                try await login()
+            } catch {
+                response = AuthReponse(value: error.localizedDescription)
+            }
+            loginTask = nil
+        }
+    }
+    
+    private func login() async throws {
         var prompt: Prompt = []
         if shouldForceLogin { prompt.insert(.login) }
         if shouldForceConsent { prompt.insert(.consent) }
@@ -77,24 +89,15 @@ final class Content {
             }
         }()
         
-        UberAuth.login(
+        let client = try await UberAuth.login(
             context: .init(
                 authDestination: authDestination,
                 authProvider: authProvider,
                 prefill: isPrefillExpanded ? prefillBuilder.prefill : nil
-            ),
-            completion: { result in
-                // Slight delay to allow for ASWebAuthenticationSession dismissal
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    switch result {
-                    case .success(let client):
-                        self.response = AuthReponse(value: "\(client)")
-                    case .failure(let error):
-                        self.response = AuthReponse(value: error.localizedDescription)
-                    }
-                }
-            }
+            )
         )
+        
+        response = AuthReponse(value: "\(client)")
     }
     
     func logout() {
@@ -104,6 +107,10 @@ final class Content {
     
     func openUrl(_ url: URL) {
         UberAuth.handle(url)
+    }
+    
+    deinit {
+        loginTask?.cancel()
     }
     
     enum Item: String, Hashable, Identifiable {
