@@ -27,7 +27,6 @@ import Foundation
 
 /// @mockable
 protocol NetworkProviding {
-    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     func execute<R: NetworkRequest>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ())
     func execute<R: NetworkRequest>(request: R) async throws -> R.Response
 }
@@ -42,7 +41,6 @@ final class NetworkProvider: NetworkProviding {
         self.baseUrl = baseUrl
         self.session = URLSession(configuration: .default)
     }
-    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     func execute<R: NetworkRequest>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ()) {
         guard let urlRequest = request.urlRequest(baseUrl: baseUrl) else {
             completion(.failure(UberAuthError.invalidRequest("")))

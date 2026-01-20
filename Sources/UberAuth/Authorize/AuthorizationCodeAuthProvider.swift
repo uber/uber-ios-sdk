@@ -116,8 +116,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     }
     
     // MARK: AuthProviding
-    
-    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
+
     public func execute(authDestination: AuthDestination,
                         prefill: Prefill? = nil,
                         completion: @escaping Completion) {
@@ -157,7 +156,8 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         
         self.completion = authCompletion
     }
-    
+
+    /// - Throws: `UberAuthError`
     public func execute(authDestination: AuthDestination,
                         prefill: Prefill? = nil) async throws -> Client {
         
@@ -192,8 +192,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     }
     
     // MARK: - Private
-    
-    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
+
     private func executeLogin(authDestination: AuthDestination,
                               requestURI: String?,
                               completion: @escaping Completion) {
@@ -226,7 +225,6 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     /// Performs login using an embedded browser within the third party client.
     /// - Parameters:
     ///   - completion: A closure to handle the login result
-    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     private func executeInAppLogin(requestURI: String?,
                                    completion: @escaping Completion) {
         
@@ -339,7 +337,6 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     /// - Parameters:
     ///   - appPriority: An ordered list of Uber applications to use to perform login
     ///   - completion: A closure to handle the login result
-    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     private func executeNativeLogin(appPriority: [UberApp],
                                     requestURI: String?,
                                     completion: @escaping Completion) {
@@ -393,7 +390,6 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     /// - Parameters:
     ///   - context: A tuple of the destination app and an optional requestURI
     ///   - completion: An optional closure indicating whether or not the app was launched
-    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     private func launch(context: (app: UberApp, requestURI: String?),
                         completion: ((Bool) -> Void)?) {
         let (app, requestURI) = context
@@ -457,8 +453,8 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         return await applicationLauncher.launch(url)
     }
     
-    
-    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
+
+
     private func executePar(prefill: Prefill?,
                             completion: @escaping (_ requestURI: String?) -> Void) {
       guard let prefill else {
@@ -499,7 +495,6 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     /// Makes a request to the /token endpoing to exchange the authorization code
     /// for an access token.
     /// - Parameter code: The authorization code to exchange
-    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     private func exchange(code: String, completion: @escaping Completion) {
         let request = TokenRequest(
             clientID: clientID,

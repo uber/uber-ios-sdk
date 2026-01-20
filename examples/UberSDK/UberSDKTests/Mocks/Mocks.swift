@@ -86,7 +86,6 @@ final class NetworkProvidingMock: NetworkProviding {
 
     private(set) var executeCallCount = 0
     var executeHandler: ((Any, Any) -> ())?
-    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     func execute<R: NetworkRequest>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ()) {
         executeCallCount += 1
         if let executeHandler = executeHandler {
@@ -278,7 +277,6 @@ public final class UberAuthInterfaceMock: UberAuthInterface {
 
     public static private(set) var loginCallCount = 0
     public static var loginHandler: ((AuthContext, @escaping AuthCompletion) -> ())?
-    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     public static func login(context: AuthContext, completion: @escaping AuthCompletion) {
         loginCallCount += 1
         if let loginHandler = loginHandler {
@@ -330,7 +328,6 @@ final class AuthManagingMock: AuthManaging {
 
     private(set) var loginCallCount = 0
     var loginHandler: ((AuthContext, @escaping AuthCompletion) -> ())?
-    @available(*, deprecated, message: "This method is deprecated. Use the async method instead.")
     func login(context: AuthContext, completion: @escaping AuthCompletion) {
         loginCallCount += 1
         if let loginHandler = loginHandler {
