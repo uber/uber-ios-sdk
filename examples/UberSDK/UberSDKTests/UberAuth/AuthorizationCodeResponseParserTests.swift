@@ -105,13 +105,13 @@ final class AuthorizationCodeResponseParserTests: XCTestCase {
     }
 
     func test_parse_invalidUrl_returnsFailure() {
-        
-        let url = URL(filePath: "invalid_scheme://host?code=123")
-        
+
+        let url = URL(string: "invalid-scheme://host")!
+
         let result = responseParser(
             url: url
         )
-        
+
         XCTAssertEqual(result, .failure(UberAuthError.invalidAuthCode))
     }
     
