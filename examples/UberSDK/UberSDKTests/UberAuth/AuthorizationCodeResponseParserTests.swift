@@ -112,7 +112,7 @@ final class AuthorizationCodeResponseParserTests: XCTestCase {
             url: url
         )
         
-        XCTAssertEqual(result, .failure(UberAuthError.invalidResponse))
+        XCTAssertEqual(result, .failure(UberAuthError.invalidAuthCode))
     }
     
     func test_parse_authorizationCodeParameter_returnsSuccess() {
