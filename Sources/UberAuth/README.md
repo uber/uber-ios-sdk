@@ -8,12 +8,13 @@
     3. [Auth Destinations](#auth-destinations)
     4. [Auth Providers](#auth-providers)
         * [AuthorizationCodeAuthProvider](#authorizationcoreauthprovider)
-    5. [Responding to Redirects](#responding-to-redirects)
+    5. [Forcing Login or Consent](#forcing-login-or-consent)
+    6. [Responding to Redirects](#responding-to-redirects)
         * [Using UIKit](#using-uikit)
         * [Using SwiftUI](#using-swiftui)
-    6. [Exchanging Authorization Code](#exchanging-authorization-code)
-    7. [Prefilling User Information](#prefilling-user-information)
-    8. [Login Button](#login-button)
+    7. [Exchanging Authorization Code](#exchanging-authorization-code)
+    8. [Prefilling User Information](#prefilling-user-information)
+    9. [Login Button](#login-button)
 
 # Prerequisites
 If you haven't already, follow the [Getting Started](../../README.md#getting-started) steps in the main README.
@@ -144,6 +145,19 @@ An Auth Provider supplies logic for a specific authentication grant flow. Curren
 
 AuthorizationCoreAuthProvider performs the Authorization Code Grant Flow as specified in the [OAuth 2.0 Framework](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1). AuthorizationCoreAuthProvider is currently the only supported auth provider.
 
+## Forcing Login or Consent
+The auth provider accepts an optional `prompt` parameter that can be used to force the login screen or the consent screen to be presented.
+
+**Note:** Login is only available for .inApp auth destinations.
+
+```
+// Will request login then show the consent screen, even if previously completed by the user
+let prompt: [Prompt] = [.login, .consent]
+
+let authProvider: AuthProviding = .authorizationCode(
+    prompt: prompt
+)
+```
 
 ## Responding to Redirects
 

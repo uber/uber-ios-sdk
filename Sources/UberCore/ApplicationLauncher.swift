@@ -28,15 +28,21 @@ import UIKit
 
 /// @mockable
 public protocol ApplicationLaunching {
-    
+
     func launch(_ url: URL, completion: ((Bool) -> ())?)
+
+    func launch(_ url: URL) async -> Bool
 }
 
 extension UIApplication: ApplicationLaunching {
-    
+
     public func launch(_ url: URL, completion: ((Bool) -> ())?) {
         open(url, options: [:]) {
             completion?($0)
         }
+    }
+    
+    public func launch(_ url: URL) async -> Bool {
+        await open(url, options: [:])
     }
 }

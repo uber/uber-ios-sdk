@@ -11,12 +11,12 @@ import UIKit
 @testable import UberCore
 
 
-public class TokenManagingMock: TokenManaging {
+public final class TokenManagingMock: TokenManaging {
     public init() { }
 
 
     public private(set) var saveTokenCallCount = 0
-    public var saveTokenHandler: ((AccessToken, String, String?) -> (Bool))?
+    public var saveTokenHandler: ((AccessToken, String, String?) -> Bool)?
     public func saveToken(_ token: AccessToken, identifier: String, accessGroup: String?) -> Bool {
         saveTokenCallCount += 1
         if let saveTokenHandler = saveTokenHandler {
@@ -26,7 +26,7 @@ public class TokenManagingMock: TokenManaging {
     }
 
     public private(set) var getTokenCallCount = 0
-    public var getTokenHandler: ((String, String?) -> (AccessToken?))?
+    public var getTokenHandler: ((String, String?) -> AccessToken?)?
     public func getToken(identifier: String, accessGroup: String?) -> AccessToken? {
         getTokenCallCount += 1
         if let getTokenHandler = getTokenHandler {
@@ -36,7 +36,7 @@ public class TokenManagingMock: TokenManaging {
     }
 
     public private(set) var deleteTokenCallCount = 0
-    public var deleteTokenHandler: ((String, String?) -> (Bool))?
+    public var deleteTokenHandler: ((String, String?) -> Bool)?
     public func deleteToken(identifier: String, accessGroup: String?) -> Bool {
         deleteTokenCallCount += 1
         if let deleteTokenHandler = deleteTokenHandler {
@@ -46,27 +46,12 @@ public class TokenManagingMock: TokenManaging {
     }
 }
 
-class NetworkProvidingMock: NetworkProviding {
-    init() { }
-
-
-    private(set) var executeCallCount = 0
-    var executeHandler: ((Any, Any) -> ())?
-    func execute<R: NetworkRequest>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ())  {
-        executeCallCount += 1
-        if let executeHandler = executeHandler {
-            executeHandler(request, completion)
-        }
-        
-    }
-}
-
-public class KeychainUtilityProtocolMock: KeychainUtilityProtocol {
+public final class KeychainUtilityProtocolMock: KeychainUtilityProtocol {
     public init() { }
 
 
     public private(set) var saveCallCount = 0
-    public var saveHandler: ((Any, String, String?) -> (Bool))?
+    public var saveHandler: ((Any, String, String?) -> Bool)?
     public func save<V: Encodable>(_ value: V, for key: String, accessGroup: String?) -> Bool {
         saveCallCount += 1
         if let saveHandler = saveHandler {
@@ -76,7 +61,7 @@ public class KeychainUtilityProtocolMock: KeychainUtilityProtocol {
     }
 
     public private(set) var getCallCount = 0
-    public var getHandler: ((String, String?) -> (Any?))?
+    public var getHandler: ((String, String?) -> Any?)?
     public func get<V: Decodable>(key: String, accessGroup: String?) -> V? {
         getCallCount += 1
         if let getHandler = getHandler {
@@ -86,7 +71,7 @@ public class KeychainUtilityProtocolMock: KeychainUtilityProtocol {
     }
 
     public private(set) var deleteCallCount = 0
-    public var deleteHandler: ((String, String?) -> (Bool))?
+    public var deleteHandler: ((String, String?) -> Bool)?
     public func delete(key: String, accessGroup: String?) -> Bool {
         deleteCallCount += 1
         if let deleteHandler = deleteHandler {
@@ -96,12 +81,41 @@ public class KeychainUtilityProtocolMock: KeychainUtilityProtocol {
     }
 }
 
-class AuthorizationCodeResponseParsingMock: AuthorizationCodeResponseParsing {
+final class NetworkProvidingMock: NetworkProviding {
+    init() { }
+
+    private(set) var executeCallCount = 0
+    var executeHandler: ((Any, Any) -> ())?
+    func execute<R: NetworkRequest>(request: R, completion: @escaping (Result<R.Response, UberAuthError>) -> ()) {
+        executeCallCount += 1
+        if let executeHandler = executeHandler {
+            executeHandler(request, completion)
+        }
+        
+    }
+    
+    var executeAsyncResult: Result<Any, Error>?
+    func execute<R: NetworkRequest>(request: R) async throws -> R.Response {
+        executeCallCount += 1
+        
+        guard let result = executeAsyncResult else { throw UberAuthError.serviceError }
+        
+        switch result {
+        case .success(let response):
+            guard let typedResponse = response as? R.Response else { throw UberAuthError.serviceError }
+            return typedResponse
+        case .failure(let error):
+            throw error
+        }
+    }
+}
+
+final class AuthorizationCodeResponseParsingMock: AuthorizationCodeResponseParsing {
     init() { }
 
 
     private(set) var isValidResponseCallCount = 0
-    var isValidResponseHandler: ((URL, String) -> (Bool))?
+    var isValidResponseHandler: ((URL, String) -> Bool)?
     func isValidResponse(url: URL, matching redirectURI: String) -> Bool {
         isValidResponseCallCount += 1
         if let isValidResponseHandler = isValidResponseHandler {
@@ -111,7 +125,7 @@ class AuthorizationCodeResponseParsingMock: AuthorizationCodeResponseParsing {
     }
 
     private(set) var callAsFunctionCallCount = 0
-    var callAsFunctionHandler: ((URL) -> (Result<Client, UberAuthError>))?
+    var callAsFunctionHandler: ((URL) -> Result<Client, UberAuthError>)?
     func callAsFunction(url: URL) -> Result<Client, UberAuthError> {
         callAsFunctionCallCount += 1
         if let callAsFunctionHandler = callAsFunctionHandler {
@@ -121,22 +135,29 @@ class AuthorizationCodeResponseParsingMock: AuthorizationCodeResponseParsing {
     }
 }
 
-public class ApplicationLaunchingMock: ApplicationLaunching {
+public final class ApplicationLaunchingMock: ApplicationLaunching {
     public init() { }
 
 
     public private(set) var launchCallCount = 0
     public var launchHandler: ((URL, ((Bool) -> ())?) -> ())?
-    public func launch(_ url: URL, completion: ((Bool) -> ())?)  {
+    public func launch(_ url: URL, completion: ((Bool) -> ())?) {
         launchCallCount += 1
         if let launchHandler = launchHandler {
             launchHandler(url, completion)
         }
         
     }
+
+    public private(set) var launchUrlCallCount = 0
+    public var launchResult: Bool = false
+    public func launch(_ url: URL) async -> Bool {
+        launchUrlCallCount += 1
+        return launchResult
+    }
 }
 
-public class ConfigurationProvidingMock: ConfigurationProviding {
+public final class ConfigurationProvidingMock: ConfigurationProviding {
     public init() { }
     public init(clientID: String = "", redirectURI: String = "", sdkVersion: String = "", serverToken: String? = nil) {
         self.clientID = clientID
@@ -146,27 +167,23 @@ public class ConfigurationProvidingMock: ConfigurationProviding {
     }
 
 
-    public private(set) var clientIDSetCallCount = 0
-    public var clientID: String = "" { didSet { clientIDSetCallCount += 1 } }
 
-    public private(set) var redirectURISetCallCount = 0
-    public var redirectURI: String = "" { didSet { redirectURISetCallCount += 1 } }
+    public var clientID: String = ""
 
-    public private(set) var sdkVersionSetCallCount = 0
-    public var sdkVersion: String = "" { didSet { sdkVersionSetCallCount += 1 } }
 
-    public private(set) var serverTokenSetCallCount = 0
-    public var serverToken: String? = nil { didSet { serverTokenSetCallCount += 1 } }
+    public var redirectURI: String = ""
 
-    public static private(set) var isSandboxSetCallCount = 0
-    static private var _isSandbox: Bool = false { didSet { isSandboxSetCallCount += 1 } }
-    public static var isSandbox: Bool {
-        get { return _isSandbox }
-        set { _isSandbox = newValue }
-    }
+
+    public var sdkVersion: String = ""
+
+
+    public var serverToken: String? = nil
+
+
+    public static var isSandbox: Bool = false
 
     public private(set) var isInstalledCallCount = 0
-    public var isInstalledHandler: ((UberApp, Bool) -> (Bool))?
+    public var isInstalledHandler: ((UberApp, Bool) -> Bool)?
     public func isInstalled(app: UberApp, defaultIfUnregistered: Bool) -> Bool {
         isInstalledCallCount += 1
         if let isInstalledHandler = isInstalledHandler {
@@ -176,8 +193,8 @@ public class ConfigurationProvidingMock: ConfigurationProviding {
     }
 }
 
-class AuthenticationSessioningMock: AuthenticationSessioning {
-        private var _anchor: ASPresentationAnchor!
+final class AuthenticationSessioningMock: AuthenticationSessioning {
+    private var _anchor: ASPresentationAnchor!
     private var _callbackURLScheme: String!
     private var _completion: AuthCompletion!
     private var _url: URL!
@@ -192,7 +209,7 @@ class AuthenticationSessioningMock: AuthenticationSessioning {
 
     private(set) var startCallCount = 0
     var startHandler: (() -> ())?
-    func start()  {
+    func start() {
         startCallCount += 1
         if let startHandler = startHandler {
             startHandler()
@@ -201,7 +218,7 @@ class AuthenticationSessioningMock: AuthenticationSessioning {
     }
 }
 
-public class AuthProvidingMock: AuthProviding {
+public final class AuthProvidingMock: AuthProviding {
     public init() { }
     public init(isLoggedIn: Bool = false) {
         self.isLoggedIn = isLoggedIn
@@ -210,16 +227,30 @@ public class AuthProvidingMock: AuthProviding {
 
     public private(set) var executeCallCount = 0
     public var executeHandler: ((AuthDestination, Prefill?, @escaping (Result<Client, UberAuthError>) -> ()) -> ())?
-    public func execute(authDestination: AuthDestination, prefill: Prefill?, completion: @escaping (Result<Client, UberAuthError>) -> ())  {
+    public func execute(authDestination: AuthDestination, prefill: Prefill?, completion: @escaping (Result<Client, UberAuthError>) -> ()) {
         executeCallCount += 1
         if let executeHandler = executeHandler {
             executeHandler(authDestination, prefill, completion)
         }
         
     }
+    
+    public var executeAsyncResult: Result<Client, Error>?
+    public func execute(authDestination: AuthDestination, prefill: Prefill?) async throws -> Client {
+        executeCallCount += 1
+        
+        guard let result = executeAsyncResult else { throw UberAuthError.serviceError }
+        
+        switch result {
+        case .success(let client):
+            return client
+        case .failure(let error):
+            throw error
+        }
+    }
 
     public private(set) var logoutCallCount = 0
-    public var logoutHandler: (() -> (Bool))?
+    public var logoutHandler: (() -> Bool)?
     public func logout() -> Bool {
         logoutCallCount += 1
         if let logoutHandler = logoutHandler {
@@ -229,7 +260,7 @@ public class AuthProvidingMock: AuthProviding {
     }
 
     public private(set) var handleCallCount = 0
-    public var handleHandler: ((URL) -> (Bool))?
+    public var handleHandler: ((URL) -> Bool)?
     public func handle(response url: URL) -> Bool {
         handleCallCount += 1
         if let handleHandler = handleHandler {
@@ -238,30 +269,90 @@ public class AuthProvidingMock: AuthProviding {
         return false
     }
 
-    public private(set) var isLoggedInSetCallCount = 0
-    public var isLoggedIn: Bool = false { didSet { isLoggedInSetCallCount += 1 } }
+    public var isLoggedIn: Bool = false
 }
 
-class AuthManagingMock: AuthManaging {
-    init() { }
-    init(isLoggedIn: Bool = false) {
-        self.isLoggedIn = isLoggedIn
-    }
+public final class UberAuthInterfaceMock: UberAuthInterface {
+    public init() { }
 
-
-    private(set) var loginCallCount = 0
-    var loginHandler: ((AuthContext, @escaping AuthCompletion) -> ())?
-    func login(context: AuthContext, completion: @escaping AuthCompletion)  {
+    public static private(set) var loginCallCount = 0
+    public static var loginHandler: ((AuthContext, @escaping AuthCompletion) -> ())?
+    public static func login(context: AuthContext, completion: @escaping AuthCompletion) {
         loginCallCount += 1
         if let loginHandler = loginHandler {
             loginHandler(context, completion)
         }
         
     }
+    
+    public static var loginAsyncResult: Result<Client, Error>?
+    public static func login(context: AuthContext) async throws -> Client {
+        loginCallCount += 1
+        
+        guard let result = loginAsyncResult else { throw UberAuthError.serviceError }
+        
+        switch result {
+        case .success(let client):
+            return client
+        case .failure(let error):
+            throw error
+        }
+    }
+
+    public static private(set) var logoutCallCount = 0
+    public static var logoutHandler: (() -> ())?
+    public static func logout() {
+        logoutCallCount += 1
+        if let logoutHandler = logoutHandler {
+            logoutHandler()
+        }
+        
+    }
+
+    public static private(set) var handleCallCount = 0
+    public static var handleHandler: ((URL) -> Bool)?
+    public static func handle(_ url: URL) -> Bool {
+        handleCallCount += 1
+        if let handleHandler = handleHandler {
+            return handleHandler(url)
+        }
+        return false
+    }
+}
+
+final class AuthManagingMock: AuthManaging {
+    init() { }
+    init(isLoggedIn: Bool = false) {
+        self.isLoggedIn = isLoggedIn
+    }
+
+    private(set) var loginCallCount = 0
+    var loginHandler: ((AuthContext, @escaping AuthCompletion) -> ())?
+    func login(context: AuthContext, completion: @escaping AuthCompletion) {
+        loginCallCount += 1
+        if let loginHandler = loginHandler {
+            loginHandler(context, completion)
+        }
+        
+    }
+    
+    var loginAsyncResult: Result<Client, Error>?
+    func login(context: AuthContext) async throws -> Client {
+        loginCallCount += 1
+        
+        guard let result = loginAsyncResult else { throw UberAuthError.serviceError }
+        
+        switch result {
+        case .success(let client):
+            return client
+        case .failure(let error):
+            throw error
+        }
+    }
 
     private(set) var logoutCallCount = 0
     var logoutHandler: (() -> ())?
-    func logout()  {
+    func logout() {
         logoutCallCount += 1
         if let logoutHandler = logoutHandler {
             logoutHandler()
@@ -270,7 +361,7 @@ class AuthManagingMock: AuthManaging {
     }
 
     private(set) var handleCallCount = 0
-    var handleHandler: ((URL) -> (Bool))?
+    var handleHandler: ((URL) -> Bool)?
     func handle(_ url: URL) -> Bool {
         handleCallCount += 1
         if let handleHandler = handleHandler {
@@ -279,7 +370,5 @@ class AuthManagingMock: AuthManaging {
         return false
     }
 
-    private(set) var isLoggedInSetCallCount = 0
-    var isLoggedIn: Bool = false { didSet { isLoggedInSetCallCount += 1 } }
+    var isLoggedIn: Bool = false
 }
-

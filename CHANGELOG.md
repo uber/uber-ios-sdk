@@ -1,5 +1,9 @@
 # Change Log
 
+## [2.1.0] 2025-12-04
+
+* [Pull #330](https://github.com/uber/uber-ios-sdk/pull/330) Add async/await support for authentication methods
+
 ## [0.14.0] 2023-04-18
 
 * [Pull #278](https://github.com/uber/rides-ios-sdk/pull/278) Implementing PAR
