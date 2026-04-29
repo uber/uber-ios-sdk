@@ -24,6 +24,7 @@
 
 
 import Foundation
+import UberCore
 
 /// @mockable
 public protocol TokenManaging {
@@ -66,15 +67,19 @@ public extension TokenManaging {
 }
 
 public final class TokenManager: TokenManaging {
-    
+
     public static let defaultAccessTokenIdentifier: String = "UberAccessTokenKey"
-    
+
     public static let defaultKeychainAccessGroup: String = ""
-    
+
     private let keychainUtility: KeychainUtilityProtocol
-    
-    public init(keychainUtility: KeychainUtilityProtocol = KeychainUtility()) {
+
+    private let regionHost: String
+
+    public init(keychainUtility: KeychainUtilityProtocol = KeychainUtility(),
+                environment: UberEnvironment = .production) {
         self.keychainUtility = keychainUtility
+        self.regionHost = environment.baseUrl
     }
     
     // MARK: Save
@@ -128,9 +133,9 @@ public final class TokenManager: TokenManaging {
     
     // MARK: Private Interface
     
-    /// Removes all cookies in the shared cookie store corresponding with the auth.uber.com domain
+    /// Removes all cookies in the shared cookie store corresponding with the auth domain
     private func deleteCookies() {
-        guard let loginUrl = URL(string: Constants.regionHost) else {
+        guard let loginUrl = URL(string: regionHost) else {
             return
         }
         
@@ -141,11 +146,5 @@ public final class TokenManager: TokenManaging {
                 sharedCookieStorage.deleteCookie(cookie)
             }
         }
-    }
-    
-    // MARK: Constants
-    
-    private enum Constants {
-        static let regionHost = "https://auth.uber.com"
     }
 }

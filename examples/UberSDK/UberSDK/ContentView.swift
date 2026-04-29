@@ -48,6 +48,7 @@ final class Content {
     var selection: Item?
     var type: LoginType? = .authorizationCode
     var destination: LoginDestination? = .inApp
+    var environment: LoginEnvironment? = .production
     var isTokenExchangeEnabled: Bool = true
     var shouldForceLogin: Bool = false
     var shouldForceConsent: Bool = false
@@ -76,9 +77,12 @@ final class Content {
         if shouldForceLogin { prompt.insert(.login) }
         if shouldForceConsent { prompt.insert(.consent) }
         
+        let uberEnvironment: UberEnvironment = environment == .sandbox ? .sandbox : .production
+
         let authProvider: AuthProviding = .authorizationCode(
             shouldExchangeAuthCode: isTokenExchangeEnabled,
-            prompt: prompt
+            prompt: prompt,
+            environment: uberEnvironment
         )
         
         let authDestination: AuthDestination = {
@@ -116,6 +120,7 @@ final class Content {
     enum Item: String, Hashable, Identifiable {
         case type = "Auth Type"
         case destination = "Destination"
+        case environment = "Environment"
         case tokenExchange = "Exchange Auth Code for Token"
         case forceLogin = "Always ask for Login"
         case forceConsent = "Always ask for Consent"
@@ -166,6 +171,12 @@ struct ContentView: View {
                     options: LoginDestination.allCases
                 )
                 .presentationDetents([.height(200)])
+            case .environment:
+                SelectionView(
+                    selection: $content.environment,
+                    options: LoginEnvironment.allCases
+                )
+                .presentationDetents([.height(200)])
             default:
                 EmptyView()
             }
@@ -201,6 +212,7 @@ struct ContentView: View {
         
         textRow(.type, value: content.type?.description)
         textRow(.destination, value: content.destination?.description)
+        textRow(.environment, value: content.environment?.description)
         toggleRow(.tokenExchange, value: $content.isTokenExchangeEnabled)
         toggleRow(.forceLogin, value: $content.shouldForceLogin)
         toggleRow(.forceConsent, value: $content.shouldForceConsent)
