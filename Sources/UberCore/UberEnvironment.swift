@@ -1,6 +1,6 @@
 //
-//  SelectionOptions.swift
-//  UberSDK
+//  UberEnvironment.swift
+//  UberCore
 //
 //  Copyright © 2024 Uber Technologies, Inc. All rights reserved.
 //
@@ -22,29 +22,16 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-
 import Foundation
-import UberAuth
 
-enum LoginType: String, CaseIterable, SelectionOption {
-    case authorizationCode = "Authorization Code"
+public enum UberEnvironment {
+    case production
+    case sandbox
 
-    var description: String { rawValue }
-    var id: String { rawValue }
-}
-
-enum LoginDestination: String, CaseIterable, SelectionOption {
-    case inApp = "In App"
-    case native = "Native"
-
-    var description: String { rawValue }
-    var id: String { rawValue }
-}
-
-enum LoginEnvironment: String, CaseIterable, SelectionOption {
-    case production = "Production"
-    case sandbox = "Sandbox"
-
-    var description: String { rawValue }
-    var id: String { rawValue }
+    public var baseUrl: String {
+        switch self {
+        case .production: return "https://auth.uber.com"
+        case .sandbox: return "https://sandbox-login.uber.com"
+        }
+    }
 }

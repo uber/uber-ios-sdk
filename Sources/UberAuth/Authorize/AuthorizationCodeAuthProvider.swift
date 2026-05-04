@@ -67,15 +67,18 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     private let tokenManager: TokenManaging
     
     private let scopes: [String]
-    
+
     private let prompt: Prompt?
-    
+
+    private let baseUrl: String
+
     // MARK: Initializers
-    
+
     public init(presentationAnchor: ASPresentationAnchor = .init(),
                 scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
                 shouldExchangeAuthCode: Bool = false,
-                prompt: Prompt? = nil) {
+                prompt: Prompt? = nil,
+                environment: UberEnvironment = .production) {
         self.configurationProvider = ConfigurationProvider()
         self.applicationLauncher = UIApplication.shared
         self.authenticationSessionBuilder = nil
@@ -84,12 +87,13 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.redirectURI = configurationProvider.redirectURI
         self.responseParser = AuthorizationCodeResponseParser()
         self.shouldExchangeAuthCode = shouldExchangeAuthCode
-        self.networkProvider = NetworkProvider(baseUrl: Constants.baseUrl)
-        self.tokenManager = TokenManager()
+        self.baseUrl = environment.baseUrl + "/v2"
+        self.networkProvider = NetworkProvider(baseUrl: self.baseUrl)
+        self.tokenManager = TokenManager(environment: environment)
         self.scopes = scopes
         self.prompt = prompt
     }
-    
+
     init(presentationAnchor: ASPresentationAnchor = .init(),
          authenticationSessionBuilder: AuthenticationSessionBuilder? = nil,
          scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
@@ -98,9 +102,10 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
          configurationProvider: ConfigurationProviding = ConfigurationProvider(),
          applicationLauncher: ApplicationLaunching = UIApplication.shared,
          responseParser: AuthorizationCodeResponseParsing = AuthorizationCodeResponseParser(),
-         networkProvider: NetworkProviding = NetworkProvider(baseUrl: Constants.baseUrl),
-         tokenManager: TokenManaging = TokenManager()) {
-        
+         networkProvider: NetworkProviding = NetworkProvider(baseUrl: UberEnvironment.production.baseUrl + "/v2"),
+         tokenManager: TokenManaging = TokenManager(),
+         environment: UberEnvironment = .production) {
+
         self.applicationLauncher = applicationLauncher
         self.authenticationSessionBuilder = authenticationSessionBuilder
         self.clientID = configurationProvider.clientID
@@ -109,6 +114,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.redirectURI = configurationProvider.redirectURI
         self.responseParser = responseParser
         self.shouldExchangeAuthCode = shouldExchangeAuthCode
+        self.baseUrl = environment.baseUrl + "/v2"
         self.networkProvider = networkProvider
         self.tokenManager = tokenManager
         self.scopes = scopes
@@ -244,11 +250,11 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             scopes: scopes
         )
         
-        guard let url = request.url(baseUrl: Constants.baseUrl) else {
+        guard let url = request.url(baseUrl: baseUrl) else {
             completion(.failure(.invalidRequest("Invalid base URL")))
             return
         }
-        
+
         guard let callbackURL = URL(string: redirectURI),
               let callbackURLScheme = callbackURL.scheme else {
             completion(.failure(.invalidRequest("Invalid redirect URI")))
@@ -284,7 +290,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             scopes: scopes
         )
         
-        guard let url = request.url(baseUrl: Constants.baseUrl) else {
+        guard let url = request.url(baseUrl: baseUrl) else {
             throw UberAuthError.invalidRequest("Invalid base URL")
         }
         
@@ -415,11 +421,11 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             scopes: scopes
         )
         
-        guard let url = request.url(baseUrl: Constants.baseUrl) else {
+        guard let url = request.url(baseUrl: baseUrl) else {
             completion?(false)
             return
         }
-        
+
         DispatchQueue.main.async {
             self.applicationLauncher.launch(
                 url,
@@ -448,7 +454,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             scopes: scopes
         )
         
-        guard let url = request.url(baseUrl: Constants.baseUrl) else { return false }
+        guard let url = request.url(baseUrl: baseUrl) else { return false }
         
         return await applicationLauncher.launch(url)
     }
@@ -545,13 +551,6 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         return client
     }
     
-    // MARK: Constants
-    
-    private enum Constants {
-        static let clientIDKey = "ClientID"
-        static let redirectURI = "RedirectURI"
-        static let baseUrl = "https://auth.uber.com/v2"
-    }
 }
 
 

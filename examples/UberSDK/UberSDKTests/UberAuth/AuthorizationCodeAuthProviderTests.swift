@@ -1025,19 +1025,81 @@ extension AuthorizationCodeAuthProviderTests {
             XCTAssertNotNil(error as? UberAuthError)
         }
     }
-    
+
     func test_execute_async_existingSession_throwsError() async {
         let provider = AuthorizationCodeAuthProvider(
             shouldExchangeAuthCode: false,
             configurationProvider: configurationProvider
         )
         provider.currentSession = AuthenticationSessioningMock()
-        
+
         do {
             _ = try await provider.execute(authDestination: .inApp, prefill: nil)
             XCTFail("Should have thrown error")
         } catch {
             XCTAssertNotNil(error as? UberAuthError)
         }
+    }
+
+    // MARK: Environment
+
+    func test_environment_production_usesProductionBaseUrl() {
+        var capturedUrl: URL?
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _ in
+            capturedUrl = url
+            return AuthenticationSessioningMock()
+        }
+
+        let provider = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: authenticationSessionBuilder,
+            configurationProvider: configurationProvider,
+            environment: .production
+        )
+
+        provider.execute(authDestination: .inApp, completion: { _ in })
+
+        XCTAssertTrue(capturedUrl?.absoluteString.contains("auth.uber.com") == true)
+        XCTAssertFalse(capturedUrl?.absoluteString.contains("sandbox-login.uber.com") == true)
+    }
+
+    func test_environment_sandbox_usesSandboxBaseUrl() {
+        var capturedUrl: URL?
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _ in
+            capturedUrl = url
+            return AuthenticationSessioningMock()
+        }
+
+        let provider = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: authenticationSessionBuilder,
+            configurationProvider: configurationProvider,
+            environment: .sandbox
+        )
+
+        provider.execute(authDestination: .inApp, completion: { _ in })
+
+        XCTAssertTrue(capturedUrl?.absoluteString.contains("sandbox-login.uber.com") == true)
+        XCTAssertFalse(capturedUrl?.absoluteString.contains("auth.uber.com") == true)
+    }
+
+    func test_environment_sandbox_nativeLogin_usesSandboxBaseUrl() {
+        configurationProvider.isInstalledHandler = { _, _ in true }
+
+        let expectation = XCTestExpectation()
+        let applicationLauncher = ApplicationLaunchingMock()
+        applicationLauncher.launchHandler = { url, completion in
+            XCTAssertTrue(url.absoluteString.contains("sandbox-login.uber.com"))
+            expectation.fulfill()
+            completion?(true)
+        }
+
+        let provider = AuthorizationCodeAuthProvider(
+            configurationProvider: configurationProvider,
+            applicationLauncher: applicationLauncher,
+            environment: .sandbox
+        )
+
+        provider.execute(authDestination: .native(appPriority: [.rides]), completion: { _ in })
+
+        wait(for: [expectation], timeout: 0.2)
     }
 }
