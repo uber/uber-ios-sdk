@@ -76,13 +76,11 @@ final class Content {
         var prompt: Prompt = []
         if shouldForceLogin { prompt.insert(.login) }
         if shouldForceConsent { prompt.insert(.consent) }
-        
-        let uberEnvironment: UberEnvironment = environment == .sandbox ? .sandbox : .production
 
         let authProvider: AuthProviding = .authorizationCode(
             shouldExchangeAuthCode: isTokenExchangeEnabled,
             prompt: prompt,
-            environment: uberEnvironment
+            environment: environment == .sandbox ? .sandbox : .production
         )
         
         let authDestination: AuthDestination = {
