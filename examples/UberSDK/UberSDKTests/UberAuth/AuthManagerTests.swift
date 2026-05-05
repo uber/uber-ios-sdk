@@ -305,3 +305,33 @@ final class UberAuthTests: XCTestCase {
         XCTAssertEqual(tokenManager.deleteTokenCallCount, 1)
     }
 }
+
+@MainActor
+extension UberAuthTests {
+    
+    func test_login_async_success() async throws {
+        let authProvider = AuthProvidingMock()
+        authProvider.executeAsyncResult = .success(Client(authorizationCode: "code"))
+        
+        let context = AuthContext(authDestination: .inApp, authProvider: authProvider, prefill: nil)
+        
+        let client = try await uberAuth.login(context: context)
+        
+        XCTAssertNotNil(client.authorizationCode)
+        XCTAssertEqual(authProvider.executeCallCount, 1)
+    }
+    
+    func test_login_async_error() async {
+        let authProvider = AuthProvidingMock()
+        authProvider.executeAsyncResult = .failure(UberAuthError.serviceError)
+        
+        let context = AuthContext(authDestination: .inApp, authProvider: authProvider, prefill: nil)
+        
+        do {
+            _ = try await uberAuth.login(context: context)
+            XCTFail("Should have thrown error")
+        } catch {
+            XCTAssertNotNil(error as? UberAuthError)
+        }
+    }
+}

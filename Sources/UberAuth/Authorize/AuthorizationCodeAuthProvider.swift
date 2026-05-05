@@ -67,15 +67,18 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     private let tokenManager: TokenManaging
     
     private let scopes: [String]
-    
+
     private let prompt: Prompt?
-    
+
+    private let baseUrl: String
+
     // MARK: Initializers
-    
+
     public init(presentationAnchor: ASPresentationAnchor = .init(),
                 scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
                 shouldExchangeAuthCode: Bool = false,
-                prompt: Prompt? = nil) {
+                prompt: Prompt? = nil,
+                environment: UberEnvironment = .production) {
         self.configurationProvider = ConfigurationProvider()
         self.applicationLauncher = UIApplication.shared
         self.authenticationSessionBuilder = nil
@@ -84,12 +87,13 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.redirectURI = configurationProvider.redirectURI
         self.responseParser = AuthorizationCodeResponseParser()
         self.shouldExchangeAuthCode = shouldExchangeAuthCode
-        self.networkProvider = NetworkProvider(baseUrl: Constants.baseUrl)
-        self.tokenManager = TokenManager()
+        self.baseUrl = environment.baseUrl + "/v2"
+        self.networkProvider = NetworkProvider(baseUrl: self.baseUrl)
+        self.tokenManager = TokenManager(environment: environment)
         self.scopes = scopes
         self.prompt = prompt
     }
-    
+
     init(presentationAnchor: ASPresentationAnchor = .init(),
          authenticationSessionBuilder: AuthenticationSessionBuilder? = nil,
          scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
@@ -98,9 +102,10 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
          configurationProvider: ConfigurationProviding = ConfigurationProvider(),
          applicationLauncher: ApplicationLaunching = UIApplication.shared,
          responseParser: AuthorizationCodeResponseParsing = AuthorizationCodeResponseParser(),
-         networkProvider: NetworkProviding = NetworkProvider(baseUrl: Constants.baseUrl),
-         tokenManager: TokenManaging = TokenManager()) {
-        
+         networkProvider: NetworkProviding = NetworkProvider(baseUrl: UberEnvironment.production.baseUrl + "/v2"),
+         tokenManager: TokenManaging = TokenManager(),
+         environment: UberEnvironment = .production) {
+
         self.applicationLauncher = applicationLauncher
         self.authenticationSessionBuilder = authenticationSessionBuilder
         self.clientID = configurationProvider.clientID
@@ -109,6 +114,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.redirectURI = configurationProvider.redirectURI
         self.responseParser = responseParser
         self.shouldExchangeAuthCode = shouldExchangeAuthCode
+        self.baseUrl = environment.baseUrl + "/v2"
         self.networkProvider = networkProvider
         self.tokenManager = tokenManager
         self.scopes = scopes
@@ -116,7 +122,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     }
     
     // MARK: AuthProviding
-    
+
     public func execute(authDestination: AuthDestination,
                         prefill: Prefill? = nil,
                         completion: @escaping Completion) {
@@ -156,6 +162,21 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         
         self.completion = authCompletion
     }
+
+    /// - Throws: `UberAuthError`
+    public func execute(authDestination: AuthDestination,
+                        prefill: Prefill? = nil) async throws -> Client {
+        
+        let requestURI = await executePar(prefill: prefill)
+        
+        let client = try await executeLogin(authDestination: authDestination, requestURI: requestURI)
+        
+        if shouldExchangeAuthCode, let code = client.authorizationCode {
+            return try await exchange(code: code)
+        }
+        
+        return client
+    }
     
     public func logout() -> Bool {
         tokenManager.deleteToken(identifier: TokenManager.defaultAccessTokenIdentifier)
@@ -177,7 +198,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     }
     
     // MARK: - Private
-    
+
     private func executeLogin(authDestination: AuthDestination,
                               requestURI: String?,
                               completion: @escaping Completion) {
@@ -194,6 +215,17 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 completion: completion
             )
         }
+    }
+    
+    func executeLogin(authDestination: AuthDestination,
+                      requestURI: String?) async throws -> Client {
+        switch authDestination {
+        case .inApp:
+            try await executeInAppLogin(requestURI: requestURI)
+        case.native(let appPriority):
+            try await executeNativeLogin(appPriority: appPriority, requestURI: requestURI)
+        }
+        
     }
     
     /// Performs login using an embedded browser within the third party client.
@@ -218,11 +250,11 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             scopes: scopes
         )
         
-        guard let url = request.url(baseUrl: Constants.baseUrl) else {
+        guard let url = request.url(baseUrl: baseUrl) else {
             completion(.failure(.invalidRequest("Invalid base URL")))
             return
         }
-        
+
         guard let callbackURL = URL(string: redirectURI),
               let callbackURLScheme = callbackURL.scheme else {
             completion(.failure(.invalidRequest("Invalid redirect URI")))
@@ -242,6 +274,52 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             )
         
         currentSession?.start()
+    }
+    
+    private func executeInAppLogin(requestURI: String?) async throws -> Client {
+        // Only execute one authentication session at a time
+        guard currentSession == nil else { throw UberAuthError.existingAuthSession }
+        
+        let request = AuthorizeRequest(
+            app: nil,
+            clientID: clientID,
+            codeChallenge: shouldExchangeAuthCode ? pkce.codeChallenge : nil,
+            prompt: prompt,
+            redirectURI: redirectURI,
+            requestURI: requestURI,
+            scopes: scopes
+        )
+        
+        guard let url = request.url(baseUrl: baseUrl) else {
+            throw UberAuthError.invalidRequest("Invalid base URL")
+        }
+        
+        guard let callbackURL = URL(string: redirectURI),
+              let callbackURLScheme = callbackURL.scheme else {
+            throw UberAuthError.invalidRequest("Invalid redirect URI")
+        }
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            if let sessionBuilder = authenticationSessionBuilder {
+                currentSession = sessionBuilder(
+                    presentationAnchor,
+                    callbackURLScheme,
+                    url,
+                    { [weak self] result in
+                        continuation.resume(with: result)
+                        self?.currentSession = nil
+                    })
+            } else {
+                currentSession = AuthenticationSession(anchor: presentationAnchor, callbackURLScheme: callbackURLScheme, url: url) { [weak self] result in
+                    continuation.resume(with: result)
+                    self?.currentSession = nil
+                    
+                }
+            }
+            
+            currentSession?.start()
+            
+        }
     }
         
     /// Performs login using one of the native Uber applications if available.
@@ -295,6 +373,23 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         )
     }
     
+    private func executeNativeLogin(appPriority: [UberApp], requestURI: String?) async throws -> Client {
+        for app in appPriority {
+            let launched = await launch(context: (app, requestURI))
+            
+            if launched {
+                return try await withCheckedThrowingContinuation { continuation in
+                    self.completion = { result in
+                        continuation.resume(with: result)
+                        self.completion = nil
+                    }
+                }
+            }
+        }
+        
+        return try await executeInAppLogin(requestURI: requestURI)
+    }
+    
     /// Attempts to launch a native app with an SSO universal link.
     /// Calls a closure with a boolean indicating if the application was successfully opened.
     ///
@@ -326,11 +421,11 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             scopes: scopes
         )
         
-        guard let url = request.url(baseUrl: Constants.baseUrl) else {
+        guard let url = request.url(baseUrl: baseUrl) else {
             completion?(false)
             return
         }
-        
+
         DispatchQueue.main.async {
             self.applicationLauncher.launch(
                 url,
@@ -340,6 +435,31 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             )
         }
     }
+    
+    func launch(context: (app: UberApp, requestURI: String?)) async -> Bool {
+        let (app, requestURI) = context
+        guard configurationProvider.isInstalled(app: app, defaultIfUnregistered: true) else { return false }
+        
+        // .login not supported for native auth
+        var prompt = prompt
+        prompt?.remove(.login)
+        
+        let request = AuthorizeRequest(
+            app: app,
+            clientID: clientID,
+            codeChallenge: shouldExchangeAuthCode ? pkce.codeChallenge : nil,
+            prompt: prompt,
+            redirectURI: redirectURI,
+            requestURI: requestURI,
+            scopes: scopes
+        )
+        
+        guard let url = request.url(baseUrl: baseUrl) else { return false }
+        
+        return await applicationLauncher.launch(url)
+    }
+    
+
 
     private func executePar(prefill: Prefill?,
                             completion: @escaping (_ requestURI: String?) -> Void) {
@@ -366,6 +486,16 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
        )
     }
     
+    func executePar(prefill: Prefill?) async -> String? {
+        guard let prefill else { return nil }
+        
+        let request = ParRequest(clientID: clientID, prefill: prefill.dictValue)
+        
+        let result = try? await networkProvider.execute(request: request)
+        
+        return result?.requestURI
+    }
+    
     // MARK: Token Exchange
     
     /// Makes a request to the /token endpoing to exchange the authorization code
@@ -386,7 +516,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 case .success(let response):
                     let client = Client(tokenResponse: response)
                     if let accessToken = client.accessToken {
-                        self?.tokenManager.saveToken(
+                        _ = self?.tokenManager.saveToken(
                             accessToken,
                             identifier: TokenManager.defaultAccessTokenIdentifier
                         )
@@ -399,13 +529,28 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         )
     }
     
-    // MARK: Constants
-    
-    private enum Constants {
-        static let clientIDKey = "ClientID"
-        static let redirectURI = "RedirectURI"
-        static let baseUrl = "https://auth.uber.com/v2"
+    func exchange(code: String) async throws -> Client {
+        let request = TokenRequest(
+            clientID: clientID,
+            authorizationCode: code,
+            redirectURI: redirectURI,
+            codeVerifier: pkce.codeVerifier
+        )
+        
+        let response = try await networkProvider.execute(request: request)
+        
+        let client = Client(tokenResponse: response)
+        if let accessToken = client.accessToken {
+            _ = tokenManager
+                .saveToken(
+                    accessToken,
+                    identifier: TokenManager.defaultAccessTokenIdentifier
+                )
+        }
+        
+        return client
     }
+    
 }
 
 

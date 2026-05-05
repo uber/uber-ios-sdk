@@ -48,9 +48,7 @@ class RideRequestViewTests: XCTestCase {
         let request = URLRequest(url: URL(string: "uberConnect://oauth#error=unauthorized")!)
         view.webView.load(request)
         
-        waitForExpectations(timeout: timeout, handler: { error in
-            XCTAssertNil(error)
-        })
+        waitForExpectations(timeout: timeout)
     }
     
     /**

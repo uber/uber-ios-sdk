@@ -48,25 +48,39 @@ final class Content {
     var selection: Item?
     var type: LoginType? = .authorizationCode
     var destination: LoginDestination? = .inApp
+    var environment: LoginEnvironment? = .production
     var isTokenExchangeEnabled: Bool = true
     var shouldForceLogin: Bool = false
     var shouldForceConsent: Bool = false
     var isPrefillExpanded: Bool = false
     var response: AuthReponse?
     var prefillBuilder = PrefillBuilder()
+    var loginTask: Task<Void, Never>?
     var isLoggedIn: Bool {
         UberAuth.isLoggedIn
     }
     
     func login() {
-        
+        loginTask?.cancel()
+        loginTask = Task {
+            do {
+                try await login()
+            } catch {
+                response = AuthReponse(value: error.localizedDescription)
+            }
+            loginTask = nil
+        }
+    }
+    
+    private func login() async throws {
         var prompt: Prompt = []
         if shouldForceLogin { prompt.insert(.login) }
         if shouldForceConsent { prompt.insert(.consent) }
-        
+
         let authProvider: AuthProviding = .authorizationCode(
             shouldExchangeAuthCode: isTokenExchangeEnabled,
-            prompt: prompt
+            prompt: prompt,
+            environment: environment == .sandbox ? .sandbox : .production
         )
         
         let authDestination: AuthDestination = {
@@ -77,24 +91,15 @@ final class Content {
             }
         }()
         
-        UberAuth.login(
+        let client = try await UberAuth.login(
             context: .init(
                 authDestination: authDestination,
                 authProvider: authProvider,
                 prefill: isPrefillExpanded ? prefillBuilder.prefill : nil
-            ),
-            completion: { result in
-                // Slight delay to allow for ASWebAuthenticationSession dismissal
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    switch result {
-                    case .success(let client):
-                        self.response = AuthReponse(value: "\(client)")
-                    case .failure(let error):
-                        self.response = AuthReponse(value: error.localizedDescription)
-                    }
-                }
-            }
+            )
         )
+        
+        response = AuthReponse(value: "\(client)")
     }
     
     func logout() {
@@ -106,9 +111,14 @@ final class Content {
         UberAuth.handle(url)
     }
     
+    deinit {
+        loginTask?.cancel()
+    }
+    
     enum Item: String, Hashable, Identifiable {
         case type = "Auth Type"
         case destination = "Destination"
+        case environment = "Environment"
         case tokenExchange = "Exchange Auth Code for Token"
         case forceLogin = "Always ask for Login"
         case forceConsent = "Always ask for Consent"
@@ -159,6 +169,12 @@ struct ContentView: View {
                     options: LoginDestination.allCases
                 )
                 .presentationDetents([.height(200)])
+            case .environment:
+                SelectionView(
+                    selection: $content.environment,
+                    options: LoginEnvironment.allCases
+                )
+                .presentationDetents([.height(200)])
             default:
                 EmptyView()
             }
@@ -194,6 +210,7 @@ struct ContentView: View {
         
         textRow(.type, value: content.type?.description)
         textRow(.destination, value: content.destination?.description)
+        textRow(.environment, value: content.environment?.description)
         toggleRow(.tokenExchange, value: $content.isTokenExchangeEnabled)
         toggleRow(.forceLogin, value: $content.shouldForceLogin)
         toggleRow(.forceConsent, value: $content.shouldForceConsent)

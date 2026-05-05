@@ -24,9 +24,9 @@
 	<key>Uber</key>
 	<dict>
 		<key>ClientID</key>
-		<string>[Client ID]</string>
+		<string>u6fWe9U2aQv1hE-dPXhzPXmnmOD45n6N</string>
 		<key>RedirectURI</key>
-		<string>com.uber.UberSDK://oauth/consumer</string>
+		<string>https://www.uber.com/</string>
 		<key>DisplayName</key>
 		<string>[App Name]</string>
 	</dict>

@@ -29,20 +29,44 @@ public typealias AuthCompletion = (Result<Client, UberAuthError>) -> ()
 
 /// @mockable
 public protocol UberAuthInterface {
-    
+
     /// Executes a single login session using the provided context
     ///
     /// - Parameters:
     ///   - context: An `AuthContext` instance providing all information needed to execute authentication
     ///   - completion: A closure to be called upon completion
     static func login(context: AuthContext, completion: @escaping AuthCompletion)
-    
-    
+
     /// Clears any saved auth information from the keychain
     /// If `currentAuthContext` exists, logs out using the stored auth context
     /// Otherwise, attempts to delete the saved auth token directly using the internal TokenManager
     static func logout()
-    
+
+    /// Attempts to extract auth information from the provided URL.
+    /// This method should be called from the implemeting application's openURL function.
+    ///
+    /// - Parameter url: The URL that was passed into the implementing app
+    /// - Returns: A boolean indicating if the URL was handled or not
+    static func handle(_ url: URL) -> Bool
+}
+
+/// Protocol for async/await based authentication
+/// @mockable
+public protocol UberAuthAsyncInterface {
+
+    /// Executes a single login session using the provided context
+    ///
+    /// - Parameters:
+    ///   - context: An `AuthContext` instance providing all information needed to execute authentication
+    /// - Returns: The authenticated client
+    /// - Throws: `UberAuthError`
+    static func login(context: AuthContext) async throws -> Client
+
+    /// Clears any saved auth information from the keychain
+    /// If `currentAuthContext` exists, logs out using the stored auth context
+    /// Otherwise, attempts to delete the saved auth token directly using the internal TokenManager
+    static func logout()
+
     /// Attempts to extract auth information from the provided URL.
     /// This method should be called from the implemeting application's openURL function.
     ///
@@ -57,8 +81,10 @@ public protocol UberAuthInterface {
 ///
 /// @mockable
 protocol AuthManaging {
-    
+
     func login(context: AuthContext, completion: @escaping AuthCompletion)
+
+    func login(context: AuthContext) async throws -> Client
     
     func logout()
     
@@ -68,7 +94,7 @@ protocol AuthManaging {
 }
 
 /// Public interface for the uber-auth-ios library
-public final class UberAuth: UberAuthInterface, AuthManaging {
+public final class UberAuth: UberAuthInterface, UberAuthAsyncInterface, AuthManaging {
     
     // MARK: Public
     
@@ -83,6 +109,10 @@ public final class UberAuth: UberAuthInterface, AuthManaging {
             context: context,
             completion: completion
         )
+    }
+    
+    public static func login(context: AuthContext = .init()) async throws -> Client {
+        try await auth.login(context: context)
     }
     
     /// Clears any saved auth information from the keychain
@@ -126,6 +156,15 @@ public final class UberAuth: UberAuthInterface, AuthManaging {
             completion: completion
         )
         currentContext = context
+    }
+    
+    func login(context: AuthContext = .init()) async throws -> Client {
+        let client = try await context.authProvider.execute(
+            authDestination: context.authDestination,
+            prefill: context.prefill
+        )
+        currentContext = context
+        return client
     }
     
     func logout() {
