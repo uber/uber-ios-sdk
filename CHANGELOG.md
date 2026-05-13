@@ -1,5 +1,9 @@
 # Change Log
 
+## [2.2.1] 2026-05-13
+
+* [Pull #332](https://github.com/uber/uber-ios-sdk/pull/335) Clear plist fields
+
 ## [2.2.0] 2026-05-05
 
 * [Pull #332](https://github.com/uber/uber-ios-sdk/pull/332) Allow client to choose the request environment
