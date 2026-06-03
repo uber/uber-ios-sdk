@@ -1,5 +1,5 @@
 //
-//  Client.swift
+//  AuthSecurityParamProvider.swift
 //  UberAuth
 //
 //  Copyright © 2024 Uber Technologies, Inc. All rights reserved.
@@ -22,38 +22,34 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+/// Manages per-request nonce and state for a single authorization flow.
+final class AuthSecurityParamProvider {
 
-import Foundation
-import UberCore
+    private let clientNonce: String?
+    private(set) var nonce: String?
+    private(set) var state: String?
 
-public struct Client: Equatable {
-    
-    // MARK: Properties
-    
-    public let authorizationCode: String?
-    
-    public let accessToken: AccessToken?
-    
-    public let nonce: String?
-    // MARK: Initializers
-    
-    public init(authorizationCode: String? = nil,
-                accessToken: AccessToken? = nil,
-                nonce: String? = nil) {
-        self.authorizationCode = authorizationCode
-        self.accessToken = accessToken
-        self.nonce = nonce
+    init(nonce: String? = nil) {
+        self.clientNonce = nonce
     }
-}
 
-extension Client: CustomStringConvertible {
-    
-    public var description: String {
-        return """
-        Authorization Code: \(authorizationCode ?? "nil")
-        Nonce: \(nonce ?? "nil")
-        Access Token:
-        \(accessToken?.description ?? "nil")
-        """
+    /// Generates fresh nonce and state values for a new authorization request.
+    func begin() {
+        nonce = clientNonce ?? Nonce.generate()
+        state = State.generate()
+    }
+
+    /// Consumes and clears the pending state, returning its value.
+    /// Called by `handle(response:)` on the native deep-link path.
+    func consumeState() -> String? {
+        defer { state = nil }
+        return state
+    }
+
+    /// Clears all pending values and returns the nonce.
+    /// Called once the authorization flow completes (success or failure).
+    func end() -> String? {
+        defer { nonce = nil; state = nil }
+        return nonce
     }
 }

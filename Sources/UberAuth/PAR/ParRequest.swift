@@ -30,15 +30,23 @@ struct ParRequest: NetworkRequest {
     // MARK: Private Properties
     
     private let clientID: String
-    
+
+    private let nonce: String?
+
     private let prefill: [String: String]
-    
+
+    private let state: String?
+
     // MARK: Initializers
-    
+
     init(clientID: String,
-         prefill: [String: String]) {
+         prefill: [String: String],
+         nonce: String? = nil,
+         state: String? = nil) {
         self.clientID = clientID
         self.prefill = prefill
+        self.nonce = nonce
+        self.state = state
     }
     
     // MARK: Request
@@ -46,11 +54,18 @@ struct ParRequest: NetworkRequest {
     typealias Response = Par
     
     var body: [String: String]? {
-        [
+        var params: [String: String] = [
             "client_id": clientID,
             "response_type": "code",
             "login_hint": loginHint
         ]
+        if let nonce {
+            params["nonce"] = nonce
+        }
+        if let state {
+            params["state"] = state
+        }
+        return params
     }
         
     var method: HTTPMethod = .post

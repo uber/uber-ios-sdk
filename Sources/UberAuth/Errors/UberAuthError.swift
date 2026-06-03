@@ -46,6 +46,12 @@ public enum UberAuthError: Error {
     // Failed to build the auth request
     case invalidRequest(String)
     
+    // The nonce in the id_token does not match the one sent in /authorize (exchange path only)
+    case nonceMismatch
+
+    // The state in the callback does not match the one sent in /authorize
+    case stateMismatch
+    
     // An OAuth standard error occurred
     case oAuth(OAuthError)
     
@@ -76,6 +82,10 @@ extension UberAuthError: LocalizedError {
             return "The response url could not be parsed"
         case .invalidRequest(let details):
             return "Failed to build the auth request: \(details)"
+        case .nonceMismatch:
+            return "The nonce in the id_token does not match the one sent in the authorization request"
+        case .stateMismatch:
+            return "The state in the callback does not match the one sent in the authorization request"
         case .other(let error):
             return "An unknown error occurred: \(error)"
         case .serviceError:

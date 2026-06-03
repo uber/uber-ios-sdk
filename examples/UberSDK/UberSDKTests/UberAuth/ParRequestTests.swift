@@ -52,5 +52,22 @@ final class ParRequestTests: XCTestCase {
         XCTAssertEqual(url.path(), "/oauth/v2/par")
         XCTAssertEqual(request.body?["login_hint"], loginHintString)
     }
-    
+
+    func test_body_includesNonceAndStateWhenProvided() {
+        let request = ParRequest(
+            clientID: "test_client_id",
+            prefill: [:],
+            nonce: "test-nonce",
+            state: "test-state"
+        )
+        XCTAssertEqual(request.body?["nonce"], "test-nonce")
+        XCTAssertEqual(request.body?["state"], "test-state")
+    }
+
+    func test_body_omitsNonceAndStateWhenNil() {
+        let request = ParRequest(clientID: "test_client_id", prefill: [:])
+        XCTAssertNil(request.body?["nonce"])
+        XCTAssertNil(request.body?["state"])
+    }
+
 }
