@@ -164,9 +164,9 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                     nonce: nonce
                 )))
             case .failure:
-                break
+                completion(result)
             }
-            completion(result)
+            
             self.completion = nil
         }
 

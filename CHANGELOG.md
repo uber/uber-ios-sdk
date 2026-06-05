@@ -1,8 +1,12 @@
 # Change Log
 
+## [2.3.0] 2026-06-05
+
+* [Pull #337](https://github.com/uber/uber-ios-sdk/pull/337) OIDC Nonce and OAuth State Support
+
 ## [2.2.1] 2026-05-13
 
-* [Pull #332](https://github.com/uber/uber-ios-sdk/pull/335) Clear plist fields
+* [Pull #335](https://github.com/uber/uber-ios-sdk/pull/335) Clear plist fields
 
 ## [2.2.0] 2026-05-05
 
