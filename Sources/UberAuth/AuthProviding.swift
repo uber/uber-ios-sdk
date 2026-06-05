@@ -39,6 +39,12 @@ public protocol AuthProviding {
     
     func logout() -> Bool
     
+    /// Attempts to handle an incoming URL on the native path.
+    ///
+    /// - Returns: `true` if the URL was claimed by this provider — meaning it matched the redirect
+    ///   URI and an active auth flow was in progress. A `true` return indicates the URL was handled,
+    ///   the outcome (success or failure) is delivered via the completion passed to `execute`.
+    ///   Returns `false` if the URL does not belong to this provider.
     func handle(response url: URL) -> Bool
     
     var isLoggedIn: Bool { get }

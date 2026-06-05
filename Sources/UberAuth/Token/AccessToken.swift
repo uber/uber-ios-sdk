@@ -42,18 +42,22 @@ public struct AccessToken: Codable, Equatable {
     
     public let scope: [String]?
     
+    public let idToken: String?
+
     // MARK: Initializers
     
     public init(tokenString: String? = nil,
                 refreshToken: String? = nil,
                 tokenType: String? = nil,
                 expiresIn: Int? = nil,
-                scope: [String]? = nil) {
+                scope: [String]? = nil,
+                idToken: String? = nil) {
         self.tokenString = tokenString
         self.refreshToken = refreshToken
         self.tokenType = tokenType
         self.expiresIn = expiresIn
         self.scope = scope
+        self.idToken = idToken
     }
     
     public init(from decoder: Decoder) throws {
@@ -62,10 +66,11 @@ public struct AccessToken: Codable, Equatable {
         let tokenType = try container.decodeIfPresent(String.self, forKey: .tokenType)
         let expiresIn = try container.decodeIfPresent(Int.self, forKey: .expiresIn)
         let refreshToken = try container.decodeIfPresent(String.self, forKey: .refreshToken)
-        
+        let idToken = try container.decodeIfPresent(String.self, forKey: .idToken)
+    
         let scope: [String]?
         if let scopeString = try? container.decodeIfPresent(String.self, forKey: .scope) {
-            scope = (scopeString ?? "")
+            scope = scopeString
                 .split(separator: " ")
                 .map(String.init)
         }
@@ -78,7 +83,8 @@ public struct AccessToken: Codable, Equatable {
             refreshToken: refreshToken,
             tokenType: tokenType,
             expiresIn: expiresIn,
-            scope: scope
+            scope: scope,
+            idToken: idToken
         )
     }
     
@@ -87,6 +93,7 @@ public struct AccessToken: Codable, Equatable {
         case tokenType = "token_type"
         case expiresIn = "expires_in"
         case refreshToken = "refresh_token"
+        case idToken = "id_token"
         case scope
     }
 }
@@ -115,6 +122,7 @@ extension AccessToken {
         self.tokenString = tokenString
         self.refreshToken = oAuthDictionary["refresh_token"] as? String
         self.tokenType = oAuthDictionary["token_type"] as? String
+        self.idToken = oAuthDictionary["id_token"] as? String
         self.expiresIn = {
             if let expiresIn = oAuthDictionary["expires_in"] as? Int { return expiresIn }
             if let expiresIn = oAuthDictionary["expires_in"] as? String,
@@ -173,6 +181,7 @@ extension AccessToken: CustomStringConvertible {
         Token Type: \(tokenType ?? "nil")
         Expires In: \(expiresIn ?? -1)
         Scopes: \(scope?.joined(separator: ", ") ?? "nil")
+        ID Token: \(idToken != nil ? "<present>" : "nil")
         """
     }
 }

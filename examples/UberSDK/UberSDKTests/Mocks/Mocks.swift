@@ -199,7 +199,7 @@ final class AuthenticationSessioningMock: AuthenticationSessioning {
     private var _completion: AuthCompletion!
     private var _url: URL!
     init() { }
-    required init(anchor: ASPresentationAnchor, callbackURLScheme: String = "", url: URL = URL(fileURLWithPath: ""), completion: @escaping AuthCompletion) {
+    required init(anchor: ASPresentationAnchor, callbackURLScheme: String = "", url: URL = URL(fileURLWithPath: ""), pendingState: String? = nil, completion: @escaping AuthCompletion) {
         self._anchor = anchor
         self._callbackURLScheme = callbackURLScheme
         self._url = url

@@ -34,12 +34,15 @@ public struct Client: Equatable {
     
     public let accessToken: AccessToken?
     
+    public let nonce: String?
     // MARK: Initializers
     
     public init(authorizationCode: String? = nil,
-                accessToken: AccessToken? = nil) {
+                accessToken: AccessToken? = nil,
+                nonce: String? = nil) {
         self.authorizationCode = authorizationCode
         self.accessToken = accessToken
+        self.nonce = nonce
     }
 }
 
@@ -48,7 +51,8 @@ extension Client: CustomStringConvertible {
     public var description: String {
         return """
         Authorization Code: \(authorizationCode ?? "nil")
-        Access Token: 
+        Nonce: \(nonce ?? "nil")
+        Access Token:
         \(accessToken?.description ?? "nil")
         """
     }

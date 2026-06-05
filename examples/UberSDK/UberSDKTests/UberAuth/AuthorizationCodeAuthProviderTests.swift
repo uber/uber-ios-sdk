@@ -82,7 +82,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
 
         var hasCalledAuthenticationSessionBuilder: Bool = false
 
-        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _ in
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _, _ in
             XCTAssertFalse(url.absoluteString.contains("code_challenge"))
             XCTAssertFalse(url.absoluteString.contains("code_challenge_method"))
             hasCalledAuthenticationSessionBuilder = true
@@ -122,7 +122,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         let prompt: Prompt = [.login, .consent]
         let promptString = prompt.stringValue.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
 
-        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _ in
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _, _ in
             XCTAssertTrue(url.query()!.contains("prompt=\(promptString)"))
             hasCalledAuthenticationSessionBuilder = true
             return AuthenticationSessioningMock()
@@ -396,7 +396,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         let expectation = XCTestExpectation()
         
         let authenticationSession = AuthenticationSessioningMock()
-        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _ in
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _, _ in
             expectation.fulfill()
             return authenticationSession
         }
@@ -436,7 +436,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         let expectation = XCTestExpectation()
         
         let authenticationSession = AuthenticationSessioningMock()
-        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _ in
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _, _ in
             expectation.fulfill()
             return authenticationSession
         }
@@ -471,18 +471,26 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
             .success(Client())
         }
         
+        var capturedState: String?
+        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _, _ in
+            capturedState = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+                .queryItems?.first(where: { $0.name == "state" })?.value
+            return AuthenticationSessioningMock()
+        }
+
         let provider = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: authSessionBuilder,
+            configurationProvider: configurationProvider,
             responseParser: responseParser
         )
                 
-        let url = URL(string: "scheme://host?code=123")!
-        
         let completion: AuthorizationCodeAuthProvider.Completion = { _ in }
-        provider.execute(authDestination: .native(appPriority: []), prefill: nil, completion: completion)
+        provider.execute(authDestination: .inApp, prefill: nil, completion: completion)
         
         XCTAssertEqual(responseParser.isValidResponseCallCount, 0)
         XCTAssertEqual(responseParser.callAsFunctionCallCount, 0)
         
+        let url = URL(string: "scheme://host?code=123&state=\(capturedState ?? "")")!
         let handled = provider.handle(
             response: url
         )
@@ -587,8 +595,11 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
             true
         }
         
+        var capturedState: String?
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.launchHandler = { _, completion in
+        applicationLauncher.launchHandler = { url, completion in
+            capturedState = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+                .queryItems?.first(where: { $0.name == "state" })?.value
             completion?(true)
         }
         
@@ -603,8 +614,9 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
             authDestination: .native(appPriority: [.rides]),
             completion: { result in }
         )
+        RunLoop.main.run(mode: .default, before: Date(timeIntervalSinceNow: 0.01))
         
-        let url = URL(string: "test://app?code=123")!
+        let url = URL(string: "test://app?code=123&state=\(capturedState ?? "")")!
         _ = provider.handle(response: url)
         
         XCTAssertTrue(hasCalledTokenRequest)
@@ -625,8 +637,11 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
             true
         }
         
+        var capturedState: String?
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.launchHandler = { _, completion in
+        applicationLauncher.launchHandler = { url, completion in
+            capturedState = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+                .queryItems?.first(where: { $0.name == "state" })?.value
             completion?(true)
         }
         
@@ -640,18 +655,20 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
             authDestination: .native(appPriority: [.rides]),
             completion: { result in }
         )
+        RunLoop.main.run(mode: .default, before: Date(timeIntervalSinceNow: 0.01))
         
-        let url = URL(string: "test://app?code=123")!
+        let url = URL(string: "test://app?code=123&state=\(capturedState ?? "")")!
         _ = provider.handle(response: url)
         
         XCTAssertFalse(hasCalledTokenRequest)
     }
     
     func test_nativeAuth_tokenExchange() {
-        
+
         let token = AccessToken(
             tokenString: "123",
-            tokenType: "test_token"
+            tokenType: "test_token",
+            idToken: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6InRlc3Qtbm9uY2UifQ.fakesig"
         )
         
         let networkProvider = NetworkProvidingMock()
@@ -670,13 +687,17 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
             true
         }
         
+        var capturedState: String?
         let applicationLauncher = ApplicationLaunchingMock()
-        applicationLauncher.launchHandler = { _, completion in
+        applicationLauncher.launchHandler = { url, completion in
+            capturedState = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+                .queryItems?.first(where: { $0.name == "state" })?.value
             completion?(true)
         }
         
         let provider = AuthorizationCodeAuthProvider(
-            shouldExchangeAuthCode: true, 
+            shouldExchangeAuthCode: true,
+            nonceGenerator: { "test-nonce" },
             configurationProvider: configurationProvider,
             applicationLauncher: applicationLauncher,
             networkProvider: networkProvider
@@ -698,15 +719,18 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
                         Client(
                             accessToken: AccessToken(
                                 tokenString: "123",
-                                tokenType: "test_token"
-                            )
+                                tokenType: "test_token",
+                                idToken: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6InRlc3Qtbm9uY2UifQ.fakesig"
+                            ),
+                            nonce: "test-nonce"
                         )
                     )
                 }
             }
         )
         
-        let url = URL(string: "test://app?code=123")!
+        RunLoop.main.run(mode: .default, before: Date(timeIntervalSinceNow: 0.01))
+        let url = URL(string: "test://app?code=123&state=\(capturedState ?? "")")!
         _ = provider.handle(response: url)
         
         wait(for: [expectation], timeout: 0.1)
@@ -860,7 +884,7 @@ extension AuthorizationCodeAuthProviderTests {
     }
     
     func test_executeLogin_async_inApp_usesAuthenticationSession() async throws {
-        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, completion in
+        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _, completion in
             let client = Client(authorizationCode: "in_app_code")
             completion(.success(client))
             return AuthenticationSessioningMock()
@@ -886,7 +910,7 @@ extension AuthorizationCodeAuthProviderTests {
         let mockLauncher = ApplicationLaunchingMock()
         mockLauncher.launchResult = false
         
-        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, completion in
+        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _, completion in
             let client = Client(authorizationCode: "fallback_code")
             completion(.success(client))
             return AuthenticationSessioningMock()
@@ -909,7 +933,7 @@ extension AuthorizationCodeAuthProviderTests {
     }
     
     func test_execute_async_withoutExchange_returnsAuthCode() async throws {
-        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, completion in
+        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _, completion in
             completion(.success(Client(authorizationCode: "code")))
             return AuthenticationSessioningMock()
         }
@@ -933,31 +957,33 @@ extension AuthorizationCodeAuthProviderTests {
             refreshToken: "refresh",
             tokenType: "Bearer",
             expiresIn: 3600,
-            scope: []
+            scope: [],
+            idToken: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6InRlc3Qtbm9uY2UifQ.fakesig"
         ))
-        
+
         let mockTokenManager = TokenManagingMock()
         mockTokenManager.saveTokenHandler = { _, _, _ in true }
-        
-        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, completion in
+
+        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _, completion in
             completion(.success(Client(authorizationCode: "code")))
             return AuthenticationSessioningMock()
         }
-        
+
         let provider = AuthorizationCodeAuthProvider(
             authenticationSessionBuilder: authSessionBuilder,
             shouldExchangeAuthCode: true,
+            nonceGenerator: { "test-nonce" },
             configurationProvider: configurationProvider,
             networkProvider: mockNetwork,
             tokenManager: mockTokenManager
         )
-        
+
         let client = try await provider.execute(authDestination: .inApp, prefill: nil)
-        
+
         XCTAssertNotNil(client.accessToken)
         XCTAssertEqual(mockNetwork.executeCallCount, 1)
     }
-    
+
     func test_execute_async_withPrefill_executesPAR() async throws {
         let mockNetwork = NetworkProvidingMock()
         mockNetwork.executeAsyncResult = .success(Par(
@@ -965,7 +991,7 @@ extension AuthorizationCodeAuthProviderTests {
             expiresIn: Date(timeIntervalSinceNow: 3600)
         ))
         
-        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, completion in
+        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _, completion in
             completion(.success(Client(authorizationCode: "code")))
             return AuthenticationSessioningMock()
         }
@@ -983,7 +1009,7 @@ extension AuthorizationCodeAuthProviderTests {
     }
     
     func test_execute_async_authenticationError_throwsError() async {
-        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, completion in
+        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _, completion in
             completion(.failure(UberAuthError.cancelled))
             return AuthenticationSessioningMock()
         }
@@ -1006,7 +1032,7 @@ extension AuthorizationCodeAuthProviderTests {
         let mockNetwork = NetworkProvidingMock()
         mockNetwork.executeAsyncResult = .failure(UberAuthError.serviceError)
         
-        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, completion in
+        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _, completion in
             completion(.success(Client(authorizationCode: "code")))
             return AuthenticationSessioningMock()
         }
@@ -1045,7 +1071,7 @@ extension AuthorizationCodeAuthProviderTests {
 
     func test_environment_production_usesProductionBaseUrl() {
         var capturedUrl: URL?
-        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _ in
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _, _ in
             capturedUrl = url
             return AuthenticationSessioningMock()
         }
@@ -1064,7 +1090,7 @@ extension AuthorizationCodeAuthProviderTests {
 
     func test_environment_sandbox_usesSandboxBaseUrl() {
         var capturedUrl: URL?
-        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _ in
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _, _ in
             capturedUrl = url
             return AuthenticationSessioningMock()
         }
@@ -1102,4 +1128,195 @@ extension AuthorizationCodeAuthProviderTests {
 
         wait(for: [expectation], timeout: 0.2)
     }
+
+    // MARK: Nonce
+
+    func test_nonce_alwaysIncludedInAuthorizeUrl() {
+        var capturedUrl: URL?
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _, _ in
+            capturedUrl = url
+            return AuthenticationSessioningMock()
+        }
+
+        let provider = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: authenticationSessionBuilder,
+            scopes: ["profile"],
+            configurationProvider: configurationProvider
+        )
+
+        provider.execute(authDestination: .inApp, completion: { _ in })
+
+        XCTAssertTrue(capturedUrl?.query()?.contains("nonce=") == true)
+    }
+
+    func test_nonce_noExchangePath_surfacedOnClient() {
+        let authenticationSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _, completion in
+            completion(.success(Client(authorizationCode: "auth_code")))
+            return AuthenticationSessioningMock()
+        }
+
+        let provider = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: authenticationSessionBuilder,
+            scopes: ["openid", "profile"],
+            shouldExchangeAuthCode: false,
+            configurationProvider: configurationProvider
+        )
+
+        let expectation = XCTestExpectation()
+
+        provider.execute(authDestination: .inApp, completion: { result in
+            if case .success(let client) = result {
+                XCTAssertNotNil(client.nonce)
+                XCTAssertNotNil(client.authorizationCode)
+            } else {
+                XCTFail("Expected success")
+            }
+            expectation.fulfill()
+        })
+
+        wait(for: [expectation], timeout: 0.1)
+    }
+
+    func test_nonce_exchangePath_surfacedOnClient() async throws {
+        let mockNetwork = NetworkProvidingMock()
+        mockNetwork.executeAsyncResult = .success(AccessToken(
+            tokenString: "access_token",
+            tokenType: "Bearer",
+            expiresIn: 3600,
+            idToken: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6InRlc3Qtbm9uY2UifQ.fakesig"
+        ))
+
+        let mockTokenManager = TokenManagingMock()
+        mockTokenManager.saveTokenHandler = { _, _, _ in true }
+
+        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, _, _, completion in
+            completion(.success(Client(authorizationCode: "code")))
+            return AuthenticationSessioningMock()
+        }
+
+        let provider = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: authSessionBuilder,
+            scopes: ["openid", "profile"],
+            shouldExchangeAuthCode: true,
+            nonceGenerator: { "test-nonce" },
+            configurationProvider: configurationProvider,
+            networkProvider: mockNetwork,
+            tokenManager: mockTokenManager
+        )
+
+        let client = try await provider.execute(authDestination: .inApp, prefill: nil)
+
+        XCTAssertNotNil(client.accessToken)
+        XCTAssertNotNil(client.nonce)
+    }
+
+    func test_nonce_and_state_uniquePerRequest() {
+        var capturedNonces: [String] = []
+        var capturedStates: [String] = []
+
+        let makeSessionBuilder: () -> AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = {
+            return { _, _, url, _, completion in
+                if let query = url.query() {
+                    if let nonceParam = query.split(separator: "&").first(where: { $0.hasPrefix("nonce=") }),
+                       let nonce = nonceParam.split(separator: "=").last.map(String.init) {
+                        capturedNonces.append(nonce)
+                    }
+                    if let stateParam = query.split(separator: "&").first(where: { $0.hasPrefix("state=") }),
+                       let state = stateParam.split(separator: "=").last.map(String.init) {
+                        capturedStates.append(state)
+                    }
+                }
+                completion(.success(Client(authorizationCode: "code")))
+                return AuthenticationSessioningMock()
+            }
+        }
+
+        let provider1 = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: makeSessionBuilder(),
+            scopes: ["openid"],
+            shouldExchangeAuthCode: false,
+            configurationProvider: configurationProvider
+        )
+        let exp1 = XCTestExpectation(description: "first login")
+        provider1.execute(authDestination: .inApp, completion: { _ in exp1.fulfill() })
+        wait(for: [exp1], timeout: 0.1)
+
+        let provider2 = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: makeSessionBuilder(),
+            scopes: ["openid"],
+            shouldExchangeAuthCode: false,
+            configurationProvider: configurationProvider
+        )
+        let exp2 = XCTestExpectation(description: "second login")
+        provider2.execute(authDestination: .inApp, completion: { _ in exp2.fulfill() })
+        wait(for: [exp2], timeout: 0.1)
+
+        XCTAssertEqual(capturedNonces.count, 2)
+        XCTAssertNotEqual(capturedNonces[0], capturedNonces[1])
+        XCTAssertEqual(capturedStates.count, 2)
+        XCTAssertNotEqual(capturedStates[0], capturedStates[1])
+    }
+
+    func test_state_alwaysIncludedInAuthorizeUrl() {
+        var capturedURL: URL?
+        let authSessionBuilder: AuthorizationCodeAuthProvider.AuthenticationSessionBuilder = { _, _, url, _, completion in
+            capturedURL = url
+            completion(.success(Client(authorizationCode: "code")))
+            return AuthenticationSessioningMock()
+        }
+
+        let provider = AuthorizationCodeAuthProvider(
+            authenticationSessionBuilder: authSessionBuilder,
+            scopes: ["profile"],
+            shouldExchangeAuthCode: false,
+            configurationProvider: configurationProvider
+        )
+
+        let expectation = XCTestExpectation()
+        provider.execute(authDestination: .inApp, completion: { _ in expectation.fulfill() })
+        wait(for: [expectation], timeout: 0.1)
+
+        XCTAssertNotNil(capturedURL)
+        XCTAssertTrue(capturedURL!.query()!.contains("state="))
+    }
+
+    func test_state_mismatch_returnsStateMismatchError() {
+        // Test via the native handle(response:) path so the actual State.value(from:)
+        // comparison in the provider is exercised — not bypassed by the session mock.
+        configurationProvider.isInstalledHandler = { _, _ in true }
+
+        var capturedState: String?
+        let applicationLauncher = ApplicationLaunchingMock()
+        applicationLauncher.launchHandler = { url, completion in
+            capturedState = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+                .queryItems?.first(where: { $0.name == "state" })?.value
+            completion?(true)
+        }
+
+        let provider = AuthorizationCodeAuthProvider(
+            scopes: ["profile"],
+            shouldExchangeAuthCode: false,
+            configurationProvider: configurationProvider,
+            applicationLauncher: applicationLauncher
+        )
+
+        let expectation = XCTestExpectation()
+        provider.execute(authDestination: .native(appPriority: [.rides]), completion: { result in
+            if case .failure(let error) = result {
+                XCTAssertEqual(error, .stateMismatch)
+            } else {
+                XCTFail("Expected stateMismatch error")
+            }
+            expectation.fulfill()
+        })
+        RunLoop.main.run(mode: .default, before: Date(timeIntervalSinceNow: 0.01))
+
+        // Supply a callback URL with a state value that deliberately does not match.
+        let wrongState = (capturedState ?? "") + "_tampered"
+        let url = URL(string: "test://app?code=123&state=\(wrongState)")!
+        _ = provider.handle(response: url)
+
+        wait(for: [expectation], timeout: 0.1)
+    }
+
 }

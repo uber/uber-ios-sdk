@@ -38,27 +38,33 @@ struct AuthorizeRequest: NetworkRequest {
     private let app: UberApp?
     private let codeChallenge: String?
     private let clientID: String
+    private let nonce: String?
     private let prompt: Prompt?
     private let redirectURI: String
     private let requestURI: String?
     private let scopes: [String]
-    
+    private let state: String?
+
     // MARK: Initializers
-    
+
     init(app: UberApp?,
          clientID: String,
          codeChallenge: String?,
+         nonce: String? = nil,
          prompt: Prompt? = nil,
          redirectURI: String,
          requestURI: String?,
-         scopes: [String] = []) {
+         scopes: [String] = [],
+         state: String? = nil) {
         self.app = app
         self.clientID = clientID
         self.codeChallenge = codeChallenge
+        self.nonce = nonce
         self.prompt = prompt
         self.redirectURI = redirectURI
         self.requestURI = requestURI
         self.scopes = scopes
+        self.state = state
     }
     
     // MARK: Request
@@ -71,10 +77,12 @@ struct AuthorizeRequest: NetworkRequest {
             "client_id": clientID,
             "code_challenge": codeChallenge,
             "code_challenge_method": codeChallenge != nil ? "S256" : nil,
+            "nonce": nonce,
             "prompt": prompt?.stringValue,
             "redirect_uri": redirectURI,
             "request_uri": requestURI,
-            "scope": scopes.joined(separator: " ")
+            "scope": scopes.joined(separator: " "),
+            "state": state
         ]
         .compactMapValues { $0 }
     }

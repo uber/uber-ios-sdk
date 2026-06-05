@@ -31,8 +31,9 @@ protocol AuthenticationSessioning {
     init(anchor: ASPresentationAnchor,
          callbackURLScheme: String,
          url: URL,
+         pendingState: String?,
          completion: @escaping AuthCompletion)
-    
+
     func start()
 }
 
@@ -43,8 +44,9 @@ final class AuthenticationSession: AuthenticationSessioning {
     private let presentationContextProvider: ASWebAuthenticationPresentationContextProviding?
     
     init(anchor: ASPresentationAnchor = ASPresentationAnchor(),
-         callbackURLScheme: String, 
+         callbackURLScheme: String,
          url: URL,
+         pendingState: String? = nil,
          completion: @escaping AuthCompletion) {
         self.presentationContextProvider = AuthPresentationContextProvider(anchor: anchor)
         self.authSession = ASWebAuthenticationSession(
@@ -57,6 +59,10 @@ final class AuthenticationSession: AuthenticationSessioning {
                 case (.none, _):
                     completion(.failure(UberAuthError.invalidAuthCode))
                 case (.some(let url), _):
+                    if let pending = pendingState, State.value(from: url) != pending {
+                        completion(.failure(.stateMismatch))
+                        return
+                    }
                     guard let code = Self.parse(url: url) else {
                         completion(.failure(Self.parseError(url: url)))
                         return

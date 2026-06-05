@@ -30,10 +30,10 @@ import XCTest
 final class AuthorizeRequestTests: XCTestCase {
 
     func test_generatedUrl() {
-        
+
         let prompt: Prompt = [.consent, .login]
         let promptString = prompt.stringValue.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
-        
+
         let request = AuthorizeRequest(
             app: nil,
             clientID: "test_client_id",
@@ -42,10 +42,10 @@ final class AuthorizeRequestTests: XCTestCase {
             redirectURI: "redirect_uri",
             requestURI: "request_url"
         )
-        
+
         let urlRequest = request.urlRequest(baseUrl: "https://auth.uber.com")!
         let url = urlRequest.url!
-        
+
         XCTAssertEqual(url.host(), "auth.uber.com")
         XCTAssertEqual(url.scheme, "https")
         XCTAssertEqual(url.path(), "/oauth/v2/universal/authorize")
@@ -56,6 +56,26 @@ final class AuthorizeRequestTests: XCTestCase {
         XCTAssertTrue(url.query()!.contains("code_challenge_method=S256"))
         XCTAssertTrue(url.query()!.contains("redirect_uri=redirect_uri"))
         XCTAssertTrue(url.query()!.contains("prompt=\(promptString)"))
+        XCTAssertFalse(url.query()!.contains("nonce="))
+        XCTAssertFalse(url.query()!.contains("state="))
+    }
+
+    func test_generatedUrl_withNonceAndState_includesBothParams() {
+        let request = AuthorizeRequest(
+            app: nil,
+            clientID: "test_client_id",
+            codeChallenge: nil,
+            nonce: "test_nonce_value",
+            redirectURI: "redirect_uri",
+            requestURI: nil,
+            state: "test_state_value"
+        )
+
+        let urlRequest = request.urlRequest(baseUrl: "https://auth.uber.com")!
+        let url = urlRequest.url!
+
+        XCTAssertTrue(url.query()!.contains("nonce=test_nonce_value"))
+        XCTAssertTrue(url.query()!.contains("state=test_state_value"))
     }
     
     func test_appSpecific_generatedUrls() {
