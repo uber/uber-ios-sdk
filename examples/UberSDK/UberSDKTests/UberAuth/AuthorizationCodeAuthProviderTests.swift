@@ -697,7 +697,7 @@ final class AuthorizationCodeAuthProviderTests: XCTestCase {
         
         let provider = AuthorizationCodeAuthProvider(
             shouldExchangeAuthCode: true,
-            nonce: "test-nonce",
+            nonceGenerator: { "test-nonce" },
             configurationProvider: configurationProvider,
             applicationLauncher: applicationLauncher,
             networkProvider: networkProvider
@@ -972,7 +972,7 @@ extension AuthorizationCodeAuthProviderTests {
         let provider = AuthorizationCodeAuthProvider(
             authenticationSessionBuilder: authSessionBuilder,
             shouldExchangeAuthCode: true,
-            nonce: "test-nonce",
+            nonceGenerator: { "test-nonce" },
             configurationProvider: configurationProvider,
             networkProvider: mockNetwork,
             tokenManager: mockTokenManager
@@ -983,7 +983,7 @@ extension AuthorizationCodeAuthProviderTests {
         XCTAssertNotNil(client.accessToken)
         XCTAssertEqual(mockNetwork.executeCallCount, 1)
     }
-    
+
     func test_execute_async_withPrefill_executesPAR() async throws {
         let mockNetwork = NetworkProvidingMock()
         mockNetwork.executeAsyncResult = .success(Par(
@@ -1198,7 +1198,7 @@ extension AuthorizationCodeAuthProviderTests {
             authenticationSessionBuilder: authSessionBuilder,
             scopes: ["openid", "profile"],
             shouldExchangeAuthCode: true,
-            nonce: "test-nonce",
+            nonceGenerator: { "test-nonce" },
             configurationProvider: configurationProvider,
             networkProvider: mockNetwork,
             tokenManager: mockTokenManager

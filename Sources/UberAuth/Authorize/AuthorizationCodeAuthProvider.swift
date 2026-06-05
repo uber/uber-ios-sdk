@@ -27,47 +27,53 @@ import Foundation
 import UberCore
 
 public final class AuthorizationCodeAuthProvider: AuthProviding {
-    
+
     // MARK: Public Properties
-    
+
     public let clientID: String
-    
+
     public let redirectURI: String
-    
+
     public typealias Completion = (Result<Client, UberAuthError>) -> Void
-        
+
+    public typealias NonceGenerator = () -> String
+
     public static let defaultScopes = ["profile"]
 
     // MARK: Internal Properties
-    
+
     var currentSession: AuthenticationSessioning?
-    
+
     typealias AuthenticationSessionBuilder = (ASPresentationAnchor, String, URL, String?, AuthCompletion) -> (AuthenticationSessioning)
-    
+
     // MARK: Private Properties
 
     private let applicationLauncher: ApplicationLaunching
-    
+
     private let authenticationSessionBuilder: AuthenticationSessionBuilder?
-    
+
     private var completion: Completion?
-    
+
     private let configurationProvider: ConfigurationProviding
-    
+
     private let pkce = PKCE()
 
-    private let paramsProvider: AuthSecurityParamProvider
+    private let nonceGenerator: NonceGenerator
+
+    private var pendingNonce: String?
+
+    private var pendingState: String?
 
     private let presentationAnchor: ASPresentationAnchor
-    
+
     private let responseParser: AuthorizationCodeResponseParsing
-    
+
     private let shouldExchangeAuthCode: Bool
-    
+
     private let networkProvider: NetworkProviding
-    
+
     private let tokenManager: TokenManaging
-    
+
     private let scopes: [String]
 
     private let prompt: Prompt?
@@ -80,7 +86,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
                 shouldExchangeAuthCode: Bool = false,
                 prompt: Prompt? = nil,
-                nonce: String? = nil,
+                nonceGenerator: NonceGenerator? = nil,
                 environment: UberEnvironment = .production) {
         self.configurationProvider = ConfigurationProvider()
         self.applicationLauncher = UIApplication.shared
@@ -95,7 +101,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.tokenManager = TokenManager(environment: environment)
         self.scopes = scopes
         self.prompt = prompt
-        self.paramsProvider = AuthSecurityParamProvider(nonce: nonce)
+        self.nonceGenerator = nonceGenerator ?? Nonce.generate
     }
 
     init(presentationAnchor: ASPresentationAnchor = .init(),
@@ -103,7 +109,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
          scopes: [String] = AuthorizationCodeAuthProvider.defaultScopes,
          prompt: Prompt? = nil,
          shouldExchangeAuthCode: Bool = false,
-         nonce: String? = nil,
+         nonceGenerator: @escaping NonceGenerator = Nonce.generate,
          configurationProvider: ConfigurationProviding = ConfigurationProvider(),
          applicationLauncher: ApplicationLaunching = UIApplication.shared,
          responseParser: AuthorizationCodeResponseParsing = AuthorizationCodeResponseParser(),
@@ -124,7 +130,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         self.tokenManager = tokenManager
         self.scopes = scopes
         self.prompt = prompt
-        self.paramsProvider = AuthSecurityParamProvider(nonce: nonce)
+        self.nonceGenerator = nonceGenerator
     }
 
     // MARK: AuthProviding
@@ -132,12 +138,16 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     public func execute(authDestination: AuthDestination,
                         prefill: Prefill? = nil,
                         completion: @escaping Completion) {
-        paramsProvider.begin()
+        pendingNonce = nonceGenerator()
+        pendingState = State.generate()
+
         // Upon completion, intercept result and exchange for token if enabled
         let authCompletion: Completion = { [weak self] result in
             guard let self else { return }
 
-            let nonce = paramsProvider.end()
+            let nonce = pendingNonce
+            pendingNonce = nil
+            pendingState = nil
 
             switch result {
             case .success(let client):
@@ -156,7 +166,6 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             case .failure:
                 break
             }
-            
             completion(result)
             self.completion = nil
         }
@@ -171,42 +180,46 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 )
             }
         )
-        
+
         self.completion = authCompletion
     }
 
     /// - Throws: `UberAuthError`
     public func execute(authDestination: AuthDestination,
                         prefill: Prefill? = nil) async throws -> Client {
-        
-        paramsProvider.begin()
+
+        pendingNonce = nonceGenerator()
+        pendingState = State.generate()
 
         let requestURI = await executePar(prefill: prefill)
-        
+
         let client = try await executeLogin(authDestination: authDestination, requestURI: requestURI)
-        
+
         if shouldExchangeAuthCode, let code = client.authorizationCode {
             return try await exchange(code: code)
         }
-        
-        let nonce = paramsProvider.end()
+
+        let nonce = pendingNonce
+        pendingNonce = nil
+        pendingState = nil
         return Client(
             authorizationCode: client.authorizationCode,
             accessToken: client.accessToken,
             nonce: nonce
         )
     }
-    
+
     public func logout() -> Bool {
         tokenManager.deleteToken(identifier: TokenManager.defaultAccessTokenIdentifier)
     }
-    
+
     public func handle(response url: URL) -> Bool {
         guard responseParser.isValidResponse(url: url, matching: redirectURI) else {
             return false
         }
 
-        guard let pending = paramsProvider.consumeState() else { return false }
+        guard let pending = pendingState else { return false }
+        pendingState = nil
         guard State.value(from: url) == pending else {
             completion?(.failure(.stateMismatch))
             return true
@@ -217,11 +230,11 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
 
         return true
     }
-    
+
     public var isLoggedIn: Bool {
         tokenManager.getToken(identifier: TokenManager.defaultAccessTokenIdentifier) != nil
     }
-    
+
     // MARK: - Private
 
     private func executeLogin(authDestination: AuthDestination,
@@ -241,7 +254,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             )
         }
     }
-    
+
     func executeLogin(authDestination: AuthDestination,
                       requestURI: String?) async throws -> Client {
         switch authDestination {
@@ -250,33 +263,33 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
         case.native(let appPriority):
             try await executeNativeLogin(appPriority: appPriority, requestURI: requestURI)
         }
-        
+
     }
-    
+
     /// Performs login using an embedded browser within the third party client.
     /// - Parameters:
     ///   - completion: A closure to handle the login result
     private func executeInAppLogin(requestURI: String?,
                                    completion: @escaping Completion) {
-        
+
         // Only execute one authentication session at a time
         guard currentSession == nil else {
             completion(.failure(.existingAuthSession))
             return
         }
-        
+
         let request = AuthorizeRequest(
             app: nil,
             clientID: clientID,
             codeChallenge: shouldExchangeAuthCode ? pkce.codeChallenge : nil,
-            nonce:paramsProvider.nonce,
+            nonce: pendingNonce,
             prompt: prompt,
             redirectURI: redirectURI,
             requestURI: requestURI,
             scopes: scopes,
-            state:paramsProvider.state
+            state: pendingState
         )
-        
+
         guard let url = request.url(baseUrl: baseUrl) else {
             completion(.failure(.invalidRequest("Invalid base URL")))
             return
@@ -287,72 +300,72 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             completion(.failure(.invalidRequest("Invalid redirect URI")))
             return
         }
-        
-        currentSession = authenticationSessionBuilder?(ASPresentationAnchor(), callbackURLScheme, url,paramsProvider.state, completion) ??
+
+        currentSession = authenticationSessionBuilder?(ASPresentationAnchor(), callbackURLScheme, url, pendingState, completion) ??
             AuthenticationSession(
                 anchor: presentationAnchor,
                 callbackURLScheme: callbackURLScheme,
                 url: url,
-                pendingState:paramsProvider.state,
+                pendingState: pendingState,
                 completion: { [weak self] result in
                     guard let self else { return }
                     completion(result)
                     currentSession = nil
                 }
             )
-        
+
         currentSession?.start()
     }
-    
+
     private func executeInAppLogin(requestURI: String?) async throws -> Client {
         // Only execute one authentication session at a time
         guard currentSession == nil else { throw UberAuthError.existingAuthSession }
-        
+
         let request = AuthorizeRequest(
             app: nil,
             clientID: clientID,
             codeChallenge: shouldExchangeAuthCode ? pkce.codeChallenge : nil,
-            nonce:paramsProvider.nonce,
+            nonce: pendingNonce,
             prompt: prompt,
             redirectURI: redirectURI,
             requestURI: requestURI,
             scopes: scopes,
-            state:paramsProvider.state
+            state: pendingState
         )
-        
+
         guard let url = request.url(baseUrl: baseUrl) else {
             throw UberAuthError.invalidRequest("Invalid base URL")
         }
-        
+
         guard let callbackURL = URL(string: redirectURI),
               let callbackURLScheme = callbackURL.scheme else {
             throw UberAuthError.invalidRequest("Invalid redirect URI")
         }
-        
+
         return try await withCheckedThrowingContinuation { continuation in
             if let sessionBuilder = authenticationSessionBuilder {
                 currentSession = sessionBuilder(
                     presentationAnchor,
                     callbackURLScheme,
                     url,
-                   paramsProvider.state,
+                    pendingState,
                     { [weak self] result in
                         continuation.resume(with: result)
                         self?.currentSession = nil
                     })
             } else {
-                currentSession = AuthenticationSession(anchor: presentationAnchor, callbackURLScheme: callbackURLScheme, url: url, pendingState:paramsProvider.state) { [weak self] result in
+                currentSession = AuthenticationSession(anchor: presentationAnchor, callbackURLScheme: callbackURLScheme, url: url, pendingState: pendingState) { [weak self] result in
                     continuation.resume(with: result)
                     self?.currentSession = nil
-                    
+
                 }
             }
-            
+
             currentSession?.start()
-            
+
         }
     }
-        
+
     /// Performs login using one of the native Uber applications if available.
     ///
     /// There are three possible destinations for auth through this method:
@@ -377,9 +390,9 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
     private func executeNativeLogin(appPriority: [UberApp],
                                     requestURI: String?,
                                     completion: @escaping Completion) {
-     
+
         var nativeLaunched = false
-        
+
         // Executes the asynchronous operation `launch` serially for each app in appPriority
         // Stops the execution after the first app is successfully launched
         AsyncDispatcher.exec(
@@ -394,7 +407,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 guard !nativeLaunched else {
                     return
                 }
-                
+
                 // If no native app was launched, fall back to in app login
                 self?.executeInAppLogin(
                     requestURI: requestURI,
@@ -403,11 +416,11 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             }
         )
     }
-    
+
     private func executeNativeLogin(appPriority: [UberApp], requestURI: String?) async throws -> Client {
         for app in appPriority {
             let launched = await launch(context: (app, requestURI))
-            
+
             if launched {
                 return try await withCheckedThrowingContinuation { continuation in
                     self.completion = { result in
@@ -417,10 +430,10 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 }
             }
         }
-        
+
         return try await executeInAppLogin(requestURI: requestURI)
     }
-    
+
     /// Attempts to launch a native app with an SSO universal link.
     /// Calls a closure with a boolean indicating if the application was successfully opened.
     ///
@@ -437,23 +450,23 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             completion?(false)
             return
         }
-        
+
         // .login not supported for native auth
         var prompt = prompt
         prompt?.remove(.login)
-        
+
         let request = AuthorizeRequest(
             app: app,
             clientID: clientID,
             codeChallenge: shouldExchangeAuthCode ? pkce.codeChallenge : nil,
-            nonce:paramsProvider.nonce,
+            nonce: pendingNonce,
             prompt: prompt,
             redirectURI: redirectURI,
             requestURI: requestURI,
             scopes: scopes,
-            state:paramsProvider.state
+            state: pendingState
         )
-        
+
         guard let url = request.url(baseUrl: baseUrl) else {
             completion?(false)
             return
@@ -468,32 +481,32 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             )
         }
     }
-    
+
     func launch(context: (app: UberApp, requestURI: String?)) async -> Bool {
         let (app, requestURI) = context
         guard configurationProvider.isInstalled(app: app, defaultIfUnregistered: true) else { return false }
-        
+
         // .login not supported for native auth
         var prompt = prompt
         prompt?.remove(.login)
-        
+
         let request = AuthorizeRequest(
             app: app,
             clientID: clientID,
             codeChallenge: shouldExchangeAuthCode ? pkce.codeChallenge : nil,
-            nonce:paramsProvider.nonce,
+            nonce: pendingNonce,
             prompt: prompt,
             redirectURI: redirectURI,
             requestURI: requestURI,
             scopes: scopes,
-            state:paramsProvider.state
+            state: pendingState
         )
-        
+
         guard let url = request.url(baseUrl: baseUrl) else { return false }
-        
+
         return await applicationLauncher.launch(url)
     }
-    
+
 
 
     private func executePar(prefill: Prefill?,
@@ -506,8 +519,8 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
       let request = ParRequest(
           clientID: clientID,
           prefill: prefill.dictValue,
-          nonce:paramsProvider.nonce,
-          state:paramsProvider.state
+          nonce: pendingNonce,
+          state: pendingState
       )
 
       networkProvider.execute(
@@ -522,31 +535,31 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
           }
        )
     }
-    
+
     func executePar(prefill: Prefill?) async -> String? {
         guard let prefill else { return nil }
-        
-        let request = ParRequest(clientID: clientID, prefill: prefill.dictValue, nonce:paramsProvider.nonce, state:paramsProvider.state)
-        
+
+        let request = ParRequest(clientID: clientID, prefill: prefill.dictValue, nonce: pendingNonce, state: pendingState)
+
         let result = try? await networkProvider.execute(request: request)
-        
+
         return result?.requestURI
     }
-    
+
     // MARK: Token Exchange
-    
+
     /// Makes a request to the /token endpoing to exchange the authorization code
     /// for an access token.
     /// - Parameter code: The authorization code to exchange
     private func exchange(code: String, nonce: String?, completion: @escaping Completion) {
-        
+
         let request = TokenRequest(
             clientID: clientID,
             authorizationCode: code,
             redirectURI: redirectURI,
             codeVerifier: pkce.codeVerifier
         )
-        
+
         networkProvider.execute(
             request: request,
             completion: { [weak self] result in
@@ -575,19 +588,21 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
             }
         )
     }
-    
+
     func exchange(code: String) async throws -> Client {
-        let nonce = paramsProvider.end()
-        
+        let nonce = pendingNonce
+        pendingNonce = nil
+        pendingState = nil
+
         let request = TokenRequest(
             clientID: clientID,
             authorizationCode: code,
             redirectURI: redirectURI,
             codeVerifier: pkce.codeVerifier
         )
-        
+
         let response = try await networkProvider.execute(request: request)
-        
+
         // If a nonce was sent, the id_token MUST contain a matching nonce claim
         if let sentNonce = nonce {
             guard let idToken = response.idToken,
@@ -596,7 +611,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                 throw UberAuthError.nonceMismatch
             }
         }
-        
+
         let client = Client(tokenResponse: response, nonce: nonce)
         if let accessToken = client.accessToken {
             _ = tokenManager
@@ -605,7 +620,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
                     identifier: TokenManager.defaultAccessTokenIdentifier
                 )
         }
-        
+
         return client
     }
 
@@ -613,7 +628,7 @@ public final class AuthorizationCodeAuthProvider: AuthProviding {
 
 
 fileprivate extension Client {
-    
+
     init(tokenResponse: TokenRequest.Response, nonce: String? = nil) {
         self = Client(
             authorizationCode: nil,
